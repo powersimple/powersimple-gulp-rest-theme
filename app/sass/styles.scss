@@ -1,0 +1,112 @@
+/*
+Theme Name: Powersimple
+Description: Child theme of twentyseventeen
+Template: twentyseventeen
+
+DO NOT EDIT IN STYLE.CSS
+*/
+/*
+    PUT YOUR COLOR PALETTE HERE:
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Rubik|Titillium+Web');
+
+html,
+body,
+#page,
+.site-content-contain {
+    height:100%;
+}
+#stars{
+    height:100%;
+    width:100%;
+    position: absolute;
+}
+#page {
+
+}
+
+#masthead, #colophon {
+    font-family: 'Rubik', sans-serif;
+    background-color: #000;
+   
+}
+#masthead{
+    
+
+    #wp-custom-header-media img{
+        @media screen and (max-width:767px) {
+        top:-8%;
+        }
+    }
+    .navigation-top {
+         background-color: #333;
+         .main-navigation ul {
+             background: #333;
+         }
+         @media screen and (min-width: 48em) {
+             font-size: 0.91rem;
+         }
+         .main-navigation a:hover {
+             color: rgba(255, 240, 111, 0.75);
+         }
+         a{
+             color:#767676;
+         }
+         .current_page_item>a{
+             color:#ccc;
+         }
+         .main-navigation a:hover {
+             color: rgba(255, 240, 111, 0.75);
+         }
+     }
+     #not-home{
+         position: absolute;
+     }
+
+    @media screen and (min-width:1100px){
+        .site-title img{
+                left: -17%;
+                position: relative;
+                top: 30px;
+        }
+    
+        
+    }
+   
+
+     
+    .site-description{
+        text-shadow:1px 1px #000;
+        @media screen and (max-width:1099px) {
+        padding-left: 17%;
+        position: relative;
+        top: -17px;
+    
+        }
+    
+    }
+   
+}
+#site-navigation{
+    #logo{
+        position: absolute;
+        height:75px;
+        width:75px;
+        margin-left:-37.5px;
+    }
+}
+
+#content {
+    font-family: 'Titillium Web', sans-serif;
+    .page-header {
+        background-color: #0f0;
+    }
+}
+
+footer {
+    background-color: rgb(255, 240, 111);
+    position: absolute;
+    width: 100%;
+    bottom:0;
+}

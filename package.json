@@ -1,0 +1,50 @@
+{
+  "name": "powersimple",
+  "version": "0.0.1",
+  "description": "Powersimple, Brochure Theme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/powersimple/powersimple-theme.git"
+  },
+  "keywords": [
+    "Wordpress Theme",
+    "Gulp",
+    "NodeJS"
+  ],
+  "author": "Ben Erwin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/powersimple/powersimple-theme/issues"
+  },
+  "homepage": "https://github.com/powersimple/powersimple-theme#readme",
+  "devDependencies": {
+    "@gulp-sourcemaps/identity-map": "github:gulp-sourcemaps/identity-map",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "browser-sync": "^2.23.5",
+    "del": "^3.0.0",
+    "eyeglass": "^1.4.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-cache": "^1.0.2",
+    "gulp-clean-css": "^3.9.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-notify": "^3.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-ruby-sass": "^3.0.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.5",
+    "jshint-stylish": "^2.2.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1"
+  },
+  "dependencies": {}
+}
