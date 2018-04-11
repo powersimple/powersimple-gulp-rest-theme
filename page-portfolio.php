@@ -12,6 +12,10 @@ get_header(); ?>
 			  <div id="portfolio-menu" class="clearfix">
           <div id="portfolio-nav">
             <nav class="nav nav--active">
+              <?php
+
+
+              ?>
                                                 <!--
                             <ul class="nav__list">
                             
@@ -48,9 +52,9 @@ get_header(); ?>
     // retrieves all projects, with fields from REST API
     getREST('project', 'fields=id,title,conent,thumbnail_url,project_info,thumbnail_versions,featured_video', setPosts)// get the projects;
     // retrieves all categories for the development category
-    getREST('categories', 'parent=19&fields=id,name,count,slug', setChildCategories) // returns the children of a specified parent category
+    getREST('categories', 'parent=19&fields=id,name,count,slug,description', setChildCategories) // returns the children of a specified parent category
      // retrieves all categories for the development category
-    getREST('tags', 'fields=id,name', setTags) // returns the tags
+    getREST('tags', 'fields=id,name,slug,tag_posts', setTags) // returns the tags
   })
 </script>
 

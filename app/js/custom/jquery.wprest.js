@@ -1,6 +1,6 @@
 var tags = {},
-    categories = {},
-    posts = {}
+  categories = {},
+  posts = {}
 
 // pass the type in the route
   // param = url arguments for the REST API
@@ -39,27 +39,25 @@ function setPosts (data, dest) { // special function for the any post type
   return posts
 }
 
-
 function setChildCategories (data, dest) {
-  console.log(data);
   for (var i = 0;i < data.length;i++) {
-    categories[data[i].id] = data;
+    categories[data[i].id] = data[i]
   }
-  console.log('categories', categories);
+  console.log('categories', categories)
   displayCategories(dest)
   return data
 }
-function setTags(data, dest) {
+
+function setTags (data, dest) {
+  
 
   for (var i = 0; i < data.length; i++) {
-    tags[data[i].id]
+    tags[data[i].id] = data[i]
   }
-  console.log('tags', tags);
- // displayCategories(dest)
+  console.log('tags', tags)
+  // displayCategories(dest)
   return data
 }
 
-
 function displayCategories (id) {
-
 }

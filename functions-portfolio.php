@@ -4,6 +4,83 @@
 
 /*WP REST API CUSTOM ENDPOINT. RETURNS SPECIFIC THUMBNAIL URL*/ 
 
+add_action( 'rest_api_init', 'register_posts_by_tag' );
+ 
+function register_posts_by_tag() {
+ 
+	// register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
+	register_rest_field( 'tag', 'tag_posts', array(
+		'get_callback' => 'get_posts_by_tag',
+		'schema' => null,
+		)
+	);
+}
+ 
+function get_posts_by_tag( $object ) {
+
+	$args = array(
+    'post_type'      => 'project', 
+    'posts_per_page' => -1,
+    'post_status'    => 'publish',
+    'fields' => 'ids',
+    'tax_query' => array(
+			array(
+				'taxonomy' => 'post_tag',
+				'field'    => 'term_id',
+				'terms'    => $object['id']
+			)
+		)
+	);
+	
+		
+	return get_posts($args); 
+}
+
+
+/*
+		/project info endpoint
+*/
+
+
+add_action( 'rest_api_init', 'register_posts_by_category' );
+ 
+function register_posts_by_category() {
+ 
+	// register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
+	register_rest_field( 'category', 'category_posts', array(
+		'get_callback' => 'get_posts_by_category',
+		'schema' => null,
+		)
+	);
+}
+ 
+function get_posts_by_category( $object ) {
+
+	$args = array(
+    'post_type'      => 'project', 
+    'posts_per_page' => -1,
+    'post_status'    => 'publish',
+    'fields' => 'ids',
+    'tax_query' => array(
+			array(
+				'taxonomy' => 'category',
+				'field'    => 'term_id',
+				'terms'    => $object['id']
+			)
+		)
+	);
+	
+		
+	return get_posts($args); 
+}
+
+
+
+
+
+
+
+
 add_action( 'rest_api_init', 'register_thumbnail_url' );
  
 function register_thumbnail_url() {
@@ -21,6 +98,9 @@ function get_thumbnail_url( $object ) {
 }
 
 
+/*
+		/project info endpoint
+*/
 
 
 add_action( 'rest_api_init', 'register_thumbnail_url_versions' );
