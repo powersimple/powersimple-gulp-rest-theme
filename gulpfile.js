@@ -1,12 +1,12 @@
 var localhost = 'http://powersimple.192.168.1.11.xip.io:8899' // SET local dev url here
-//var localhost = 'http://172.20.10.4:8899'
+// var localhost = 'http://172.20.10.4:8899'
 
 var gulp = require('gulp'),
   sass = require('gulp-ruby-sass'),
   autoprefixer = require('gulp-autoprefixer'),
   cssnano = require('gulp-cssnano'),
   jshint = require('gulp-jshint'),
- stylish = require('jshint-stylish'),
+  stylish = require('jshint-stylish'),
   uglify = require('gulp-uglify'),
   imagemin = require('gulp-imagemin'),
   rename = require('gulp-rename'),
@@ -99,7 +99,7 @@ gulp.task('watch', function () {
 
   // Watch .js files
   gulp.watch('app/js/custom/**/*.js', ['scripts_custom'])
-
+  gulp.watch('app/js/vendor/**/*.js', ['scripts_vendor'])
   gulp.watch('**/*.php').on('change', function () {
     browserSync.reload()
   })

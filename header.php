@@ -20,6 +20,7 @@
 <link rel="profile" href="http://gmpg.org/xfn/11">
 
 <?php wp_head(); ?>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
 </head>
 
 
@@ -55,6 +56,7 @@
 		echo '</div><!-- .single-featured-image-header -->';
 	endif;
 	?>
+
 
 	<div class="site-content-contain">
 		<div id="content" class="site-content">
