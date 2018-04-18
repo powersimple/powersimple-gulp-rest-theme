@@ -1,11 +1,3 @@
-// EVENTS
-
-;(function ($) {
-$('document').on('click', ".nav__item", function (e) {
-    event.preventDefault();
-    console.log("click");
-  })
-}(jQuery))
 
 // pass the type in the route
 // param = url arguments for the REST API
@@ -61,7 +53,7 @@ function setPosts (data, dest) { // special function for the any post type
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
-        displayProjects(dest, posts)
+        //displayProjects(dest, posts)
         break
 
     }
@@ -89,47 +81,31 @@ function setTags (data, dest) {
   return data
 }
 
-function displayProjects (dest, projects) {
-  for (var i in projects) {
-    console.log('project', projects[i].id)
-  }
-}
 
-function displayCategories (dest, categories) {
-  var tabs = "<ul class=' nav__list '>"
-  for (var i in categories) {
-    tabs += navTab(categories[i])
-    console.log('cat', categories[i].id)
-  }
-  tabs += '</ul>'
-    jQuery(dest).html(tabs)
-}
+
+
 
 function navTab (data) {
   var tab = ''
+//  console.log(data.id);
+  tab += "<li data-id="+data.id+" class='nav__item'>"
+  
+    tab += "<span>"
 
-  tab += "<li class = 'nav__item' > "
+      tab += data.name
 
-  tab += "<div class = 'nav__thumb' data - letter = 'PS' > </div>"
-  tab += "<p class = 'nav__label'>"
-  tab += "<a href = '' class = 'nav__link nav-link-active' >"
-  tab += data.name
-
-  tab += '</a></p>'
-  tab += '</li>'
+    tab += '</span>'
+  
+    tab += '</li>'
   return tab
 }
 
-function displayTags (dest, tags) {
-  for (var i in tags) {
-    console.log('tag', tags[i].id)
-  }
-}
 
-// getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get posts
+
+ getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get posts
 // retrieves all projects, with fields from REST API
 
-// getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get pages
+ getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get pages
 
 // retrieves all projects, with fields from REST API
 getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts) // get the projects
@@ -698,6 +674,48 @@ Copyright (c) 2008/09/10 Kenneth Kufluk http://kenneth.kufluk.com/
 }(jQuery))
 
 /*jslint devel: true, browser: true, continue: true, plusplus: true, indent: 2 */
+
+function displayProjects (post_ids) {
+  if (post_ids.length > 0) {
+    var cards = "<ul class='nav_project'>"
+    for (i = 0;i < post_ids.length;i++) {
+      displayProjectCard(post_ids[i])
+    }
+    cards += '</ul>'
+  }
+  jQuery('#project-nav').html(cards)
+}
+function displayProjectCard (id) {
+  var project = posts[id]
+  console.log(project);
+  var card = '<li class="project-card">'
+  card += project.title
+  card += '</li>'
+  return card
+}
+
+function displayTags (dest, tags) {
+  for (var i in tags) {
+    console.log('tag', tags[i].id)
+  }
+}
+function displayCategories (dest, categories) {
+  var tabs = "<ul class='nav_cat'>"
+  for (var i in categories) {
+    tabs += navTab(categories[i])
+    console.log(dest, 'cat', categories[i].id)
+  }
+  tabs += '</ul>'
+  jQuery(dest).html(tabs)
+}
+
+// EVENTS
+jQuery('#portfolio').on('click', '.nav__item', function () {
+  var cat = jQuery(this).data('id')
+  displayProjects(categories[cat].category_posts)
+
+// console.log('posts', categories[cat].category_posts)
+})
 
  //Declare three.js variables
 	var camera, scene, renderer, stars=[];

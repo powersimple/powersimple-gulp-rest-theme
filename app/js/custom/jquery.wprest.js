@@ -52,7 +52,7 @@ function setPosts (data, dest) { // special function for the any post type
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
-        displayProjects(dest, posts)
+        //displayProjects(dest, posts)
         break
 
     }
@@ -80,47 +80,31 @@ function setTags (data, dest) {
   return data
 }
 
-function displayProjects (dest, projects) {
-  for (var i in projects) {
-    console.log('project', projects[i].id)
-  }
-}
 
-function displayCategories (dest, categories) {
-  var tabs = "<ul class=' nav__list '>"
-  for (var i in categories) {
-    tabs += navTab(categories[i])
-    console.log('cat', categories[i].id)
-  }
-  tabs += '</ul>'
-    jQuery(dest).html(tabs)
-}
+
+
 
 function navTab (data) {
   var tab = ''
+//  console.log(data.id);
+  tab += "<li data-id="+data.id+" class='nav__item'>"
+  
+    tab += "<span>"
 
-  tab += "<li class = 'nav__item' > "
+      tab += data.name
 
-  tab += "<div class = 'nav__thumb' data - letter = 'PS' > </div>"
-  tab += "<p class = 'nav__label'>"
-  tab += "<a href = '' class = 'nav__link nav-link-active' >"
-  tab += data.name
-
-  tab += '</a></p>'
-  tab += '</li>'
+    tab += '</span>'
+  
+    tab += '</li>'
   return tab
 }
 
-function displayTags (dest, tags) {
-  for (var i in tags) {
-    console.log('tag', tags[i].id)
-  }
-}
 
-// getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get posts
+
+ getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get posts
 // retrieves all projects, with fields from REST API
 
-// getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get pages
+ getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get pages
 
 // retrieves all projects, with fields from REST API
 getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts) // get the projects

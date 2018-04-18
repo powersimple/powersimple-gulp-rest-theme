@@ -4,7 +4,7 @@
 
 get_header(); ?>
 
-<div class="wrap">
+
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 
@@ -14,28 +14,20 @@ get_header(); ?>
           <div id="portfolio-nav">
             <nav class="nav nav--active" id="category-menu"></nav>
         </div>
-        <div class="portfolio-page">
+
+        <div id="portfolio-page">
+          <div id="project-nav"></div>
+          <div id="project-detail"></div>
 
 
+        <?php
+      //    require_once ('app/includes/reverly.php');
+        require_once "projects.php";
+        ?>
 
+      </div>
 
-
-
-
-            <!--
-              <section class="section color1" data-letter="T2">
-                <article class="section__wrapper">
-                  <h2 class="section__title">Workflow</h2>
-              
-                
-                </article>
-              </section>
-
-            
-            
-            </div>
-
-                  -->
+          
         </div>
 <script>
 
@@ -53,6 +45,6 @@ get_header(); ?>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->
-</div><!-- .wrap -->
+
 
 <?php get_footer();

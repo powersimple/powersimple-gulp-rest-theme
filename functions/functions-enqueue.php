@@ -11,7 +11,9 @@
     add_action( 'wp_enqueue_scripts', 'mychildtheme_enqueue_styles' );
 
     function wpb_adding_scripts() {
-    
+   
+    wp_register_style('bootstrap', 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css', null,'1.1', true); 
+    wp_enqueue_style('bootstrap');
     wp_register_script('three', 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js', null,'1.1', true); 
     wp_enqueue_script('three');
     
