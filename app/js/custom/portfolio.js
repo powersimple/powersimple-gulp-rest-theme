@@ -1,6 +1,7 @@
 function displayProjects (post_ids) {
+  var cards = '';
   if (post_ids.length > 0) {
-    var cards = "<ul class='nav_project'>"
+    cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
       displayProjectCard(post_ids[i])
     }
@@ -10,7 +11,7 @@ function displayProjects (post_ids) {
 }
 function displayProjectCard (id) {
   var project = posts[id]
-  console.log(project);
+  console.log(project)
   var card = '<li class="project-card">'
   card += project.title
   card += '</li>'

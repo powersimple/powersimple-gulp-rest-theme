@@ -103,7 +103,9 @@ gulp.task('watch', function () {
   gulp.watch('**/*.php').on('change', function () {
     browserSync.reload()
   })
-
+  gulp.watch('**/*.svg').on('change', function () {
+    browserSync.reload()
+  })
   // Watch image files
   // gulp.watch('src/images/**/*', ['images'])
 

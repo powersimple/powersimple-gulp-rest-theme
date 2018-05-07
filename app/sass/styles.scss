@@ -1,7 +1,7 @@
 /*
 Theme Name: Powersimple
 Description: Child theme of twentyseventeen
-Template: twentyseventeen
+
 
 DO NOT EDIT IN STYLE.CSS
 */
@@ -10,18 +10,46 @@ DO NOT EDIT IN STYLE.CSS
 */
 
 @import url('https://fonts.googleapis.com/css?family=Rubik|Titillium+Web');
+@import "partials/reset";
 
+@import "partials/screen";
+
+
+body {
+    background-color: #000;
+}
 html,
-body,
-#page,
-.site-content-contain {
+body {
     height:100%;
+    margin:0px;
+    padding:0px;
+    overflow:hidden;
 }
 #stars{
     height:100%;
-    width:100%;
+    margin:0px;
+    padding:0px;
     position: absolute;
+    z-index: 0;
 }
+
+#logo{
+    left:50%;
+    position: absolute;
+    z-index: 2;
+    width:38.2%;
+    margin-left: -19.1%;
+    @media (max-width:539px) {
+        width: 86.85%;
+        margin-left: -43.425%;
+    }
+    @media (min-width:540px) and  (max-width:1024px) {
+        width:61.8%;
+        margin-left: -30.9%;
+    }
+}
+
+
 #page {
 
 }
@@ -111,5 +139,27 @@ footer {
     bottom:0;
 }
 #portfolio {
-    @import "partials/portfolio"
+    @import "partials/portfolio";
 }
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .video-phi-narrow{
+        width: 38%;
+    }
+    .left {
+        left:0;
+    }
+}
+

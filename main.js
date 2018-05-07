@@ -1,3 +1,31 @@
+function reposition_screen () {
+  var _w = jQuery(window).width()
+  var _h = jQuery(window).height()
+  if (_w > _h) { // resizes screen to use width or height depending on orientation
+    jQuery('#screen').css('width', '61.8vh')
+    jQuery('#screen').css('height', '61.8vh')
+    jQuery('#screen').css('margin-left', '-30.9vh')
+    jQuery('#screen').css('margin-top', '-30.9vh')
+  } else {
+    jQuery('#screen').css('width', '61.8vw')
+    jQuery('#screen').css('height', '61.8vw')
+    jQuery('#screen').css('margin-left', '-30.9vw')
+    jQuery('#screen').css('margin-top', '-30.9vw')
+  }
+  //body
+  jQuery('body').css('max-width', '100vw')
+  jQuery('body').css('max-height', '100vh')
+  jQuery('body').css('max-width', '100vw')
+  jQuery('body').css('max-height', '100vh')
+  //stars
+  jQuery('#stars').css('height', '100vh')
+  jQuery('#stars').css('width', '100vw')
+}
+
+jQuery(window).resize(function () {
+  reposition_screen()
+})
+reposition_screen()
 
 // pass the type in the route
 // param = url arguments for the REST API
@@ -676,8 +704,9 @@ Copyright (c) 2008/09/10 Kenneth Kufluk http://kenneth.kufluk.com/
 /*jslint devel: true, browser: true, continue: true, plusplus: true, indent: 2 */
 
 function displayProjects (post_ids) {
+  var cards = '';
   if (post_ids.length > 0) {
-    var cards = "<ul class='nav_project'>"
+    cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
       displayProjectCard(post_ids[i])
     }
@@ -687,7 +716,7 @@ function displayProjects (post_ids) {
 }
 function displayProjectCard (id) {
   var project = posts[id]
-  console.log(project);
+  console.log(project)
   var card = '<li class="project-card">'
   card += project.title
   card += '</li>'
@@ -717,85 +746,84 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 // console.log('posts', categories[cat].category_posts)
 })
 
- //Declare three.js variables
-	var camera, scene, renderer, stars=[];
-	 
-	//assign three.js objects to each variable
-	function init(){
-		 
-		//camera
-		camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-		camera.position.z = 5;	 
+// Declare three.js variables
+var camera, scene, renderer, stars = []
 
-		//scene
-		scene = new THREE.Scene();
-		 
-		//renderer
-		renderer = new THREE.WebGLRenderer();
-		//set the size of the renderer
-		renderer.setSize( window.innerWidth, window.innerHeight );
-		 
-		//add the renderer to the html document body
-		jQuery("#stars").append( renderer.domElement );
-	}
+// assign three.js objects to each variable
+function init () {
 
+  // camera
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
+  camera.position.z = 5
 
-	function addSphere(){
+  // scene
+  scene = new THREE.Scene()
 
-				// The loop will move from z position of -1000 to z position 1000, adding a random particle at each position. 
-				for ( var z= -1000; z < 1000; z+=20 ) {
-		
-					// Make a sphere (exactly the same as before). 
-					var geometry   = new THREE.SphereGeometry(0.5, 32, 32);
-					var material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-					var sphere = new THREE.Mesh(geometry, material);
-		
-					// This time we give the sphere random x and y positions between -500 and 500
-					sphere.position.x = Math.random() * 1000 - 500;
-					sphere.position.y = Math.random() * 1000 - 500;
-		
-					// Then set the z position to where it is in the loop (distance of camera)
-					sphere.position.z = z;
-		
-					// scale it up a bit
-					sphere.scale.x = sphere.scale.y = 2;
-		
-					//add the sphere to the scene
-					scene.add( sphere );
-		
-					//finally push it to the stars array 
-					stars.push(sphere); 
-				}
-	}
+  // renderer
+  renderer = new THREE.WebGLRenderer()
+  // set the size of the renderer
+  renderer.setSize(window.innerWidth, window.innerHeight)
 
-	function animateStars() { 
-				
-		// loop through each star
-		for(var i=0; i<stars.length; i++) {
-			
-			star = stars[i]; 
-				
-			// and move it forward dependent on the mouseY position. 
-			star.position.z +=  i/10;
-				
-			// if the particle is too close move it to the back
-			if(star.position.z>1000) star.position.z-=2000; 
-			
-		}
-	
-	}
+  // add the renderer to the html document body
+  jQuery('#stars').append(renderer.domElement)
+}
 
-	function render() {
-		//get the frame
-		requestAnimationFrame( render );
+function addSphere () {
 
-		//render the scene
-		renderer.render( scene, camera );
-			animateStars();
+  // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position. 
+  for ( var z = -1000; z < 1000; z += 20) {
 
-	}
-	
-	init();
-	addSphere();
-	render();
-		
+    // Make a sphere (exactly the same as before). 
+    var geometry = new THREE.SphereGeometry(0.5, 32, 32)
+    var material = new THREE.MeshBasicMaterial({color: 0xffffff})
+    var sphere = new THREE.Mesh(geometry, material)
+
+    // This time we give the sphere random x and y positions between -500 and 500
+    sphere.position.x = Math.random() * 1000 - 500
+    sphere.position.y = Math.random() * 1000 - 500
+
+    // Then set the z position to where it is in the loop (distance of camera)
+    sphere.position.z = z
+
+    // scale it up a bit
+    sphere.scale.x = sphere.scale.y = 2
+
+    // add the sphere to the scene
+    scene.add(sphere)
+
+    // finally push it to the stars array 
+    stars.push(sphere)
+  }
+}
+
+function animateStars () {
+
+  // loop through each star
+  for (var i = 0; i < stars.length; i++) {
+    star = stars[i]
+
+    // and move it forward dependent on the mouseY position. 
+    star.position.z += i / 10
+
+    // if the particle is too close move it to the back
+    if (star.position.z > 1000) star.position.z -= 2000
+  }
+}
+
+function render () {
+  // get the frame
+  requestAnimationFrame(render)
+
+  // render the scene
+  renderer.render(scene, camera)
+  animateStars()
+}
+
+init()
+addSphere()
+render()
+jQuery(window).on('resize', function () {
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  
+})
+//renderer.setSize(window.innerWidth, window.innerHeight)

@@ -1,0 +1,82 @@
+#main{
+   
+}
+
+#button_container {
+    font-family: Helvetica, Sans-serif;
+    font-size: 24px;
+    position: relative;
+    margin: .8em auto;
+    width: 552px;
+    height: 294px;
+    z-index: 1;
+}
+
+.face.back {
+    display: none;
+}
+
+#button-container {
+    perspective: 1000;
+}
+
+#button_card {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all .5s ease-in-out;
+    box-shadow: 2px 2px 2px #aaa;
+}
+
+#button-container:hover #button_card {
+    transform: rotateY(180deg);
+    box-shadow: -2px 2px 2px #aaa;
+}
+
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.face.back {
+    display: block;
+    transform: rotateY(180deg);
+    box-sizing: border-box;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    background-color: #aaa;
+    border: 1px solid #f2f2f2;
+}
+
+#video-mask{
+    svg {
+        position:absolute;
+        top: 0;
+        left: 0;
+    }
+    svg mask rect {
+        fill: rgba(255, 255, 255, 1);
+    }
+    svg mask circle {
+        overflow:hidden;
+    }
+    svg > rect {
+        fill: black;
+        -webkit-mask: url(#mask);
+        mask: url(#mask);
+    }
+    
+    video{
+      position: absolute;
+      top: 0;
+      left: -38.6%;
+      z-index: -1;
+      overflow: hidden;
+      height:100%;
+      
+    }
+    
+  }
