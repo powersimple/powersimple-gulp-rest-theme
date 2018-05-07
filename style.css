@@ -30,25 +30,6 @@ body.mindmapnav { background-color: #003258; }
 
 .js-mindmap-active a.node.active { padding: 5px 10px !important; border-width: 5px !important; }
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
-
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
-
-body { line-height: 1; }
-
-ol, ul { list-style: none; }
-
-blockquote, q { quotes: none; }
-
-blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
-
-table { border-collapse: collapse; border-spacing: 0; }
-
-#screen { width: 61.8vh; height: 61.8vh; position: absolute; left: 50%; top: 50%; margin-left: -30.9vh; margin-top: -30.9vh; z-index: 1; }
-#screen .button-ring { z-index: 100; position: absolute; width: 17.2%; height: 17.2%; }
-#screen #link-home { left: 50%; margin-left: -8.6%; top: 110%; }
-
 #button_container { font-family: Helvetica, Sans-serif; font-size: 24px; position: relative; margin: .8em auto; width: 552px; height: 294px; z-index: 1; }
 
 .face.back { display: none; }
@@ -67,7 +48,22 @@ table { border-collapse: collapse; border-spacing: 0; }
 #video-mask svg mask rect { fill: white; }
 #video-mask svg mask circle { overflow: hidden; }
 #video-mask svg > rect { fill: black; -webkit-mask: url(#mask); mask: url(#mask); }
-#video-mask video { position: absolute; top: 0; left: -38.6%; z-index: -1; overflow: hidden; height: 100%; }
+#video-mask video { position: absolute; top: 0; left: 1px; z-index: -1; overflow: hidden; height: 99%; opacity: 0.8; }
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+
+body { line-height: 1; }
+
+ol, ul { list-style: none; }
+
+blockquote, q { quotes: none; }
+
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+
+table { border-collapse: collapse; border-spacing: 0; }
 
 /*
 Theme Name: Powersimple
@@ -94,9 +90,19 @@ blockquote:before, blockquote:after, q:before, q:after { content: ''; content: n
 
 table { border-collapse: collapse; border-spacing: 0; }
 
-#screen { width: 61.8vh; height: 61.8vh; position: absolute; left: 50%; top: 50%; margin-left: -30.9vh; margin-top: -30.9vh; z-index: 1; }
-#screen .button-ring { z-index: 100; position: absolute; width: 17.2%; height: 17.2%; }
-#screen #link-home { left: 50%; margin-left: -8.6%; top: 110%; }
+.phi-centered { width: 61.8vh; height: 61.8vh; position: absolute; left: 50%; top: 50%; margin-left: -30.9vh; margin-top: -30.9vh; z-index: 1; }
+.phi-centered .button-ring { z-index: 100; position: absolute; width: 17.2%; height: 17.2%; }
+.phi-centered #link-home { left: 50%; margin-left: -8.6%; top: 105%; }
+
+#circle-nav { width: 100vh; height: 100vh; position: absolute; left: 50%; top: 50%; margin-left: -50vh; margin-top: -50vh; }
+
+.circular-menu { margin: 0 auto; position: absolute; top: 50vh; left: 50vw; margin-left: -25%; margin-top: -25%; z-index: 500; }
+.circular-menu .circle { opacity: 0; -webkit-transform: scale(0); transform: scale(0); -webkit-transition: all 0.4s ease-out; transition: all 0.4s ease-out; }
+.circular-menu .open.circle { width: 100%; height: 100%; opacity: 1; -webkit-transform: scale(1); transform: scale(1); }
+.circular-menu .circle a { text-decoration: none; color: white; display: block; height: 2vh; width: 2vh; border: 5px solid #fff200; border-radius: 50%; line-height: 40px; margin-left: -20px; margin-top: -20px; position: absolute; text-align: center; }
+.circular-menu .circle a:hover { color: #eef; }
+.circular-menu .menu-button { position: absolute; top: calc(50% - 30px); left: calc(50% - 30px); text-decoration: none; text-align: center; color: #444; border-radius: 50%; display: block; height: 40px; width: 40px; line-height: 40px; padding: 10px; background: #dde; }
+.circular-menu .menu-button:hover { background-color: #eef; }
 
 body { background-color: #000; }
 
@@ -104,7 +110,7 @@ html, body { height: 100%; margin: 0px; padding: 0px; overflow: hidden; }
 
 #stars { height: 100%; margin: 0px; padding: 0px; position: absolute; z-index: 0; }
 
-#logo { left: 50%; position: absolute; z-index: 2; width: 38.2%; margin-left: -19.1%; }
+#logo { left: 50%; position: absolute; z-index: 2; width: 38.2%; margin-left: -19.1%; top: 1vh; }
 @media (max-width: 539px) { #logo { width: 86.85%; margin-left: -43.425%; } }
 @media (min-width: 540px) and (max-width: 1024px) { #logo { width: 61.8%; margin-left: -30.9%; } }
 
@@ -141,11 +147,25 @@ footer { background-color: #fff06f; position: absolute; width: 100%; bottom: 0; 
 #portfolio #video-mask svg mask rect { fill: white; }
 #portfolio #video-mask svg mask circle { overflow: hidden; }
 #portfolio #video-mask svg > rect { fill: black; -webkit-mask: url(#mask); mask: url(#mask); }
-#portfolio #video-mask video { position: absolute; top: 0; left: -38.6%; z-index: -1; overflow: hidden; height: 100%; }
+#portfolio #video-mask video { position: absolute; top: 0; left: 1px; z-index: -1; overflow: hidden; height: 99%; opacity: 0.8; }
 
 .video-wrapper { position: relative; padding-bottom: 56.25%; /* 16:9 */ padding-top: 25px; height: 0; }
 .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 .video-wrapper .video-phi-narrow { width: 38%; }
 .video-wrapper .left { left: 0; }
+
+.phi-centered { width: 61.8vh; height: 61.8vh; position: absolute; left: 50%; top: 50%; margin-left: -30.9vh; margin-top: -30.9vh; z-index: 1; }
+.phi-centered .button-ring { z-index: 100; position: absolute; width: 17.2%; height: 17.2%; }
+.phi-centered #link-home { left: 50%; margin-left: -8.6%; top: 105%; }
+
+#circle-nav { width: 100vh; height: 100vh; position: absolute; left: 50%; top: 50%; margin-left: -50vh; margin-top: -50vh; }
+
+.circular-menu { margin: 0 auto; position: absolute; top: 50vh; left: 50vw; margin-left: -25%; margin-top: -25%; z-index: 500; }
+.circular-menu .circle { opacity: 0; -webkit-transform: scale(0); transform: scale(0); -webkit-transition: all 0.4s ease-out; transition: all 0.4s ease-out; }
+.circular-menu .open.circle { width: 100%; height: 100%; opacity: 1; -webkit-transform: scale(1); transform: scale(1); }
+.circular-menu .circle a { text-decoration: none; color: white; display: block; height: 2vh; width: 2vh; border: 5px solid #fff200; border-radius: 50%; line-height: 40px; margin-left: -20px; margin-top: -20px; position: absolute; text-align: center; }
+.circular-menu .circle a:hover { color: #eef; }
+.circular-menu .menu-button { position: absolute; top: calc(50% - 30px); left: calc(50% - 30px); text-decoration: none; text-align: center; color: #444; border-radius: 50%; display: block; height: 40px; width: 40px; line-height: 40px; padding: 10px; background: #dde; }
+.circular-menu .menu-button:hover { background-color: #eef; }
 
 /*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJzdHlsZS5jc3MiXSwiZmlsZSI6InN0eWxlLmNzcyJ9 */

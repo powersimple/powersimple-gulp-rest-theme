@@ -11,20 +11,32 @@ get_header(); ?>
 
 
 
+<nav class="circular-menu" id="circle-nav">
+
+  <div class="circle" id="circle-nav">
+    <a href="" class="">a</a>
+    <a href="" class="">b</a>
+    <a href="" class="">c</a>
+    <a href="" class="">c</a>
+    <a href="" class="">c</a>
+    <a href="" class="">f</a>
+    <a href="" class="">g</a>
+   
+  </div>
+  
+  <a href="" class="menu-button fa fa-bars fa-2x"></a>
+
+</nav>
 
 
 
 
 
-<div id="screen">
+<div id="screen" class="phi-centered">
 
 
 
-  <div id="outer-ring">
-  <?php 
-    include "svg/outerring.svg";
-  ?>
-</div>
+ 
 
 <div id="video-mask">
   <video id="video" autoplay="autoplay" muted="muted" preload="auto" loop="loop">
@@ -45,7 +57,11 @@ get_header(); ?>
  <div id="link-home" class="button-ring" style=""><?=buttonLink(7)?></div>
 
   </div>
-  
+   <div id="outer-ring" class="phi-centered">
+  <?php 
+    include "svg/outerring.svg";
+  ?>
+</div>
 </div><!--main-->
 
 <?php
