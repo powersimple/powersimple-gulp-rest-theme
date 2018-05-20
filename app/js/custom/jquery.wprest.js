@@ -3,7 +3,7 @@
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}
+var posts = {}, categories = {}, tags = {}, menus = {}
 
 function getREST (route, params, callback, dest) {
   // route =  the type 
@@ -12,7 +12,7 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-
+  //console.log('endpoint', endpoint)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
@@ -52,15 +52,61 @@ function setPosts (data, dest) { // special function for the any post type
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
-        //displayProjects(dest, posts)
+      //  console.log(dest, posts)
+        displayProjects(dest, posts)
         break
-
+      case type = 'post':
+      //  console.log(dest, posts)
+        displayProjects(dest, posts)
+        break
+      case type = 'page':
+      //  console.log(dest, posts)
+        displayProjects(dest, posts)
+        break
     }
   }
 
-  // console.log(type, posts)
+   console.log(type, posts)
   return posts
 }
+
+function setMenuItem (item) {
+  this_item = {}
+  this_item.id = item.ID
+  this_item.title = item.title
+  this_item.object = item.object
+  this_item.parent = item.menu_item_parent
+  this_item.children = []
+
+  return this_item
+}
+function setMenu (slug, items) {
+  menu = {}
+  for (var i = 0; i < items.length; i++) {
+    menu[items[i].ID] = setMenuItem(items[i])
+    if (items[i].menu_item_parent != 0) { //recursive
+      menu[items[i].menu_item_parent].children.push(items[i].ID)
+    } 
+
+    // setMenuItem(data[i])
+
+  }
+//  console.log(slug, menu)
+  return menu
+}
+function setMenus (data, dest) {
+  console.log("raw menu data",data)
+  for (var i = 0; i < data.length; i++) {
+    menus[data[i].slug] = {}
+    menus[data[i].slug].name = data[i].name
+    menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
+  }
+  console.log("MENUS", menus)
+  displayMenus();
+}
+
+
+
 
 function setChildCategories (data, dest) {
   for (var i = 0;i < data.length;i++) {
@@ -80,39 +126,34 @@ function setTags (data, dest) {
   return data
 }
 
-
-
-
-
 function navTab (data) {
   var tab = ''
-//  console.log(data.id);
-  tab += "<li data-id="+data.id+" class='nav__item'>"
-  
-    tab += "<span>"
+  //  console.log(data.id)
+  tab += '<li data-id=' + data.id + " class='nav__item'>"
 
-      tab += data.name
+  tab += '<span>'
 
-    tab += '</span>'
-  
-    tab += '</li>'
+  tab += data.name
+
+  tab += '</span>'
+
+  tab += '</li>'
   return tab
 }
 
-
-
- getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get posts
-// retrieves all projects, with fields from REST API
-
- getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get pages
+getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#posts') // get posts
 
 // retrieves all projects, with fields from REST API
-getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts) // get the projects
+getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
+
+// retrieves all projects, with fields from REST API
+getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts, '#projects') // get the projects
 
 // retrieves all categories for the development category
 getREST('categories', 'parent=19&fields=id,name,count,slug,description,category_posts', setChildCategories, '#category-menu') // returns the children of a specified parent category
 
 // retrieves all categories for the development category
-getREST('tags', 'fields=id,name,slug,tag_posts', setTags) // returns the tags
+getREST('tags', 'fields=id,name,slug,tag_posts', setTags, 'tags') // returns the tags
 
-
+// retrieves top menu
+getREST('menus', '', setMenus, '#main-menu') // returns the tags

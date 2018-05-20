@@ -10,157 +10,17 @@ DO NOT EDIT IN STYLE.CSS
 */
 
 @import url('https://fonts.googleapis.com/css?family=Rubik|Titillium+Web');
-@import "partials/reset";
 
+
+@import "partials/reset";
+@import "partials/main";
+@import "partials/portfolio";
+
+@import "partials/ripple";
+@import "partials/wheelnav";
 @import "partials/screen";
 
 
-body {
-    background-color: #000;
-}
-html,
-body {
-    height:100%;
-    margin:0px;
-    padding:0px;
-    overflow:hidden;
-}
-#stars{
-    height:100%;
-    margin:0px;
-    padding:0px;
-    position: absolute;
-    z-index: 0;
-}
-
-#logo{
-    left:50%;
-    position: absolute;
-    z-index: 2;
-    width:38.2%;
-    margin-left: -19.1%;
-    top:1vh;
-    @media (max-width:539px) {
-        width: 86.85%;
-        margin-left: -43.425%;
-    }
-    @media (min-width:540px) and  (max-width:1024px) {
-        width:61.8%;
-        margin-left: -30.9%;
-    }
-}
 
 
-#page {
-
-}
-
-#masthead, #colophon {
-    font-family: 'Rubik', sans-serif;
-    background-color: #000;
-   
-}
-#masthead{
-    
-
-    #wp-custom-header-media img{
-        @media screen and (max-width:767px) {
-        top:-8%;
-        }
-    }
-    .navigation-top {
-         background-color: #333;
-         .main-navigation ul {
-             background: #333;
-         }
-         @media screen and (min-width: 48em) {
-             font-size: 0.91rem;
-         }
-         .main-navigation a:hover {
-             color: rgba(255, 240, 111, 0.75);
-         }
-         a{
-             color:#767676;
-         }
-         .current_page_item>a{
-             color:#ccc;
-         }
-         .main-navigation a:hover {
-             color: rgba(255, 240, 111, 0.75);
-         }
-     }
-     #not-home{
-         position: absolute;
-     }
-
-    @media screen and (min-width:1100px){
-        .site-title img{
-                left: -17%;
-                position: relative;
-                top: 30px;
-        }
-    
-        
-    }
-   
-
-     
-    .site-description{
-        text-shadow:1px 1px #000;
-        @media screen and (max-width:1099px) {
-        padding-left: 17%;
-        position: relative;
-        top: -17px;
-    
-        }
-    
-    }
-   
-}
-#site-navigation{
-    #logo{
-        position: absolute;
-        height:75px;
-        width:75px;
-        margin-left:-37.5px;
-    }
-}
-
-#content {
-    font-family: 'Titillium Web', sans-serif;
-    .page-header {
-        background-color: #0f0;
-    }
-}
-
-footer {
-    background-color: rgb(255, 240, 111);
-    position: absolute;
-    width: 100%;
-    bottom:0;
-}
-#portfolio {
-    @import "partials/portfolio";
-}
-
-.video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%;
-    /* 16:9 */
-    padding-top: 25px;
-    height: 0;
-    iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    .video-phi-narrow{
-        width: 38%;
-    }
-    .left {
-        left:0;
-    }
-}
 

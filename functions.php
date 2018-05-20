@@ -1,6 +1,6 @@
 <?php
 
-
+require_once("functions/functions-rest-menus.php");
 
 require_once("functions/functions-metabox.php");
 
@@ -19,7 +19,7 @@ function buttonLink($id){
 					<img src="/wp-content/uploads/2018/05/powersimple-emblem-01.svg"/>
 				</div>
 				<div class="back face">
-					<h2>Home</h2><br/>
+					<h2>Home</h2>
 					<p style="font-weight: 100; margin-top: -40px;">This isn't my logo, but it's a nice one to feature and show off this CSS!</p>
 				</div>
 			</div>

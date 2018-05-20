@@ -9,25 +9,19 @@ get_header(); ?>
 </header>
 <div id="main" role="main">
 
+    <div id="WebSlice" class="wheelNav"></div>
+<!--
+<nav class="circular-menu" id="main_menu">
 
+  <div class="circle phi-centered" id="main-menu">
 
-<nav class="circular-menu" id="circle-nav">
-
-  <div class="circle" id="circle-nav">
-    <a href="" class="">a</a>
-    <a href="" class="">b</a>
-    <a href="" class="">c</a>
-    <a href="" class="">c</a>
-    <a href="" class="">c</a>
-    <a href="" class="">f</a>
-    <a href="" class="">g</a>
    
   </div>
   
-  <a href="" class="menu-button fa fa-bars fa-2x"></a>
+  <a href="" class="menu-button"></a>
 
 </nav>
-
+-->
 
 
 
@@ -35,7 +29,7 @@ get_header(); ?>
 <div id="screen" class="phi-centered">
 
 
-
+<span class="ripple"></span>
  
 
 <div id="video-mask">
@@ -54,7 +48,8 @@ get_header(); ?>
 
 </div>
 
- <div id="link-home" class="button-ring" style=""><?=buttonLink(7)?></div>
+ <div id="link-home" class="button-ring" style="">
+   <?php //print buttonLink(7);?></div>
 
   </div>
    <div id="outer-ring" class="phi-centered">

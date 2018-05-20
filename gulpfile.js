@@ -1,5 +1,5 @@
 var localhost = 'http://powersimple.192.168.1.11.xip.io:8899' // SET local dev url here
-// var localhost = 'http://172.20.10.4:8899'
+// var localhost = 'http://powersimple.172.20.10.4.xip.io:8899'
 
 var gulp = require('gulp'),
   sass = require('gulp-ruby-sass'),
@@ -21,7 +21,7 @@ var gulp = require('gulp'),
 
 // Styles
 gulp.task('styles', function () {
-  return sass('app/sass/**/*.scss', { style: 'compact' }).on('error', function (err) {
+  return sass('app/sass/styles.scss', { style: 'compact' }).on('error', function (err) {
     console.log(err.toString())
 
     this.emit('end')
@@ -48,7 +48,8 @@ gulp.task('styles', function () {
 // Scripts
 gulp.task('scripts_custom', function () {
   return gulp.src('app/js/custom/**/*.js')
-    .pipe(jshint({asi: true}))
+    .on('error', console.log)
+    .pipe(jshint({asi: true}).on('error', console.log))
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('main.js'))
     .pipe(gulp.dest('./'))

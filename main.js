@@ -1,16 +1,56 @@
+var menu_config = {
+  'top-menu': {
+    'location': '#main-menu',
+    'callback': 'circleMenu'
+  }
+}
+var increment = 'vw'
+var _w = jQuery(window).width()
+var _h = jQuery(window).height()
+jQuery(document).ready(function () {
+  
+  reposition_screen()
+})
 function reposition_screen () {
-  var _w = jQuery(window).width()
-  var _h = jQuery(window).height()
+
+
   if (_w > _h) { // resizes screen to use width or height depending on orientation
+    //console.log("Orientation:Landscape", _w, _h)
+
     jQuery('.phi-centered').css('width', '61.8vh')
     jQuery('.phi-centered').css('height', '61.8vh')
     jQuery('.phi-centered').css('margin-left', '-30.9vh')
     jQuery('.phi-centered').css('margin-top', '-30.9vh')
+
+    jQuery('#main-menu').css('width', '100vh')
+    jQuery('#main-menu').css('height', '100vh')
+    jQuery('#main-menu').css('margin-left', '-50vh')
+    jQuery('#main-menu').css('margin-top', '-50vh')
+
+    jQuery('#WebSlice').css('width', '100vh')
+    jQuery('#WebSlice').css('height', '100vh')
+    jQuery('#WebSlice').css('margin-left', '-50vh')
+    jQuery('#WebSlice').css('margin-top', '-50vh')
+
+     
   } else {
+    //console.log("Orientation:Portrait",_w,_h)
+
     jQuery('.phi-centered').css('width', '61.8vw')
     jQuery('.phi-centered').css('height', '61.8vw')
-    jQuery('.phi-centered').css('margin-left', '-30.9vw')
+    jQuery('.phi-centered').css('margin-left', '-29.9vw')
     jQuery('.phi-centered').css('margin-top', '-30.9vw')
+
+    jQuery('#main-menu').css('width', '100vw')
+    jQuery('#main-menu').css('height', '100vw')
+    jQuery('#main-menu').css('margin-left', '-50vw')
+    jQuery('#main-menu').css('margin-top', '-50vw')
+
+    jQuery('#WebSlice').css('width', '100vw')
+    jQuery('#WebSlice').css('height', '100vw')
+    jQuery('#WebSlice').css('margin-left', '-50vw')
+    jQuery('#WebSlice').css('margin-top', '-50vw')
+
   }
   // body
   jQuery('body').css('max-width', '100vw')
@@ -22,34 +62,150 @@ function reposition_screen () {
 }
 
 jQuery(window).resize(function () {
+  _w = jQuery(window).width()
+  _h = jQuery(window).height()
+  jQuery('body').css('width', _w + 'px')
+  jQuery('body').css('height', _h + 'px')
+  //console.log('resize', _w, _h, increment)
+  if (_w > _h) {
+    increment = 'vh'
+  } else {
+    increment = 'vw'
+  }
+   
   reposition_screen()
+ // circleMenu('.circle a')
 })
-reposition_screen()
+
+
 
 function circleMenu (menu) {
 
   // Demo by http://creative-punch.net
 
   var items = document.querySelectorAll(menu)
+  // console.log(items)
 
+  console.log(_w, _h, increment)
   for (var i = 0, l = items.length; i < l; i++) {
-    items[i].style.left = (50 - 35 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + '%'
+    var calc_l = Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
+    items[i].style.left = (50 - 36 * calc_l) + increment
 
-    items[i].style.top = (50 + 35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + '%'
+    var calc_t = Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
+    items[i].style.top = (50 + 35 * calc_t) + increment
+
+   // console.log('left=' + 15 * calc_l, 'top=', 85 * calc_t, increment)
   }
 
   document.querySelector('.menu-button').onclick = function (e) {
     e.preventDefault(); document.querySelector('.circle').classList.toggle('open')
   }
-
 }
-circleMenu('.circle a');
+jQuery('#logo').on('click', function (e) {
+  e.preventDefault()
+// reposition_screen()
+})
+
+function displayPage (dest, posts) {
+  var cards = ''
+  // console.log(posts)
+
+  if (posts.length > 0) {
+    cards = "<ul class='nav_project'>"
+    for (i = 0;i < post_ids.length;i++) {
+      displayProjectCard(posts[i])
+    }
+    cards += '</ul>'
+  }
+  jQuery('#project-nav').html(cards)
+}
+
+function displayPosts (dest, posts) {
+  var cards = ''
+  // console.log(posts)
+  if (posts.length > 0) {
+    cards = "<ul class='nav_project'>"
+    for (i = 0;i < post_ids.length;i++) {
+      displayProjectCard(posts[i])
+    }
+    cards += '</ul>'
+  }
+  jQuery(dest).html(cards)
+}
+
+function displayProjects (dest, posts) {
+  var cards = ''
+  if (posts.length > 0) {
+    cards = "<ul class='nav_project'>"
+    for (i = 0;i < post_ids.length;i++) {
+      
+      displayProjectCard(posts[i])
+    }
+    cards += '</ul>'
+  }
+  jQuery('#project-nav').html(cards)
+}
+function displayProjectCard (id) {
+  var project = posts[id]
+  console.log('project', id, project)
+  var card = '<li class="project-card">'
+  card += project.title
+  card += '</li>'
+  return card
+}
+function displayMenus () {
+  var data = [];
+  for (var m in menus) {
+    if (menu_config[m] != undefined) {
+      var items = ''
+      for (var i in menus[m].items) {
+        console.log('menu item', menus[m].items[i], menu_config[m].location)
+        if (menus[m].items[i].parent == 0) {
+          console.log("menu", menus[m].items[i].title)
+          data.push({
+              "title" : menus[m].items[i].title,
+            "id": menus[m].items[i].id})
+        }
+         // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
+        
+      }
+
+      jQuery(menu_config[m].location).html(items)
+      //circleMenu('.circle a')
+    }
+  }
+  makeWheelNav("WebSlice", data)
+}
+
+function displayTags (dest, tags) {
+  for (var i in tags) {
+    //console.log('tag', tags[i].id)
+  }
+}
+function displayCategories (dest, categories) {
+  var tabs = "<ul class='nav_cat'>"
+  for (var i in categories) {
+    tabs += navTab(categories[i])
+  //  console.log(dest, 'cat', categories[i].id)
+  }
+  tabs += '</ul>'
+  jQuery(dest).html(tabs)
+}
+
+// EVENTS
+jQuery('#portfolio').on('click', '.nav__item', function () {
+  var cat = jQuery(this).data('id')
+  displayProjects(categories[cat].category_posts)
+
+// console.log('posts', categories[cat].category_posts)
+})
+
 // pass the type in the route
 // param = url arguments for the REST API
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}
+var posts = {}, categories = {}, tags = {}, menus = {}
 
 function getREST (route, params, callback, dest) {
   // route =  the type 
@@ -58,7 +214,7 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-
+  //console.log('endpoint', endpoint)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
@@ -98,15 +254,61 @@ function setPosts (data, dest) { // special function for the any post type
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
-        //displayProjects(dest, posts)
+      //  console.log(dest, posts)
+        displayProjects(dest, posts)
         break
-
+      case type = 'post':
+      //  console.log(dest, posts)
+        displayProjects(dest, posts)
+        break
+      case type = 'page':
+      //  console.log(dest, posts)
+        displayProjects(dest, posts)
+        break
     }
   }
 
-  // console.log(type, posts)
+   console.log(type, posts)
   return posts
 }
+
+function setMenuItem (item) {
+  this_item = {}
+  this_item.id = item.ID
+  this_item.title = item.title
+  this_item.object = item.object
+  this_item.parent = item.menu_item_parent
+  this_item.children = []
+
+  return this_item
+}
+function setMenu (slug, items) {
+  menu = {}
+  for (var i = 0; i < items.length; i++) {
+    menu[items[i].ID] = setMenuItem(items[i])
+    if (items[i].menu_item_parent != 0) { //recursive
+      menu[items[i].menu_item_parent].children.push(items[i].ID)
+    } 
+
+    // setMenuItem(data[i])
+
+  }
+//  console.log(slug, menu)
+  return menu
+}
+function setMenus (data, dest) {
+  console.log("raw menu data",data)
+  for (var i = 0; i < data.length; i++) {
+    menus[data[i].slug] = {}
+    menus[data[i].slug].name = data[i].name
+    menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
+  }
+  console.log("MENUS", menus)
+  displayMenus();
+}
+
+
+
 
 function setChildCategories (data, dest) {
   for (var i = 0;i < data.length;i++) {
@@ -126,42 +328,37 @@ function setTags (data, dest) {
   return data
 }
 
-
-
-
-
 function navTab (data) {
   var tab = ''
-//  console.log(data.id);
-  tab += "<li data-id="+data.id+" class='nav__item'>"
-  
-    tab += "<span>"
+  //  console.log(data.id)
+  tab += '<li data-id=' + data.id + " class='nav__item'>"
 
-      tab += data.name
+  tab += '<span>'
 
-    tab += '</span>'
-  
-    tab += '</li>'
+  tab += data.name
+
+  tab += '</span>'
+
+  tab += '</li>'
   return tab
 }
 
-
-
- getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get posts
-// retrieves all projects, with fields from REST API
-
- getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts) // get pages
+getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#posts') // get posts
 
 // retrieves all projects, with fields from REST API
-getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts) // get the projects
+getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
+
+// retrieves all projects, with fields from REST API
+getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts, '#projects') // get the projects
 
 // retrieves all categories for the development category
 getREST('categories', 'parent=19&fields=id,name,count,slug,description,category_posts', setChildCategories, '#category-menu') // returns the children of a specified parent category
 
 // retrieves all categories for the development category
-getREST('tags', 'fields=id,name,slug,tag_posts', setTags) // returns the tags
+getREST('tags', 'fields=id,name,slug,tag_posts', setTags, 'tags') // returns the tags
 
-
+// retrieves top menu
+getREST('menus', '', setMenus, '#main-menu') // returns the tags
 
 /*
 
@@ -720,49 +917,6 @@ Copyright (c) 2008/09/10 Kenneth Kufluk http://kenneth.kufluk.com/
 
 /*jslint devel: true, browser: true, continue: true, plusplus: true, indent: 2 */
 
-function displayProjects (post_ids) {
-  var cards = '';
-  if (post_ids.length > 0) {
-    cards = "<ul class='nav_project'>"
-    for (i = 0;i < post_ids.length;i++) {
-      displayProjectCard(post_ids[i])
-    }
-    cards += '</ul>'
-  }
-  jQuery('#project-nav').html(cards)
-}
-function displayProjectCard (id) {
-  var project = posts[id]
-  console.log(project)
-  var card = '<li class="project-card">'
-  card += project.title
-  card += '</li>'
-  return card
-}
-
-function displayTags (dest, tags) {
-  for (var i in tags) {
-    console.log('tag', tags[i].id)
-  }
-}
-function displayCategories (dest, categories) {
-  var tabs = "<ul class='nav_cat'>"
-  for (var i in categories) {
-    tabs += navTab(categories[i])
-    console.log(dest, 'cat', categories[i].id)
-  }
-  tabs += '</ul>'
-  jQuery(dest).html(tabs)
-}
-
-// EVENTS
-jQuery('#portfolio').on('click', '.nav__item', function () {
-  var cat = jQuery(this).data('id')
-  displayProjects(categories[cat].category_posts)
-
-// console.log('posts', categories[cat].category_posts)
-})
-
 // Declare three.js variables
 var camera, scene, renderer, stars = []
 
@@ -844,3 +998,36 @@ jQuery(window).on('resize', function () {
   
 })
 //renderer.setSize(window.innerWidth, window.innerHeight)
+
+
+
+/**/
+
+function makeWheelNav(dest,data){
+    var titles = [];
+    var wheel = new wheelnav(dest);
+    wheel.wheelRadius =300;
+    wheel.spreaderEnable = false;
+//    WebSlice.titleRotateAngle -45;
+   // wheel.cssMode = true;
+    wheel.slicePathFunction = slicePath().DonutSlice;
+    wheel.titleSelectedAttr = {
+      
+    };
+
+    for(i=0;i<data.length;i++){
+        titles.push(data[i].title);
+      
+    }
+
+
+
+    wheel.createWheel(titles);
+}
+
+
+
+
+window.onload = function () {
+    
+}
