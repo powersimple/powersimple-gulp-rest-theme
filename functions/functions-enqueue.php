@@ -31,7 +31,7 @@
 
     
     //vendor is the stylesheet rendered 
-    wp_register_script('vendor',get_stylesheet_directory_uri() . '/vendor.min.js', array('jquery'),1.1, true); 
+    wp_register_script('vendor',get_stylesheet_directory_uri() . '/vendor.js', array('jquery'),1.1, true); 
     wp_enqueue_script('vendor');
 
     wp_register_script('main',get_stylesheet_directory_uri() . '/main.js', array('jquery'),rand(100000,999999), true); 

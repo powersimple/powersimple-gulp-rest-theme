@@ -1,9 +1,24 @@
-#WebSlice{
+#main-nav{
     position: absolute;
     top:50%;
     left:50%;
     z-index: 100;
-    background-color:rgba(256,0,0,0.2)
+    background-color:rgba(256,0,0,0.1);
+    width:80vh;
+    height:80vh;
+    margin-left:-40vh;
+    margin-top:-40vh;
+}
+#sub-nav {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1100;
+    background-color: rgba(255, 255, 0, 0.2);
+    width: 61.8vh;
+    height: 61.8vh;
+    margin-left: -30.9vh;
+    margin-top: -30.9vh;
 }
 
 
@@ -18,7 +33,10 @@
 }
 
 .wheelNav {
-    
+    width:100%;
+    height:100%;
+    margin-top:-50%;
+
     margin: auto;
     -moz-transition: ease 1s;
     -o-transition: ease 1s;
@@ -141,4 +159,48 @@
     stroke-width: 3px;
     fill: #666;
     fill-opacity: 0.3;
+}
+
+
+[class|=wheelnav-WebSlice-slice-basic] {
+    fill: #1572b6;
+    stroke: yellow;
+    stroke-width:2px;
+     opacity:0.2;
+ 
+}
+[class|=wheelnav-WebSlice-title-basic]{
+    
+    fill: #ccc;
+    stroke-width: 3px;
+}
+
+[class|=wheelnav-WebSlice-title-hover] {
+  
+    fill: #ff0;
+    
+}
+[class|=wheelnav-WebSlice-title-selected] {
+    fill: #fff;
+}
+[class|=wheelnav-WebSlice-title]>tspan {
+  font-family: Titillium,
+  sans-serif;
+  font-size: 2vh;
+  
+  text-shadow:1px 1px #333;
+
+    cursor: pointer;
+}
+[class|=wheelnav-WebSlice-slice-hover] {
+    fill: #fff;
+    stroke: #f00;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+[class|=wheelnav-WebSlice-slice-selected] {
+    fill: #33a9dc;
+    stroke: none;
+    opacity: 0.5;
 }

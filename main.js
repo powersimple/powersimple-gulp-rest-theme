@@ -1,15 +1,17 @@
 var menu_config = {
   'top-menu': {
+    'menu_type': 'wheel',
     'location': '#main-menu',
     'callback': 'circleMenu'
   }
 }
+
 var increment = 'vw'
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
   
-  reposition_screen()
+    reposition_screen()
 })
 function reposition_screen () {
 
@@ -21,16 +23,13 @@ function reposition_screen () {
     jQuery('.phi-centered').css('height', '61.8vh')
     jQuery('.phi-centered').css('margin-left', '-30.9vh')
     jQuery('.phi-centered').css('margin-top', '-30.9vh')
-
-    jQuery('#main-menu').css('width', '100vh')
-    jQuery('#main-menu').css('height', '100vh')
-    jQuery('#main-menu').css('margin-left', '-50vh')
-    jQuery('#main-menu').css('margin-top', '-50vh')
-
-    jQuery('#WebSlice').css('width', '100vh')
-    jQuery('#WebSlice').css('height', '100vh')
-    jQuery('#WebSlice').css('margin-left', '-50vh')
-    jQuery('#WebSlice').css('margin-top', '-50vh')
+    
+    jQuery('#main-nav').css('width', '80vh')
+    jQuery('#main-nav').css('height', '80vh')
+    jQuery('#main-nav').css('margin-left', '-40vh')
+    jQuery('#main-nav').css('margin-top', '-40vh')
+    
+  
 
      
   } else {
@@ -41,20 +40,16 @@ function reposition_screen () {
     jQuery('.phi-centered').css('margin-left', '-29.9vw')
     jQuery('.phi-centered').css('margin-top', '-30.9vw')
 
-    jQuery('#main-menu').css('width', '100vw')
-    jQuery('#main-menu').css('height', '100vw')
-    jQuery('#main-menu').css('margin-left', '-50vw')
-    jQuery('#main-menu').css('margin-top', '-50vw')
+    jQuery('#main-nav').css('width', '80vw')
+    jQuery('#main-nav').css('height', '80vw')
+    jQuery('#main-nav').css('margin-left', '-40vw')
+    jQuery('#main-nav').css('margin-top', '-40vw')
 
-    jQuery('#WebSlice').css('width', '100vw')
-    jQuery('#WebSlice').css('height', '100vw')
-    jQuery('#WebSlice').css('margin-left', '-50vw')
-    jQuery('#WebSlice').css('margin-top', '-50vw')
 
   }
   // body
-  jQuery('body').css('max-width', '100vw')
-  jQuery('body').css('max-height', '100vh')
+  //jQuery('body').css('max-width', '100vw')
+  //jQuery('body').css('max-height', '100vh')
 
   // stars
   jQuery('#stars').css('height', '100vh')
@@ -64,8 +59,8 @@ function reposition_screen () {
 jQuery(window).resize(function () {
   _w = jQuery(window).width()
   _h = jQuery(window).height()
-  jQuery('body').css('width', _w + 'px')
-  jQuery('body').css('height', _h + 'px')
+  //jQuery('body').css('width', _w + 'px')
+  //jQuery('body').css('height', _h + 'px')
   //console.log('resize', _w, _h, increment)
   if (_w > _h) {
     increment = 'vh'
@@ -153,28 +148,71 @@ function displayProjectCard (id) {
   card += '</li>'
   return card
 }
+
+function menu_order(a, b) {
+  if (a.menu_order < b.menu)
+    return -1;
+  if (a.menu_order > b.menu_order)
+    return 1;
+  return 0;
+}
+
 function displayMenus () {
   var data = [];
   for (var m in menus) {
     if (menu_config[m] != undefined) {
       var items = ''
+
+      //menus[m].items.sort(function(a,b){return a.menu_order-b.menu_order})
+
+      
+
+      menu_array = [];
       for (var i in menus[m].items) {
-        console.log('menu item', menus[m].items[i], menu_config[m].location)
+        //console.log('menu item', menus[m].items[i], menu_config[m].location)
         if (menus[m].items[i].parent == 0) {
-          console.log("menu", menus[m].items[i].title)
-          data.push({
-              "title" : menus[m].items[i].title,
-            "id": menus[m].items[i].id})
+         // console.log("menu", menus[m].items[i].title)
+          menu_array.push(menus[m].items[i]);
         }
          // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
         
       }
+      menu_array.sort(menu_order);
+      console.log("menu_array",menu_array);
+      var children = [];
+      for(var a=0;a<menu_array.length;a++){
+        children = [];
+       for (var c = 0; c < menu_array[a].children.length;c++){
+         
+          children.push(
+            {
+              "title": menus[m].items[menu_array[a].children[c]].title,
+              "id": menus[m].items[menu_array[a].children[c]].id,
+              "children": menus[m].items[menu_array[a].children[c]].children
+            }
+          )
 
+       }
+        
+
+        data.push({
+          "title": menu_array[a].title,
+          "id": menu_array[a].id,
+          "children":children
+        })
+      }
       jQuery(menu_config[m].location).html(items)
+       if(menu_config[m].menu_type == "wheel"){
+         makeWheelNav("WebSlice", data)
+       }
+
+
+
       //circleMenu('.circle a')
     }
   }
-  makeWheelNav("WebSlice", data)
+
+  
 }
 
 function displayTags (dest, tags) {
@@ -214,7 +252,7 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  //console.log('endpoint', endpoint)
+  console.log('endpoint', endpoint)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
@@ -276,6 +314,7 @@ function setMenuItem (item) {
   this_item = {}
   this_item.id = item.ID
   this_item.title = item.title
+  this_item.menu_order = item.menu_order
   this_item.object = item.object
   this_item.parent = item.menu_item_parent
   this_item.children = []
@@ -1002,27 +1041,68 @@ jQuery(window).on('resize', function () {
 
 
 /**/
+var menu_raphael = {}
 
 function makeWheelNav(dest,data){
     var titles = [];
+    var ids = []
     var wheel = new wheelnav(dest);
-    wheel.wheelRadius =300;
+    console.log(dest,data);
     wheel.spreaderEnable = false;
 //    WebSlice.titleRotateAngle -45;
-   // wheel.cssMode = true;
+    wheel.cssMode = true;
+    wheel.maxPercent = 1;
+    wheel.clickModeRotate = false;
     wheel.slicePathFunction = slicePath().DonutSlice;
+    wheel.slicePathCustom = slicePath().PieSliceCustomization();
+    wheel.slicePathCustom.minRadiusPercent = 0.80;
+    wheel.slicePathCustom.maxRadiusPercent = 0.90;
+    wheel.sliceSelectedPathCustom = slicePath().PieSliceCustomization();
+    wheel.sliceSelectedPathCustom.minRadiusPercent = 0.80;
+    wheel.sliceSelectedPathCustom.maxRadiusPercent = 0.99;
     wheel.titleSelectedAttr = {
       
     };
 
     for(i=0;i<data.length;i++){
+       // console.log(data[i]);
         titles.push(data[i].title);
-      
+        ids.push(data[i].id)
+    }
+    wheel.initWheel(titles) // init before creating wheel so we can define the items.
+    
+
+    var rotation = 90; //first item is is the default rotation
+    var degrees = (360 / wheel.navItemCount); //divide circle by number of items
+    var tilt = rotation // default the tilt of text to the rotation
+    for (i = 0; i < wheel.navItemCount; i++) { // loop through items
+       // console.log("tilt"+i,titles[i],tilt);
+       
+       
+        wheel.navItems[i].titleRotateAngle = tilt; // set tilt
+        tilt = degrees+(rotation-degrees) // rotate angle is additive using this formula
+        
+        
     }
 
 
+    wheel.createWheel();
+    counter = 0;
+    for (i = 0; i < wheel.navItemCount; i++) {
+        wheel.navItems[i].data = data[i];
 
-    wheel.createWheel(titles);
+        if(dest != "inner-nav"){
+            wheel.navItems[i].navigateFunction = function () {
+                //console.log("child", this.data.children)
+                makeWheelNav("inner-nav", this.data.children)
+
+
+            
+            }
+        }
+    }
+    menu_raphael[dest] = wheel.raphael
+  // console.log(dest,menu_raphael[dest]);
 }
 
 

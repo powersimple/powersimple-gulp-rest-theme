@@ -1088,7 +1088,9 @@ wheelnavItem = function (wheelnav, title, itemIndex) {
     this.navTitle = null;
     this.navLine = null;
     this.navClickableSlice = null;
+     
 
+    
     this.navSliceCurrentTransformString = null;
     this.navTitleCurrentTransformString = null;
     this.navLineCurrentTransformString = null;

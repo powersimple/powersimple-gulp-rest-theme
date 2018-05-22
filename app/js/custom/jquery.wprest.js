@@ -12,7 +12,7 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  //console.log('endpoint', endpoint)
+  console.log('endpoint', endpoint)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
@@ -74,6 +74,7 @@ function setMenuItem (item) {
   this_item = {}
   this_item.id = item.ID
   this_item.title = item.title
+  this_item.menu_order = item.menu_order
   this_item.object = item.object
   this_item.parent = item.menu_item_parent
   this_item.children = []

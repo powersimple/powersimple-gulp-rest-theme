@@ -1,15 +1,17 @@
 var menu_config = {
   'top-menu': {
+    'menu_type': 'wheel',
     'location': '#main-menu',
     'callback': 'circleMenu'
   }
 }
+
 var increment = 'vw'
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
   
-  reposition_screen()
+    reposition_screen()
 })
 function reposition_screen () {
 
@@ -21,16 +23,13 @@ function reposition_screen () {
     jQuery('.phi-centered').css('height', '61.8vh')
     jQuery('.phi-centered').css('margin-left', '-30.9vh')
     jQuery('.phi-centered').css('margin-top', '-30.9vh')
-
-    jQuery('#main-menu').css('width', '100vh')
-    jQuery('#main-menu').css('height', '100vh')
-    jQuery('#main-menu').css('margin-left', '-50vh')
-    jQuery('#main-menu').css('margin-top', '-50vh')
-
-    jQuery('#WebSlice').css('width', '100vh')
-    jQuery('#WebSlice').css('height', '100vh')
-    jQuery('#WebSlice').css('margin-left', '-50vh')
-    jQuery('#WebSlice').css('margin-top', '-50vh')
+    
+    jQuery('#main-nav').css('width', '80vh')
+    jQuery('#main-nav').css('height', '80vh')
+    jQuery('#main-nav').css('margin-left', '-40vh')
+    jQuery('#main-nav').css('margin-top', '-40vh')
+    
+  
 
      
   } else {
@@ -41,20 +40,16 @@ function reposition_screen () {
     jQuery('.phi-centered').css('margin-left', '-29.9vw')
     jQuery('.phi-centered').css('margin-top', '-30.9vw')
 
-    jQuery('#main-menu').css('width', '100vw')
-    jQuery('#main-menu').css('height', '100vw')
-    jQuery('#main-menu').css('margin-left', '-50vw')
-    jQuery('#main-menu').css('margin-top', '-50vw')
+    jQuery('#main-nav').css('width', '80vw')
+    jQuery('#main-nav').css('height', '80vw')
+    jQuery('#main-nav').css('margin-left', '-40vw')
+    jQuery('#main-nav').css('margin-top', '-40vw')
 
-    jQuery('#WebSlice').css('width', '100vw')
-    jQuery('#WebSlice').css('height', '100vw')
-    jQuery('#WebSlice').css('margin-left', '-50vw')
-    jQuery('#WebSlice').css('margin-top', '-50vw')
 
   }
   // body
-  jQuery('body').css('max-width', '100vw')
-  jQuery('body').css('max-height', '100vh')
+  //jQuery('body').css('max-width', '100vw')
+  //jQuery('body').css('max-height', '100vh')
 
   // stars
   jQuery('#stars').css('height', '100vh')
@@ -64,8 +59,8 @@ function reposition_screen () {
 jQuery(window).resize(function () {
   _w = jQuery(window).width()
   _h = jQuery(window).height()
-  jQuery('body').css('width', _w + 'px')
-  jQuery('body').css('height', _h + 'px')
+  //jQuery('body').css('width', _w + 'px')
+  //jQuery('body').css('height', _h + 'px')
   //console.log('resize', _w, _h, increment)
   if (_w > _h) {
     increment = 'vh'

@@ -45,28 +45,71 @@ function displayProjectCard (id) {
   card += '</li>'
   return card
 }
+
+function menu_order(a, b) {
+  if (a.menu_order < b.menu)
+    return -1;
+  if (a.menu_order > b.menu_order)
+    return 1;
+  return 0;
+}
+
 function displayMenus () {
   var data = [];
   for (var m in menus) {
     if (menu_config[m] != undefined) {
       var items = ''
+
+      //menus[m].items.sort(function(a,b){return a.menu_order-b.menu_order})
+
+      
+
+      menu_array = [];
       for (var i in menus[m].items) {
-        console.log('menu item', menus[m].items[i], menu_config[m].location)
+        //console.log('menu item', menus[m].items[i], menu_config[m].location)
         if (menus[m].items[i].parent == 0) {
-          console.log("menu", menus[m].items[i].title)
-          data.push({
-              "title" : menus[m].items[i].title,
-            "id": menus[m].items[i].id})
+         // console.log("menu", menus[m].items[i].title)
+          menu_array.push(menus[m].items[i]);
         }
          // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
         
       }
+      menu_array.sort(menu_order);
+      console.log("menu_array",menu_array);
+      var children = [];
+      for(var a=0;a<menu_array.length;a++){
+        children = [];
+       for (var c = 0; c < menu_array[a].children.length;c++){
+         
+          children.push(
+            {
+              "title": menus[m].items[menu_array[a].children[c]].title,
+              "id": menus[m].items[menu_array[a].children[c]].id,
+              "children": menus[m].items[menu_array[a].children[c]].children
+            }
+          )
 
+       }
+        
+
+        data.push({
+          "title": menu_array[a].title,
+          "id": menu_array[a].id,
+          "children":children
+        })
+      }
       jQuery(menu_config[m].location).html(items)
+       if(menu_config[m].menu_type == "wheel"){
+         makeWheelNav("WebSlice", data)
+       }
+
+
+
       //circleMenu('.circle a')
     }
   }
-  makeWheelNav("WebSlice", data)
+
+  
 }
 
 function displayTags (dest, tags) {
