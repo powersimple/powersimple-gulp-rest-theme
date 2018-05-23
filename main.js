@@ -1,11 +1,23 @@
 var menu_config = {
   'top-menu': {
     'menu_type': 'wheel',
-    'location': '#main-menu',
-    'callback': 'circleMenu'
+    'location': '#outer-nav',
+    '_p':{
+      'maxPercent' : 1,
+      'min' : 0.90,
+      'max' : 1,
+      'sel_min' :0.90,
+      'sel_max': 1, 
+    }
   }
 }
-
+var inner_nav_params = {
+  'maxPercent' : 1,
+  'min': 0.82,
+  'max': 1,
+  'sel_min': 0.82,
+  'sel_max': 1.0,
+}
 var increment = 'vw'
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
@@ -30,8 +42,6 @@ function reposition_screen () {
     jQuery('#main-nav').css('margin-top', '-40vh')
     
   
-
-     
   } else {
     //console.log("Orientation:Portrait",_w,_h)
 
@@ -81,7 +91,7 @@ function circleMenu (menu) {
   var items = document.querySelectorAll(menu)
   // console.log(items)
 
-  console.log(_w, _h, increment)
+  //console.log(_w, _h, increment)
   for (var i = 0, l = items.length; i < l; i++) {
     var calc_l = Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
     items[i].style.left = (50 - 36 * calc_l) + increment
@@ -101,6 +111,21 @@ jQuery('#logo').on('click', function (e) {
 // reposition_screen()
 })
 
+function setContent(object_id,object){
+
+    
+      if(object == 'category'){
+        console.log("set_content cat",categories[object_id]);
+      } else {
+        if(posts[object_id]!=undefined){
+         console.log("set_content post",posts[object_id]);
+         jQuery("#page-title").html(posts[object_id].title)
+         jQuery("#content").html(posts[object_id].content)
+        }
+      }
+
+    
+} 
 function displayPage (dest, posts) {
   var cards = ''
   // console.log(posts)
@@ -125,12 +150,17 @@ function displayPosts (dest, posts) {
     }
     cards += '</ul>'
   }
-  jQuery(dest).html(cards)
+  
+  //jQuery(dest).html(cards)
 }
 
 function displayProjects (dest, posts) {
   var cards = ''
-  if (posts.length > 0) {
+  if (posts.length > 0) {type = data[i].type // set the type for the log
+      
+    posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+
+
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
       
@@ -142,7 +172,7 @@ function displayProjects (dest, posts) {
 }
 function displayProjectCard (id) {
   var project = posts[id]
-  console.log('project', id, project)
+  //console.log('project', id, project)
   var card = '<li class="project-card">'
   card += project.title
   card += '</li>'
@@ -178,16 +208,18 @@ function displayMenus () {
         
       }
       menu_array.sort(menu_order);
-      console.log("menu_array",menu_array);
+      //console.log("menu_array",menu_array);
       var children = [];
       for(var a=0;a<menu_array.length;a++){
         children = [];
        for (var c = 0; c < menu_array[a].children.length;c++){
          
-          children.push(
+          children.push( // data for childe menus
             {
               "title": menus[m].items[menu_array[a].children[c]].title,
               "id": menus[m].items[menu_array[a].children[c]].id,
+              "object": menus[m].items[menu_array[a].children[c]].object,
+              "object_id": menus[m].items[menu_array[a].children[c]].object_id,// the post id
               "children": menus[m].items[menu_array[a].children[c]].children
             }
           )
@@ -195,15 +227,17 @@ function displayMenus () {
        }
         
 
-        data.push({
+        data.push({// data for top level
           "title": menu_array[a].title,
           "id": menu_array[a].id,
+          "object": menu_array[a].object,
+          "object_id": menu_array[a].object_id,//the post_id
           "children":children
         })
       }
       jQuery(menu_config[m].location).html(items)
        if(menu_config[m].menu_type == "wheel"){
-         makeWheelNav("WebSlice", data)
+         makeWheelNav("outer-nav", data, menu_config[m]._p)
        }
 
 
@@ -252,16 +286,19 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  console.log('endpoint', endpoint)
+  //console.log('endpoint', endpoint)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
     success: function (data, textStatus, request) {
+      //console.log(endpoint,data)
       return data,
+      
         callback(data, dest) // this is the callback that sends the data to your custom function
+        
     },
     error: function (data, textStatus, request) {
-      console.log(data.responseText)
+      console.log(endpoint,data.responseText)
     },
 
     cache: false
@@ -271,7 +308,12 @@ function getREST (route, params, callback, dest) {
 function setPosts (data, dest) { // special function for the any post type
 
   var type = 'post'
+ 
+
+  if(Array.isArray(data)){
+
   for (var i = 0;i < data.length;i++) { // loop through the list of data
+    //console.log("home", data[i].id)
     /*
       The REST API nests the output of title and content in the rendered variable, 
       so we must unpack and set it our way, which is just .title and .content
@@ -283,39 +325,50 @@ function setPosts (data, dest) { // special function for the any post type
     if (data[i].content !== undefined && data[i].content.rendered !== undefined) { // make sure the var is there
       data[i].content = data[i].content.rendered // lose the unnecessary "rendered" parameter
     }
+    
+    
+    //console.log(dest,data[i]);
     if (data[i].type !== undefined) { // make sure the var is there
       type = data[i].type // set the type for the log
-
+      
       posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
     }
-  }
+  } 
+}  else {
+    type = data.type // set the type for the log
+      
+      posts[data.id] = data // adds a key of the post id to address all data in the post as a JSON object
+
+}
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
       //  console.log(dest, posts)
-        displayProjects(dest, posts)
+       // displayProjects(dest, posts)
         break
       case type = 'post':
       //  console.log(dest, posts)
-        displayProjects(dest, posts)
+        //displayProjects(dest, posts)
         break
       case type = 'page':
-      //  console.log(dest, posts)
-        displayProjects(dest, posts)
+       //console.log(dest, posts)
+      //  displayProjects(dest, posts)
         break
     }
   }
 
-   console.log(type, posts)
+   
+   
   return posts
 }
 
 function setMenuItem (item) {
   this_item = {}
-  this_item.id = item.ID
+  this_item.menu_id = item.ID
   this_item.title = item.title
   this_item.menu_order = item.menu_order
   this_item.object = item.object
+  this_item.object_id = item.object_id
   this_item.parent = item.menu_item_parent
   this_item.children = []
 
@@ -336,13 +389,14 @@ function setMenu (slug, items) {
   return menu
 }
 function setMenus (data, dest) {
-  console.log("raw menu data",data)
+  //console.log("raw menu data",data)
   for (var i = 0; i < data.length; i++) {
     menus[data[i].slug] = {}
     menus[data[i].slug].name = data[i].name
     menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
   }
-  console.log("MENUS", menus)
+  setContent(active_id,"page");
+  //console.log("MENUS", menus)
   displayMenus();
 }
 
@@ -383,6 +437,10 @@ function navTab (data) {
 }
 
 getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#posts') // get posts
+
+// for some reason home doesn't come up in the pages query
+getREST('pages/'+home_page, 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
+
 
 // retrieves all projects, with fields from REST API
 getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
@@ -1042,25 +1100,26 @@ jQuery(window).on('resize', function () {
 
 /**/
 var menu_raphael = {}
-
-function makeWheelNav(dest,data){
+var wheels = {}
+function makeWheelNav(dest,data,_p){
+    console.log(_p);
     var titles = [];
     var ids = []
-    var wheel = new wheelnav(dest);
-    console.log(dest,data);
-    wheel.spreaderEnable = false;
+    wheels[dest] = new wheelnav(dest);
+    //console.log(dest,data,_p);
+    wheels[dest].spreaderEnable = false;
 //    WebSlice.titleRotateAngle -45;
-    wheel.cssMode = true;
-    wheel.maxPercent = 1;
-    wheel.clickModeRotate = false;
-    wheel.slicePathFunction = slicePath().DonutSlice;
-    wheel.slicePathCustom = slicePath().PieSliceCustomization();
-    wheel.slicePathCustom.minRadiusPercent = 0.80;
-    wheel.slicePathCustom.maxRadiusPercent = 0.90;
-    wheel.sliceSelectedPathCustom = slicePath().PieSliceCustomization();
-    wheel.sliceSelectedPathCustom.minRadiusPercent = 0.80;
-    wheel.sliceSelectedPathCustom.maxRadiusPercent = 0.99;
-    wheel.titleSelectedAttr = {
+    wheels[dest].cssMode = true;
+    wheels[dest].maxPercent = _p.maxPercent;
+   // wheels[dest].clickModeRotate = false;
+    wheels[dest].slicePathFunction = slicePath().DonutSlice;
+    wheels[dest].slicePathCustom = slicePath().PieSliceCustomization();
+    wheels[dest].slicePathCustom.minRadiusPercent = _p.min;
+    wheels[dest].slicePathCustom.maxRadiusPercent = _p.max;
+    wheels[dest].sliceSelectedPathCustom = slicePath().PieSliceCustomization();
+    wheels[dest].sliceSelectedPathCustom.minRadiusPercent = _p.sel_min;
+    wheels[dest].sliceSelectedPathCustom.maxRadiusPercent = _p.sel_max;
+    wheels[dest].titleSelectedAttr = {
       
     };
 
@@ -1069,39 +1128,51 @@ function makeWheelNav(dest,data){
         titles.push(data[i].title);
         ids.push(data[i].id)
     }
-    wheel.initWheel(titles) // init before creating wheel so we can define the items.
+    wheels[dest].initWheel(titles) // init before creating wheel so we can define the items.
     
 
     var rotation = 90; //first item is is the default rotation
-    var degrees = (360 / wheel.navItemCount); //divide circle by number of items
+    var degrees = (360 / wheels[dest].navItemCount); //divide circle by number of items
     var tilt = rotation // default the tilt of text to the rotation
-    for (i = 0; i < wheel.navItemCount; i++) { // loop through items
+    for (i = 0; i < wheels[dest].navItemCount; i++) { // loop through items
        // console.log("tilt"+i,titles[i],tilt);
        
        
-        wheel.navItems[i].titleRotateAngle = tilt; // set tilt
+        wheels[dest].navItems[i].titleRotateAngle = tilt; // set tilt
         tilt = degrees+(rotation-degrees) // rotate angle is additive using this formula
         
         
     }
+  
 
-
-    wheel.createWheel();
+    wheels[dest].createWheel();
     counter = 0;
-    for (i = 0; i < wheel.navItemCount; i++) {
-        wheel.navItems[i].data = data[i];
-
+    for (var i = 0; i < wheels[dest].navItemCount; i++) {
+        wheels[dest].navItems[i].data = data[i];
+        
         if(dest != "inner-nav"){
-            wheel.navItems[i].navigateFunction = function () {
-                //console.log("child", this.data.children)
-                makeWheelNav("inner-nav", this.data.children)
-
-
+        }type = data[i].type // set the type for the log
+      
+        posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+   
+             
+            //console.log("children", data[i])
             
+
+               wheels[dest].navItems[i].navigateFunction = function () {
+               if(this.data.children.length>0){ 
+                   makeWheelNav("inner-nav", this.data.children, inner_nav_params)
+                } else {
+                    if (wheels['inner-nav'] != undefined){
+                    console.log("wheels2",wheels['inner-nav'].raphael.remove())
+                    }
+                    //makeWheelNav("inner-nav", [], inner_nav_params)
+                }
+                setContent(this.data.object_id,this.data.object)
             }
-        }
+        
     }
-    menu_raphael[dest] = wheel.raphael
+    menu_raphael[dest] = wheels[dest].raphael
   // console.log(dest,menu_raphael[dest]);
 }
 

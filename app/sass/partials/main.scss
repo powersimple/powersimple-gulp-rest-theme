@@ -46,6 +46,31 @@ body {
     background-color: #000;
 }
 
+#article{
+    background-color:rgba(0, 0, 255, 0.1);
+    height:100%;
+    position:absolute;
+    font-size:1.5em;
+    z-index: 1000;
+    h1{
+        position: relative;
+        font-size:200%;
+        font-weight:bold;
+        text-align:center;
+        text-shadow:1px 1px #fff;
+        top:10%;
+       
+    }
+    section{
+        position: relative;
+        height:61.8%;
+        width:72%;
+        left:15.4%;
+        top:15.4%;
+        text-align: justify;
+        overflow-y:scroll;
+    }
+}
 #masthead {
     #wp-custom-header-media img {
         @media screen and (max-width: 767px) {
@@ -116,7 +141,36 @@ footer {
     bottom: 0;
 }
 
-
+#circle-mask {
+    svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    svg mask rect {
+        fill: rgba(255, 255, 255, 1);
+    }
+    svg mask circle {
+        overflow: hidden;
+    }
+    svg>rect {
+        fill: black;
+        -webkit-mask: url(#mask);
+        mask: url(#mask);
+    }
+    #bg-video{
+       // display: none;
+    }
+    video {
+        position: absolute;
+        top: 0;
+        left: 1px;
+        z-index: -1;
+        overflow: hidden;
+        height: 99%;
+        opacity: 0.8;
+    }
+}
 .video-wrapper {
     position: relative;
     padding-bottom: 56.25%;

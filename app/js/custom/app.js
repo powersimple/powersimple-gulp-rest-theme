@@ -1,11 +1,23 @@
 var menu_config = {
   'top-menu': {
     'menu_type': 'wheel',
-    'location': '#main-menu',
-    'callback': 'circleMenu'
+    'location': '#outer-nav',
+    '_p':{
+      'maxPercent' : 1,
+      'min' : 0.90,
+      'max' : 1,
+      'sel_min' :0.90,
+      'sel_max': 1, 
+    }
   }
 }
-
+var inner_nav_params = {
+  'maxPercent' : 1,
+  'min': 0.82,
+  'max': 1,
+  'sel_min': 0.82,
+  'sel_max': 1.0,
+}
 var increment = 'vw'
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
@@ -30,8 +42,6 @@ function reposition_screen () {
     jQuery('#main-nav').css('margin-top', '-40vh')
     
   
-
-     
   } else {
     //console.log("Orientation:Portrait",_w,_h)
 
@@ -81,7 +91,7 @@ function circleMenu (menu) {
   var items = document.querySelectorAll(menu)
   // console.log(items)
 
-  console.log(_w, _h, increment)
+  //console.log(_w, _h, increment)
   for (var i = 0, l = items.length; i < l; i++) {
     var calc_l = Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
     items[i].style.left = (50 - 36 * calc_l) + increment
@@ -100,3 +110,19 @@ jQuery('#logo').on('click', function (e) {
   e.preventDefault()
 // reposition_screen()
 })
+
+function setContent(object_id,object){
+
+    
+      if(object == 'category'){
+        console.log("set_content cat",categories[object_id]);
+      } else {
+        if(posts[object_id]!=undefined){
+         console.log("set_content post",posts[object_id]);
+         jQuery("#page-title").html(posts[object_id].title)
+         jQuery("#content").html(posts[object_id].content)
+        }
+      }
+
+    
+} 

@@ -5,7 +5,7 @@
         $meta_boxes[] = array(
             'id' => 'featured_video',
             'title' => esc_html__( 'Featured Video', 'ps-video' ),
-            'post_types' => array( 'project' ),
+            'post_types' => array( 'page','post','project' ),
             'context' => 'side',
             'priority' => 'default',
             'autosave' => false,

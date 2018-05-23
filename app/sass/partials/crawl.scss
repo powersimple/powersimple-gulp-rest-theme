@@ -8,7 +8,14 @@
 */
 
     
-
+width:61.8vh;
+height:100vh;
+position: absolute;
+left:50%;
+top:50%;
+margin-left:-30.9vh;
+margin-top:-50vh;
+z-index: 1;
    
 
     p#start {
@@ -114,7 +121,9 @@
         letter-spacing: 0;
         line-height: 0.8em;
     }
-
+    p{
+        color: #f2C200;
+    }
     @-webkit-keyframes logo {
         0% {
             -webkit-transform: scale(1);

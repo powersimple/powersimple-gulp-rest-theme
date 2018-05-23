@@ -22,12 +22,17 @@ function displayPosts (dest, posts) {
     }
     cards += '</ul>'
   }
-  jQuery(dest).html(cards)
+  
+  //jQuery(dest).html(cards)
 }
 
 function displayProjects (dest, posts) {
   var cards = ''
-  if (posts.length > 0) {
+  if (posts.length > 0) {type = data[i].type // set the type for the log
+      
+    posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+
+
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
       
@@ -39,7 +44,7 @@ function displayProjects (dest, posts) {
 }
 function displayProjectCard (id) {
   var project = posts[id]
-  console.log('project', id, project)
+  //console.log('project', id, project)
   var card = '<li class="project-card">'
   card += project.title
   card += '</li>'
@@ -75,16 +80,18 @@ function displayMenus () {
         
       }
       menu_array.sort(menu_order);
-      console.log("menu_array",menu_array);
+      //console.log("menu_array",menu_array);
       var children = [];
       for(var a=0;a<menu_array.length;a++){
         children = [];
        for (var c = 0; c < menu_array[a].children.length;c++){
          
-          children.push(
+          children.push( // data for childe menus
             {
               "title": menus[m].items[menu_array[a].children[c]].title,
               "id": menus[m].items[menu_array[a].children[c]].id,
+              "object": menus[m].items[menu_array[a].children[c]].object,
+              "object_id": menus[m].items[menu_array[a].children[c]].object_id,// the post id
               "children": menus[m].items[menu_array[a].children[c]].children
             }
           )
@@ -92,15 +99,17 @@ function displayMenus () {
        }
         
 
-        data.push({
+        data.push({// data for top level
           "title": menu_array[a].title,
           "id": menu_array[a].id,
+          "object": menu_array[a].object,
+          "object_id": menu_array[a].object_id,//the post_id
           "children":children
         })
       }
       jQuery(menu_config[m].location).html(items)
        if(menu_config[m].menu_type == "wheel"){
-         makeWheelNav("WebSlice", data)
+         makeWheelNav("outer-nav", data, menu_config[m]._p)
        }
 
 

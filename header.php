@@ -9,7 +9,12 @@
 <link rel="profile" href="http://gmpg.org/xfn/11">
 
 <?php wp_head(); ?>
-
+<script>
+    var active_id = <?=$post->ID?>;
+    var active_object = "<?=$post->post_type?>";
+    var home_page = <?=get_option( 'page_on_front' )?>;
+  
+</script>
 </head>
 
 

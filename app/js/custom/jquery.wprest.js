@@ -12,16 +12,19 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  console.log('endpoint', endpoint)
+  //console.log('endpoint', endpoint)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
     success: function (data, textStatus, request) {
+      //console.log(endpoint,data)
       return data,
+      
         callback(data, dest) // this is the callback that sends the data to your custom function
+        
     },
     error: function (data, textStatus, request) {
-      console.log(data.responseText)
+      console.log(endpoint,data.responseText)
     },
 
     cache: false
@@ -31,7 +34,12 @@ function getREST (route, params, callback, dest) {
 function setPosts (data, dest) { // special function for the any post type
 
   var type = 'post'
+ 
+
+  if(Array.isArray(data)){
+
   for (var i = 0;i < data.length;i++) { // loop through the list of data
+    //console.log("home", data[i].id)
     /*
       The REST API nests the output of title and content in the rendered variable, 
       so we must unpack and set it our way, which is just .title and .content
@@ -43,39 +51,50 @@ function setPosts (data, dest) { // special function for the any post type
     if (data[i].content !== undefined && data[i].content.rendered !== undefined) { // make sure the var is there
       data[i].content = data[i].content.rendered // lose the unnecessary "rendered" parameter
     }
+    
+    
+    //console.log(dest,data[i]);
     if (data[i].type !== undefined) { // make sure the var is there
       type = data[i].type // set the type for the log
-
+      
       posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
     }
-  }
+  } 
+}  else {
+    type = data.type // set the type for the log
+      
+      posts[data.id] = data // adds a key of the post id to address all data in the post as a JSON object
+
+}
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
       //  console.log(dest, posts)
-        displayProjects(dest, posts)
+       // displayProjects(dest, posts)
         break
       case type = 'post':
       //  console.log(dest, posts)
-        displayProjects(dest, posts)
+        //displayProjects(dest, posts)
         break
       case type = 'page':
-      //  console.log(dest, posts)
-        displayProjects(dest, posts)
+       //console.log(dest, posts)
+      //  displayProjects(dest, posts)
         break
     }
   }
 
-   console.log(type, posts)
+   
+   
   return posts
 }
 
 function setMenuItem (item) {
   this_item = {}
-  this_item.id = item.ID
+  this_item.menu_id = item.ID
   this_item.title = item.title
   this_item.menu_order = item.menu_order
   this_item.object = item.object
+  this_item.object_id = item.object_id
   this_item.parent = item.menu_item_parent
   this_item.children = []
 
@@ -96,13 +115,14 @@ function setMenu (slug, items) {
   return menu
 }
 function setMenus (data, dest) {
-  console.log("raw menu data",data)
+  //console.log("raw menu data",data)
   for (var i = 0; i < data.length; i++) {
     menus[data[i].slug] = {}
     menus[data[i].slug].name = data[i].name
     menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
   }
-  console.log("MENUS", menus)
+  setContent(active_id,"page");
+  //console.log("MENUS", menus)
   displayMenus();
 }
 
@@ -143,6 +163,10 @@ function navTab (data) {
 }
 
 getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#posts') // get posts
+
+// for some reason home doesn't come up in the pages query
+getREST('pages/'+home_page, 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
+
 
 // retrieves all projects, with fields from REST API
 getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages

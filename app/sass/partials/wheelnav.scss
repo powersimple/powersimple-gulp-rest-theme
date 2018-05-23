@@ -3,7 +3,7 @@
     top:50%;
     left:50%;
     z-index: 100;
-    background-color:rgba(256,0,0,0.1);
+  // background-color:rgba(256,0,0,0.1);
     width:80vh;
     height:80vh;
     margin-left:-40vh;
@@ -14,11 +14,11 @@
     top: 50%;
     left: 50%;
     z-index: 1100;
-    background-color: rgba(255, 255, 0, 0.2);
-    width: 61.8vh;
-    height: 61.8vh;
-    margin-left: -30.9vh;
-    margin-top: -30.9vh;
+  //background-color: rgba(255, 255, 0, 0.2);
+    width: 72vh;
+    height: 72vh;
+    margin-left: -36vh;
+    margin-top: -36vh;
 }
 
 
@@ -162,28 +162,28 @@
 }
 
 
-[class|=wheelnav-WebSlice-slice-basic] {
+[class|=wheelnav-outer-nav-slice-basic] {
     fill: #1572b6;
     stroke: yellow;
     stroke-width:2px;
      opacity:0.2;
  
 }
-[class|=wheelnav-WebSlice-title-basic]{
+[class|=wheelnav-outer-nav-title-basic]{
     
     fill: #ccc;
     stroke-width: 3px;
 }
 
-[class|=wheelnav-WebSlice-title-hover] {
+[class|=wheelnav-outer-nav-title-hover] {
   
     fill: #ff0;
     
 }
-[class|=wheelnav-WebSlice-title-selected] {
+[class|=wheelnav-outer-nav-title-selected] {
     fill: #fff;
 }
-[class|=wheelnav-WebSlice-title]>tspan {
+[class|=wheelnav-outer-nav-title]>tspan {
   font-family: Titillium,
   sans-serif;
   font-size: 2vh;
@@ -192,15 +192,70 @@
 
     cursor: pointer;
 }
-[class|=wheelnav-WebSlice-slice-hover] {
+[class|=wheelnav-outer-nav-slice-hover] {
     fill: #fff;
     stroke: #f00;
     opacity: 0.5;
     cursor: pointer;
 }
 
-[class|=wheelnav-WebSlice-slice-selected] {
+[class|=wheelnav-outer-nav-slice-selected] {
     fill: #33a9dc;
     stroke: none;
     opacity: 0.5;
+}
+[class|=wheelnav-outer-nav-slice-basic] {
+    fill: #1572b6;
+    stroke: yellow;
+    stroke-width:2px;
+     opacity:0.2;
+ 
+}
+
+
+[class|=wheelnav-inner-nav-slice-basic] {
+    fill: #1572b6;
+    stroke: yellow;
+    stroke-width: 2px;
+    opacity: 0.2;
+}
+
+[class|=wheelnav-inner-nav-title-basic] {
+    fill: #ccc;
+    stroke-width: 3px;
+}
+
+[class|=wheelnav-inner-nav-title-hover] {
+    fill: #ff0;
+}
+
+[class|=wheelnav-inner-nav-title-selected] {
+    fill: #fff;
+}
+
+[class|=wheelnav-inner-nav-title]>tspan {
+    font-family: Titillium, sans-serif;
+    font-size: 2vh;
+    text-shadow: 1px 1px #333;
+    cursor: pointer;
+}
+
+[class|=wheelnav-inner-nav-slice-hover] {
+    fill: #fff;
+    stroke: #f00;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+[class|=wheelnav-inner-nav-slice-selected] {
+    fill: #33a9dc;
+    stroke: none;
+    opacity: 0.5;
+}
+
+[class|=wheelnav-inner-nav-slice-basic] {
+    fill: #1572b6;
+    stroke: yellow;
+    stroke-width: 2px;
+    opacity: 0.2;
 }

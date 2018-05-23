@@ -59,7 +59,9 @@ get_header(); ?>
   
 <p id="start">For the Past two decades, on the frontier of the Internet</p>
 
-<h1>POWERSIMPLE</h1>
+<h1> <?php 
+    include "svg/powersimple.svg";
+  ?></h1>
 
 <div id="titles">
   <div id="titlecontent">
