@@ -43,7 +43,17 @@ function projects_to_cpt() {
 }
 
 
-
+add_action( 'rest_api_init', 'register_video_meta' );
+function register_video_meta() {
+    register_rest_field( 'page',
+        'video',
+        array(
+            'get_callback'    => 'get_featured_video',
+            'update_callback' => null,
+            'schema'          => null,
+        )
+    );
+}
 
 
 

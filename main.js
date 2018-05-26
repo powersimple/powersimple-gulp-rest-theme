@@ -272,6 +272,53 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 // console.log('posts', categories[cat].category_posts)
 })
 
+/*!
+ * jQuery UI Touch Punch 0.2.3
+ *
+ * Copyright 2011–2014, Dave Furfero
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ * Depends:
+ *  jquery.ui.widget.js
+ *  jquery.ui.mouse.js
+ */
+! function (a) {
+    function f(a, b) {
+        if (!(a.originalEvent.touches.length > 1)) {
+            a.preventDefault();
+            var c = a.originalEvent.changedTouches[0],
+                d = document.createEvent("MouseEvents");
+            d.initMouseEvent(b, !0, !0, window, 1, c.screenX, c.screenY, c.clientX, c.clientY, !1, !1, !1, !1, 0, null), a.target.dispatchEvent(d)
+        }
+    }
+    if (a.support.touch = "ontouchend" in document, a.support.touch) {
+        var e, b = a.ui.mouse.prototype,
+            c = b._mouseInit,
+            d = b._mouseDestroy;
+        b._touchStart = function (a) {
+            var b = this;
+            !e && b._mouseCapture(a.originalEvent.changedTouches[0]) && (e = !0, b._touchMoved = !1, f(a, "mouseover"), f(a, "mousemove"), f(a, "mousedown"))
+        }, b._touchMove = function (a) {
+            e && (this._touchMoved = !0, f(a, "mousemove"))
+        }, b._touchEnd = function (a) {
+            e && (f(a, "mouseup"), f(a, "mouseout"), this._touchMoved || f(a, "click"), e = !1)
+        }, b._mouseInit = function () {
+            var b = this;
+            b.element.bind({
+                touchstart: a.proxy(b, "_touchStart"),
+                touchmove: a.proxy(b, "_touchMove"),
+                touchend: a.proxy(b, "_touchEnd")
+            }), c.call(b)
+        }, b._mouseDestroy = function () {
+            var b = this;
+            b.element.unbind({
+                touchstart: a.proxy(b, "_touchStart"),
+                touchmove: a.proxy(b, "_touchMove"),
+                touchend: a.proxy(b, "_touchEnd")
+            }), d.call(b)
+        }
+    }
+}(jQuery);
 // pass the type in the route
 // param = url arguments for the REST API
 // callback is a dynamic function name 
@@ -286,7 +333,7 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  //console.log('endpoint', endpoint)
+  console.log('endpoint', endpoint)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
@@ -1014,6 +1061,21 @@ Copyright (c) 2008/09/10 Kenneth Kufluk http://kenneth.kufluk.com/
 
 /*jslint devel: true, browser: true, continue: true, plusplus: true, indent: 2 */
 
+
+  jQuery( function() {
+    jQuery( "#slider" ).slider({
+      orientation: "vertical",
+      range: "min",
+      min: 0,
+      max: 100,
+      value: 60,
+      slide: function( event, ui ) {
+  //      jQuery( "#amount" ).val( ui.value );
+      }
+    });
+//    jQuery( "#amount" ).val( jQuery( "#slider-vertical" ).slider( "value" ) );
+  } );
+
 // Declare three.js variables
 var camera, scene, renderer, stars = []
 
@@ -1151,7 +1213,7 @@ function makeWheelNav(dest,data,_p){
         wheels[dest].navItems[i].data = data[i];
         
         if(dest != "inner-nav"){
-        }type = data[i].type // set the type for the log
+            type = data[i].type // set the type for the log
       
         posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
    
@@ -1164,13 +1226,13 @@ function makeWheelNav(dest,data,_p){
                    makeWheelNav("inner-nav", this.data.children, inner_nav_params)
                 } else {
                     if (wheels['inner-nav'] != undefined){
-                    console.log("wheels2",wheels['inner-nav'].raphael.remove())
+                        console.log("wheels2",wheels['inner-nav'].raphael.remove())
                     }
                     //makeWheelNav("inner-nav", [], inner_nav_params)
                 }
                 setContent(this.data.object_id,this.data.object)
             }
-        
+        }
     }
     menu_raphael[dest] = wheels[dest].raphael
   // console.log(dest,menu_raphael[dest]);

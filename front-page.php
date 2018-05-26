@@ -43,6 +43,7 @@ get_header(); ?>
  
 
 <div id="circle-mask">
+    
     <div id="bg-video">
         <video id="video" autoplay="autoplay" muted="muted" preload="auto" loop="loop">
             <source src="/wp-content/uploads/2018/05/C21-edit.mp4" type="video/mp4">
@@ -76,10 +77,11 @@ Engaging key demographics in order to gain traction. Demonstrate vertical integr
 
   </div>
    <div id="outer-ring" class="phi-centered">
+   
   <?php 
     //include "svg/outerring.svg";
   ?>
-</div>
+</div><div id="slider"></div>
 </div><!--main-->
 
 <?php

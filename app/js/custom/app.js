@@ -1,23 +1,4 @@
-var menu_config = {
-  'top-menu': {
-    'menu_type': 'wheel',
-    'location': '#outer-nav',
-    '_p':{
-      'maxPercent' : 1,
-      'min' : 0.90,
-      'max' : 1,
-      'sel_min' :0.90,
-      'sel_max': 1, 
-    }
-  }
-}
-var inner_nav_params = {
-  'maxPercent' : 1,
-  'min': 0.82,
-  'max': 1,
-  'sel_min': 0.82,
-  'sel_max': 1.0,
-}
+
 var increment = 'vw'
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()

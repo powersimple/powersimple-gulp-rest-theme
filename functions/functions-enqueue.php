@@ -13,10 +13,10 @@
     wp_enqueue_style('bootstrap');
 
 
-    wp_register_script('three', '//cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js', null,'1.1', true); 
-    wp_enqueue_script('three');
+    wp_register_script('jqueryui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', null,'1.1', true); 
+    wp_enqueue_script('jqueryui');
     
-
+ 
 
     wp_register_script('scroll-magic', '//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js', null,'1.1', true); 
     wp_enqueue_script('scroll-magic');

@@ -1,5 +1,24 @@
 
-
+var menu_config = {
+    'top-menu': {
+        'menu_type': 'wheel',
+        'location': '#outer-nav',
+        '_p': {
+            'maxPercent': 1,
+            'min': 0.90,
+            'max': 1,
+            'sel_min': 0.90,
+            'sel_max': 1,
+        }
+    }
+}
+var inner_nav_params = {
+    'maxPercent': 1,
+    'min': 0.82,
+    'max': 1,
+    'sel_min': 0.82,
+    'sel_max': 1.0,
+}
 /**/
 var menu_raphael = {}
 var wheels = {}
@@ -53,7 +72,7 @@ function makeWheelNav(dest,data,_p){
         wheels[dest].navItems[i].data = data[i];
         
         if(dest != "inner-nav"){
-        }type = data[i].type // set the type for the log
+            type = data[i].type // set the type for the log
       
         posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
    
@@ -66,13 +85,13 @@ function makeWheelNav(dest,data,_p){
                    makeWheelNav("inner-nav", this.data.children, inner_nav_params)
                 } else {
                     if (wheels['inner-nav'] != undefined){
-                    console.log("wheels2",wheels['inner-nav'].raphael.remove())
+                        console.log("wheels2",wheels['inner-nav'].raphael.remove())
                     }
                     //makeWheelNav("inner-nav", [], inner_nav_params)
                 }
                 setContent(this.data.object_id,this.data.object)
             }
-        
+        }
     }
     menu_raphael[dest] = wheels[dest].raphael
   // console.log(dest,menu_raphael[dest]);
