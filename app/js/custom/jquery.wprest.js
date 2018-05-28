@@ -134,10 +134,19 @@ function setChildCategories (data, dest) {
     categories[data[i].id] = data[i]
   }
   // console.log('categories', categories)
-  displayCategories(dest, categories)
+  //displayCategories(dest, categories)
   return data
 }
 
+function setCategories (data, dest) {
+ console.log("categories json", dest, data)
+  for (var i = 0;i < data.length;i++) {//creates object of categories by key
+    categories[data[i].id] = data[i]
+  }
+   console.log('categories', categories)
+  //displayCategories(dest, categories)
+  return data
+}
 function setTags (data, dest) {
   for (var i = 0; i < data.length; i++) {
     tags[data[i].id] = data[i]
@@ -164,18 +173,14 @@ function navTab (data) {
 
 getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#posts') // get posts
 
-// for some reason home doesn't come up in the pages query
-getREST('pages/'+home_page, 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
-
-
 // retrieves all projects, with fields from REST API
-getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
+getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,typeY&per_page=100', setPosts, '#pages') // get pages
 
 // retrieves all projects, with fields from REST API
 getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts, '#projects') // get the projects
 
 // retrieves all categories for the development category
-getREST('categories', 'parent=19&fields=id,name,count,slug,description,category_posts', setChildCategories, '#category-menu') // returns the children of a specified parent category
+getREST('categories', 'fields=id,name,count,slug,description,category_posts,children', setCategories, '#category-menu') // returns the children of a specified parent category
 
 // retrieves all categories for the development category
 getREST('tags', 'fields=id,name,slug,tag_posts', setTags, 'tags') // returns the tags

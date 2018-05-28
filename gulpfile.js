@@ -1,4 +1,4 @@
-var localhost = window.location.href // SET local dev url here
+var localhost = 'http://powersimple.192.168.1.16.xip.io:8899' // SET local dev url here
 //var localhost = 'http://powersimple.172.20.10.4.xip.io:8899'
 
 var gulp = require('gulp'),

@@ -25,7 +25,7 @@ table { border-collapse: collapse; border-spacing: 0; }
 
 body { background-color: #000; font-family: 'Titillium Web', sans-serif; }
 
-html, body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; }
+html, body { height: 100vh; width: 100vw; margin: 0px; padding: 0px; overflow: hidden; }
 
 #stars { height: 100%; margin: 0px; padding: 0px; position: absolute; z-index: 0; }
 
@@ -133,9 +133,11 @@ footer { background-color: #fff06f; position: absolute; width: 100%; bottom: 0; 
 
 .ripple:after { -webkit-animation-delay: .8s; animation-delay: .8s; animation-delay: .8s; top: 25px; left: 0; }
 
-#main-nav { position: absolute; top: 50%; left: 50%; z-index: 100; width: 80vh; height: 80vh; margin-left: -40vh; margin-top: -40vh; }
+#outer-ring { position: absolute; top: 50%; left: 50%; z-index: 100; width: 80vh; height: 80vh; margin-left: -40vh; margin-top: -40vh; }
 
-#sub-nav { position: absolute; top: 50%; left: 50%; z-index: 1100; width: 72vh; height: 72vh; margin-left: -36vh; margin-top: -36vh; }
+#inner-ring { position: absolute; top: 50%; left: 50%; z-index: 1100; width: 72vh; height: 72vh; margin-left: -36vh; margin-top: -36vh; }
+
+#inner-subring { position: absolute; top: 50%; left: 50%; z-index: 1300; width: 64vh; height: 64vh; margin-left: -32vh; margin-top: -32vh; }
 
 .wheelNavGitHub { height: 210px; width: 210px; margin: auto; -webkit-transition: ease 1s; transition: ease 1s; }
 
@@ -143,12 +145,9 @@ footer { background-color: #fff06f; position: absolute; width: 100%; bottom: 0; 
 
 .wheelNavGitHub > svg, .wheelNav > svg { width: 100%; height: 100%; }
 
-@media (max-width: 880px) { .wheelNavGitHub { height: 200px; width: 200px; }
-  .wheelNav { height: 330px; width: 330px; } }
-@media (max-width: 680px) { .wheelNavGitHub { height: 190px; width: 190px; }
-  .wheelNav { height: 310px; width: 310px; } }
-@media (max-width: 480px) { .wheelNavGitHub { height: 180px; width: 180px; }
-  .wheelNav { height: 290px; width: 290px; } }
+@media (max-width: 880px) { .wheelNavGitHub { height: 200px; width: 200px; } }
+@media (max-width: 680px) { .wheelNavGitHub { height: 190px; width: 190px; } }
+@media (max-width: 480px) { .wheelNavGitHub { height: 180px; width: 180px; } }
 /* Css classes for radialWheel */
 #wheelnav-radialWheel-slice-0 { fill: #cbff71; }
 
@@ -206,13 +205,27 @@ footer { background-color: #fff06f; position: absolute; width: 100%; bottom: 0; 
 
 [class|=wheelnav-inner-nav-title-selected] { fill: #fff; }
 
-[class|=wheelnav-inner-nav-title] > tspan { font-family: Titillium, sans-serif; font-size: 2vh; text-shadow: 1px 1px #333; cursor: pointer; }
+[class|=wheelnav-inner-nav-title] > tspan { font-family: Titillium, sans-serif; font-size: 1.75vh; text-shadow: 1px 1px #333; cursor: pointer; }
 
 [class|=wheelnav-inner-nav-slice-hover] { fill: #fff; stroke: #f00; opacity: 0.5; cursor: pointer; }
 
 [class|=wheelnav-inner-nav-slice-selected] { fill: #33a9dc; stroke: none; opacity: 0.5; }
 
 [class|=wheelnav-inner-nav-slice-basic] { fill: #1572b6; stroke: yellow; stroke-width: 2px; opacity: 0.2; }
+
+[class|=wheelnav-inner-subnav-title-basic] { fill: #ccc; stroke-width: 3px; }
+
+[class|=wheelnav-inner-subnav-title-hover] { fill: #ff0; }
+
+[class|=wheelnav-inner-subnav-title-selected] { fill: #fff; }
+
+[class|=wheelnav-inner-subnav-title] > tspan { font-family: Titillium, sans-serif; font-size: 1.5vh; text-shadow: 1px 1px #333; cursor: pointer; }
+
+[class|=wheelnav-inner-subnav-slice-hover] { fill: #fff; stroke: #f00; opacity: 0.5; cursor: pointer; }
+
+[class|=wheelnav-inner-subnav-slice-selected] { fill: #33a9dc; stroke: none; opacity: 0.5; }
+
+[class|=wheelnav-inner-subnav-slice-basic] { fill: #1572b6; stroke: yellow; stroke-width: 2px; opacity: 0.2; }
 
 .phi-centered { width: 61.8vh; height: 61.8vh; position: absolute; left: 50%; top: 50%; margin-left: -30.9vh; margin-top: -30.9vh; z-index: 1; }
 .phi-centered .button-ring { z-index: 100; position: absolute; width: 17.2%; height: 17.2%; }

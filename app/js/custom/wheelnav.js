@@ -5,25 +5,42 @@ var menu_config = {
         'location': '#outer-nav',
         '_p': {
             'maxPercent': 1,
-            'min': 0.90,
+            'min': 0.91,
             'max': 1,
-            'sel_min': 0.90,
+            'sel_min': 0.91,
             'sel_max': 1,
         }
     }
 }
 var inner_nav_params = {
     'maxPercent': 1,
-    'min': 0.82,
+    'min': 0.91,
     'max': 1,
-    'sel_min': 0.82,
+    'sel_min': 0.91,
+    'sel_max': 1.0,
+}
+var inner_subnav_params = {
+    'maxPercent': 1,
+    'min': 0.90,
+    'max': 1,
+    'sel_min': 0.90,
     'sel_max': 1.0,
 }
 /**/
 var menu_raphael = {}
 var wheels = {}
 function makeWheelNav(dest,data,_p){
-    console.log(_p);
+
+    if(dest == "outer-nav"){
+        child_dest = "inner-nav"
+        child_params = inner_nav_params;
+    } else if (dest == "inner-nav"){
+        child_dest = 'inner-subnav'
+        child_params = inner_subnav_params;
+    } 
+
+
+    console.log(dest,_p);
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
@@ -31,6 +48,8 @@ function makeWheelNav(dest,data,_p){
     wheels[dest].spreaderEnable = false;
 //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
+    wheels[dest].navAngle = 270;
+    
     wheels[dest].maxPercent = _p.maxPercent;
    // wheels[dest].clickModeRotate = false;
     wheels[dest].slicePathFunction = slicePath().DonutSlice;
@@ -69,31 +88,42 @@ function makeWheelNav(dest,data,_p){
     wheels[dest].createWheel();
     counter = 0;
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
-        wheels[dest].navItems[i].data = data[i];
         
-        if(dest != "inner-nav"){
-            type = data[i].type // set the type for the log
-      
-        posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
-   
-             
-            //console.log("children", data[i])
-            
-
-               wheels[dest].navItems[i].navigateFunction = function () {
-               if(this.data.children.length>0){ 
-                   makeWheelNav("inner-nav", this.data.children, inner_nav_params)
-                } else {
-                    if (wheels['inner-nav'] != undefined){
-                        console.log("wheels2",wheels['inner-nav'].raphael.remove())
-                    }
-                    //makeWheelNav("inner-nav", [], inner_nav_params)
-                }
-                setContent(this.data.object_id,this.data.object)
-            }
+        
+        console.log("local-data",i,data[i]);
+        type = data[i].type // set the type for the log
+        if(type == "category"){
+            data[i].object = "category"
+    
+            data[i].object_id = data[i].id  
         }
+        wheels[dest].navItems[i].data = data[i];
+        posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+        
+        
+
+
+        wheels[dest].navItems[i].navigateFunction = function () {
+        
+            //console.log(child_dest,"this",this.data);
+            if(this.data.children.length>0){ 
+
+                makeWheelNav(child_dest, this.data.children, child_params)
+
+            } else {
+                if (wheels[child_dest] != undefined){
+
+                    //console.log("dest"+dest,wheels[child_dest].raphael.remove())
+                }
+            }
+            setContent(child_dest,this.data.object_id,this.data.object)
+           
+        }
+    
     }
     menu_raphael[dest] = wheels[dest].raphael
+    reposition_screen()
+
   // console.log(dest,menu_raphael[dest]);
 }
 

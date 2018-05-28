@@ -1,24 +1,36 @@
-#main-nav{
+#outer-ring{
     position: absolute;
     top:50%;
     left:50%;
     z-index: 100;
-  // background-color:rgba(256,0,0,0.1);
+  //background-color:rgba(256,0,0,0.1);
     width:80vh;
     height:80vh;
     margin-left:-40vh;
     margin-top:-40vh;
+    
 }
-#sub-nav {
+#inner-ring{
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 1100;
-  //background-color: rgba(255, 255, 0, 0.2);
+ //background-color: rgba(255, 255, 0, 0.2);
     width: 72vh;
     height: 72vh;
     margin-left: -36vh;
     margin-top: -36vh;
+}
+#inner-subring{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1300;
+ //background-color: rgba(255, 190, 0, 0.2);
+    width: 64vh;
+    height: 64vh;
+    margin-left: -32vh;
+    margin-top: -32vh;
 }
 
 
@@ -57,8 +69,7 @@
     }
 
     .wheelNav {
-        height: 330px;
-        width: 330px;
+      
     }
 }
 
@@ -69,8 +80,7 @@
     }
 
     .wheelNav {
-        height: 310px;
-        width: 310px;
+       
     }
 }
 
@@ -81,8 +91,7 @@
     }
 
     .wheelNav {
-        height: 290px;
-        width: 290px;
+      
     }
 }
 
@@ -212,7 +221,7 @@
  
 }
 
-
+//inner nav
 [class|=wheelnav-inner-nav-slice-basic] {
     fill: #1572b6;
     stroke: yellow;
@@ -235,7 +244,7 @@
 
 [class|=wheelnav-inner-nav-title]>tspan {
     font-family: Titillium, sans-serif;
-    font-size: 2vh;
+    font-size: 1.75vh;
     text-shadow: 1px 1px #333;
     cursor: pointer;
 }
@@ -254,6 +263,48 @@
 }
 
 [class|=wheelnav-inner-nav-slice-basic] {
+    fill: #1572b6;
+    stroke: yellow;
+    stroke-width: 2px;
+    opacity: 0.2;
+}
+
+
+// inner subnav
+[class|=wheelnav-inner-subnav-title-basic] {
+    fill: #ccc;
+    stroke-width: 3px;
+}
+
+[class|=wheelnav-inner-subnav-title-hover] {
+    fill: #ff0;
+}
+
+[class|=wheelnav-inner-subnav-title-selected] {
+    fill: #fff;
+}
+
+[class|=wheelnav-inner-subnav-title]>tspan {
+    font-family: Titillium, sans-serif;
+    font-size: 1.5vh;
+    text-shadow: 1px 1px #333;
+    cursor: pointer;
+}
+
+[class|=wheelnav-inner-subnav-slice-hover] {
+    fill: #fff;
+    stroke: #f00;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+[class|=wheelnav-inner-subnav-slice-selected] {
+    fill: #33a9dc;
+    stroke: none;
+    opacity: 0.5;
+}
+
+[class|=wheelnav-inner-subnav-slice-basic] {
     fill: #1572b6;
     stroke: yellow;
     stroke-width: 2px;

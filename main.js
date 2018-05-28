@@ -1,23 +1,4 @@
-var menu_config = {
-  'top-menu': {
-    'menu_type': 'wheel',
-    'location': '#outer-nav',
-    '_p':{
-      'maxPercent' : 1,
-      'min' : 0.90,
-      'max' : 1,
-      'sel_min' :0.90,
-      'sel_max': 1, 
-    }
-  }
-}
-var inner_nav_params = {
-  'maxPercent' : 1,
-  'min': 0.82,
-  'max': 1,
-  'sel_min': 0.82,
-  'sel_max': 1.0,
-}
+
 var increment = 'vw'
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
@@ -25,53 +6,72 @@ jQuery(document).ready(function () {
   
     reposition_screen()
 })
+function calibrateCircle(id,size,increment){
+  //console.log("calibrate",id,size,increment)
+  jQuery(id).css('width', size+increment)
+  jQuery(id).css('height', size+increment)
+  jQuery(id).css('margin-left', ((size/2)*-1)+increment)
+  jQuery(id).css('margin-top', ((size/2)*-1)+increment)
+
+}
+
 function reposition_screen () {
+  jQuery('#main').css('height', '100vw')
+  jQuery('#main').css('width', '100vh')
 
 
-  if (_w > _h) { // resizes screen to use width or height depending on orientation
-    //console.log("Orientation:Landscape", _w, _h)
-
-    jQuery('.phi-centered').css('width', '61.8vh')
-    jQuery('.phi-centered').css('height', '61.8vh')
-    jQuery('.phi-centered').css('margin-left', '-30.9vh')
-    jQuery('.phi-centered').css('margin-top', '-30.9vh')
+  var  calibrate_elements = [
+    { id:".phi-centered",
+      size: 61.8,//use number, it needs to be divided
+      increment:"vw"
+    },
+    { id:"#outer-ring",
+      size: 80,//use number, it needs to be divided
+      increment:"vw"
+    },
+    { id:"#inner-ring",
+      size: 73,//use number, it needs to be divided
+      increment:"vw"
+    },
+    { id:"#inner-subring",
+      size: 66,//use number, it needs to be divided
+      increment:"vw"
+    }
     
-    jQuery('#main-nav').css('width', '80vh')
-    jQuery('#main-nav').css('height', '80vh')
-    jQuery('#main-nav').css('margin-left', '-40vh')
-    jQuery('#main-nav').css('margin-top', '-40vh')
-    
+  ]
+
   
-  } else {
-    //console.log("Orientation:Portrait",_w,_h)
+  for(var e=0; e<calibrate_elements.length;e++) {
+    var ob = calibrate_elements[e]
+    if(_w<540){
+      ob.size+=14;
+    }
+    
+      if (_w > _h) {
 
-    jQuery('.phi-centered').css('width', '61.8vw')
-    jQuery('.phi-centered').css('height', '61.8vw')
-    jQuery('.phi-centered').css('margin-left', '-29.9vw')
-    jQuery('.phi-centered').css('margin-top', '-30.9vw')
+        if(ob.increment == 'vw'){
+          ob.increment = 'vh' //because if landscape orientation needs to be measured to viewer height;
+        }
 
-    jQuery('#main-nav').css('width', '80vw')
-    jQuery('#main-nav').css('height', '80vw')
-    jQuery('#main-nav').css('margin-left', '-40vw')
-    jQuery('#main-nav').css('margin-top', '-40vw')
+        calibrateCircle(ob.id,ob.size,ob.increment)
+
+      } else {
+      
+       calibrateCircle(ob.id,ob.size,ob.increment)
+
+      }
+    }
 
 
-  }
-  // body
-  //jQuery('body').css('max-width', '100vw')
-  //jQuery('body').css('max-height', '100vh')
-
-  // stars
   jQuery('#stars').css('height', '100vh')
   jQuery('#stars').css('width', '100vw')
 }
 
+
 jQuery(window).resize(function () {
   _w = jQuery(window).width()
   _h = jQuery(window).height()
-  //jQuery('body').css('width', _w + 'px')
-  //jQuery('body').css('height', _h + 'px')
-  //console.log('resize', _w, _h, increment)
+  
   if (_w > _h) {
     increment = 'vh'
   } else {
@@ -79,7 +79,7 @@ jQuery(window).resize(function () {
   }
    
   reposition_screen()
- // circleMenu('.circle a')
+
 })
 
 
@@ -111,14 +111,37 @@ jQuery('#logo').on('click', function (e) {
 // reposition_screen()
 })
 
-function setContent(object_id,object){
+function setContent(dest,object_id,object){
 
-    
+    console.log("setContent",object_id,object)
+    console.log("posts",posts,posts.length)
       if(object == 'category'){
-        console.log("set_content cat",categories[object_id]);
+        console.log("set_content cat",object_id,categories[object_id].children);
+        //
+        var data = []
+        var cat_children = categories[object_id].children;
+        if(cat_children.length>0){
+          for(c=0;c<cat_children.length;c++){
+            
+            data.push({
+                  id : categories[cat_children[c]].id,
+                  title : categories[cat_children[c]].name,
+                  type: "category",
+                  children: categories[cat_children[c]].children
+              }
+            )
+            
+          }
+          
+
+          makeWheelNav(dest, data, inner_subnav_params)
+          //
+
+        }
+
       } else {
         if(posts[object_id]!=undefined){
-         console.log("set_content post",posts[object_id]);
+         console.log("set_content post",object_id,posts[object_id]);
          jQuery("#page-title").html(posts[object_id].title)
          jQuery("#content").html(posts[object_id].content)
         }
@@ -126,6 +149,7 @@ function setContent(object_id,object){
 
     
 } 
+
 function displayPage (dest, posts) {
   var cards = ''
   // console.log(posts)
@@ -455,10 +479,19 @@ function setChildCategories (data, dest) {
     categories[data[i].id] = data[i]
   }
   // console.log('categories', categories)
-  displayCategories(dest, categories)
+  //displayCategories(dest, categories)
   return data
 }
 
+function setCategories (data, dest) {
+ console.log("categories json", dest, data)
+  for (var i = 0;i < data.length;i++) {//creates object of categories by key
+    categories[data[i].id] = data[i]
+  }
+   console.log('categories', categories)
+  //displayCategories(dest, categories)
+  return data
+}
 function setTags (data, dest) {
   for (var i = 0; i < data.length; i++) {
     tags[data[i].id] = data[i]
@@ -485,18 +518,14 @@ function navTab (data) {
 
 getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#posts') // get posts
 
-// for some reason home doesn't come up in the pages query
-getREST('pages/'+home_page, 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
-
-
 // retrieves all projects, with fields from REST API
-getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#pages') // get pages
+getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,typeY&per_page=100', setPosts, '#pages') // get pages
 
 // retrieves all projects, with fields from REST API
 getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts, '#projects') // get the projects
 
 // retrieves all categories for the development category
-getREST('categories', 'parent=19&fields=id,name,count,slug,description,category_posts', setChildCategories, '#category-menu') // returns the children of a specified parent category
+getREST('categories', 'fields=id,name,count,slug,description,category_posts,children', setCategories, '#category-menu') // returns the children of a specified parent category
 
 // retrieves all categories for the development category
 getREST('tags', 'fields=id,name,slug,tag_posts', setTags, 'tags') // returns the tags
@@ -1159,12 +1188,48 @@ jQuery(window).on('resize', function () {
 //renderer.setSize(window.innerWidth, window.innerHeight)
 
 
-
+var menu_config = {
+    'top-menu': {
+        'menu_type': 'wheel',
+        'location': '#outer-nav',
+        '_p': {
+            'maxPercent': 1,
+            'min': 0.91,
+            'max': 1,
+            'sel_min': 0.91,
+            'sel_max': 1,
+        }
+    }
+}
+var inner_nav_params = {
+    'maxPercent': 1,
+    'min': 0.91,
+    'max': 1,
+    'sel_min': 0.91,
+    'sel_max': 1.0,
+}
+var inner_subnav_params = {
+    'maxPercent': 1,
+    'min': 0.90,
+    'max': 1,
+    'sel_min': 0.90,
+    'sel_max': 1.0,
+}
 /**/
 var menu_raphael = {}
 var wheels = {}
 function makeWheelNav(dest,data,_p){
-    console.log(_p);
+
+    if(dest == "outer-nav"){
+        child_dest = "inner-nav"
+        child_params = inner_nav_params;
+    } else if (dest == "inner-nav"){
+        child_dest = 'inner-subnav'
+        child_params = inner_subnav_params;
+    } 
+
+
+    console.log(dest,_p);
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
@@ -1172,6 +1237,8 @@ function makeWheelNav(dest,data,_p){
     wheels[dest].spreaderEnable = false;
 //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
+    wheels[dest].navAngle = 270;
+    
     wheels[dest].maxPercent = _p.maxPercent;
    // wheels[dest].clickModeRotate = false;
     wheels[dest].slicePathFunction = slicePath().DonutSlice;
@@ -1210,31 +1277,42 @@ function makeWheelNav(dest,data,_p){
     wheels[dest].createWheel();
     counter = 0;
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
-        wheels[dest].navItems[i].data = data[i];
         
-        if(dest != "inner-nav"){
-            type = data[i].type // set the type for the log
-      
-        posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
-   
-             
-            //console.log("children", data[i])
-            
-
-               wheels[dest].navItems[i].navigateFunction = function () {
-               if(this.data.children.length>0){ 
-                   makeWheelNav("inner-nav", this.data.children, inner_nav_params)
-                } else {
-                    if (wheels['inner-nav'] != undefined){
-                        console.log("wheels2",wheels['inner-nav'].raphael.remove())
-                    }
-                    //makeWheelNav("inner-nav", [], inner_nav_params)
-                }
-                setContent(this.data.object_id,this.data.object)
-            }
+        
+        console.log("local-data",i,data[i]);
+        type = data[i].type // set the type for the log
+        if(type == "category"){
+            data[i].object = "category"
+    
+            data[i].object_id = data[i].id  
         }
+        wheels[dest].navItems[i].data = data[i];
+        posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+        
+        
+
+
+        wheels[dest].navItems[i].navigateFunction = function () {
+        
+            //console.log(child_dest,"this",this.data);
+            if(this.data.children.length>0){ 
+
+                makeWheelNav(child_dest, this.data.children, child_params)
+
+            } else {
+                if (wheels[child_dest] != undefined){
+
+                    //console.log("dest"+dest,wheels[child_dest].raphael.remove())
+                }
+            }
+            setContent(child_dest,this.data.object_id,this.data.object)
+           
+        }
+    
     }
     menu_raphael[dest] = wheels[dest].raphael
+    reposition_screen()
+
   // console.log(dest,menu_raphael[dest]);
 }
 

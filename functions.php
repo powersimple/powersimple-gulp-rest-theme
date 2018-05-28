@@ -6,7 +6,7 @@ require_once("functions/functions-metabox.php");
 
 require_once("functions/functions-enqueue.php");
 
-require_once("functions/functions-portfolio.php");
+require_once("functions/functions-rest-register.php");
 
 
 
