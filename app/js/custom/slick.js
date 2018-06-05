@@ -47,8 +47,8 @@ prevArrow: '<i class="slick-arrow slick-prev"></i>',
 function setSlide(slide,id){
   //console.log(slide,id,post)
   slide = '\n<div><div id="slide'+slide+'" data-id="'+id+'" class="slide-wrap">'
-  slide +='\n\t<h2></h2>'
-  slide +='\n\t<section><div class="content"></div></section>'
+  slide +='\n\t<h2>'+posts[id].title+'</h2>'
+  slide += '\n\t<section><div class="content">' + posts[id].content + '</div></section>'
   slide +='\n</div></div>';
   
 
@@ -63,7 +63,8 @@ function setSlides(){
   
   for(i=0;linear_nav[i];i++){
     
-    var id = parseInt(linear_nav[i].object_id);
+    var id = linear_nav[i].object_id.toString();
+    console.log(i, id, posts[id])
     if(posts[id] != undefined){
     slides += setSlide(i,id)
     }

@@ -42,7 +42,7 @@ gulp.task('styles', function () {
     .pipe(rename({ suffix: '.min' }))
     .pipe(cssnano())
     .pipe(gulp.dest('./'))
-    .pipe(notify({ message: 'Style Compiled, now smile' }))
+    .pipe(notify({ message: 'SCSS converted to SCSS ' }))
     .pipe(browserSync.stream())
 })
 // Scripts
@@ -69,7 +69,7 @@ gulp.task('scripts_vendor', function () {
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())
     .pipe(gulp.dest('./'))
-    .pipe(notify({ message: 'vendor JS compiled and minified' }))
+    .pipe(notify({ message: 'Vendor JS compiled and minified' }))
     .pipe(browserSync.stream())
 })
 

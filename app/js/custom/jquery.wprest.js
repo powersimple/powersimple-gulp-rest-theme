@@ -62,7 +62,7 @@ function setPosts (data, dest) { // special function for the any post type
   } 
 }  else {
     type = data.type // set the type for the log
-      
+      data.id.toString()
       posts[data.id] = data // adds a key of the post id to address all data in the post as a JSON object
 
 }

@@ -1,7 +1,13 @@
 /*
 Theme Name: Powersimple
-Description: Child theme of twentyseventeen
 
+Author: Ben Erwin, Powersimple, LLC
+Author URI: https://Powersimple/
+Description: A single page application theme leverging Gulp, SASS and BrowserSync. 
+Content is queried on initial load by the native Wordpress REST API and loaded into Javascript Objects.
+WheelNav, Slick and JQUERYUI are INtegrated for dynamic Navigation.
+License: MIT
+Text Domain: powersimple
 
 DO NOT EDIT IN STYLE.CSS
 */
