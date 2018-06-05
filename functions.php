@@ -1,14 +1,80 @@
 <?php
-
-require_once("functions/functions-rest-menus.php");
-
-require_once("functions/functions-metabox.php");
-
+//enqueues scripts and styles
 require_once("functions/functions-enqueue.php");
-
+//handles custom metaboxes for admin
+require_once("functions/functions-metabox.php");
+// special class to register the restapi
+require_once("functions/functions-rest-menus.php");
+// custom functions to register fields into the restapi
 require_once("functions/functions-rest-register.php");
 
 
+		/* OLD RELIABLE!
+        HASN'T CHANGED IN YEARS
+            RETURNS URL BY ID, AND OPTIONAL SIZE */
+		function getThumbnail($id,$use="full"){
+			global $post;
+			
+			
+			$img = wp_get_attachment_image_src(  $id, $use);
+			if($img[0] !=""){
+			} 
+			return $img;//$img[0];
+			
+		}
+	
+	
+	
+	
+	
+		/* 	PASS ID AND IT RETURNS OBJECT OF SIZES BY URL */
+		function getThumbnailVersions($id){
+				global $post;
+				$thumbnail_versions = array(); //creates the array of size by url
+				foreach(get_intermediate_image_sizes() as $key => $size){//loop through sizes
+					$img = wp_get_attachment_image_src($id,$size);//get the url 
+					
+					if($img[0] !=""){
+						$thumbnail_versions[$size]=$img[0];//sets size by url
+					} 
+				}
+				return $thumbnail_versions;
+			
+		}
+	
+	
+	
+	
+		//Embed Video  Shortcode
+	
+		function video_shortcode( $atts, $content = null ) {
+			//set default attributes and values
+			$values = shortcode_atts( array(
+				'url'   	=> '#',
+				'className'	=> 'video-embed',
+				'aspect' => '56.25%'
+			), $atts );
+			
+			ob_start();
+			?>
+			<div class="video-wrapper">
+				<iframe src="<?=$values['url']?>" class="<?=$values['className']?>"></iframe>
+			</div> 
+			<?php
+			return ob_get_clean();
+			//return '<a href="'. esc_attr($values['url']) .'"  target="'. esc_attr($values['target']) .'" class="btn btn-green">'. $content .'</a>';
+		
+		}
+		add_shortcode( 'embed_video', 'video_shortcode' );
+
+		function add_category_to_page() {  
+			// Add tag metabox to page
+			register_taxonomy_for_object_type('post_tag', 'page'); 
+			// Add category metabox to page
+			register_taxonomy_for_object_type('category', 'page');  
+		}
+		 // Add to the admin_init hook of your theme functions.php file 
+		add_action( 'init', 'add_category_to_page' );
 
 function buttonLink($id){
 	ob_start();
@@ -29,7 +95,6 @@ function buttonLink($id){
 	return ob_get_clean();	
 
 }
-
 
 
 add_action( 'init', 'projects_to_cpt' );

@@ -1,0 +1,215 @@
+.slideshow{
+   // background-color: rgba(0,255,0,0.4);
+    border-radius:50%;
+
+    .slide-wrap{
+      //  background-color: rgba(255,255,255,0.4);
+        height:61.8vh;
+        border-radius:50%;
+        position: relative;
+        overflow:hidden;
+        h2{
+           position: absolute;
+           top:13%;
+           width:50%;
+           left:50%;
+           margin-left:-25%;
+           background-color: rgba(200,200,200,0.4);
+        }
+        section{
+            
+            position: absolute;
+            border-radius:10%;
+            padding:5%;
+            overflow:hidden;
+            width: 60%;
+            height:50%;
+            top:20%;
+            left:15%;
+            div.content{
+                overflow-y:scroll;
+                padding-right:50px;
+                margin-right:-50px;
+            }
+            p{
+                margin-bottom:0.5em;
+            }
+        }
+    }
+
+}
+.slick-slider {
+    position: relative;
+    display: block;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -ms-touch-action: pan-y;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.slick-list {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    margin: 0;
+    padding: 0;
+
+    &:focus {
+        outline: none;
+    }
+
+    &.dragging {
+        cursor: pointer;
+        cursor: hand;
+    }
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.slick-track {
+    position: relative;
+    left: 0;
+    top: 0;
+    display: block;
+
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+
+    .slick-loading & {
+        visibility: hidden;
+    }
+}
+
+.slick-slide {
+    float: left;
+    height: 100%;
+    min-height: 1px;
+    [dir="rtl"] & {
+        float: right;
+    }
+
+    img {
+        display: block;
+    }
+
+    &.slick-loading img {
+        display: none;
+    }
+
+    display: none;
+
+    &.dragging img {
+        pointer-events: none;
+    }
+
+    .slick-initialized & {
+        display: block;
+    }
+
+    .slick-loading & {
+        visibility: hidden;
+    }
+
+    .slick-vertical & {
+        display: block;
+        height: auto;
+        border: 1px solid transparent;
+    }
+}
+
+.slick-arrow{
+
+}
+
+.slick-arrow.slick-hidden {
+    display: none;
+}
+
+.slick-dots {
+
+    position: relative;
+    bottom: 40px;
+    display: block;
+    width: 100%;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    padding-left:0px !important;
+        li {
+            display: inline-block;
+            margin: 0px .5em;
+            button {
+                font-size: 0;
+                line-height: 0;
+
+                width: 20px;
+                height: 20px;
+                padding: 5px;
+                cursor: pointer;
+                color: #3bbfd6;
+                border: 0;
+                outline: none;
+                background:#3bbfd6;
+                border-radius: 50%;
+            }
+        }
+
+        li.active {
+            background: #522b1c;
+        }
+    
+}
+button, input{
+   // @include appearance(none);
+}
+
+.slick-prev,
+.slick-next {
+    font-size: 1em;
+    line-height: 0;
+    position: absolute;
+    top: 32%;
+    display: block;
+    width: 30px;
+    max-width: 8%;
+    height: 30px;
+    margin-top: -10px;
+    padding: 0;
+    cursor: pointer;
+   color: #3bbfd6;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    z-index: 100;
+}
+
+.slick-prev {
+    left: -20px;
+    content: ">";
+   
+}
+
+.slick-next {
+    right: -20px;
+    }

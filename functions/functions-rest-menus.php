@@ -396,6 +396,7 @@ if ( ! class_exists( 'WP_REST_Menus' ) ) :
                 'order'       => (int) $item['menu_order'],
                 'parent'      => abs( $item['menu_item_parent'] ),
                 'title'       => $item['title'],
+                'slug'       => $item['slug'],
                 'url'         => $item['url'],
                 'attr'        => $item['attr_title'],
                 'target'      => $item['target'],

@@ -30,6 +30,7 @@ var inner_subnav_params = {
 var menu_raphael = {}
 var wheels = {}
 function makeWheelNav(dest,data,_p){
+    console.log(dest,data,_p);
 
     if(dest == "outer-nav"){
         child_dest = "inner-nav"
@@ -40,7 +41,6 @@ function makeWheelNav(dest,data,_p){
     } 
 
 
-    console.log(dest,_p);
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
@@ -116,12 +116,14 @@ function makeWheelNav(dest,data,_p){
                     //console.log("dest"+dest,wheels[child_dest].raphael.remove())
                 }
             }
+            
             setContent(child_dest,this.data.object_id,this.data.object)
            
         }
     
     }
     menu_raphael[dest] = wheels[dest].raphael
+    
     reposition_screen()
 
   // console.log(dest,menu_raphael[dest]);

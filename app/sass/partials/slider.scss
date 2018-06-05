@@ -2,9 +2,12 @@
         height: 61.8vh;
         left: 91%;
         width: 3.4vh;
-        background: #ff0;
+        background: #222;
         top: 19.9%;
         position: absolute;
+        opacity:0.5;
+        border:5px ridge #333;
+        border-radius:1vh;
 }
 .ui-slider {
     position: relative;
@@ -42,9 +45,14 @@
 }
 
 .ui-slider-horizontal .ui-slider-handle {
-   background-color:#f90;
-   border-radius:50%;
-   width:100%;
+    
+    border-radius:1em;
+    width:150%;
+    background-color: #444;
+    border:5px ridge #333;
+    opacity: 0.8;
+    margin-left:-38%;
+    
 }
 
 .ui-slider-horizontal .ui-slider-range {
@@ -66,11 +74,11 @@
 }
 
 .ui-slider-vertical .ui-slider-handle {
-      background-color:#f90;
-      border-radius:50%;
-      width:100%;
-      height:0;
-      padding-bottom:100%;
+    border-radius:1em;
+    width:100%;
+    background-color: #444;
+    border:5px ridge #333;
+    opacity: 0.5;
 }
 
 .ui-slider-vertical .ui-slider-range {

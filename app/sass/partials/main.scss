@@ -12,6 +12,8 @@ body {
     margin: 0px;
     padding: 0px;
     overflow: hidden;
+    line-height:120%;
+    font-size:1em;
 }
 
 #stars {
@@ -39,6 +41,14 @@ body {
     }
 }
 
+#laurel {
+    color:#fff;
+    position: absolute;
+    right:0;
+    padding:5px;
+    text-align: justify;
+    display:inline-block;
+}
 #page {}
 
 #masthead,
@@ -48,30 +58,31 @@ body {
 }
 
 #article{
-    background-color:rgba(0, 0, 255, 0.1);
+    //background-color:rgba(0, 0, 255, 0.1);
+    width: 100%;
     height:100%;
     position:absolute;
-    font-size:1.5em;
-    z-index: 1000;
-    h1{
-        position: relative;
+    font-size:1em;
+    z-index: 2000;
+   /* THIS PART HANDLES THE FONT- 
+   for slides, positioning is in .slide-wrap in slick.scss */
+    h2{
+       
         font-size:200%;
         font-weight:bold;
         text-align:center;
         text-shadow:1px 1px #fff;
-        top:10%;
-       
+        margin-bottom:.5em;
     }
     section{
-        position: relative;
-        height:61.8%;
-        width:72%;
-        left:15.4%;
-        top:15.4%;
-        text-align: justify;
-        overflow-y:scroll;
+        line-height:120%;
+        color: #fff;
+        background-color: rgba(61,61,61,0.8);
+        font-size:120%;
+        text-shadow: 1px 1px #333;
     }
 }
+
 #masthead {
     #wp-custom-header-media img {
         @media screen and (max-width: 767px) {
@@ -136,10 +147,26 @@ body {
 }
 
 footer {
-    background-color: rgb(255, 240, 111);
+    
     position: absolute;
     width: 100%;
+  
     bottom: 0;
+    #fork-this{
+        position: absolute;
+        right:0;
+        bottom:0;
+        height:15vh;
+        width:15vh;
+        #fork-this-svg{
+            position: absolute;
+        right:0;
+        bottom:0;
+        width: 100%;
+        height:100%;
+        opacity:0.9;
+        }
+    }
 }
 
 #circle-mask {

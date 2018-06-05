@@ -30,11 +30,11 @@ function reposition_screen () {
       increment:"vw"
     },
     { id:"#inner-ring",
-      size: 73,//use number, it needs to be divided
+      size: 75,//use number, it needs to be divided
       increment:"vw"
     },
     { id:"#inner-subring",
-      size: 66,//use number, it needs to be divided
+      size: 68,//use number, it needs to be divided
       increment:"vw"
     }
     
@@ -55,10 +55,12 @@ function reposition_screen () {
 
         calibrateCircle(ob.id,ob.size,ob.increment)
 
+        jQuery(".slick-track").css('height', "61.8vh")
+
       } else {
       
        calibrateCircle(ob.id,ob.size,ob.increment)
-
+       jQuery(".slick-track").css('height', "61.8vw")
       }
     }
 
@@ -84,37 +86,12 @@ jQuery(window).resize(function () {
 
 
 
-function circleMenu (menu) {
-
-  // Demo by http://creative-punch.net
-
-  var items = document.querySelectorAll(menu)
-  // console.log(items)
-
-  //console.log(_w, _h, increment)
-  for (var i = 0, l = items.length; i < l; i++) {
-    var calc_l = Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
-    items[i].style.left = (50 - 36 * calc_l) + increment
-
-    var calc_t = Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
-    items[i].style.top = (50 + 35 * calc_t) + increment
-
-   // console.log('left=' + 15 * calc_l, 'top=', 85 * calc_t, increment)
-  }
-
-  document.querySelector('.menu-button').onclick = function (e) {
-    e.preventDefault(); document.querySelector('.circle').classList.toggle('open')
-  }
-}
-jQuery('#logo').on('click', function (e) {
-  e.preventDefault()
-// reposition_screen()
-})
-
 function setContent(dest,object_id,object){
 
     console.log("setContent",object_id,object)
     console.log("posts",posts,posts.length)
+      var page_title = site_title;
+
       if(object == 'category'){
         console.log("set_content cat",object_id,categories[object_id].children);
         //
@@ -141,11 +118,14 @@ function setContent(dest,object_id,object){
 
       } else {
         if(posts[object_id]!=undefined){
+        page_title = posts[object_id].title +" | " + site_title;
          console.log("set_content post",object_id,posts[object_id]);
-         jQuery("#page-title").html(posts[object_id].title)
-         jQuery("#content").html(posts[object_id].content)
+          //jQuery("#page-title").html(posts[object_id].title)
+          //jQuery("#content").fadeOut().html(posts[object_id].content).fadeIn()
         }
       }
+     
+
 
     
 } 

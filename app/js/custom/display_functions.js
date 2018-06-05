@@ -52,12 +52,27 @@ function displayProjectCard (id) {
 }
 
 function menu_order(a, b) {
-  if (a.menu_order < b.menu)
+  if (a.menu_order < b.menu_order)
     return -1;
   if (a.menu_order > b.menu_order)
     return 1;
   return 0;
 }
+function setLinearNav(menu){
+  
+  for (var i in menu.items) {
+    menu.items[i].post = posts[menu.items[i].object_id]
+    linear_nav.push(menu.items[i])
+  }
+  linear_nav.sort(menu_order);
+  setSlider(linear_nav);
+  setSlides(linear_nav)
+
+
+  
+}
+
+
 
 function displayMenus () {
   var data = [];
@@ -80,16 +95,17 @@ function displayMenus () {
         
       }
       menu_array.sort(menu_order);
-      //console.log("menu_array",menu_array);
+      
+      
       var children = [];
       for(var a=0;a<menu_array.length;a++){
         children = [];
        for (var c = 0; c < menu_array[a].children.length;c++){
-         
           children.push( // data for childe menus
             {
               "title": menus[m].items[menu_array[a].children[c]].title,
               "id": menus[m].items[menu_array[a].children[c]].id,
+              
               "object": menus[m].items[menu_array[a].children[c]].object,
               "object_id": menus[m].items[menu_array[a].children[c]].object_id,// the post id
               "children": menus[m].items[menu_array[a].children[c]].children
@@ -107,11 +123,14 @@ function displayMenus () {
           "children":children
         })
       }
+      
+      setLinearNav(menus[m])
+   
       jQuery(menu_config[m].location).html(items)
        if(menu_config[m].menu_type == "wheel"){
          makeWheelNav("outer-nav", data, menu_config[m]._p)
        }
-
+       setSlideShow();
 
 
       //circleMenu('.circle a')

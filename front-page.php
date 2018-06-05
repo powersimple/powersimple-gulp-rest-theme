@@ -6,37 +6,14 @@ get_header(); ?>
     include "svg/powersimple.svg";
   ?>
   </div>
+  <div id="laurel">
+   <?=get_bloginfo('description')?>
+  </div>
 </header>
 <div id="main" role="main">
 
     
     
-    <nav id="outer-ring"><!-- outer nav ring -->
-      <div id="outer-nav" class="wheelNav"></div>
-    </nav>
-    <nav id="inner-ring"><!-- inner nav ring -->
-      <div id="inner-nav" class="wheelNav"></div>
-    </nav>
-    <nav id="inner-subring"><!-- inner subnav ring -->
-      <div id="inner-subnav" class="wheelNav"></div>
-    </nav>
-
-
-
-
-<!--
-<nav class="circular-menu" id="main_menu">
-
-  <div class="circle phi-centered" id="main-menu">
-
-   
-  </div>
-  
-  <a href="" class="menu-button"></a>
-
-</nav>
--->
-
 
 
 
@@ -47,24 +24,17 @@ get_header(); ?>
  
 
   <div id="circle-mask">
-      
+      <!---->
       <div id="bg-video">
           <video id="video" autoplay="autoplay" muted="muted" preload="auto" loop="loop">
               <source src="/wp-content/uploads/2018/05/C21-edit.mp4" type="video/mp4">
           </video>
       </div>
-    <article id="article">
-          <h1 id="page-title">Home</h1>
-          <section id="content">Execute vertical integration to, consequently, infiltrate new markets. Engaging sprints with a goal to use best practice. Generating social to take this offline. Execute audience segments with a goal to go viral. Utilise stakeholder engagement yet make users into advocates.
 
-  Engage above the fold while remembering to gain traction. Synchronise key demographics to make users into advocates. Leading customer experience with the possibility to improve overall outcomes. Generate scrum masters so that as an end result, we come up with a bespoke solution. Repurpose big data with the aim to use best practice. Inform user experience with a goal to increase viewability.
-
-  Leveraging below the line so that we be on brand. Execute stakeholder management to make the logo bigger. Utilise key demographics in order to improve overall outcomes. Execute dark social and possibly create actionable insights. Considering cloud computing and finally disrupt the balance.
-
-  Engaging key demographics in order to gain traction. Demonstrate vertical integration to, consequently, come up with a bespoke solution. Take user engagement while remembering to create a better customer experience. Grow below the fold with the aim to use best practice. Consider a holistic approach but target the low hanging fruit. Generate innovation and above all, infiltrate new markets.
-          </section>
+    <article id="article" class="slideshow">
+        <!--the slideshow gets injected here -->
     </article>
-
+    
       <!--masks contents above this svg-->
       <svg id="circle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
       <defs>
@@ -75,10 +45,18 @@ get_header(); ?>
       </defs>
       <rect x="0" y="0" width="100%" height="100%"/>
       </svg>
-    
+
   </div>
-
+  <nav id="outer-ring"><!-- outer nav ring -->
+      <div id="outer-nav" class="wheelNav"></div>
+    </nav>
+    <nav id="inner-ring"><!-- inner nav ring -->
+      <div id="inner-nav" class="wheelNav"></div>
+    </nav>
+    <nav id="inner-subring"><!-- inner subnav ring -->
+      <div id="inner-subnav" class="wheelNav"></div>
+    </nav>
 </div><!--main-->
-
+<div id="slider"></div>
 <?php
 get_footer(); ?>

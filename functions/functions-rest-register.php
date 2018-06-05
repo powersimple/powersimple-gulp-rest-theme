@@ -116,7 +116,7 @@ add_action( 'rest_api_init', 'register_thumbnail_url' );
 function register_thumbnail_url() {
  
 	// register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
-	register_rest_field( 'project', 'thumbnail_url', array(
+	register_rest_field( ['project','page'], 'thumbnail_url', array(
 		'get_callback' => 'get_thumbnail_url',
 		'schema' => null,
 		)
@@ -124,7 +124,7 @@ function register_thumbnail_url() {
 }
  
 function get_thumbnail_url( $object ) {
- return getThumbnail( $object['id']);//from functions.php,
+ return getThumbnailVersions($object['featured_media']);//from functions.php,
 }
 
 

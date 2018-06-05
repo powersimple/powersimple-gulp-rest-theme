@@ -3,11 +3,12 @@
     top:50%;
     left:50%;
     z-index: 100;
-  //background-color:rgba(256,0,0,0.1);
+//  background-color:rgba(256,0,0,0.1);
     width:80vh;
     height:80vh;
     margin-left:-40vh;
     margin-top:-40vh;
+    border-radius: 50%;
     
 }
 #inner-ring{
@@ -15,11 +16,12 @@
     top: 50%;
     left: 50%;
     z-index: 1100;
- //background-color: rgba(255, 255, 0, 0.2);
-    width: 72vh;
-    height: 72vh;
-    margin-left: -36vh;
-    margin-top: -36vh;
+// background-color: rgba(255, 255, 0, 0.2);
+    width: 75vh;
+    height: 75vh;
+    margin-left: -37.5vh;
+    margin-top: -37.5vh;
+    border-radius: 50%;
 }
 #inner-subring{
     position: absolute;
@@ -27,10 +29,11 @@
     left: 50%;
     z-index: 1300;
  //background-color: rgba(255, 190, 0, 0.2);
-    width: 64vh;
-    height: 64vh;
-    margin-left: -32vh;
-    margin-top: -32vh;
+    width: 68vh;
+    height: 68vh;
+    margin-left: -34vh;
+    margin-top: -34vh;
+    border-radius: 50%;
 }
 
 

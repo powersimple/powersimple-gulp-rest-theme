@@ -3,7 +3,7 @@
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}
+var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = []
 
 function getREST (route, params, callback, dest) {
   // route =  the type 
@@ -12,7 +12,7 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  console.log('endpoint', endpoint)
+  console.log('endpoint', endpoint+"?"+params)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
@@ -92,6 +92,7 @@ function setMenuItem (item) {
   this_item = {}
   this_item.menu_id = item.ID
   this_item.title = item.title
+  this_item.slug = item.slug
   this_item.menu_order = item.menu_order
   this_item.object = item.object
   this_item.object_id = item.object_id
@@ -100,30 +101,38 @@ function setMenuItem (item) {
 
   return this_item
 }
-function setMenu (slug, items) {
+function setMenu (dest,slug, items) {
   menu = {}
   for (var i = 0; i < items.length; i++) {
     menu[items[i].ID] = setMenuItem(items[i])
     if (items[i].menu_item_parent != 0) { //recursive
       menu[items[i].menu_item_parent].children.push(items[i].ID)
     } 
-
-    // setMenuItem(data[i])
+    menus[dest].menu_array.push(menu[items[i].ID])
 
   }
+  //console.log("MENU ARRAY",menus[dest].menu_array)
 //  console.log(slug, menu)
   return menu
 }
 function setMenus (data, dest) {
   //console.log("raw menu data",data)
+  menus[dest] = {};
+  menus[dest].menu_array = [];
   for (var i = 0; i < data.length; i++) {
     menus[data[i].slug] = {}
     menus[data[i].slug].name = data[i].name
-    menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
+   // menus[data[i].slug].slug = data[i].slug
+    menus[data[i].slug].items = setMenu(dest,data[i].slug, data[i].items)
   }
+
   setContent(active_id,"page");
-  //console.log("MENUS", menus)
+  
+  
+  console.log("MENUS", menus)
+  console.log("menu array",menus[dest])
   displayMenus();
+
 }
 
 
@@ -156,28 +165,27 @@ function setTags (data, dest) {
   return data
 }
 
-function navTab (data) {
-  var tab = ''
-  //  console.log(data.id)
-  tab += '<li data-id=' + data.id + " class='nav__item'>"
 
-  tab += '<span>'
+/*
+  ===BEWARE OF REST API PAGINATION AND SORT ORDER!====
+Pagination:
+Keep in mind, the rest API has a default of 16 records, so you have to set the parameter
+&per_page=, and the limit is 100. If you need to return more than 100 results from any of the queries below
+you have to paginate the results
+Otherwise, the results you want, may not be the results it returns.
+Sort: For sanity's sake, it's best that you sort posts by ID, so when inspecting your endpoint, they are in order
+Hence, the REST_post_filter variable below.
+*/
 
-  tab += data.name
+var REST_post_filter = "filter[orderby]=ID&order=asc&per_page=100";
 
-  tab += '</span>'
-
-  tab += '</li>'
-  return tab
-}
-
-getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type', setPosts, '#posts') // get posts
-
-// retrieves all projects, with fields from REST API
-getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,typeY&per_page=100', setPosts, '#pages') // get pages
+getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type&'+REST_post_filter, setPosts, '#posts') // get posts
 
 // retrieves all projects, with fields from REST API
-getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype', setPosts, '#projects') // get the projects
+getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,video,type&'+REST_post_filter, setPosts, '#pages') // get pages
+
+// retrieves all projects, with fields from REST API
+getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype&'+REST_post_filter, setPosts, '#projects') // get the projects
 
 // retrieves all categories for the development category
 getREST('categories', 'fields=id,name,count,slug,description,category_posts,children', setCategories, '#category-menu') // returns the children of a specified parent category
