@@ -1,9 +1,10 @@
 
 var increment = 'vw'
+var orientation = 'vertical'// this var is used by the slider
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
-  
+    
     reposition_screen()
 })
 function calibrateCircle(id,size,increment){
@@ -15,11 +16,18 @@ function calibrateCircle(id,size,increment){
 
 }
 
+
 function reposition_screen () {
   jQuery('#main').css('height', '100vw')
   jQuery('#main').css('width', '100vh')
 
-
+  if (_w > _h) {
+    orientation = 'vertical'
+  } else {
+    orientation = 'horizontal'
+   
+  }
+  setSlider()
   var  calibrate_elements = [
     { id:".phi-centered",
       size: 61.8,//use number, it needs to be divided
@@ -84,12 +92,20 @@ jQuery(window).resize(function () {
 
 })
 
+function setSlideContent(slide,id){
+   console.log("setSlideContent", slide, id, posts)
+  jQuery("#slide"+slide+" h2").html(posts["p"+id].title)
+  jQuery("#slide" + slide + " section div.content").html(posts["p" + id].content)
+  $carousel.slick('slickGoTo', slide);
+ 
+}
 
 
 function setContent(dest,object_id,object){
-
+    var slide = posts_nav[object_id]
     console.log("setContent",object_id,object)
-    console.log("posts",posts,posts.length)
+
+    //console.log("posts",posts,posts.length)
       var page_title = site_title;
 
       if(object == 'category'){
@@ -117,13 +133,13 @@ function setContent(dest,object_id,object){
         }
 
       } else {
-        if(posts[object_id]!=undefined){
-        page_title = posts[object_id].title +" | " + site_title;
-         console.log("set_content post",object_id,posts[object_id]);
-          //jQuery("#page-title").html(posts[object_id].title)
-          //jQuery("#content").fadeOut().html(posts[object_id].content).fadeIn()
+        if (posts["p" + object_id] != undefined) {
+        page_title = posts["p" + object_id].title + " | " + site_title;
+          document.title = page_title
+         
         }
       }
+      setSlideContent(slide,object_id)
      
 
 
@@ -150,7 +166,7 @@ function displayPosts (dest, posts) {
   if (posts.length > 0) {
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
-      displayProjectCard(posts[i])
+      displayProjectCard(posts["p" + i])
     }
     cards += '</ul>'
   }
@@ -162,20 +178,20 @@ function displayProjects (dest, posts) {
   var cards = ''
   if (posts.length > 0) {type = data[i].type // set the type for the log
       
-    posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+    posts["p" + data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
 
 
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
       
-      displayProjectCard(posts[i])
+      displayProjectCard("p" + posts[i])
     }
     cards += '</ul>'
   }
   jQuery('#project-nav').html(cards)
 }
 function displayProjectCard (id) {
-  var project = posts[id]
+  var project = posts["p" + id]
   //console.log('project', id, project)
   var card = '<li class="project-card">'
   card += project.title
@@ -190,16 +206,29 @@ function menu_order(a, b) {
     return 1;
   return 0;
 }
+function post_order(a, b) {
+  if (a < b)
+    return -1;
+  if (a > b)
+    return 1;
+  return 0;
+}
+
 function setLinearNav(menu){
-  
+  var counter = 0
   for (var i in menu.items) {
     menu.items[i].post = posts[menu.items[i].object_id]
+    id = menu.items[i].object_id.toString()
     linear_nav.push(menu.items[i])
+    posts_nav[id] = counter;
+    counter++;
   }
   linear_nav.sort(menu_order);
-  setSlider(linear_nav);
+  
+  setSlider(linear_nav)
   setSlides(linear_nav)
-
+  
+  console.log("posts_nav", posts_nav);
 
   
 }
@@ -300,7 +329,7 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = []
+var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}
 
 function getREST (route, params, callback, dest) {
   // route =  the type 
@@ -309,7 +338,7 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  console.log('endpoint', endpoint+"?"+params)
+ // console.log('endpoint', endpoint+"?"+params)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
@@ -354,15 +383,16 @@ function setPosts (data, dest) { // special function for the any post type
     if (data[i].type !== undefined) { // make sure the var is there
       type = data[i].type // set the type for the log
       
-      posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+      posts["p" + data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
     }
   } 
 }  else {
     type = data.type // set the type for the log
       data.id.toString()
-      posts[data.id] = data // adds a key of the post id to address all data in the post as a JSON object
+      posts["p"+data.id] = data // adds a key of the post id to address all data in the post as a JSON object
 
 }
+
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
@@ -423,11 +453,10 @@ function setMenus (data, dest) {
     menus[data[i].slug].items = setMenu(dest,data[i].slug, data[i].items)
   }
 
-  setContent(active_id,"page");
   
   
-  console.log("MENUS", menus)
-  console.log("menu array",menus[dest])
+  //console.log("MENUS", menus)
+  //console.log("menu array",menus[dest])
   displayMenus();
 
 }
@@ -445,7 +474,7 @@ function setChildCategories (data, dest) {
 }
 
 function setCategories (data, dest) {
- console.log("categories json", dest, data)
+  //console.log("categories json", dest, data)
   for (var i = 0;i < data.length;i++) {//creates object of categories by key
     categories[data[i].id] = data[i]
   }
@@ -502,13 +531,13 @@ function setSlideShow(){
   //	autoplay: true,
     dots: true,
     arrows: true,
-  infinite: true,
-  speed: 1000,
-  fade: true,
-  cssEase:  'linear',
-         focusoOnSelect: true,
-nextArrow: '<i class="slick-arrow slick-next"></i>',
-prevArrow: '<i class="slick-arrow slick-prev"></i>',
+    infinite: true,
+    speed: 1000,
+    fade: true,
+    cssEase:  'linear',
+    focusoOnSelect: true,
+    nextArrow: '<i class="slick-arrow slick-next"></i>',
+    prevArrow: '<i class="slick-arrow slick-prev"></i>',
       responsive: [
        {
           breakpoint: 1024,
@@ -540,33 +569,45 @@ prevArrow: '<i class="slick-arrow slick-prev"></i>',
   });
 }
 function setSlide(slide,id){
-  //console.log(slide,id,post)
+  /*
+  these carousel slides are created here, but their content is populated dynamically
+  because it was unreliable populating the content in a loop
+  see setSlideContent in app.js
+  */
   slide = '\n<div><div id="slide'+slide+'" data-id="'+id+'" class="slide-wrap">'
-  slide +='\n\t<h2>'+posts[id].title+'</h2>'
-  slide += '\n\t<section><div class="content">' + posts[id].content + '</div></section>'
-  slide +='\n</div></div>';
-  
+  slide += '\n\t<h2></h2>'
+  slide += '\n\t<div class="img-wrap"></div>'
+  slide += '\n\t<section><div class="content"></div></section>'
+  slide +='\n</div></div>\n';
 
   return slide
 }
 
 
 function setSlides(){
-  var content = '';
-  var title = '';
-  var slides = '';
+  var id="0"
+  var content = ''
+  var title = ''
+  var slides = ''
+ console.log("Begin Render Slides", linear_nav, posts)
+  if(posts == undefined){
+    console.log("No Posts Data Yet",  posts)
+    window.setTimeout(setSlides(), 100);//without this, we cannot relay that the post data is available yet
+  } else {
   
   for(i=0;linear_nav[i];i++){
     
-    var id = linear_nav[i].object_id.toString();
-    console.log(i, id, posts[id])
-    if(posts[id] != undefined){
-    slides += setSlide(i,id)
-    }
-  }
+     id = "p" + linear_nav[i].object_id.toString()
   
+      slides += setSlide(i,id)
+   
+  }
+  console.log("slides rendered")
+
+
   jQuery('#article').html(slides);
  
+  }
 
 
 }
@@ -584,20 +625,21 @@ jQuery('a[data-slide]').click(function(e) {
              
   e.preventDefault();
   var slideno = jQuery(this).data('slide');
-  console.log(slideno);
+  console.log("slide", slideno);
   $carousel.slick('slickGoTo', slideno);
 });
 function setSlider(){
-  //console.log("Set Slider", linear_nav)
+ // console.log("Set Slider", orientation)
   
     jQuery( "#slider" ).slider({
-      orientation: "vertical",
+      orientation: orientation,
       range: "max",
-      min: 1,
+      min: 0,
       max: linear_nav.length,
       value: 0,
       slide: function( event, ui ) {
         setSliderNotch(ui.value)
+        console.log("slider",ui.value)
        // jQuery( "#amount" ).val( ui.value );
       }
 
@@ -633,10 +675,9 @@ jQuery('#slider').on('mousewheel', function(event) {
 
 function setSliderNotch(notch){
  
-  //jQuery("#slide"+notch+" h2").html(posts[id].title)
-   console.log("notch",notch,linear_nav[notch])
-  
-  $carousel.slick('slickGoTo', notch);
+
+   console.log("notch",notch,linear_nav[notch].object_id)
+    setContent(notch, linear_nav[notch].object_id)
  // document.title = linear_nav[notch].title+" | "+site_title
 }
 // Declare three.js variables
@@ -753,7 +794,7 @@ var inner_subnav_params = {
 var menu_raphael = {}
 var wheels = {}
 function makeWheelNav(dest,data,_p){
-    console.log(dest,data,_p);
+    //console.log(dest,data,_p);
 
     if(dest == "outer-nav"){
         child_dest = "inner-nav"
@@ -813,7 +854,7 @@ function makeWheelNav(dest,data,_p){
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
         
         
-        console.log("local-data",i,data[i]);
+       // console.log("local-data",i,data[i]);
         type = data[i].type // set the type for the log
         if(type == "category"){
             data[i].object = "category"
@@ -839,6 +880,8 @@ function makeWheelNav(dest,data,_p){
                     //console.log("dest"+dest,wheels[child_dest].raphael.remove())
                 }
             }
+          
+               
             
             setContent(child_dest,this.data.object_id,this.data.object)
            

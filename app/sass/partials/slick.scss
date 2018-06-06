@@ -23,16 +23,22 @@
             padding:5%;
             overflow:hidden;
             width: 60%;
-            height:50%;
-            top:20%;
+            height:0px;
+            padding-bottom: 60%;
+            margin-top:20%;
             left:15%;
             div.content{
                 overflow-y:scroll;
                 padding-right:50px;
                 margin-right:-50px;
+                
             }
             p{
                 margin-bottom:0.5em;
+                line-height: 120%;
+                @media(max-width: 480px){
+                    font-size:3vw;
+                }
             }
         }
     }

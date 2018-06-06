@@ -1,9 +1,10 @@
 
 var increment = 'vw'
+var orientation = 'vertical'// this var is used by the slider
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
-  
+    
     reposition_screen()
 })
 function calibrateCircle(id,size,increment){
@@ -15,11 +16,18 @@ function calibrateCircle(id,size,increment){
 
 }
 
+
 function reposition_screen () {
   jQuery('#main').css('height', '100vw')
   jQuery('#main').css('width', '100vh')
 
-
+  if (_w > _h) {
+    orientation = 'vertical'
+  } else {
+    orientation = 'horizontal'
+   
+  }
+  setSlider()
   var  calibrate_elements = [
     { id:".phi-centered",
       size: 61.8,//use number, it needs to be divided
@@ -84,12 +92,20 @@ jQuery(window).resize(function () {
 
 })
 
+function setSlideContent(slide,id){
+   console.log("setSlideContent", slide, id, posts)
+  jQuery("#slide"+slide+" h2").html(posts["p"+id].title)
+  jQuery("#slide" + slide + " section div.content").html(posts["p" + id].content)
+  $carousel.slick('slickGoTo', slide);
+ 
+}
 
 
 function setContent(dest,object_id,object){
-
+    var slide = posts_nav[object_id]
     console.log("setContent",object_id,object)
-    console.log("posts",posts,posts.length)
+
+    //console.log("posts",posts,posts.length)
       var page_title = site_title;
 
       if(object == 'category'){
@@ -117,13 +133,13 @@ function setContent(dest,object_id,object){
         }
 
       } else {
-        if(posts[object_id]!=undefined){
-        page_title = posts[object_id].title +" | " + site_title;
-         console.log("set_content post",object_id,posts[object_id]);
-          //jQuery("#page-title").html(posts[object_id].title)
-          //jQuery("#content").fadeOut().html(posts[object_id].content).fadeIn()
+        if (posts["p" + object_id] != undefined) {
+        page_title = posts["p" + object_id].title + " | " + site_title;
+          document.title = page_title
+         
         }
       }
+      setSlideContent(slide,object_id)
      
 
 

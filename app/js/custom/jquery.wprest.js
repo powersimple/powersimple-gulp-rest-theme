@@ -3,7 +3,7 @@
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = []
+var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}
 
 function getREST (route, params, callback, dest) {
   // route =  the type 
@@ -12,7 +12,7 @@ function getREST (route, params, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
   var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  console.log('endpoint', endpoint+"?"+params)
+ // console.log('endpoint', endpoint+"?"+params)
   jQuery.ajax({
     url: endpoint, // the url 
     data: params,
@@ -57,15 +57,16 @@ function setPosts (data, dest) { // special function for the any post type
     if (data[i].type !== undefined) { // make sure the var is there
       type = data[i].type // set the type for the log
       
-      posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+      posts["p" + data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
     }
   } 
 }  else {
     type = data.type // set the type for the log
       data.id.toString()
-      posts[data.id] = data // adds a key of the post id to address all data in the post as a JSON object
+      posts["p"+data.id] = data // adds a key of the post id to address all data in the post as a JSON object
 
 }
+
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
@@ -126,11 +127,10 @@ function setMenus (data, dest) {
     menus[data[i].slug].items = setMenu(dest,data[i].slug, data[i].items)
   }
 
-  setContent(active_id,"page");
   
   
-  console.log("MENUS", menus)
-  console.log("menu array",menus[dest])
+  //console.log("MENUS", menus)
+  //console.log("menu array",menus[dest])
   displayMenus();
 
 }
@@ -148,7 +148,7 @@ function setChildCategories (data, dest) {
 }
 
 function setCategories (data, dest) {
- console.log("categories json", dest, data)
+  //console.log("categories json", dest, data)
   for (var i = 0;i < data.length;i++) {//creates object of categories by key
     categories[data[i].id] = data[i]
   }

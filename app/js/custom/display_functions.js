@@ -18,7 +18,7 @@ function displayPosts (dest, posts) {
   if (posts.length > 0) {
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
-      displayProjectCard(posts[i])
+      displayProjectCard(posts["p" + i])
     }
     cards += '</ul>'
   }
@@ -30,20 +30,20 @@ function displayProjects (dest, posts) {
   var cards = ''
   if (posts.length > 0) {type = data[i].type // set the type for the log
       
-    posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+    posts["p" + data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
 
 
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
       
-      displayProjectCard(posts[i])
+      displayProjectCard("p" + posts[i])
     }
     cards += '</ul>'
   }
   jQuery('#project-nav').html(cards)
 }
 function displayProjectCard (id) {
-  var project = posts[id]
+  var project = posts["p" + id]
   //console.log('project', id, project)
   var card = '<li class="project-card">'
   card += project.title
@@ -58,16 +58,29 @@ function menu_order(a, b) {
     return 1;
   return 0;
 }
+function post_order(a, b) {
+  if (a < b)
+    return -1;
+  if (a > b)
+    return 1;
+  return 0;
+}
+
 function setLinearNav(menu){
-  
+  var counter = 0
   for (var i in menu.items) {
     menu.items[i].post = posts[menu.items[i].object_id]
+    id = menu.items[i].object_id.toString()
     linear_nav.push(menu.items[i])
+    posts_nav[id] = counter;
+    counter++;
   }
   linear_nav.sort(menu_order);
-  setSlider(linear_nav);
+  
+  setSlider(linear_nav)
   setSlides(linear_nav)
-
+  
+  console.log("posts_nav", posts_nav);
 
   
 }

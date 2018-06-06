@@ -7,13 +7,13 @@ function setSlideShow(){
   //	autoplay: true,
     dots: true,
     arrows: true,
-  infinite: true,
-  speed: 1000,
-  fade: true,
-  cssEase:  'linear',
-         focusoOnSelect: true,
-nextArrow: '<i class="slick-arrow slick-next"></i>',
-prevArrow: '<i class="slick-arrow slick-prev"></i>',
+    infinite: true,
+    speed: 1000,
+    fade: true,
+    cssEase:  'linear',
+    focusoOnSelect: true,
+    nextArrow: '<i class="slick-arrow slick-next"></i>',
+    prevArrow: '<i class="slick-arrow slick-prev"></i>',
       responsive: [
        {
           breakpoint: 1024,
@@ -45,33 +45,45 @@ prevArrow: '<i class="slick-arrow slick-prev"></i>',
   });
 }
 function setSlide(slide,id){
-  //console.log(slide,id,post)
+  /*
+  these carousel slides are created here, but their content is populated dynamically
+  because it was unreliable populating the content in a loop
+  see setSlideContent in app.js
+  */
   slide = '\n<div><div id="slide'+slide+'" data-id="'+id+'" class="slide-wrap">'
-  slide +='\n\t<h2>'+posts[id].title+'</h2>'
-  slide += '\n\t<section><div class="content">' + posts[id].content + '</div></section>'
-  slide +='\n</div></div>';
-  
+  slide += '\n\t<h2></h2>'
+  slide += '\n\t<div class="img-wrap"></div>'
+  slide += '\n\t<section><div class="content"></div></section>'
+  slide +='\n</div></div>\n';
 
   return slide
 }
 
 
 function setSlides(){
-  var content = '';
-  var title = '';
-  var slides = '';
+  var id="0"
+  var content = ''
+  var title = ''
+  var slides = ''
+ console.log("Begin Render Slides", linear_nav, posts)
+  if(posts == undefined){
+    console.log("No Posts Data Yet",  posts)
+    window.setTimeout(setSlides(), 100);//without this, we cannot relay that the post data is available yet
+  } else {
   
   for(i=0;linear_nav[i];i++){
     
-    var id = linear_nav[i].object_id.toString();
-    console.log(i, id, posts[id])
-    if(posts[id] != undefined){
-    slides += setSlide(i,id)
-    }
-  }
+     id = "p" + linear_nav[i].object_id.toString()
   
+      slides += setSlide(i,id)
+   
+  }
+  console.log("slides rendered")
+
+
   jQuery('#article').html(slides);
  
+  }
 
 
 }
@@ -89,6 +101,6 @@ jQuery('a[data-slide]').click(function(e) {
              
   e.preventDefault();
   var slideno = jQuery(this).data('slide');
-  console.log(slideno);
+  console.log("slide", slideno);
   $carousel.slick('slickGoTo', slideno);
 });

@@ -125,7 +125,7 @@ footer #fork-this #fork-this-svg { position: absolute; right: 0; bottom: 0; widt
   50% { opacity: 1; }
   100% { -webkit-transform: scale(0.1); transform: scale(0.1); opacity: 0; } }
 .crawl #titles { position: absolute; width: 18em; height: 50em; bottom: 0; left: 50%; margin-left: -9em; font-size: 350%; text-align: justify; overflow: hidden; -webkit-transform-origin: 50% 100%; transform-origin: 50% 100%; -webkit-transform: perspective(300px) rotateX(25deg); transform: perspective(300px) rotateX(25deg); }
-.crawl #titles:after { position: absolute; content: ' '; left: 0; right: 0; top: 0; bottom: 60%; background-image: -webkit-gradient(linear, left top, left bottom, from(black), to(transparent)); background-image: linear-gradient(top, black 0%, transparent 100%); pointer-events: none; }
+.crawl #titles:after { position: absolute; content: ' '; left: 0; right: 0; top: 0; bottom: 60%; /*  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%); background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%); background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%); background-image: -o-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%); background-image: linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%);*/ pointer-events: none; }
 .crawl #titles p { text-align: justify; margin: 0.8em 0; }
 .crawl #titles p.center { text-align: center; }
 .crawl #titles a { color: #ff6; text-decoration: underline; }
@@ -252,11 +252,15 @@ footer #fork-this #fork-this-svg { position: absolute; right: 0; bottom: 0; widt
 .circular-menu .menu-button { position: absolute; top: calc(50% - 30px); left: calc(50% - 30px); text-decoration: none; text-align: center; color: #444; border-radius: 50%; display: block; height: 40px; width: 40px; line-height: 40px; padding: 10px; background: #dde; }
 .circular-menu .menu-button:hover { opacity: 0.5; }
 
-#slider { height: 61.8vh; left: 91%; width: 3.4vh; background: #222; top: 19.9%; position: absolute; opacity: 0.5; border: 5px ridge #333; border-radius: 1vh; }
+#slider { background: #222; position: absolute; opacity: 0.5; border: 5px ridge #333; border-radius: 1vh; }
+
+#slider.ui-slider-vertical { height: 61.8vh; left: 91%; width: 3.4vh; background: #222; top: 19.9%; position: absolute; opacity: 0.5; border: 5px ridge #333; border-radius: 1vh; }
+
+#slider.ui-slider-horizontal { height: 3.4vw; top: 91%; width: 61.8vw; background: #222; left: 19.9%; position: absolute; opacity: 0.5; border: 5px ridge #333; border-radius: 1vh; }
 
 .ui-slider { position: relative; text-align: left; }
 
-.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; -ms-touch-action: none; touch-action: none; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
 
 .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
 
@@ -286,9 +290,10 @@ footer #fork-this #fork-this-svg { position: absolute; right: 0; bottom: 0; widt
 .slideshow { border-radius: 50%; }
 .slideshow .slide-wrap { height: 61.8vh; border-radius: 50%; position: relative; overflow: hidden; }
 .slideshow .slide-wrap h2 { position: absolute; top: 13%; width: 50%; left: 50%; margin-left: -25%; background-color: rgba(200, 200, 200, 0.4); }
-.slideshow .slide-wrap section { position: absolute; border-radius: 10%; padding: 5%; overflow: hidden; width: 60%; height: 50%; top: 20%; left: 15%; }
+.slideshow .slide-wrap section { position: absolute; border-radius: 10%; padding: 5%; overflow: hidden; width: 60%; height: 0px; padding-bottom: 60%; margin-top: 20%; left: 15%; }
 .slideshow .slide-wrap section div.content { overflow-y: scroll; padding-right: 50px; margin-right: -50px; }
-.slideshow .slide-wrap section p { margin-bottom: 0.5em; }
+.slideshow .slide-wrap section p { margin-bottom: 0.5em; line-height: 120%; }
+@media (max-width: 480px) { .slideshow .slide-wrap section p { font-size: 3vw; } }
 
 .slick-slider { position: relative; display: block; -webkit-box-sizing: border-box; box-sizing: border-box; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -ms-touch-action: pan-y; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
 

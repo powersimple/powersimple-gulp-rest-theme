@@ -225,11 +225,12 @@ z-index: 1;
         right: 0;
         top: 0;
         bottom: 60%;
-        background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%);
+        //this has is the semi transparent fade at the top of the crawl.
+      /*  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%);
         background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%);
         background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%);
         background-image: -o-linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%);
-        background-image: linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%);
+        background-image: linear-gradient(top, rgba(0, 0, 0, 1) 0%, transparent 100%);*/
         pointer-events: none;
     }
 

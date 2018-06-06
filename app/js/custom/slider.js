@@ -1,14 +1,15 @@
 function setSlider(){
-  //console.log("Set Slider", linear_nav)
+ // console.log("Set Slider", orientation)
   
     jQuery( "#slider" ).slider({
-      orientation: "vertical",
+      orientation: orientation,
       range: "max",
-      min: 1,
+      min: 0,
       max: linear_nav.length,
       value: 0,
       slide: function( event, ui ) {
         setSliderNotch(ui.value)
+        console.log("slider",ui.value)
        // jQuery( "#amount" ).val( ui.value );
       }
 
@@ -44,9 +45,8 @@ jQuery('#slider').on('mousewheel', function(event) {
 
 function setSliderNotch(notch){
  
-  //jQuery("#slide"+notch+" h2").html(posts[id].title)
-   console.log("notch",notch,linear_nav[notch])
-  
-  $carousel.slick('slickGoTo', notch);
+
+   console.log("notch",notch,linear_nav[notch].object_id)
+    setContent(notch, linear_nav[notch].object_id)
  // document.title = linear_nav[notch].title+" | "+site_title
 }

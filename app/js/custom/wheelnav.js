@@ -30,7 +30,7 @@ var inner_subnav_params = {
 var menu_raphael = {}
 var wheels = {}
 function makeWheelNav(dest,data,_p){
-    console.log(dest,data,_p);
+    //console.log(dest,data,_p);
 
     if(dest == "outer-nav"){
         child_dest = "inner-nav"
@@ -90,7 +90,7 @@ function makeWheelNav(dest,data,_p){
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
         
         
-        console.log("local-data",i,data[i]);
+       // console.log("local-data",i,data[i]);
         type = data[i].type // set the type for the log
         if(type == "category"){
             data[i].object = "category"
@@ -116,6 +116,8 @@ function makeWheelNav(dest,data,_p){
                     //console.log("dest"+dest,wheels[child_dest].raphael.remove())
                 }
             }
+          
+               
             
             setContent(child_dest,this.data.object_id,this.data.object)
            
