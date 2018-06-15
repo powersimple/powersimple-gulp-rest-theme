@@ -18,7 +18,7 @@ function displayPosts (dest, posts) {
   if (posts.length > 0) {
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
-      displayProjectCard(posts["p" + i])
+      //displayProjectCard(posts[i])
     }
     cards += '</ul>'
   }
@@ -36,14 +36,14 @@ function displayProjects (dest, posts) {
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
       
-      displayProjectCard("p" + posts[i])
+      displayProjectCard(posts[i])
     }
     cards += '</ul>'
   }
   jQuery('#project-nav').html(cards)
 }
 function displayProjectCard (id) {
-  var project = posts["p" + id]
+  var project = posts[id]
   //console.log('project', id, project)
   var card = '<li class="project-card">'
   card += project.title

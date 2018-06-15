@@ -4,7 +4,7 @@ var orientation = 'vertical'// this var is used by the slider
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
-    
+    console.log("location hash="+location.hash)
     reposition_screen()
 })
 function calibrateCircle(id,size,increment){
@@ -16,18 +16,33 @@ function calibrateCircle(id,size,increment){
 
 }
 
+function pinSlider(){
+ 
+    if (_w >= _h) {
+      orientation = 'vertical'
+      slider_left = (_w / 2) + ((_h * 0.8) / 2) + 24 + "px"
+      console.log(slider_left);
+      jQuery("#slider.ui-slider-vertical").css("left", slider_left)
+      jQuery("#slider.ui-slider-vertical").css("top", "19.9%")
+
+    } else {
+      orientation = 'horizontal'
+      slider_top = (_h / 2) + ((_w * 0.8) / 2) + 24 + "px"
+      jQuery("#slider.ui-slider-horizontal").css("top", slider_top)
+      jQuery("#slider.ui-slider-horizontal").css("left", "19.9%")
+    }
+}
+
+
 
 function reposition_screen () {
   jQuery('#main').css('height', '100vw')
   jQuery('#main').css('width', '100vh')
+ console.log(_w,_h)
 
-  if (_w > _h) {
-    orientation = 'vertical'
-  } else {
-    orientation = 'horizontal'
-   
-  }
   setSlider()
+  pinSlider ();
+ jQuery("#slider").css("visibility", "visible")
   var  calibrate_elements = [
     { id:".phi-centered",
       size: 61.8,//use number, it needs to be divided
@@ -93,11 +108,14 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide,id){
-   console.log("setSlideContent", slide, id, posts)
-  jQuery("#slide"+slide+" h2").html(posts["p"+id].title)
-  jQuery("#slide" + slide + " section div.content").html(posts["p" + id].content)
-  $carousel.slick('slickGoTo', slide);
- 
+   
+  if(posts[id] !=undefined){ 
+    jQuery("#slide"+slide+" h2").html(posts[+id].title)
+    jQuery("#slide" + slide + " section div.content").html(posts[ + id].content)
+    $carousel.slick('slickGoTo', slide);
+  } else {
+    console.log("post undefined", slide, id, posts)
+  }
 }
 
 
@@ -133,9 +151,10 @@ function setContent(dest,object_id,object){
         }
 
       } else {
-        if (posts["p" + object_id] != undefined) {
-        page_title = posts["p" + object_id].title + " | " + site_title;
+        if (posts[object_id] != undefined) {
+        page_title = posts[object_id].title + " | " + site_title;
           document.title = page_title
+          location.hash = posts[object_id].slug
          
         }
       }
@@ -166,7 +185,7 @@ function displayPosts (dest, posts) {
   if (posts.length > 0) {
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
-      displayProjectCard(posts["p" + i])
+      //displayProjectCard(posts[i])
     }
     cards += '</ul>'
   }
@@ -184,14 +203,14 @@ function displayProjects (dest, posts) {
     cards = "<ul class='nav_project'>"
     for (i = 0;i < post_ids.length;i++) {
       
-      displayProjectCard("p" + posts[i])
+      displayProjectCard(posts[i])
     }
     cards += '</ul>'
   }
   jQuery('#project-nav').html(cards)
 }
 function displayProjectCard (id) {
-  var project = posts["p" + id]
+  var project = posts[id]
   //console.log('project', id, project)
   var card = '<li class="project-card">'
   card += project.title
@@ -329,19 +348,18 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}
-
-function getREST (route, params, callback, dest) {
+var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}
+function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API
   // callback = dynamic function name 
   // Pass in the name of a function and it will return the data to that function
 
-  var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
- // console.log('endpoint', endpoint+"?"+params)
+   // local absolute path to the REST API + routing arguments
+  var endpoint = json_path+route+".json"
   jQuery.ajax({
     url: endpoint, // the url 
-    data: params,
+    data: '',
     success: function (data, textStatus, request) {
       //console.log(endpoint,data)
       return data,
@@ -357,12 +375,32 @@ function getREST (route, params, callback, dest) {
   })
 }
 
+getStaticJSON('posts', setPosts, '#posts') // get posts
+
+// retrieves all projects, with fields from REST API
+getStaticJSON('pages', setPosts, '#pages') // get pages
+
+// retrieves all projects, with fields from REST API
+getStaticJSON('project', setPosts, '#projects') // get the projects
+
+// retrieves all categories for the development category
+getStaticJSON('categories',  setCategories, '#category-menu') // returns the children of a specified parent category
+
+// retrieves all categories for the development category
+getStaticJSON('tags', setTags, 'tags') // returns the tags
+
+// retrieves top menu
+getStaticJSON('menus', setMenus, '#main-menu') // returns the tags
+
+
+
+
 function setPosts (data, dest) { // special function for the any post type
 
   var type = 'post'
  
 
-  if(Array.isArray(data)){
+if(Array.isArray(data)){
 
   for (var i = 0;i < data.length;i++) { // loop through the list of data
     //console.log("home", data[i].id)
@@ -383,13 +421,14 @@ function setPosts (data, dest) { // special function for the any post type
     if (data[i].type !== undefined) { // make sure the var is there
       type = data[i].type // set the type for the log
       
-      posts["p" + data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+      posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
     }
+    
   } 
 }  else {
     type = data.type // set the type for the log
-      data.id.toString()
-      posts["p"+data.id] = data // adds a key of the post id to address all data in the post as a JSON object
+      
+      posts[data.id] = data // adds a key of the post id to address all data in the post as a JSON object
 
 }
 
@@ -492,17 +531,46 @@ function setTags (data, dest) {
 }
 
 
-/*
-  ===BEWARE OF REST API PAGINATION AND SORT ORDER!====
-Pagination:
-Keep in mind, the rest API has a default of 16 records, so you have to set the parameter
-&per_page=, and the limit is 100. If you need to return more than 100 results from any of the queries below
-you have to paginate the results
-Otherwise, the results you want, may not be the results it returns.
-Sort: For sanity's sake, it's best that you sort posts by ID, so when inspecting your endpoint, they are in order
-Hence, the REST_post_filter variable below.
-*/
 
+
+
+
+
+/* 
+=== 
+  HERE LIES THE GRAVE OF THE VERSION THAT HIT THE REST API EVERY TIME THE USER HIT THE PAGE
+  ALAS, SO INEFFICIENT THAT WAS. NOW, in functions/rest-json.php, the json is rendered statically upon save
+====
+
+// THE FORMER FUNCTION GET REST WHICH CONCATENATED THE VARIABLES NEEDED TO RETRIEVE.
+function getREST(route, params, callback, dest) {
+  // route =  the type 
+  // param = url arguments for the REST API
+  // callback = dynamic function name 
+  // Pass in the name of a function and it will return the data to that function
+
+  var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
+  console.log('endpoint', endpoint + "?" + params)
+  jQuery.ajax({
+    url: endpoint, // the url 
+    data: params,
+    success: function (data, textStatus, request) {
+      //console.log(endpoint,data)
+      return data,
+
+        callback(data, dest) // this is the callback that sends the data to your custom function
+
+    },
+    error: function (data, textStatus, request) {
+      console.log(endpoint, data.responseText)
+    },
+
+    cache: false
+  })
+}
+
+
+//HERE ARE ALL THE FUNCTION CALLS, LEFT HERE FOR POSTERITY IN CASE YOU WISH TO ATTEMPT SUCH TOMFOOLERY
 var REST_post_filter = "filter[orderby]=ID&order=asc&per_page=100";
 
 getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type&'+REST_post_filter, setPosts, '#posts') // get posts
@@ -521,15 +589,20 @@ getREST('tags', 'fields=id,name,slug,tag_posts', setTags, 'tags') // returns the
 
 // retrieves top menu
 getREST('menus', '', setMenus, '#main-menu') // returns the tags
-
+*/
 var gotoslide = function(slide){
+  console.log("click on slick dot ", slide);
+  setSlideContent(notch, linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
-
+jQuery('.slick-dots li button').on('click', function (e) {
+   e.stopPropagation(); // use this
+  console.log("slick dot clicked")
+});
 function setSlideShow(){
   jQuery('.slideshow').slick({
   //	autoplay: true,
-    dots: true,
+    dots: false,
     arrows: true,
     infinite: true,
     speed: 1000,
@@ -538,34 +611,7 @@ function setSlideShow(){
     focusoOnSelect: true,
     nextArrow: '<i class="slick-arrow slick-next"></i>',
     prevArrow: '<i class="slick-arrow slick-prev"></i>',
-      responsive: [
-       {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            infinite: true,
-            dots: true
-          }
-        },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        } 
-        // You can unslick at a given breakpoint now by adding:
-        // settings: "unslick"
-        // instead of a settings object
-      ]
+     
   });
 }
 function setSlide(slide,id){
@@ -597,7 +643,7 @@ function setSlides(){
   
   for(i=0;linear_nav[i];i++){
     
-     id = "p" + linear_nav[i].object_id.toString()
+     id = linear_nav[i].object_id.toString()
   
       slides += setSlide(i,id)
    
@@ -622,11 +668,13 @@ jQuery(document).on('keydown', function(e) {
 });
 
 jQuery('a[data-slide]').click(function(e) {
-             
+        console.log("click on slick dot ", slide);
   e.preventDefault();
-  var slideno = jQuery(this).data('slide');
-  console.log("slide", slideno);
-  $carousel.slick('slickGoTo', slideno);
+  var slide = jQuery(this).data('slide');
+  console.log("click on slick dot ", slide);
+  setSlideContent(notch, linear_nav[slide].object_id)
+  //$carousel.slick('slickGoTo', slideno);
+
 });
 function setSlider(){
  // console.log("Set Slider", orientation)
@@ -677,7 +725,10 @@ function setSliderNotch(notch){
  
 
    console.log("notch",notch,linear_nav[notch].object_id)
-    setContent(notch, linear_nav[notch].object_id)
+   if (linear_nav[notch] != undefined){
+      setContent(notch, linear_nav[notch].object_id)
+
+   }
  // document.title = linear_nav[notch].title+" | "+site_title
 }
 // Declare three.js variables

@@ -1,11 +1,16 @@
 var gotoslide = function(slide){
+  console.log("click on slick dot ", slide);
+  setSlideContent(notch, linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
-
+jQuery('.slick-dots li button').on('click', function (e) {
+   e.stopPropagation(); // use this
+  console.log("slick dot clicked")
+});
 function setSlideShow(){
   jQuery('.slideshow').slick({
   //	autoplay: true,
-    dots: true,
+    dots: false,
     arrows: true,
     infinite: true,
     speed: 1000,
@@ -14,34 +19,7 @@ function setSlideShow(){
     focusoOnSelect: true,
     nextArrow: '<i class="slick-arrow slick-next"></i>',
     prevArrow: '<i class="slick-arrow slick-prev"></i>',
-      responsive: [
-       {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            infinite: true,
-            dots: true
-          }
-        },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        } 
-        // You can unslick at a given breakpoint now by adding:
-        // settings: "unslick"
-        // instead of a settings object
-      ]
+     
   });
 }
 function setSlide(slide,id){
@@ -73,7 +51,7 @@ function setSlides(){
   
   for(i=0;linear_nav[i];i++){
     
-     id = "p" + linear_nav[i].object_id.toString()
+     id = linear_nav[i].object_id.toString()
   
       slides += setSlide(i,id)
    
@@ -98,9 +76,11 @@ jQuery(document).on('keydown', function(e) {
 });
 
 jQuery('a[data-slide]').click(function(e) {
-             
+        console.log("click on slick dot ", slide);
   e.preventDefault();
-  var slideno = jQuery(this).data('slide');
-  console.log("slide", slideno);
-  $carousel.slick('slickGoTo', slideno);
+  var slide = jQuery(this).data('slide');
+  console.log("click on slick dot ", slide);
+  setSlideContent(notch, linear_nav[slide].object_id)
+  //$carousel.slick('slickGoTo', slideno);
+
 });

@@ -47,6 +47,9 @@ function setSliderNotch(notch){
  
 
    console.log("notch",notch,linear_nav[notch].object_id)
-    setContent(notch, linear_nav[notch].object_id)
+   if (linear_nav[notch] != undefined){
+      setContent(notch, linear_nav[notch].object_id)
+
+   }
  // document.title = linear_nav[notch].title+" | "+site_title
 }

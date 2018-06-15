@@ -4,7 +4,7 @@ var orientation = 'vertical'// this var is used by the slider
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
-    
+    console.log("location hash="+location.hash)
     reposition_screen()
 })
 function calibrateCircle(id,size,increment){
@@ -16,18 +16,33 @@ function calibrateCircle(id,size,increment){
 
 }
 
+function pinSlider(){
+ 
+    if (_w >= _h) {
+      orientation = 'vertical'
+      slider_left = (_w / 2) + ((_h * 0.8) / 2) + 24 + "px"
+      console.log(slider_left);
+      jQuery("#slider.ui-slider-vertical").css("left", slider_left)
+      jQuery("#slider.ui-slider-vertical").css("top", "19.9%")
+
+    } else {
+      orientation = 'horizontal'
+      slider_top = (_h / 2) + ((_w * 0.8) / 2) + 24 + "px"
+      jQuery("#slider.ui-slider-horizontal").css("top", slider_top)
+      jQuery("#slider.ui-slider-horizontal").css("left", "19.9%")
+    }
+}
+
+
 
 function reposition_screen () {
   jQuery('#main').css('height', '100vw')
   jQuery('#main').css('width', '100vh')
+ console.log(_w,_h)
 
-  if (_w > _h) {
-    orientation = 'vertical'
-  } else {
-    orientation = 'horizontal'
-   
-  }
   setSlider()
+  pinSlider ();
+ jQuery("#slider").css("visibility", "visible")
   var  calibrate_elements = [
     { id:".phi-centered",
       size: 61.8,//use number, it needs to be divided
@@ -93,11 +108,14 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide,id){
-   console.log("setSlideContent", slide, id, posts)
-  jQuery("#slide"+slide+" h2").html(posts["p"+id].title)
-  jQuery("#slide" + slide + " section div.content").html(posts["p" + id].content)
-  $carousel.slick('slickGoTo', slide);
- 
+   
+  if(posts[id] !=undefined){ 
+    jQuery("#slide"+slide+" h2").html(posts[+id].title)
+    jQuery("#slide" + slide + " section div.content").html(posts[ + id].content)
+    $carousel.slick('slickGoTo', slide);
+  } else {
+    console.log("post undefined", slide, id, posts)
+  }
 }
 
 
@@ -133,9 +151,10 @@ function setContent(dest,object_id,object){
         }
 
       } else {
-        if (posts["p" + object_id] != undefined) {
-        page_title = posts["p" + object_id].title + " | " + site_title;
+        if (posts[object_id] != undefined) {
+        page_title = posts[object_id].title + " | " + site_title;
           document.title = page_title
+          location.hash = posts[object_id].slug
          
         }
       }

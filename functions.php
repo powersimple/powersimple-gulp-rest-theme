@@ -1,5 +1,7 @@
 <?php
 //enqueues scripts and styles
+require_once("functions/functions-rest-json.php");
+//enqueues scripts and styles
 require_once("functions/functions-enqueue.php");
 //handles custom metaboxes for admin
 require_once("functions/functions-metabox.php");
@@ -42,8 +44,6 @@ require_once("functions/functions-rest-register.php");
 			
 		}
 	
-	
-
 	
 	
 	

@@ -1,7 +1,4 @@
-<?php
-
-
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js no-svg">
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
@@ -15,7 +12,8 @@
     var active_object = "<?=$post->post_type?>";
     var home_page = <?=get_option( 'page_on_front' )?>;
     var site_title = "<?=get_bloginfo('name')?>";
-    console.log("site-title",site_title)
+    var json_path = "<?=get_stylesheet_directory_uri()?>/app/json/";
+    
 
 </script>
 </head>
