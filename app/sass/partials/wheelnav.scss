@@ -4,10 +4,10 @@
     left:50%;
     z-index: 100;
 //  background-color:rgba(256,0,0,0.1);
-    width:80vh;
-    height:80vh;
-    margin-left:-40vh;
-    margin-top:-40vh;
+    width:80em;
+    height:80em;
+    margin-left:-40em;
+    margin-top:-40em;
     border-radius: 50%;
     
 }
@@ -17,10 +17,10 @@
     left: 50%;
     z-index: 1100;
 // background-color: rgba(255, 255, 0, 0.2);
-    width: 75vh;
-    height: 75vh;
-    margin-left: -37.5vh;
-    margin-top: -37.5vh;
+    width: 75em;
+    height: 75em;
+    margin-left: -37.5em;
+    margin-top: -37.5em;
     border-radius: 50%;
 }
 #inner-subring{
@@ -29,10 +29,10 @@
     left: 50%;
     z-index: 1300;
  //background-color: rgba(255, 190, 0, 0.2);
-    width: 68vh;
-    height: 68vh;
-    margin-left: -34vh;
-    margin-top: -34vh;
+    width: 68em;
+    height: 68em;
+    margin-left: -34em;
+    margin-top: -34em;
     border-radius: 50%;
 }
 
@@ -198,7 +198,7 @@
 [class|=wheelnav-outer-nav-title]>tspan {
   font-family: Titillium,
   sans-serif;
-  font-size: 2vh;
+  font-size: 2em;
   
   text-shadow:1px 1px #333;
 
@@ -247,7 +247,7 @@
 
 [class|=wheelnav-inner-nav-title]>tspan {
     font-family: Titillium, sans-serif;
-    font-size: 1.75vh;
+    font-size: 1.75em;
     text-shadow: 1px 1px #333;
     cursor: pointer;
 }
@@ -289,7 +289,7 @@
 
 [class|=wheelnav-inner-subnav-title]>tspan {
     font-family: Titillium, sans-serif;
-    font-size: 1.5vh;
+    font-size: 1.5em;
     text-shadow: 1px 1px #333;
     cursor: pointer;
 }

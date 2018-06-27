@@ -109,12 +109,15 @@ function makeWheelNav(dest,data,_p){
             if(this.data.children.length>0){ 
 
                 makeWheelNav(child_dest, this.data.children, child_params)
+                console.log("child dest", child_dest)
 
             } else {
-                if (wheels[child_dest] != undefined){
+                console.log("no-children of",dest)
+                popAWheelie(dest)
+                
 
-                    //console.log("dest"+dest,wheels[child_dest].raphael.remove())
-                }
+
+               
             }
           
                
@@ -132,7 +135,23 @@ function makeWheelNav(dest,data,_p){
 }
 
 
+function popAWheelie(dest){
+    if (dest == "outer-nav") {
+        if(wheels["inner-nav"] != undefined){
+        wheels["inner-nav"].raphael.remove();
+        child_dest = "inner-nav"
+        if(wheels["inner-subnav"] != undefined){
+            wheels["inner-subnav"].raphael.remove()
+        }
+    } else if (dest == "inner-nav") {
+        if (wheels["inner-subnav"] != undefined) {
+            wheels["inner-subnav"].raphael.remove()
+            child_dest = "inner-subnav"
+        }
+    }
 
+
+}
 
 window.onload = function () {
     

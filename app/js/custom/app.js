@@ -5,6 +5,7 @@ var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
     console.log("location hash="+location.hash)
+    jQuery(".wheelnav-outer-nav-title").css("display:none;");
     reposition_screen()
 })
 function calibrateCircle(id,size,increment){
@@ -38,7 +39,7 @@ function pinSlider(){
 function reposition_screen () {
   jQuery('#main').css('height', '100vw')
   jQuery('#main').css('width', '100vh')
- console.log(_w,_h)
+
 
   setSlider()
   pinSlider ();
@@ -53,11 +54,11 @@ function reposition_screen () {
       increment:"vw"
     },
     { id:"#inner-ring",
-      size: 75,//use number, it needs to be divided
+      size: 72,//use number, it needs to be divided
       increment:"vw"
     },
     { id:"#inner-subring",
-      size: 68,//use number, it needs to be divided
+      size: 65,//use number, it needs to be divided
       increment:"vw"
     }
     

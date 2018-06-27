@@ -12,7 +12,7 @@ function getStaticJSON (route, callback, dest) {
 
    // local absolute path to the REST API + routing arguments
   var endpoint = json_path+route+".json"
-  consoe.log(endpoint);
+  console.log(endpoint);
   jQuery.ajax({
     url: endpoint, // the url 
     data: '',

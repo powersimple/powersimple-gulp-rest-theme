@@ -19,6 +19,8 @@
         wp_enqueue_script('scroll-magic-debug');
         */
 
+       
+
 
         wp_register_script('jqueryui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', null,'1.1', true); 
         wp_enqueue_script('jqueryui');
@@ -30,7 +32,7 @@
         wp_register_script('three', '//cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js', null,'1.1', true); 
         wp_enqueue_script('three');
         
-
+   
 
         
         //vendor is the stylesheet rendered 

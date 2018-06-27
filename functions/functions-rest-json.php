@@ -43,5 +43,10 @@ Hence, the REST_post_filter variable below.
         fwrite($handle, $data);
         fclose($handle);
     }
-    add_action( 'save_post', 'refreshJSON');// this will run if you save a post.
+    if(@$_GET['publish'] == 1){
+        refreshJSON();
+       
+    }
+    
+    //add_action( 'save_post', 'refreshJSON');// this will run if you save a post.
 ?>

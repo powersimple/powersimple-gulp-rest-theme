@@ -10,7 +10,11 @@ require_once("functions/functions-rest-menus.php");
 // custom functions to register fields into the restapi
 require_once("functions/functions-rest-register.php");
 
-
+add_theme_support('post-thumbnails', array(
+'post',
+'page',
+'project',
+));
 		/* OLD RELIABLE!
         HASN'T CHANGED IN YEARS
             RETURNS URL BY ID, AND OPTIONAL SIZE */
