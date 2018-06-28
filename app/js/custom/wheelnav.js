@@ -107,10 +107,10 @@ function makeWheelNav(dest,data,_p){
         
             //console.log(child_dest,"this",this.data);
             if(this.data.children.length>0){ 
-
+                popAWheelie(dest)
                 makeWheelNav(child_dest, this.data.children, child_params)
                 console.log("child dest", child_dest)
-
+                
             } else {
                 console.log("no-children of",dest)
                 popAWheelie(dest)
@@ -140,19 +140,18 @@ function popAWheelie(dest){
         if(wheels["inner-nav"] != undefined){
         wheels["inner-nav"].raphael.remove();
         child_dest = "inner-nav"
-        if(wheels["inner-subnav"] != undefined){
-            wheels["inner-subnav"].raphael.remove()
+            if(wheels["inner-subnav"] != undefined){
+                wheels["inner-subnav"].raphael.remove()
+            }
+        } else if (dest == "inner-nav") {
+            if (wheels["inner-subnav"] != undefined) {
+                wheels["inner-subnav"].raphael.remove()
+                child_dest = "inner-subnav"
+            }
         }
-    } else if (dest == "inner-nav") {
-        if (wheels["inner-subnav"] != undefined) {
-            wheels["inner-subnav"].raphael.remove()
-            child_dest = "inner-subnav"
-        }
+
     }
-
-
 }
-
 window.onload = function () {
     
 }
