@@ -68,20 +68,31 @@ function post_order(a, b) {
 
 function setLinearNav(menu){
   var counter = 0
+  
   for (var i in menu.items) {
+    
+
     menu.items[i].post = posts[menu.items[i].object_id]
+    menu.items[i].slug = posts[menu.items[i].object_id].slug
+    
+
     id = menu.items[i].object_id.toString()
     linear_nav.push(menu.items[i])
+    
     posts_nav[id] = counter;
     counter++;
   }
   linear_nav.sort(menu_order);
-  
+  //SET SLUG NAV
+  for(var n=0;n<linear_nav.length;n++){
+    slug_nav[linear_nav[n].slug] = n;
+  }
+
   setSlider(linear_nav)
   setSlides(linear_nav)
-  
+  console.log("linear_nav", linear_nav);
   console.log("posts_nav", posts_nav);
-
+  console.log("slug_nav", slug_nav);
   
 }
 
@@ -89,6 +100,7 @@ function setLinearNav(menu){
 
 function displayMenus () {
   var data = [];
+  console.log("displaymenus");
   for (var m in menus) {
     if (menu_config[m] != undefined) {
       var items = ''
@@ -111,9 +123,29 @@ function displayMenus () {
       
       
       var children = [];
+
+
       for(var a=0;a<menu_array.length;a++){
         children = [];
        for (var c = 0; c < menu_array[a].children.length;c++){
+          var grandchildren = [];
+          var nested_children = menus[m].items[menu_array[a].children[c]].children;
+          for(var g=0;g<nested_children.length;g++){
+            grandchildren.push( // data for childe menus
+              {
+                "title": menus[m].items[nested_children[g]].title,
+                "id": menus[m].items[nested_children[g]].id,
+                
+                "object": menus[m].items[nested_children[g]].object,
+                "object_id": menus[m].items[nested_children[g]].object_id,// the post id
+                
+              }
+            )
+
+          }
+
+
+
           children.push( // data for childe menus
             {
               "title": menus[m].items[menu_array[a].children[c]].title,
@@ -121,7 +153,7 @@ function displayMenus () {
               
               "object": menus[m].items[menu_array[a].children[c]].object,
               "object_id": menus[m].items[menu_array[a].children[c]].object_id,// the post id
-              "children": menus[m].items[menu_array[a].children[c]].children
+              "children":grandchildren
             }
           )
 
@@ -130,19 +162,31 @@ function displayMenus () {
 
         data.push({// data for top level
           "title": menu_array[a].title,
-          "id": menu_array[a].id,
+          //"id": menu_array[a].id,
           "object": menu_array[a].object,
           "object_id": menu_array[a].object_id,//the post_id
           "children":children
         })
+
       }
       
       setLinearNav(menus[m])
-   
+      outer_wheel_data = data;
       jQuery(menu_config[m].location).html(items)
+      console.log("menu data",outer_wheel_data);
+      if(location.hash != ''){
+        var slug = location.hash.replace("#","");
+        console.log("slug",slug,slug_nav[slug])
+     //   makeWheelNav("outer-nav", linear_nav[slug_nav[slug]], menu_config[m]._p)
+      } else {
+
        if(menu_config[m].menu_type == "wheel"){
+         // THIS IS THE INITIAL LOADING OF THE WHEEL
+         
          makeWheelNav("outer-nav", data, menu_config[m]._p)
        }
+      }
+      makeWheelNav("outer-nav", data, menu_config[m]._p)
        setSlideShow();
 
 

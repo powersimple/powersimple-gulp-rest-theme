@@ -3,7 +3,7 @@
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}
+var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}
 function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API
@@ -12,7 +12,7 @@ function getStaticJSON (route, callback, dest) {
 
    // local absolute path to the REST API + routing arguments
   var endpoint = json_path+route+".json"
-  console.log(endpoint);
+  console.log("endpoint",endpoint);
   jQuery.ajax({
     url: endpoint, // the url 
     data: '',
@@ -91,16 +91,13 @@ if(Array.isArray(data)){
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
-      //  console.log(dest, posts)
-       // displayProjects(dest, posts)
+     
         break
       case type = 'post':
-      //  console.log(dest, posts)
-        //displayProjects(dest, posts)
+     
         break
       case type = 'page':
-       //console.log(dest, posts)
-      //  displayProjects(dest, posts)
+  
         break
     }
   }
@@ -110,31 +107,39 @@ if(Array.isArray(data)){
   return posts
 }
 
-function setMenuItem (item) {
+function setMenuItem (dest,item) {
+  //console.log("setMenuItem",item)
   this_item = {}
   this_item.menu_id = item.ID
   this_item.title = item.title
-  this_item.slug = item.slug
+
   this_item.menu_order = item.menu_order
   this_item.object = item.object
   this_item.object_id = item.object_id
   this_item.parent = item.menu_item_parent
+  this_item.dest = dest
+
+  
   this_item.children = []
 
   return this_item
 }
+
 function setMenu (dest,slug, items) {
   menu = {}
   for (var i = 0; i < items.length; i++) {
-    menu[items[i].ID] = setMenuItem(items[i])
+    menu[items[i].ID] = setMenuItem(dest,items[i])
     if (items[i].menu_item_parent != 0) { //recursive
       menu[items[i].menu_item_parent].children.push(items[i].ID)
-    } 
+     
+    } else {
+      
+    }
     menus[dest].menu_array.push(menu[items[i].ID])
 
   }
   //console.log("MENU ARRAY",menus[dest].menu_array)
-//  console.log(slug, menu)
+ console.log("SetMenu",slug, menu)
   return menu
 }
 function setMenus (data, dest) {
@@ -150,7 +155,7 @@ function setMenus (data, dest) {
 
   
   
-  //console.log("MENUS", menus)
+  console.log("MENUS", menus)
   //console.log("menu array",menus[dest])
   displayMenus();
 

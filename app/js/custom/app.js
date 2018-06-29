@@ -5,6 +5,7 @@ var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
     console.log("location hash="+location.hash)
+   
     jQuery(".wheelnav-outer-nav-title").css("display:none;");
     reposition_screen()
 })
@@ -156,7 +157,7 @@ function setContent(dest,object_id,object){
         page_title = posts[object_id].title + " | " + site_title;
           document.title = page_title
           location.hash = posts[object_id].slug
-         
+          
         }
       }
       setSlideContent(slide,object_id)

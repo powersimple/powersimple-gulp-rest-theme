@@ -30,7 +30,7 @@ var inner_subnav_params = {
 var menu_raphael = {}
 var wheels = {}
 function makeWheelNav(dest,data,_p){
-    //console.log(dest,data,_p);
+    console.log("makeWheelNav",dest,data,_p);
 
     if(dest == "outer-nav"){
         child_dest = "inner-nav"
@@ -87,6 +87,7 @@ function makeWheelNav(dest,data,_p){
 
     wheels[dest].createWheel();
     counter = 0;
+    console.log("NAV ITEMS",data);
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
         
         
@@ -105,12 +106,15 @@ function makeWheelNav(dest,data,_p){
 
         wheels[dest].navItems[i].navigateFunction = function () {
         
-            //console.log(child_dest,"this",this.data);
+           // console.log(child_dest,"this",this.data);
             if(this.data.children.length>0){ 
-                popAWheelie(dest)
+               popAWheelie(dest)
+
+               
+
                 makeWheelNav(child_dest, this.data.children, child_params)
-                console.log("child dest", child_dest)
-                
+                console.log("child dest", this.data.children, child_dest)
+               
             } else {
                 console.log("no-children of",dest)
                 popAWheelie(dest)
@@ -135,17 +139,17 @@ function makeWheelNav(dest,data,_p){
 }
 
 
-function popAWheelie(dest){
-    if (dest == "outer-nav") {
-        if(wheels["inner-nav"] != undefined){
-        wheels["inner-nav"].raphael.remove();
-        child_dest = "inner-nav"
-            if(wheels["inner-subnav"] != undefined){
-                wheels["inner-subnav"].raphael.remove()
+function popAWheelie(dest){ // this removes the inner rings when you click on navigation and reloads them as necessary
+    if (dest == "outer-nav") { // if outer ring
+        if(wheels["inner-nav"] != undefined){ //and inner ring exists
+        wheels["inner-nav"].raphael.remove(); // destroy it
+        child_dest = "inner-nav"//outer's inner
+            if(wheels["inner-subnav"] != undefined){//if  inner subnav
+                wheels["inner-subnav"].raphael.remove()//destoy that too.
             }
-        } else if (dest == "inner-nav") {
-            if (wheels["inner-subnav"] != undefined) {
-                wheels["inner-subnav"].raphael.remove()
+        } else if (dest == "inner-nav") {// if you select from the inner nave
+            if (wheels["inner-subnav"] != undefined) {//and there's an inner subnav
+                wheels["inner-subnav"].raphael.remove() //destroy it
                 child_dest = "inner-subnav"
             }
         }
