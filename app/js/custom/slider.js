@@ -48,13 +48,9 @@ function setSlider(){
  
     //console.log("notch",notch,linear_nav[notch].object_id)
     if (linear_nav[notch] != undefined){
-       setContent(notch, linear_nav[notch].object_id)
-       triggerWheelNav(linear_nav[notch].object_id)
+       setContent(notch, data_nav[notch].object_id)
+       triggerWheelNav(notch)
+       //selectNavItem(notch);
     }
   // document.title = linear_nav[notch].title+" | "+site_title
- }
- function triggerWheelNav(id){
- 
-   console.log("trigger_wheelNav",id,posts);
- 
  }

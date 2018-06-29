@@ -4,7 +4,7 @@ var orientation = 'vertical'// this var is used by the slider
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
-    console.log("location hash="+location.hash)
+  
    
     jQuery(".wheelnav-outer-nav-title").css("display:none;");
     reposition_screen()
@@ -23,7 +23,7 @@ function pinSlider(){
     if (_w >= _h) {
       orientation = 'vertical'
       slider_left = (_w / 2) + ((_h * 0.8) / 2) + 24 + "px"
-      console.log(slider_left);
+      //console.log(slider_left);
       jQuery("#slider.ui-slider-vertical").css("left", slider_left)
       jQuery("#slider.ui-slider-vertical").css("top", "19.9%")
 
@@ -254,22 +254,62 @@ function setLinearNav(menu){
   linear_nav.sort(menu_order);
   //SET SLUG NAV
   for(var n=0;n<linear_nav.length;n++){
-    slug_nav[linear_nav[n].slug] = n;
+   
   }
 
   setSlider(linear_nav)
   setSlides(linear_nav)
   console.log("linear_nav", linear_nav);
   console.log("posts_nav", posts_nav);
-  console.log("slug_nav", slug_nav);
+  
   
 }
+function setLinearDataNav(data){
+  var counter = 0;
+  var outer_counter = 0;
+  var inner_counter = 0;
+  var inner_subcounter = 0;
+  var dest = 'outer-nav'
+  for(var d=0;d<data.length;d++){//outer
+    dest = 'outer-nav'
+    data[d].dest = dest;
+    data[d].slice = outer_counter;
+    data[d].notch = outer_counter;
+    
+    data_nav.push(data[d]);
+    slug_nav[data[d].slug] = counter;
 
+    counter++;
+    for(var c=0;c<data[d].children.length;c++){ //children
+      data[d].children[c].dest = "inner-nav"
+      data[d].children[c].slice = c
+      data[d].children[c].notch = counter
+      
+      data_nav.push(data[d].children[c])
+      slug_nav[data[d].children[c].slug] = counter;
+      counter++
+      for(var g=0;g<data[d].children[c].children.length;g++){ //grandchildren
+        data[d].children[c].children[g].dest = "inner-subnav"
+        data[d].children[c].children[g].slice = g
+        data[d].children[c].children[g].notch = counter
+        
+        data_nav.push(data[d].children[c].children[g])
+        slug_nav[data[d].children[c].children[g].slug] = counter;
+        counter++
+      }
+    }
+    
+    outer_counter++;
+    
+  }
+  console.log("dataNav",data_nav);
+  console.log("slug_nav", slug_nav);
+}
 
 
 function displayMenus () {
   var data = [];
-  console.log("displaymenus");
+ 
   for (var m in menus) {
     if (menu_config[m] != undefined) {
       var items = ''
@@ -280,9 +320,10 @@ function displayMenus () {
 
       menu_array = [];
       for (var i in menus[m].items) {
-        //console.log('menu item', menus[m].items[i], menu_config[m].location)
+       // console.log('menu item', menus[m].items[i], menu_config[m].location)
         if (menus[m].items[i].parent == 0) {
          // console.log("menu", menus[m].items[i].title)
+        
           menu_array.push(menus[m].items[i]);
         }
          // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
@@ -296,6 +337,7 @@ function displayMenus () {
 
       for(var a=0;a<menu_array.length;a++){
         children = [];
+
        for (var c = 0; c < menu_array[a].children.length;c++){
           var grandchildren = [];
           var nested_children = menus[m].items[menu_array[a].children[c]].children;
@@ -303,8 +345,8 @@ function displayMenus () {
             grandchildren.push( // data for childe menus
               {
                 "title": menus[m].items[nested_children[g]].title,
-                "id": menus[m].items[nested_children[g]].id,
                 
+                "slug": posts[menus[m].items[nested_children[g]].object_id].slug,
                 "object": menus[m].items[nested_children[g]].object,
                 "object_id": menus[m].items[nested_children[g]].object_id,// the post id
                 
@@ -318,8 +360,7 @@ function displayMenus () {
           children.push( // data for childe menus
             {
               "title": menus[m].items[menu_array[a].children[c]].title,
-              "id": menus[m].items[menu_array[a].children[c]].id,
-              
+              "slug": posts[menus[m].items[menu_array[a].children[c]].object_id].slug,
               "object": menus[m].items[menu_array[a].children[c]].object,
               "object_id": menus[m].items[menu_array[a].children[c]].object_id,// the post id
               "children":grandchildren
@@ -332,17 +373,20 @@ function displayMenus () {
         data.push({// data for top level
           "title": menu_array[a].title,
           //"id": menu_array[a].id,
+          "slug": posts[menu_array[a].object_id].slug,
           "object": menu_array[a].object,
           "object_id": menu_array[a].object_id,//the post_id
           "children":children
         })
 
       }
-      
+      setLinearDataNav(data);
       setLinearNav(menus[m])
-      outer_wheel_data = data;
+      wheel_data = data;
+      console.log("wheel data",wheel_data);
+     
       jQuery(menu_config[m].location).html(items)
-      console.log("menu data",outer_wheel_data);
+      
       if(location.hash != ''){
         var slug = location.hash.replace("#","");
         console.log("slug",slug,slug_nav[slug])
@@ -351,10 +395,11 @@ function displayMenus () {
 
        if(menu_config[m].menu_type == "wheel"){
          // THIS IS THE INITIAL LOADING OF THE WHEEL
-         
+        
          makeWheelNav("outer-nav", data, menu_config[m]._p)
        }
       }
+      console.log('makeouterwheel',data);
       makeWheelNav("outer-nav", data, menu_config[m]._p)
        setSlideShow();
 
@@ -394,7 +439,7 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}
+var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav'
 function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API
@@ -403,7 +448,7 @@ function getStaticJSON (route, callback, dest) {
 
    // local absolute path to the REST API + routing arguments
   var endpoint = json_path+route+".json"
-  console.log("endpoint",endpoint);
+ console.log("endpoint",endpoint);
   jQuery.ajax({
     url: endpoint, // the url 
     data: '',
@@ -415,7 +460,7 @@ function getStaticJSON (route, callback, dest) {
         
     },
     error: function (data, textStatus, request) {
-      console.log(endpoint,data.responseText)
+      //console.log(endpoint,data.responseText)
     },
 
     cache: false
@@ -530,7 +575,7 @@ function setMenu (dest,slug, items) {
 
   }
   //console.log("MENU ARRAY",menus[dest].menu_array)
- console.log("SetMenu",slug, menu)
+ //console.log("SetMenu",slug, menu)
   return menu
 }
 function setMenus (data, dest) {
@@ -546,7 +591,7 @@ function setMenus (data, dest) {
 
   
   
-  console.log("MENUS", menus)
+  //console.log("MENUS", menus)
   //console.log("menu array",menus[dest])
   displayMenus();
 
@@ -569,7 +614,7 @@ function setCategories (data, dest) {
   for (var i = 0;i < data.length;i++) {//creates object of categories by key
     categories[data[i].id] = data[i]
   }
-   console.log('categories', categories)
+   //console.log('categories', categories)
   //displayCategories(dest, categories)
   return data
 }
@@ -760,9 +805,10 @@ function setSlides(){
   var content = ''
   var title = ''
   var slides = ''
- console.log("Begin Render Slides", linear_nav, posts)
+ //console.log("Begin Render Slides", linear_nav, posts)
+ 
   if(posts == undefined){
-    console.log("No Posts Data Yet",  posts)
+    //console.log("No Posts Data Yet",  posts)
     window.setTimeout(setSlides(), 100);//without this, we cannot relay that the post data is available yet
   } else {
   
@@ -773,7 +819,7 @@ function setSlides(){
       slides += setSlide(i,id)
    
   }
-  console.log("slides rendered")
+ // console.log("slides rendered")
 
 
   jQuery('#article').html(slides);
@@ -793,10 +839,10 @@ jQuery(document).on('keydown', function(e) {
 });
 
 jQuery('a[data-slide]').click(function(e) {
-        console.log("click on slick dot ", slide);
+       // console.log("click on slick dot ", slide);
   e.preventDefault();
   var slide = jQuery(this).data('slide');
-  console.log("click on slick dot ", slide);
+  //console.log("click on slick dot ", slide);
   setSlideContent(notch, linear_nav[slide].object_id)
   //$carousel.slick('slickGoTo', slideno);
 
@@ -851,16 +897,13 @@ function setSlider(){
  
     //console.log("notch",notch,linear_nav[notch].object_id)
     if (linear_nav[notch] != undefined){
-       setContent(notch, linear_nav[notch].object_id)
-       triggerWheelNav(linear_nav[notch].object_id)
+       setContent(notch, data_nav[notch].object_id)
+       triggerWheelNav(notch)
+       //selectNavItem(notch);
     }
   // document.title = linear_nav[notch].title+" | "+site_title
  }
- function triggerWheelNav(id){
- 
-   console.log("trigger_wheelNav",id,posts);
- 
- }
+
 // Declare three.js variables
 var camera, scene, renderer, stars = []
 
@@ -974,6 +1017,7 @@ var inner_subnav_params = {
 /**/
 var menu_raphael = {}
 var wheels = {}
+
 function makeWheelNav(dest,data,_p){
     console.log("makeWheelNav",dest,data,_p);
 
@@ -994,7 +1038,7 @@ function makeWheelNav(dest,data,_p){
 //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
     wheels[dest].navAngle = 270;
-    
+    wheels[dest].selectedNavItem = 2;
     wheels[dest].maxPercent = _p.maxPercent;
    // wheels[dest].clickModeRotate = false;
     wheels[dest].slicePathFunction = slicePath().DonutSlice;
@@ -1032,25 +1076,26 @@ function makeWheelNav(dest,data,_p){
 
     wheels[dest].createWheel();
     counter = 0;
-    console.log("NAV ITEMS",data);
+    //console.log("NAV ITEMS",data);
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
         
         
        // console.log("local-data",i,data[i]);
+       /*
         type = data[i].type // set the type for the log
         if(type == "category"){
             data[i].object = "category"
     
             data[i].object_id = data[i].id  
         }
+        */
         wheels[dest].navItems[i].data = data[i];
-        posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
         
         
 
 
         wheels[dest].navItems[i].navigateFunction = function () {
-        
+            jQuery("#slider").slider("value",this.data.notch)
            // console.log(child_dest,"this",this.data);
             if(this.data.children.length>0){ 
                popAWheelie(dest)
@@ -1058,10 +1103,10 @@ function makeWheelNav(dest,data,_p){
                
 
                 makeWheelNav(child_dest, this.data.children, child_params)
-                console.log("child dest", this.data.children, child_dest)
+               console.log("child dest", this.data.children, child_dest)
                
             } else {
-                console.log("no-children of",dest)
+                //console.log("no-children of",dest)
                 popAWheelie(dest)
                 
 
@@ -1082,7 +1127,34 @@ function makeWheelNav(dest,data,_p){
 
   // console.log(dest,menu_raphael[dest]);
 }
+function triggerWheelNav(notch){
+    
+    var this_notch = data_nav[notch]
+    var this_dest = this_notch.dest;
+    console.log("notch",this_notch);
+    if(this_dest == 'outer_nav'){
+        
+    }
+    if(last_dest != this_dest){
+        console.log("wheel-dest",last_dest,this_dest)
+        if(wheels[this_dest] != undefined){
+            if(this_dest != 'outer-nav'){
+                //popAWheelie(this_dest)
+            }
+        }
+        if(this_notch.children.length > 0){
+            
+        }
+       // makeWheelNav(this_dest, this_notch.children, inner_nav_params)
+    } else {
+        wheels[this_dest].navigateWheel(this_notch.slice);
+    }
 
+
+    last_dest = this_dest;
+console.log("trigger_wheelNav",this_notch);
+
+}
 
 function popAWheelie(dest){ // this removes the inner rings when you click on navigation and reloads them as necessary
     if (dest == "outer-nav") { // if outer ring

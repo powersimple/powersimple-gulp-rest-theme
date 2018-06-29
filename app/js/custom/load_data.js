@@ -3,7 +3,7 @@
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}
+var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav'
 function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API
@@ -12,7 +12,7 @@ function getStaticJSON (route, callback, dest) {
 
    // local absolute path to the REST API + routing arguments
   var endpoint = json_path+route+".json"
-  console.log("endpoint",endpoint);
+ console.log("endpoint",endpoint);
   jQuery.ajax({
     url: endpoint, // the url 
     data: '',
@@ -24,7 +24,7 @@ function getStaticJSON (route, callback, dest) {
         
     },
     error: function (data, textStatus, request) {
-      console.log(endpoint,data.responseText)
+      //console.log(endpoint,data.responseText)
     },
 
     cache: false
@@ -139,7 +139,7 @@ function setMenu (dest,slug, items) {
 
   }
   //console.log("MENU ARRAY",menus[dest].menu_array)
- console.log("SetMenu",slug, menu)
+ //console.log("SetMenu",slug, menu)
   return menu
 }
 function setMenus (data, dest) {
@@ -155,7 +155,7 @@ function setMenus (data, dest) {
 
   
   
-  console.log("MENUS", menus)
+  //console.log("MENUS", menus)
   //console.log("menu array",menus[dest])
   displayMenus();
 
@@ -178,7 +178,7 @@ function setCategories (data, dest) {
   for (var i = 0;i < data.length;i++) {//creates object of categories by key
     categories[data[i].id] = data[i]
   }
-   console.log('categories', categories)
+   //console.log('categories', categories)
   //displayCategories(dest, categories)
   return data
 }

@@ -43,9 +43,10 @@ function setSlides(){
   var content = ''
   var title = ''
   var slides = ''
- console.log("Begin Render Slides", linear_nav, posts)
+ //console.log("Begin Render Slides", linear_nav, posts)
+ 
   if(posts == undefined){
-    console.log("No Posts Data Yet",  posts)
+    //console.log("No Posts Data Yet",  posts)
     window.setTimeout(setSlides(), 100);//without this, we cannot relay that the post data is available yet
   } else {
   
@@ -56,7 +57,7 @@ function setSlides(){
       slides += setSlide(i,id)
    
   }
-  console.log("slides rendered")
+ // console.log("slides rendered")
 
 
   jQuery('#article').html(slides);
@@ -76,10 +77,10 @@ jQuery(document).on('keydown', function(e) {
 });
 
 jQuery('a[data-slide]').click(function(e) {
-        console.log("click on slick dot ", slide);
+       // console.log("click on slick dot ", slide);
   e.preventDefault();
   var slide = jQuery(this).data('slide');
-  console.log("click on slick dot ", slide);
+  //console.log("click on slick dot ", slide);
   setSlideContent(notch, linear_nav[slide].object_id)
   //$carousel.slick('slickGoTo', slideno);
 

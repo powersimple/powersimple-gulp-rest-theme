@@ -63,7 +63,7 @@ body {
     height:100%;
     position:absolute;
     font-size:1em;
-    z-index: 2000;
+    z-index: 2;
    /* THIS PART HANDLES THE FONT- 
    for slides, positioning is in .slide-wrap in slick.scss */
     h2{
@@ -194,7 +194,7 @@ footer {
         mask: url(#mask);
     }
     #bg-video{
-       // display: none;
+      
     }
     video {
         position: absolute;

@@ -85,22 +85,62 @@ function setLinearNav(menu){
   linear_nav.sort(menu_order);
   //SET SLUG NAV
   for(var n=0;n<linear_nav.length;n++){
-    slug_nav[linear_nav[n].slug] = n;
+   
   }
 
   setSlider(linear_nav)
   setSlides(linear_nav)
   console.log("linear_nav", linear_nav);
   console.log("posts_nav", posts_nav);
-  console.log("slug_nav", slug_nav);
+  
   
 }
+function setLinearDataNav(data){
+  var counter = 0;
+  var outer_counter = 0;
+  var inner_counter = 0;
+  var inner_subcounter = 0;
+  var dest = 'outer-nav'
+  for(var d=0;d<data.length;d++){//outer
+    dest = 'outer-nav'
+    data[d].dest = dest;
+    data[d].slice = outer_counter;
+    data[d].notch = outer_counter;
+    
+    data_nav.push(data[d]);
+    slug_nav[data[d].slug] = counter;
 
+    counter++;
+    for(var c=0;c<data[d].children.length;c++){ //children
+      data[d].children[c].dest = "inner-nav"
+      data[d].children[c].slice = c
+      data[d].children[c].notch = counter
+      
+      data_nav.push(data[d].children[c])
+      slug_nav[data[d].children[c].slug] = counter;
+      counter++
+      for(var g=0;g<data[d].children[c].children.length;g++){ //grandchildren
+        data[d].children[c].children[g].dest = "inner-subnav"
+        data[d].children[c].children[g].slice = g
+        data[d].children[c].children[g].notch = counter
+        
+        data_nav.push(data[d].children[c].children[g])
+        slug_nav[data[d].children[c].children[g].slug] = counter;
+        counter++
+      }
+    }
+    
+    outer_counter++;
+    
+  }
+  console.log("dataNav",data_nav);
+  console.log("slug_nav", slug_nav);
+}
 
 
 function displayMenus () {
   var data = [];
-  console.log("displaymenus");
+ 
   for (var m in menus) {
     if (menu_config[m] != undefined) {
       var items = ''
@@ -111,9 +151,10 @@ function displayMenus () {
 
       menu_array = [];
       for (var i in menus[m].items) {
-        //console.log('menu item', menus[m].items[i], menu_config[m].location)
+       // console.log('menu item', menus[m].items[i], menu_config[m].location)
         if (menus[m].items[i].parent == 0) {
          // console.log("menu", menus[m].items[i].title)
+        
           menu_array.push(menus[m].items[i]);
         }
          // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
@@ -127,6 +168,7 @@ function displayMenus () {
 
       for(var a=0;a<menu_array.length;a++){
         children = [];
+
        for (var c = 0; c < menu_array[a].children.length;c++){
           var grandchildren = [];
           var nested_children = menus[m].items[menu_array[a].children[c]].children;
@@ -134,8 +176,8 @@ function displayMenus () {
             grandchildren.push( // data for childe menus
               {
                 "title": menus[m].items[nested_children[g]].title,
-                "id": menus[m].items[nested_children[g]].id,
                 
+                "slug": posts[menus[m].items[nested_children[g]].object_id].slug,
                 "object": menus[m].items[nested_children[g]].object,
                 "object_id": menus[m].items[nested_children[g]].object_id,// the post id
                 
@@ -149,8 +191,7 @@ function displayMenus () {
           children.push( // data for childe menus
             {
               "title": menus[m].items[menu_array[a].children[c]].title,
-              "id": menus[m].items[menu_array[a].children[c]].id,
-              
+              "slug": posts[menus[m].items[menu_array[a].children[c]].object_id].slug,
               "object": menus[m].items[menu_array[a].children[c]].object,
               "object_id": menus[m].items[menu_array[a].children[c]].object_id,// the post id
               "children":grandchildren
@@ -163,17 +204,20 @@ function displayMenus () {
         data.push({// data for top level
           "title": menu_array[a].title,
           //"id": menu_array[a].id,
+          "slug": posts[menu_array[a].object_id].slug,
           "object": menu_array[a].object,
           "object_id": menu_array[a].object_id,//the post_id
           "children":children
         })
 
       }
-      
+      setLinearDataNav(data);
       setLinearNav(menus[m])
-      outer_wheel_data = data;
+      wheel_data = data;
+      console.log("wheel data",wheel_data);
+     
       jQuery(menu_config[m].location).html(items)
-      console.log("menu data",outer_wheel_data);
+      
       if(location.hash != ''){
         var slug = location.hash.replace("#","");
         console.log("slug",slug,slug_nav[slug])
@@ -182,10 +226,11 @@ function displayMenus () {
 
        if(menu_config[m].menu_type == "wheel"){
          // THIS IS THE INITIAL LOADING OF THE WHEEL
-         
+        
          makeWheelNav("outer-nav", data, menu_config[m]._p)
        }
       }
+      console.log('makeouterwheel',data);
       makeWheelNav("outer-nav", data, menu_config[m]._p)
        setSlideShow();
 

@@ -28,7 +28,7 @@ get_header(); ?>
       <!---->
       <div id="bg-video">
           <video id="video" autoplay="autoplay" muted="muted" preload="auto" loop="loop">
-              <source src="#" type="video/mp4">
+              <source src="/wp-content/uploads/2018/05/C21-edit.mp4" type="video/mp4">
           </video>
       </div>
 
@@ -48,7 +48,7 @@ get_header(); ?>
       </svg>
 
   </div>
-  <nav id="outer-ring"><!-- outer nav ring -->
+    <nav id="outer-ring"><!-- outer nav ring -->
       <div id="outer-nav" class="wheelNav"></div>
     </nav>
     <nav id="inner-ring"><!-- inner nav ring -->

@@ -92,7 +92,7 @@ jQuery(document).ready(function() {
   jQuery('#mindmap>li>ul').each(function() { 
     jQuery('>li', this).each(addLI);
   });
-  console.log(map_data);
+ //console.log(map_data);
 });  
 </script>
 <?php wp_footer(); ?>

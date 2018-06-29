@@ -29,6 +29,7 @@ var inner_subnav_params = {
 /**/
 var menu_raphael = {}
 var wheels = {}
+
 function makeWheelNav(dest,data,_p){
     console.log("makeWheelNav",dest,data,_p);
 
@@ -49,7 +50,7 @@ function makeWheelNav(dest,data,_p){
 //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
     wheels[dest].navAngle = 270;
-    
+    wheels[dest].selectedNavItem = 2;
     wheels[dest].maxPercent = _p.maxPercent;
    // wheels[dest].clickModeRotate = false;
     wheels[dest].slicePathFunction = slicePath().DonutSlice;
@@ -87,25 +88,26 @@ function makeWheelNav(dest,data,_p){
 
     wheels[dest].createWheel();
     counter = 0;
-    console.log("NAV ITEMS",data);
+    //console.log("NAV ITEMS",data);
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
         
         
        // console.log("local-data",i,data[i]);
+       /*
         type = data[i].type // set the type for the log
         if(type == "category"){
             data[i].object = "category"
     
             data[i].object_id = data[i].id  
         }
+        */
         wheels[dest].navItems[i].data = data[i];
-        posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
         
         
 
 
         wheels[dest].navItems[i].navigateFunction = function () {
-        
+            jQuery("#slider").slider("value",this.data.notch)
            // console.log(child_dest,"this",this.data);
             if(this.data.children.length>0){ 
                popAWheelie(dest)
@@ -113,10 +115,10 @@ function makeWheelNav(dest,data,_p){
                
 
                 makeWheelNav(child_dest, this.data.children, child_params)
-                console.log("child dest", this.data.children, child_dest)
+               console.log("child dest", this.data.children, child_dest)
                
             } else {
-                console.log("no-children of",dest)
+                //console.log("no-children of",dest)
                 popAWheelie(dest)
                 
 
@@ -137,7 +139,34 @@ function makeWheelNav(dest,data,_p){
 
   // console.log(dest,menu_raphael[dest]);
 }
+function triggerWheelNav(notch){
+    
+    var this_notch = data_nav[notch]
+    var this_dest = this_notch.dest;
+    console.log("notch",this_notch);
+    if(this_dest == 'outer_nav'){
+        
+    }
+    if(last_dest != this_dest){
+        console.log("wheel-dest",last_dest,this_dest)
+        if(wheels[this_dest] != undefined){
+            if(this_dest != 'outer-nav'){
+                //popAWheelie(this_dest)
+            }
+        }
+        if(this_notch.children.length > 0){
+            
+        }
+       // makeWheelNav(this_dest, this_notch.children, inner_nav_params)
+    } else {
+        wheels[this_dest].navigateWheel(this_notch.slice);
+    }
 
+
+    last_dest = this_dest;
+console.log("trigger_wheelNav",this_notch);
+
+}
 
 function popAWheelie(dest){ // this removes the inner rings when you click on navigation and reloads them as necessary
     if (dest == "outer-nav") { // if outer ring

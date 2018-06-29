@@ -4,7 +4,7 @@ var orientation = 'vertical'// this var is used by the slider
 var _w = jQuery(window).width()
 var _h = jQuery(window).height()
 jQuery(document).ready(function () {
-    console.log("location hash="+location.hash)
+  
    
     jQuery(".wheelnav-outer-nav-title").css("display:none;");
     reposition_screen()
@@ -23,7 +23,7 @@ function pinSlider(){
     if (_w >= _h) {
       orientation = 'vertical'
       slider_left = (_w / 2) + ((_h * 0.8) / 2) + 24 + "px"
-      console.log(slider_left);
+      //console.log(slider_left);
       jQuery("#slider.ui-slider-vertical").css("left", slider_left)
       jQuery("#slider.ui-slider-vertical").css("top", "19.9%")
 
