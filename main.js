@@ -274,7 +274,7 @@ function setLinearDataNav(data){
     dest = 'outer-nav'
     data[d].dest = dest;
     data[d].slice = outer_counter;
-    data[d].notch = outer_counter;
+    data[d].notch = counter;
     
     data_nav.push(data[d]);
     slug_nav[data[d].slug] = counter;
@@ -382,8 +382,7 @@ function displayMenus () {
       }
       setLinearDataNav(data);
       setLinearNav(menus[m])
-      wheel_data = data;
-      console.log("wheel data",wheel_data);
+     
      
       jQuery(menu_config[m].location).html(items)
       
@@ -400,8 +399,8 @@ function displayMenus () {
        }
       }
       console.log('makeouterwheel',data);
-      makeWheelNav("outer-nav", data, menu_config[m]._p)
-       setSlideShow();
+      makeWheelNav("outer-nav", data, menu_config[m]._p) //renders the outside ring for the first time
+       setSlideShow(); // creates slides for the slick carousel
 
 
       //circleMenu('.circle a')
@@ -448,7 +447,7 @@ function getStaticJSON (route, callback, dest) {
 
    // local absolute path to the REST API + routing arguments
   var endpoint = json_path+route+".json"
- console.log("endpoint",endpoint);
+ //console.log("endpoint",endpoint);
   jQuery.ajax({
     url: endpoint, // the url 
     data: '',
@@ -848,7 +847,7 @@ jQuery('a[data-slide]').click(function(e) {
 
 });
 function setSlider(){
-  // console.log("Set Slider", orientation)
+  console.log("Set Slider", orientation, linear_nav.length)
    
      jQuery( "#slider" ).slider({
        orientation: orientation,
@@ -895,9 +894,9 @@ function setSlider(){
  function setSliderNotch(notch){
   
  
-    //console.log("notch",notch,linear_nav[notch].object_id)
+    console.log("set slider notch",notch)
     if (linear_nav[notch] != undefined){
-       setContent(notch, data_nav[notch].object_id)
+       setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
        triggerWheelNav(notch)
        //selectNavItem(notch);
     }
@@ -1039,6 +1038,7 @@ function makeWheelNav(dest,data,_p){
     wheels[dest].cssMode = true;
     wheels[dest].navAngle = 270;
     wheels[dest].selectedNavItem = 2;
+    wheels[dest].selectedNavItemIndex = null;
     wheels[dest].maxPercent = _p.maxPercent;
    // wheels[dest].clickModeRotate = false;
     wheels[dest].slicePathFunction = slicePath().DonutSlice;
@@ -1095,25 +1095,25 @@ function makeWheelNav(dest,data,_p){
 
 
         wheels[dest].navItems[i].navigateFunction = function () {
-            jQuery("#slider").slider("value",this.data.notch)
+           console.log("WheelNav to notch", this.data.notch)
+            jQuery("#slider").slider("option","value", this.data.notch)
            // console.log(child_dest,"this",this.data);
-            if(this.data.children.length>0){ 
-               popAWheelie(dest)
-
-               
-
-                makeWheelNav(child_dest, this.data.children, child_params)
-               console.log("child dest", this.data.children, child_dest)
-               
-            } else {
-                //console.log("no-children of",dest)
+           if(dest !="inner-subnav"){
+                if(this.data.children.length>0){ 
                 popAWheelie(dest)
+
                 
 
-
-               
+                    makeWheelNav(child_dest, this.data.children, child_params)
+                console.log("child dest", this.data.children, child_dest)
+                
+                } else {
+                    //console.log("no-children of",dest)
+                    popAWheelie(dest)
+                    
+                
+                }
             }
-          
                
             
             setContent(child_dest,this.data.object_id,this.data.object)
@@ -1122,19 +1122,20 @@ function makeWheelNav(dest,data,_p){
     
     }
     menu_raphael[dest] = wheels[dest].raphael
-    
     reposition_screen()
 
   // console.log(dest,menu_raphael[dest]);
 }
 function triggerWheelNav(notch){
     
+   var this_notch = data_nav[notch]
+   var this_dest = this_notch.dest;
+   console.log("trigger wheel, notch:", this_notch, " | dest:",this_dest);
+    
     var this_notch = data_nav[notch]
     var this_dest = this_notch.dest;
-    console.log("notch",this_notch);
-    if(this_dest == 'outer_nav'){
-        
-    }
+   
+    
     if(last_dest != this_dest){
         console.log("wheel-dest",last_dest,this_dest)
         if(wheels[this_dest] != undefined){
@@ -1143,10 +1144,11 @@ function triggerWheelNav(notch){
             }
         }
         if(this_notch.children.length > 0){
-            
+             makeWheelNav(this_dest, this_notch.children, inner_nav_params)
         }
-       // makeWheelNav(this_dest, this_notch.children, inner_nav_params)
+     
     } else {
+
         wheels[this_dest].navigateWheel(this_notch.slice);
     }
 
@@ -1172,7 +1174,4 @@ function popAWheelie(dest){ // this removes the inner rings when you click on na
         }
 
     }
-}
-window.onload = function () {
-    
 }

@@ -105,7 +105,7 @@ function setLinearDataNav(data){
     dest = 'outer-nav'
     data[d].dest = dest;
     data[d].slice = outer_counter;
-    data[d].notch = outer_counter;
+    data[d].notch = counter;
     
     data_nav.push(data[d]);
     slug_nav[data[d].slug] = counter;
@@ -213,8 +213,7 @@ function displayMenus () {
       }
       setLinearDataNav(data);
       setLinearNav(menus[m])
-      wheel_data = data;
-      console.log("wheel data",wheel_data);
+     
      
       jQuery(menu_config[m].location).html(items)
       
@@ -231,8 +230,8 @@ function displayMenus () {
        }
       }
       console.log('makeouterwheel',data);
-      makeWheelNav("outer-nav", data, menu_config[m]._p)
-       setSlideShow();
+      makeWheelNav("outer-nav", data, menu_config[m]._p) //renders the outside ring for the first time
+       setSlideShow(); // creates slides for the slick carousel
 
 
       //circleMenu('.circle a')

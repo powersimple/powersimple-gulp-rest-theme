@@ -1,5 +1,5 @@
 function setSlider(){
-  // console.log("Set Slider", orientation)
+  console.log("Set Slider", orientation, linear_nav.length)
    
      jQuery( "#slider" ).slider({
        orientation: orientation,
@@ -46,9 +46,9 @@ function setSlider(){
  function setSliderNotch(notch){
   
  
-    //console.log("notch",notch,linear_nav[notch].object_id)
+    console.log("set slider notch",notch)
     if (linear_nav[notch] != undefined){
-       setContent(notch, data_nav[notch].object_id)
+       setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
        triggerWheelNav(notch)
        //selectNavItem(notch);
     }
