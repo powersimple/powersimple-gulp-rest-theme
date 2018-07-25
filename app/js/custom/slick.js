@@ -5,7 +5,7 @@ var gotoslide = function(slide){
 }
 jQuery('.slick-dots li button').on('click', function (e) {
    e.stopPropagation(); // use this
-  console.log("slick dot clicked")
+  //console.log("slick dot clicked")
 });
 function setSlideShow(){
   jQuery('.slideshow').slick({

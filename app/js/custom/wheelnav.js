@@ -143,48 +143,89 @@ function triggerWheelNav(notch){
     
    var this_notch = data_nav[notch]
    var this_dest = this_notch.dest;
+   
    console.log("trigger wheel, notch:", this_notch, " | dest:",this_dest);
     
-    var this_notch = data_nav[notch]
-    var this_dest = this_notch.dest;
-   
-    
-    if(last_dest != this_dest){
-        console.log("wheel-dest",last_dest,this_dest)
-        if(wheels[this_dest] != undefined){
-            if(this_dest != 'outer-nav'){
-                //popAWheelie(this_dest)
-            }
-        }
-        if(this_notch.children.length > 0){
-             makeWheelNav(this_dest, this_notch.children, inner_nav_params)
-        }
-     
-    } else {
 
-        wheels[this_dest].navigateWheel(this_notch.slice);
+   
+    console.log("last-dest: "+ last_dest, "this-dest:"+this_dest)
+
+    if(this_dest == 'outer-nav'){
+        wheels[this_dest].navigateWheel(this_notch.slice)
+        
+        popAWheelie("inner-nav")
+         if (this_notch.children.length > 0) {
+
+             makeWheelNav("inner-nav", this_notch.children, inner_nav_params)
+         }
+
+
+    } else if (this_dest == 'inner-nav') {
+       
+        if (wheels["inner-nav"] != undefined){
+           
+             wheels[this_dest].navigateWheel(this_notch.slice)
+              if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
+                  wheels["inner-subnav"].raphael.remove() //destroy it
+
+              }
+        }
+        if (this_notch.children.length > 0) {
+            
+            makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
+        } else {
+              popAWheelie("inner-subnav")
+        }
+       
+
+    } else if (this_dest == 'inner-subnav') {
+        if (wheels["inner-subnav"] == undefined) {
+             makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
+        } else {
+         wheels[this_dest].navigateWheel(this_notch.slice)
+        }
     }
 
 
+
+
+
     last_dest = this_dest;
-console.log("trigger_wheelNav",this_notch);
+    
+//console.log("trigger_wheelNav",this_notch);
 
 }
 
 function popAWheelie(dest){ // this removes the inner rings when you click on navigation and reloads them as necessary
     if (dest == "outer-nav") { // if outer ring
         if(wheels["inner-nav"] != undefined){ //and inner ring exists
-        wheels["inner-nav"].raphael.remove(); // destroy it
-        child_dest = "inner-nav"//outer's inner
+            wheels["inner-nav"].raphael.remove(); // destroy it
+        
             if(wheels["inner-subnav"] != undefined){//if  inner subnav
                 wheels["inner-subnav"].raphael.remove()//destoy that too.
             }
-        } else if (dest == "inner-nav") {// if you select from the inner nave
-            if (wheels["inner-subnav"] != undefined) {//and there's an inner subnav
-                wheels["inner-subnav"].raphael.remove() //destroy it
-                child_dest = "inner-subnav"
-            }
         }
 
-    }
+    } else if(dest == "inner-nav") { // if you select from the inner nave
+        if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
+            wheels["inner-subnav"].raphael.remove() //destroy it
+        }
+    } 
+    /*
+     if (wheels["inner-nav"] != undefined) { //and inner ring exists
+         wheels["inner-nav"].raphael.remove(); // destroy it
+         child_dest = "inner-nav" //outer's inner
+         if (wheels["inner-subnav"] != undefined) { //if  inner subnav
+             wheels["inner-subnav"].raphael.remove() //destoy that too.
+         }
+     } 
+     */
+     /*if (dest == "inner-subnav") { // if you select from the inner nave
+         if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
+             wheels["inner-subnav"].raphael.remove() //destroy it
+             
+         }
+     }*/
+
+
 }

@@ -116,7 +116,7 @@ function setSlideContent(slide,id){
     jQuery("#slide" + slide + " section div.content").html(posts[ + id].content)
     $carousel.slick('slickGoTo', slide);
   } else {
-    console.log("post undefined", slide, id, posts)
+    //console.log("post undefined", slide, id, posts)
   }
 }
 
@@ -129,8 +129,8 @@ function setContent(dest,object_id,object){
       var page_title = site_title;
 
       if(object == 'category'){
-        console.log("set_content cat",object_id,categories[object_id].children);
-        //
+        //console.log("set_content cat",object_id,categories[object_id].children);
+        
         var data = []
         var cat_children = categories[object_id].children;
         if(cat_children.length>0){
@@ -156,13 +156,15 @@ function setContent(dest,object_id,object){
         if (posts[object_id] != undefined) {
         page_title = posts[object_id].title + " | " + site_title;
           document.title = page_title
+
+
+          jQuery("#featured-image").attr('src', posts[object_id].thumbnail_url['square-large'])
+          //console.log(posts[object_id].thumbnail_url['square-small']);
           location.hash = posts[object_id].slug
+
           
         }
       }
       setSlideContent(slide,object_id)
      
-
-
-    
 } 

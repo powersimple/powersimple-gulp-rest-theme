@@ -101,7 +101,7 @@ if(Array.isArray(data)){
         break
     }
   }
-
+//console.log(type, posts)
    
    
   return posts

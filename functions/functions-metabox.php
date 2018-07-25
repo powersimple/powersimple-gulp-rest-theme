@@ -39,7 +39,7 @@
     }
     add_filter( 'rwmb_meta_boxes', 'video_meta' );
     function ps_metabox( $meta_boxes ) {
-        $prefix = 'psmetabox-';
+        $prefix = '';
 
         $meta_boxes[] = array(
             'id' => 'project_info',

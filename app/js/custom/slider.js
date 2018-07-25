@@ -9,7 +9,7 @@ function setSlider(){
        value: 0,
        slide: function( event, ui ) {
          setSliderNotch(ui.value)
-         console.log("slider",ui.value)
+         //console.log("slider",ui.value)
         // jQuery( "#amount" ).val( ui.value );
        }
  
@@ -46,7 +46,7 @@ function setSlider(){
  function setSliderNotch(notch){
   
  
-    console.log("set slider notch",notch)
+    //console.log("set slider notch",notch)
     if (linear_nav[notch] != undefined){
        setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
        triggerWheelNav(notch)
