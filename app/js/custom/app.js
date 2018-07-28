@@ -22,8 +22,9 @@ function pinSlider(){
  
     if (_w >= _h) {
       orientation = 'vertical'
-      slider_left = (_w / 2) + ((_h * 0.8) / 2) + 24 + "px"
+      slider_left = (_w / 2) + ((_h * 0.8) / 2) + _w/10 + "px"
       //console.log(slider_left);
+      
       jQuery("#slider.ui-slider-vertical").css("left", slider_left)
       jQuery("#slider.ui-slider-vertical").css("top", "19.9%")
 
@@ -123,16 +124,21 @@ function setSlideContent(slide,id){
 
 function setContent(dest,object_id,object){
     var slide = posts_nav[object_id]
-    console.log("setContent",object_id,object)
+   console.log("setContent",object_id,object)
+        if (posts[object_id] != undefined) {
+          page_title = posts[object_id].title + " | " + site_title;
+          document.title = page_title
 
-    //console.log("posts",posts,posts.length)
-      var page_title = site_title;
 
-      if(object == 'category'){
-        //console.log("set_content cat",object_id,categories[object_id].children);
-        
-        var data = []
-        var cat_children = categories[object_id].children;
+          jQuery("#featured-image").attr('src', posts[object_id].thumbnail_url['square-large'])
+          //console.log(posts[object_id].thumbnail_url['square-small']);
+         
+
+        }
+              setSlideContent(slide, object_id)
+
+        /*
+        for category wheels
         if(cat_children.length>0){
           for(c=0;c<cat_children.length;c++){
             
@@ -150,21 +156,10 @@ function setContent(dest,object_id,object){
           makeWheelNav(dest, data, inner_subnav_params)
           //
 
-        }
+        
 
       } else {
-        if (posts[object_id] != undefined) {
-        page_title = posts[object_id].title + " | " + site_title;
-          document.title = page_title
-
-
-          jQuery("#featured-image").attr('src', posts[object_id].thumbnail_url['square-large'])
-          //console.log(posts[object_id].thumbnail_url['square-small']);
-          location.hash = posts[object_id].slug
-
-          
-        }
-      }
-      setSlideContent(slide,object_id)
+        
+      }*/
      
 } 

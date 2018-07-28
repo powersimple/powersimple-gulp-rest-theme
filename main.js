@@ -22,8 +22,9 @@ function pinSlider(){
  
     if (_w >= _h) {
       orientation = 'vertical'
-      slider_left = (_w / 2) + ((_h * 0.8) / 2) + 24 + "px"
+      slider_left = (_w / 2) + ((_h * 0.8) / 2) + _w/10 + "px"
       //console.log(slider_left);
+      
       jQuery("#slider.ui-slider-vertical").css("left", slider_left)
       jQuery("#slider.ui-slider-vertical").css("top", "19.9%")
 
@@ -123,16 +124,21 @@ function setSlideContent(slide,id){
 
 function setContent(dest,object_id,object){
     var slide = posts_nav[object_id]
-    console.log("setContent",object_id,object)
+   console.log("setContent",object_id,object)
+        if (posts[object_id] != undefined) {
+          page_title = posts[object_id].title + " | " + site_title;
+          document.title = page_title
 
-    //console.log("posts",posts,posts.length)
-      var page_title = site_title;
 
-      if(object == 'category'){
-        //console.log("set_content cat",object_id,categories[object_id].children);
-        
-        var data = []
-        var cat_children = categories[object_id].children;
+          jQuery("#featured-image").attr('src', posts[object_id].thumbnail_url['square-large'])
+          //console.log(posts[object_id].thumbnail_url['square-small']);
+         
+
+        }
+              setSlideContent(slide, object_id)
+
+        /*
+        for category wheels
         if(cat_children.length>0){
           for(c=0;c<cat_children.length;c++){
             
@@ -150,22 +156,11 @@ function setContent(dest,object_id,object){
           makeWheelNav(dest, data, inner_subnav_params)
           //
 
-        }
+        
 
       } else {
-        if (posts[object_id] != undefined) {
-        page_title = posts[object_id].title + " | " + site_title;
-          document.title = page_title
-
-
-          jQuery("#featured-image").attr('src', posts[object_id].thumbnail_url['square-large'])
-          //console.log(posts[object_id].thumbnail_url['square-small']);
-          location.hash = posts[object_id].slug
-
-          
-        }
-      }
-      setSlideContent(slide,object_id)
+        
+      }*/
      
 } 
 
@@ -264,24 +259,30 @@ function setLinearNav(menu) {
 
   setSlider(linear_nav)
   setSlides(linear_nav)
-  console.log("linear_nav", linear_nav);
-  console.log("posts_nav", posts_nav);
+  //console.log("linear_nav", linear_nav);
+  //console.log("posts_nav", posts_nav);
 
 
 }
 
-function setLinearDataNav(data) {
-  var counter = 0;
-  var outer_counter = 0;
-  var inner_counter = 0;
-  var inner_subcounter = 0;
-  var dest = 'outer-nav'
+function setLinearDataNav(data) { // sets local data into linear array for wheel
+
+  var counter = 0,
+      outer_counter = 0,
+      inner_counter = 0,
+      inner_subcounter = 0,
+      grandparent = 0,
+      next_parent = 0,
+      dest = 'outer-nav'
+
+  // THESE 3 NESTED LOOPS POPULATE THE data_nav array WITH WHAT IT NEEDS TO BUILD THE WHEEL AND HAVE IT BE CONTROLLED BY THE ORDERED NOTCHES FROM THE NAV
+
   for (var d = 0; d < data.length; d++) { //outer
     dest = 'outer-nav'
     data[d].dest = dest;
     data[d].slice = outer_counter;
     data[d].notch = counter;
-
+    grandparent = counter,
     data_nav.push(data[d]);
     slug_nav[data[d].slug] = counter;
 
@@ -290,7 +291,8 @@ function setLinearDataNav(data) {
       data[d].children[c].dest = "inner-nav"
       data[d].children[c].slice = c
       data[d].children[c].notch = counter
-
+      data[d].children[c].parent = grandparent
+      next_parent = counter
       data_nav.push(data[d].children[c])
       slug_nav[data[d].children[c].slug] = counter;
       counter++
@@ -298,18 +300,22 @@ function setLinearDataNav(data) {
         data[d].children[c].children[g].dest = "inner-subnav"
         data[d].children[c].children[g].slice = g
         data[d].children[c].children[g].notch = counter
+        data[d].children[c].children[g].grandparent = grandparent
+        data[d].children[c].children[g].parent = next_parent
 
         data_nav.push(data[d].children[c].children[g])
         slug_nav[data[d].children[c].children[g].slug] = counter;
         counter++
       }
+     // console.log("dataNav", data);
     }
 
     outer_counter++;
 
   }
-  console.log("dataNav", data_nav);
-  console.log("slug_nav", slug_nav);
+
+ console.log("dataNav", data_nav);
+ // console.log("slug_nav", slug_nav);
 }
 
 
@@ -391,11 +397,12 @@ function displayMenus() {
 
 
       jQuery(menu_config[m].location).html(items)
+setSlideShow(); // creates slides for the slick carousel
 
       if (location.hash != '') {
         var slug = location.hash.replace("#", "");
-        console.log("slug", slug, slug_nav[slug])
-        //   makeWheelNav("outer-nav", linear_nav[slug_nav[slug]], menu_config[m]._p)
+        console.log("set by slugHash", slug, slug_nav[slug])
+        setSliderNotch(slug_nav[slug])
       } else {
 
         if (menu_config[m].menu_type == "wheel") {
@@ -404,10 +411,10 @@ function displayMenus() {
           makeWheelNav("outer-nav", data, menu_config[m]._p)
         }
       }
-      console.log('makeouterwheel', data);
+     // console.log('makeouterwheel', data);
       makeWheelNav("outer-nav", data, menu_config[m]._p) //renders the outside ring for the first time
-      setSlideShow(); // creates slides for the slick carousel
-
+    
+      
 
       //circleMenu('.circle a')
     }
@@ -453,7 +460,7 @@ function getStaticJSON (route, callback, dest) {
 
    // local absolute path to the REST API + routing arguments
   var endpoint = json_path+route+".json"
- //console.log("endpoint",endpoint);
+console.log("endpoint",endpoint);
   jQuery.ajax({
     url: endpoint, // the url 
     data: '',
@@ -766,7 +773,7 @@ function draw() {
 initCanvas();
 setInterval(draw, 160);
 var gotoslide = function(slide){
-  console.log("click on slick dot ", slide);
+ // console.log("click on slick dot ", slide);
   setSlideContent(notch, linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
@@ -788,6 +795,7 @@ function setSlideShow(){
     prevArrow: '<i class="slick-arrow slick-prev"></i>',
      
   });
+   console.log("set slideshow")
 }
 function setSlide(slide,id){
   /*
@@ -853,7 +861,7 @@ jQuery('a[data-slide]').click(function(e) {
 
 });
 function setSlider(){
-  console.log("Set Slider", orientation, linear_nav.length)
+  //console.log("Set Slider", orientation, linear_nav.length)
    
      jQuery( "#slider" ).slider({
        orientation: orientation,
@@ -863,7 +871,7 @@ function setSlider(){
        value: 0,
        slide: function( event, ui ) {
          setSliderNotch(ui.value)
-         //console.log("slider",ui.value)
+         console.log("slider",ui.value)
         // jQuery( "#amount" ).val( ui.value );
        }
  
@@ -875,11 +883,12 @@ function setSlider(){
  
  
  }
+ /*
  jQuery('#slider').on('mousewheel', function(event) {
    event.preventDefault();
    value = jQuery( "#slider" ).slider( "value" );
  
-   //console.log(event.deltaX, event.deltaY, event.deltaFactor);
+   console.log(event.deltaX, event.deltaY, event.deltaFactor);
  
    //Mousewheel Scrolled up
    if(event.deltaY == -1){
@@ -889,21 +898,61 @@ function setSlider(){
    }
    //Mousewheel Scrolled down
    else if(event.deltaY == 1){
-       //alert("scrolled up");
+      //alert("scrolled up");
        value = value-1;
        setSliderNotch(value)
        
    }
    
- });
+ });*/
+ (function($){
+/*
+  $('#slider').bind('mousewheel DOMMouseScroll', function (e) {
+    var delta = 0,
+      element = $(this),
+      value, result, oe;
+    oe = e.originalEvent; // for jQuery >=1.7
+    value = element.slider('value');
+
+    if (oe.wheelDelta) {
+      delta = -oe.wheelDelta;
+    }
+    if (oe.detail) {
+      delta = oe.detail * 40;
+    }
+
+    value -= delta / 8;
+    if (value > 100) {
+      value = 100;
+    }
+    if (value < 0) {
+      value = 0;
+    }
+
+    result = element.slider('option', 'slide').call(element, e, {
+      value: value
+    });
+    if (result !== false) {
+      element.slider('value', value);
+    }
+    return false;
+  });
+  */
+})(jQuery)
  
+
  function setSliderNotch(notch){
-  
  
-    //console.log("set slider notch",notch)
+  console.log("notch",data_nav[notch],notch)
+   location.hash = posts[data_nav[notch].object_id].slug
+
+ 
+   console.log("set slider notch", notch,location.hash)
+   jQuery("#slider").slider('value', notch);
     if (linear_nav[notch] != undefined){
+      
        setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
-       triggerWheelNav(notch)
+      triggerWheelNav(notch)
        //selectNavItem(notch);
     }
   // document.title = linear_nav[notch].title+" | "+site_title
@@ -992,6 +1041,7 @@ jQuery(window).on('resize', function () {
 //renderer.setSize(window.innerWidth, window.innerHeight)
 
 
+
 var menu_config = {
     'top-menu': {
         'menu_type': 'wheel',
@@ -1004,30 +1054,33 @@ var menu_config = {
             'sel_max': 1,
         }
     }
-}
-var inner_nav_params = {
+},
+inner_nav_params = {
     'maxPercent': 1,
     'min': 0.91,
     'max': 1,
     'sel_min': 0.91,
     'sel_max': 1.0,
-}
-var inner_subnav_params = {
+},
+ inner_subnav_params = {
     'maxPercent': 1,
     'min': 0.90,
     'max': 1,
     'sel_min': 0.90,
     'sel_max': 1.0,
-}
+}, last_outer_notch = 0,
+    last_inner_notch = 0
+
 /**/
 var menu_raphael = {}
 var wheels = {}
 
 function makeWheelNav(dest,data,_p){
-    console.log("makeWheelNav",dest,data,_p);
+    
 
     if(dest == "outer-nav"){
         child_dest = "inner-nav"
+        //console.log("makeWheelNav", dest, data, _p);
         child_params = inner_nav_params;
     } else if (dest == "inner-nav"){
         child_dest = 'inner-subnav'
@@ -1078,9 +1131,18 @@ function makeWheelNav(dest,data,_p){
         
         
     }
-  
+    
+    if (dest == 'outer-nav') {
+        //console.log("inner child", data[0].children)
+        if (data[0].children.length > 0) {
+         //   console.log("inner child", data[0].children)
+            makeWheelNav("inner-nav", data[0].children, inner_nav_params)
+        }
+    }
 
+  
     wheels[dest].createWheel();
+
     counter = 0;
     //console.log("NAV ITEMS",data);
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
@@ -1101,7 +1163,7 @@ function makeWheelNav(dest,data,_p){
 
 
         wheels[dest].navItems[i].navigateFunction = function () {
-           console.log("WheelNav to notch", this.data.notch)
+          // console.log("WheelNav to notch", this.data.notch)
             jQuery("#slider").slider("option","value", this.data.notch)
            // console.log(child_dest,"this",this.data);
            if(dest !="inner-subnav"){
@@ -1110,9 +1172,9 @@ function makeWheelNav(dest,data,_p){
 
                 
 
-                    makeWheelNav(child_dest, this.data.children, child_params)
-                console.log("child dest", this.data.children, child_dest)
-                
+                    //makeWheelNav(child_dest,  this.data.children, child_params)
+             //   console.log("setSLiderNotch", this.data.slug, child_dest)
+                setSliderNotch(slug_nav[this.data.slug])
                 } else {
                     //console.log("no-children of",dest)
                     popAWheelie(dest)
@@ -1137,46 +1199,81 @@ function triggerWheelNav(notch){
    var this_notch = data_nav[notch]
    var this_dest = this_notch.dest;
    
-   console.log("trigger wheel, notch:", this_notch, " | dest:",this_dest);
+  console.log("trigger wheel, notch:", this_notch, " | dest:",this_dest);
     
 
+if (wheels["outer-nav"] != undefined) {
+    //makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)
+}
    
-    console.log("last-dest: "+ last_dest, "this-dest:"+this_dest)
+    //console.log("last-dest: "+ last_dest, "this-dest:"+this_dest)
 
     if(this_dest == 'outer-nav'){
-        wheels[this_dest].navigateWheel(this_notch.slice)
-        
+           if (wheels["inner-nav"] != undefined) {
+            wheels[this_dest].navigateWheel(this_notch.slice)
+           }
         popAWheelie("inner-nav")
          if (this_notch.children.length > 0) {
 
              makeWheelNav("inner-nav", this_notch.children, inner_nav_params)
          }
-
+         last_outer_notch = notch;
 
     } else if (this_dest == 'inner-nav') {
+     
        
-        if (wheels["inner-nav"] != undefined){
+       if(last_outer_notch != this_notch.parent){ //if we go backwards we need to change the parent.
+            wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice)//dialback the outer ring to its slice
+            makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)//receate the inner ring for the parent
+            wheels[this_dest].navigateWheel(this_notch.slice)//now we can dial the inner ring where it belongs
+             last_outer_notch = this_notch.parent
            
-             wheels[this_dest].navigateWheel(this_notch.slice)
-              if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
-                  wheels["inner-subnav"].raphael.remove() //destroy it
+       } else{
+            if (wheels["inner-nav"] != undefined) { //if the inner nav exists
+           console.log('same parent')
 
-              }
+                wheels[this_dest].navigateWheel(this_notch.slice)
+                if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
+                    wheels["inner-subnav"].raphael.remove() //destroy it
+
+                }
+            }
+            if (this_notch.children.length > 0) {//if there are children 
+                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)//make a ring for them
+            } else {
+                popAWheelie("inner-subnav") //blow up the ring that that's there.
+            }
+       }
+       last_inner_notch = notch
+
+
+    } else if (this_dest == 'inner-subnav') {// onto the third inner ring
+        //congratulations outer-ring you're a grandparent.
+         
+
+        if (last_outer_notch != this_notch.grandparent) { //if we go backwards we need to change the parent.
+            wheels["outer-nav"].navigateWheel(data_nav[this_notch.grandparent].slice) //dialback the outer ring to its slice
+            last_outer_notch = this_notch.grandparent // set the outer notch back so we can go forward again.
         }
-        if (this_notch.children.length > 0) {
-            
-            makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
+        if (last_inner_notch != this_notch.parent) {//who's your daddy?
+            console.log("where have I gone wrong?",this_notch);
+          //receate the inner ring for the parent
+           wheels["inner-nav"].navigateWheel(data_nav[this_notch.parent].slice)
+           //now we can dial the inner ring where it belongs
+            makeWheelNav("inner-subnav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
+            wheels["inner-subnav"].navigateWheel(this_notch.slice)//steer to right slice
+
+            last_inner_notch = this_notch.parent //I am your father
         } else {
-              popAWheelie("inner-subnav")
+            if (wheels["inner-subnav"] == undefined) {
+                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
+                
+            } else {
+                wheels[this_dest].navigateWheel(this_notch.slice)
+            }
         }
+
        
-
-    } else if (this_dest == 'inner-subnav') {
-        if (wheels["inner-subnav"] == undefined) {
-             makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
-        } else {
-         wheels[this_dest].navigateWheel(this_notch.slice)
-        }
     }
 
 

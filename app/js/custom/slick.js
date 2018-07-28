@@ -1,5 +1,5 @@
 var gotoslide = function(slide){
-  console.log("click on slick dot ", slide);
+ // console.log("click on slick dot ", slide);
   setSlideContent(notch, linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
@@ -21,6 +21,7 @@ function setSlideShow(){
     prevArrow: '<i class="slick-arrow slick-prev"></i>',
      
   });
+   console.log("set slideshow")
 }
 function setSlide(slide,id){
   /*

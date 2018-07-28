@@ -93,24 +93,30 @@ function setLinearNav(menu) {
 
   setSlider(linear_nav)
   setSlides(linear_nav)
-  console.log("linear_nav", linear_nav);
-  console.log("posts_nav", posts_nav);
+  //console.log("linear_nav", linear_nav);
+  //console.log("posts_nav", posts_nav);
 
 
 }
 
-function setLinearDataNav(data) {
-  var counter = 0;
-  var outer_counter = 0;
-  var inner_counter = 0;
-  var inner_subcounter = 0;
-  var dest = 'outer-nav'
+function setLinearDataNav(data) { // sets local data into linear array for wheel
+
+  var counter = 0,
+      outer_counter = 0,
+      inner_counter = 0,
+      inner_subcounter = 0,
+      grandparent = 0,
+      next_parent = 0,
+      dest = 'outer-nav'
+
+  // THESE 3 NESTED LOOPS POPULATE THE data_nav array WITH WHAT IT NEEDS TO BUILD THE WHEEL AND HAVE IT BE CONTROLLED BY THE ORDERED NOTCHES FROM THE NAV
+
   for (var d = 0; d < data.length; d++) { //outer
     dest = 'outer-nav'
     data[d].dest = dest;
     data[d].slice = outer_counter;
     data[d].notch = counter;
-
+    grandparent = counter,
     data_nav.push(data[d]);
     slug_nav[data[d].slug] = counter;
 
@@ -119,7 +125,8 @@ function setLinearDataNav(data) {
       data[d].children[c].dest = "inner-nav"
       data[d].children[c].slice = c
       data[d].children[c].notch = counter
-
+      data[d].children[c].parent = grandparent
+      next_parent = counter
       data_nav.push(data[d].children[c])
       slug_nav[data[d].children[c].slug] = counter;
       counter++
@@ -127,18 +134,22 @@ function setLinearDataNav(data) {
         data[d].children[c].children[g].dest = "inner-subnav"
         data[d].children[c].children[g].slice = g
         data[d].children[c].children[g].notch = counter
+        data[d].children[c].children[g].grandparent = grandparent
+        data[d].children[c].children[g].parent = next_parent
 
         data_nav.push(data[d].children[c].children[g])
         slug_nav[data[d].children[c].children[g].slug] = counter;
         counter++
       }
+     // console.log("dataNav", data);
     }
 
     outer_counter++;
 
   }
-  console.log("dataNav", data_nav);
-  console.log("slug_nav", slug_nav);
+
+ console.log("dataNav", data_nav);
+ // console.log("slug_nav", slug_nav);
 }
 
 
@@ -220,11 +231,12 @@ function displayMenus() {
 
 
       jQuery(menu_config[m].location).html(items)
+setSlideShow(); // creates slides for the slick carousel
 
       if (location.hash != '') {
         var slug = location.hash.replace("#", "");
-        console.log("slug", slug, slug_nav[slug])
-        //   makeWheelNav("outer-nav", linear_nav[slug_nav[slug]], menu_config[m]._p)
+        console.log("set by slugHash", slug, slug_nav[slug])
+        setSliderNotch(slug_nav[slug])
       } else {
 
         if (menu_config[m].menu_type == "wheel") {
@@ -233,10 +245,10 @@ function displayMenus() {
           makeWheelNav("outer-nav", data, menu_config[m]._p)
         }
       }
-      console.log('makeouterwheel', data);
+     // console.log('makeouterwheel', data);
       makeWheelNav("outer-nav", data, menu_config[m]._p) //renders the outside ring for the first time
-      setSlideShow(); // creates slides for the slick carousel
-
+    
+      
 
       //circleMenu('.circle a')
     }

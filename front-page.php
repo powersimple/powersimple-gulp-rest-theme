@@ -62,6 +62,11 @@ get_header(); ?>
       <div id="inner-subnav" class="wheelNav"></div>
     </nav>
 </div><!--main-->
-<div id="slider"></div>
+
+  <div id="slider-wrap">
+  <div id="up-arrow"><?php include "svg/arrow-key.svg"; ?></div>
+    <div id="slider"></div>
+  <div id="down-arrow"><?php include "svg/arrow-key.svg"; ?></div>
+  </div>
 <?php
 get_footer(); ?>

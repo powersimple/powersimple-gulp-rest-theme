@@ -11,30 +11,33 @@ var menu_config = {
             'sel_max': 1,
         }
     }
-}
-var inner_nav_params = {
+},
+inner_nav_params = {
     'maxPercent': 1,
     'min': 0.91,
     'max': 1,
     'sel_min': 0.91,
     'sel_max': 1.0,
-}
-var inner_subnav_params = {
+},
+ inner_subnav_params = {
     'maxPercent': 1,
     'min': 0.90,
     'max': 1,
     'sel_min': 0.90,
     'sel_max': 1.0,
-}
+}, last_outer_notch = 0,
+    last_inner_notch = 0
+
 /**/
 var menu_raphael = {}
 var wheels = {}
 
 function makeWheelNav(dest,data,_p){
-    console.log("makeWheelNav",dest,data,_p);
+    
 
     if(dest == "outer-nav"){
         child_dest = "inner-nav"
+        //console.log("makeWheelNav", dest, data, _p);
         child_params = inner_nav_params;
     } else if (dest == "inner-nav"){
         child_dest = 'inner-subnav'
@@ -85,9 +88,18 @@ function makeWheelNav(dest,data,_p){
         
         
     }
-  
+    
+    if (dest == 'outer-nav') {
+        //console.log("inner child", data[0].children)
+        if (data[0].children.length > 0) {
+         //   console.log("inner child", data[0].children)
+            makeWheelNav("inner-nav", data[0].children, inner_nav_params)
+        }
+    }
 
+  
     wheels[dest].createWheel();
+
     counter = 0;
     //console.log("NAV ITEMS",data);
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
@@ -108,7 +120,7 @@ function makeWheelNav(dest,data,_p){
 
 
         wheels[dest].navItems[i].navigateFunction = function () {
-           console.log("WheelNav to notch", this.data.notch)
+          // console.log("WheelNav to notch", this.data.notch)
             jQuery("#slider").slider("option","value", this.data.notch)
            // console.log(child_dest,"this",this.data);
            if(dest !="inner-subnav"){
@@ -117,9 +129,9 @@ function makeWheelNav(dest,data,_p){
 
                 
 
-                    makeWheelNav(child_dest, this.data.children, child_params)
-                console.log("child dest", this.data.children, child_dest)
-                
+                    //makeWheelNav(child_dest,  this.data.children, child_params)
+             //   console.log("setSLiderNotch", this.data.slug, child_dest)
+                setSliderNotch(slug_nav[this.data.slug])
                 } else {
                     //console.log("no-children of",dest)
                     popAWheelie(dest)
@@ -144,46 +156,81 @@ function triggerWheelNav(notch){
    var this_notch = data_nav[notch]
    var this_dest = this_notch.dest;
    
-   console.log("trigger wheel, notch:", this_notch, " | dest:",this_dest);
+  console.log("trigger wheel, notch:", this_notch, " | dest:",this_dest);
     
 
+if (wheels["outer-nav"] != undefined) {
+    //makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)
+}
    
-    console.log("last-dest: "+ last_dest, "this-dest:"+this_dest)
+    //console.log("last-dest: "+ last_dest, "this-dest:"+this_dest)
 
     if(this_dest == 'outer-nav'){
-        wheels[this_dest].navigateWheel(this_notch.slice)
-        
+           if (wheels["inner-nav"] != undefined) {
+            wheels[this_dest].navigateWheel(this_notch.slice)
+           }
         popAWheelie("inner-nav")
          if (this_notch.children.length > 0) {
 
              makeWheelNav("inner-nav", this_notch.children, inner_nav_params)
          }
-
+         last_outer_notch = notch;
 
     } else if (this_dest == 'inner-nav') {
+     
        
-        if (wheels["inner-nav"] != undefined){
+       if(last_outer_notch != this_notch.parent){ //if we go backwards we need to change the parent.
+            wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice)//dialback the outer ring to its slice
+            makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)//receate the inner ring for the parent
+            wheels[this_dest].navigateWheel(this_notch.slice)//now we can dial the inner ring where it belongs
+             last_outer_notch = this_notch.parent
            
-             wheels[this_dest].navigateWheel(this_notch.slice)
-              if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
-                  wheels["inner-subnav"].raphael.remove() //destroy it
+       } else{
+            if (wheels["inner-nav"] != undefined) { //if the inner nav exists
+           console.log('same parent')
 
-              }
+                wheels[this_dest].navigateWheel(this_notch.slice)
+                if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
+                    wheels["inner-subnav"].raphael.remove() //destroy it
+
+                }
+            }
+            if (this_notch.children.length > 0) {//if there are children 
+                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)//make a ring for them
+            } else {
+                popAWheelie("inner-subnav") //blow up the ring that that's there.
+            }
+       }
+       last_inner_notch = notch
+
+
+    } else if (this_dest == 'inner-subnav') {// onto the third inner ring
+        //congratulations outer-ring you're a grandparent.
+         
+
+        if (last_outer_notch != this_notch.grandparent) { //if we go backwards we need to change the parent.
+            wheels["outer-nav"].navigateWheel(data_nav[this_notch.grandparent].slice) //dialback the outer ring to its slice
+            last_outer_notch = this_notch.grandparent // set the outer notch back so we can go forward again.
         }
-        if (this_notch.children.length > 0) {
-            
-            makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
+        if (last_inner_notch != this_notch.parent) {//who's your daddy?
+            console.log("where have I gone wrong?",this_notch);
+          //receate the inner ring for the parent
+           wheels["inner-nav"].navigateWheel(data_nav[this_notch.parent].slice)
+           //now we can dial the inner ring where it belongs
+            makeWheelNav("inner-subnav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
+            wheels["inner-subnav"].navigateWheel(this_notch.slice)//steer to right slice
+
+            last_inner_notch = this_notch.parent //I am your father
         } else {
-              popAWheelie("inner-subnav")
+            if (wheels["inner-subnav"] == undefined) {
+                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
+                
+            } else {
+                wheels[this_dest].navigateWheel(this_notch.slice)
+            }
         }
+
        
-
-    } else if (this_dest == 'inner-subnav') {
-        if (wheels["inner-subnav"] == undefined) {
-             makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
-        } else {
-         wheels[this_dest].navigateWheel(this_notch.slice)
-        }
     }
 
 
