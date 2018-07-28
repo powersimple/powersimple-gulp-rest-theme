@@ -89,7 +89,7 @@ function setSlider(){
    jQuery("#slider").slider('value', notch);
     if (linear_nav[notch] != undefined){
       
-       setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
+      setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
       triggerWheelNav(notch)
        //selectNavItem(notch);
     }

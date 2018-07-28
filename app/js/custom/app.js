@@ -124,7 +124,7 @@ function setSlideContent(slide,id){
 
 function setContent(dest,object_id,object){
     var slide = posts_nav[object_id]
-   console.log("setContent",object_id,object)
+   // console.log("setContent",object_id,object)
         if (posts[object_id] != undefined) {
           page_title = posts[object_id].title + " | " + site_title;
           document.title = page_title

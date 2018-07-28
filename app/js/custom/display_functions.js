@@ -226,27 +226,30 @@ function displayMenus() {
         })
 
       }
+      menu_levels = data;
       setLinearDataNav(data);
       setLinearNav(menus[m])
 
 
       jQuery(menu_config[m].location).html(items)
-setSlideShow(); // creates slides for the slick carousel
-
+     setSlideShow(); // creates slides for the slick carousel
+      makeWheelNav("outer-nav", menu_levels, menu_config[m]._p)
       if (location.hash != '') {
         var slug = location.hash.replace("#", "");
         console.log("set by slugHash", slug, slug_nav[slug])
+        
         setSliderNotch(slug_nav[slug])
       } else {
 
         if (menu_config[m].menu_type == "wheel") {
           // THIS IS THE INITIAL LOADING OF THE WHEEL
 
-          makeWheelNav("outer-nav", data, menu_config[m]._p)
+          
         }
       }
-     // console.log('makeouterwheel', data);
-      makeWheelNav("outer-nav", data, menu_config[m]._p) //renders the outside ring for the first time
+      console.log('makeouterwheel',menu_levels);
+
+     
     
       
 

@@ -124,7 +124,7 @@ function setSlideContent(slide,id){
 
 function setContent(dest,object_id,object){
     var slide = posts_nav[object_id]
-   console.log("setContent",object_id,object)
+   // console.log("setContent",object_id,object)
         if (posts[object_id] != undefined) {
           page_title = posts[object_id].title + " | " + site_title;
           document.title = page_title
@@ -392,27 +392,30 @@ function displayMenus() {
         })
 
       }
+      menu_levels = data;
       setLinearDataNav(data);
       setLinearNav(menus[m])
 
 
       jQuery(menu_config[m].location).html(items)
-setSlideShow(); // creates slides for the slick carousel
-
+     setSlideShow(); // creates slides for the slick carousel
+      makeWheelNav("outer-nav", menu_levels, menu_config[m]._p)
       if (location.hash != '') {
         var slug = location.hash.replace("#", "");
         console.log("set by slugHash", slug, slug_nav[slug])
+        
         setSliderNotch(slug_nav[slug])
       } else {
 
         if (menu_config[m].menu_type == "wheel") {
           // THIS IS THE INITIAL LOADING OF THE WHEEL
 
-          makeWheelNav("outer-nav", data, menu_config[m]._p)
+          
         }
       }
-     // console.log('makeouterwheel', data);
-      makeWheelNav("outer-nav", data, menu_config[m]._p) //renders the outside ring for the first time
+      console.log('makeouterwheel',menu_levels);
+
+     
     
       
 
@@ -451,7 +454,7 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav'
+var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = []
 function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API
@@ -951,7 +954,7 @@ function setSlider(){
    jQuery("#slider").slider('value', notch);
     if (linear_nav[notch] != undefined){
       
-       setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
+      setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
       triggerWheelNav(notch)
        //selectNavItem(notch);
     }
@@ -1041,51 +1044,51 @@ jQuery(window).on('resize', function () {
 //renderer.setSize(window.innerWidth, window.innerHeight)
 
 
-
 var menu_config = {
-    'top-menu': {
-        'menu_type': 'wheel',
-        'location': '#outer-nav',
-        '_p': {
-            'maxPercent': 1,
-            'min': 0.91,
-            'max': 1,
-            'sel_min': 0.91,
-            'sel_max': 1,
+        'top-menu': {
+            'menu_type': 'wheel',
+            'location': '#outer-nav',
+            '_p': {
+                'maxPercent': 1,
+                'min': 0.91,
+                'max': 1,
+                'sel_min': 0.91,
+                'sel_max': 1,
+            }
         }
-    }
-},
-inner_nav_params = {
-    'maxPercent': 1,
-    'min': 0.91,
-    'max': 1,
-    'sel_min': 0.91,
-    'sel_max': 1.0,
-},
- inner_subnav_params = {
-    'maxPercent': 1,
-    'min': 0.90,
-    'max': 1,
-    'sel_min': 0.90,
-    'sel_max': 1.0,
-}, last_outer_notch = 0,
+    },
+    inner_nav_params = {
+        'maxPercent': 1,
+        'min': 0.91,
+        'max': 1,
+        'sel_min': 0.91,
+        'sel_max': 1.0,
+    },
+    inner_subnav_params = {
+        'maxPercent': 1,
+        'min': 0.90,
+        'max': 1,
+        'sel_min': 0.90,
+        'sel_max': 1.0,
+    },
+    last_outer_notch = 0,
     last_inner_notch = 0
 
 /**/
 var menu_raphael = {}
 var wheels = {}
 
-function makeWheelNav(dest,data,_p){
-    
+function makeWheelNav(dest, data, _p) {
 
-    if(dest == "outer-nav"){
+
+    if (dest == "outer-nav") {
         child_dest = "inner-nav"
         //console.log("makeWheelNav", dest, data, _p);
         child_params = inner_nav_params;
-    } else if (dest == "inner-nav"){
+    } else if (dest == "inner-nav") {
         child_dest = 'inner-subnav'
         child_params = inner_subnav_params;
-    } 
+    }
 
 
     var titles = [];
@@ -1093,13 +1096,13 @@ function makeWheelNav(dest,data,_p){
     wheels[dest] = new wheelnav(dest);
     //console.log(dest,data,_p);
     wheels[dest].spreaderEnable = false;
-//    WebSlice.titleRotateAngle -45;
+    //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
     wheels[dest].navAngle = 270;
     wheels[dest].selectedNavItem = 2;
     wheels[dest].selectedNavItemIndex = null;
     wheels[dest].maxPercent = _p.maxPercent;
-   // wheels[dest].clickModeRotate = false;
+    // wheels[dest].clickModeRotate = false;
     wheels[dest].slicePathFunction = slicePath().DonutSlice;
     wheels[dest].slicePathCustom = slicePath().PieSliceCustomization();
     wheels[dest].slicePathCustom.minRadiusPercent = _p.min;
@@ -1108,48 +1111,48 @@ function makeWheelNav(dest,data,_p){
     wheels[dest].sliceSelectedPathCustom.minRadiusPercent = _p.sel_min;
     wheels[dest].sliceSelectedPathCustom.maxRadiusPercent = _p.sel_max;
     wheels[dest].titleSelectedAttr = {
-      
+
     };
 
-    for(i=0;i<data.length;i++){
-       // console.log(data[i]);
+    for (i = 0; i < data.length; i++) {
+        // console.log(data[i]);
         titles.push(data[i].title);
         ids.push(data[i].id)
     }
     wheels[dest].initWheel(titles) // init before creating wheel so we can define the items.
-    
+
 
     var rotation = 90; //first item is is the default rotation
     var degrees = (360 / wheels[dest].navItemCount); //divide circle by number of items
     var tilt = rotation // default the tilt of text to the rotation
     for (i = 0; i < wheels[dest].navItemCount; i++) { // loop through items
-       // console.log("tilt"+i,titles[i],tilt);
-       
-       
+        // console.log("tilt"+i,titles[i],tilt);
+
+
         wheels[dest].navItems[i].titleRotateAngle = tilt; // set tilt
-        tilt = degrees+(rotation-degrees) // rotate angle is additive using this formula
-        
-        
+        tilt = degrees + (rotation - degrees) // rotate angle is additive using this formula
+
+
     }
-    
+
     if (dest == 'outer-nav') {
         //console.log("inner child", data[0].children)
         if (data[0].children.length > 0) {
-         //   console.log("inner child", data[0].children)
+            //   console.log("inner child", data[0].children)
             makeWheelNav("inner-nav", data[0].children, inner_nav_params)
         }
     }
 
-  
+
     wheels[dest].createWheel();
 
     counter = 0;
     //console.log("NAV ITEMS",data);
     for (var i = 0; i < wheels[dest].navItemCount; i++) {
-        
-        
-       // console.log("local-data",i,data[i]);
-       /*
+
+
+        // console.log("local-data",i,data[i]);
+        /*
         type = data[i].type // set the type for the log
         if(type == "category"){
             data[i].object = "category"
@@ -1158,122 +1161,139 @@ function makeWheelNav(dest,data,_p){
         }
         */
         wheels[dest].navItems[i].data = data[i];
-        
-        
+
+
 
 
         wheels[dest].navItems[i].navigateFunction = function () {
-          // console.log("WheelNav to notch", this.data.notch)
-            jQuery("#slider").slider("option","value", this.data.notch)
-           // console.log(child_dest,"this",this.data);
-           if(dest !="inner-subnav"){
-                if(this.data.children.length>0){ 
-                popAWheelie(dest)
+            // console.log("WheelNav to notch", this.data.notch)
+            jQuery("#slider").slider("option", "value", this.data.notch)
+            // console.log(child_dest,"this",this.data);
+            if (dest != "inner-subnav") {
+                if (this.data.children.length > 0) {
+                    popAWheelie(dest)
 
-                
+
 
                     //makeWheelNav(child_dest,  this.data.children, child_params)
-             //   console.log("setSLiderNotch", this.data.slug, child_dest)
-                setSliderNotch(slug_nav[this.data.slug])
+                    //   console.log("setSLiderNotch", this.data.slug, child_dest)
+                    setSliderNotch(slug_nav[this.data.slug])
                 } else {
                     //console.log("no-children of",dest)
                     popAWheelie(dest)
-                    
-                
+
+
                 }
             }
-               
-            
-            setContent(child_dest,this.data.object_id,this.data.object)
-           
+
+
+            setContent(child_dest, this.data.object_id, this.data.object)
+
         }
-    
+
     }
     menu_raphael[dest] = wheels[dest].raphael
     reposition_screen()
 
-  // console.log(dest,menu_raphael[dest]);
+    // console.log(dest,menu_raphael[dest]);
 }
-function triggerWheelNav(notch){
-    
-   var this_notch = data_nav[notch]
-   var this_dest = this_notch.dest;
-   
-  console.log("trigger wheel, notch:", this_notch, " | dest:",this_dest);
-    
 
-if (wheels["outer-nav"] != undefined) {
-    //makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)
-}
-   
+function triggerWheelNav(notch) {
+
+    var this_notch = data_nav[notch]
+    var this_dest = this_notch.dest;
+
+    console.log("trigger wheel, notch:", this_notch, " | dest:", this_dest);
+
+
+
+
     //console.log("last-dest: "+ last_dest, "this-dest:"+this_dest)
 
-    if(this_dest == 'outer-nav'){
-           if (wheels["inner-nav"] != undefined) {
+    if (this_dest == 'outer-nav') {
+        if (wheels["inner-nav"] != undefined) {
             wheels[this_dest].navigateWheel(this_notch.slice)
-           }
+        }
         popAWheelie("inner-nav")
-         if (this_notch.children.length > 0) {
+        if (this_notch.children.length > 0) {
 
-             makeWheelNav("inner-nav", this_notch.children, inner_nav_params)
-         }
-         last_outer_notch = notch;
+            makeWheelNav("inner-nav", this_notch.children, inner_nav_params)
+        }
+
+
+
+
+
+        last_outer_notch = notch;
 
     } else if (this_dest == 'inner-nav') {
-     
-       
-       if(last_outer_notch != this_notch.parent){ //if we go backwards we need to change the parent.
-            wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice)//dialback the outer ring to its slice
-            makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)//receate the inner ring for the parent
-            wheels[this_dest].navigateWheel(this_notch.slice)//now we can dial the inner ring where it belongs
-             last_outer_notch = this_notch.parent
-           
-       } else{
+
+         
+
+
+        if (last_outer_notch != this_notch.parent) { //if we go backwards we need to change the parent.
+            wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice) //dialback the outer ring to its slice
+            makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
+            wheels[this_dest].navigateWheel(this_notch.slice) //now we can dial the inner ring where it belongs
+            last_outer_notch = this_notch.parent
+
+        } else {
+            wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice)
             if (wheels["inner-nav"] != undefined) { //if the inner nav exists
-           console.log('same parent')
+                console.log('same parent')
 
                 wheels[this_dest].navigateWheel(this_notch.slice)
                 if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
                     wheels["inner-subnav"].raphael.remove() //destroy it
 
                 }
+
+            } else {
+               
+
+                makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)
+                wheels[this_dest].navigateWheel(this_notch.slice)
             }
-            if (this_notch.children.length > 0) {//if there are children 
-                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)//make a ring for them
+
+
+            if (this_notch.children.length > 0) { //if there are children 
+                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params) //make a ring for them
             } else {
                 popAWheelie("inner-subnav") //blow up the ring that that's there.
             }
-       }
-       last_inner_notch = notch
+        }
+        last_inner_notch = notch
 
 
-    } else if (this_dest == 'inner-subnav') {// onto the third inner ring
+    } else if (this_dest == 'inner-subnav') { // onto the third inner ring
         //congratulations outer-ring you're a grandparent.
-         
+
+
+
 
         if (last_outer_notch != this_notch.grandparent) { //if we go backwards we need to change the parent.
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.grandparent].slice) //dialback the outer ring to its slice
             last_outer_notch = this_notch.grandparent // set the outer notch back so we can go forward again.
         }
-        if (last_inner_notch != this_notch.parent) {//who's your daddy?
-            console.log("where have I gone wrong?",this_notch);
-          //receate the inner ring for the parent
-           wheels["inner-nav"].navigateWheel(data_nav[this_notch.parent].slice)
-           //now we can dial the inner ring where it belongs
+        if (last_inner_notch != this_notch.parent) { //who's your daddy?
+            console.log("where have I gone wrong?", this_notch);
+            //receate the inner ring for the parent
+            wheels["inner-nav"].navigateWheel(data_nav[this_notch.parent].slice)
+            //now we can dial the inner ring where it belongs
             makeWheelNav("inner-subnav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
-            wheels["inner-subnav"].navigateWheel(this_notch.slice)//steer to right slice
+            wheels["inner-subnav"].navigateWheel(this_notch.slice) //steer to right slice
 
             last_inner_notch = this_notch.parent //I am your father
         } else {
             if (wheels["inner-subnav"] == undefined) {
-                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)
-                
+                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)//birth of the inner ring
+
             } else {
-                wheels[this_dest].navigateWheel(this_notch.slice)
+                wheels[this_dest].navigateWheel(this_notch.slice) //steer inner ring
             }
         }
 
-       
+
     }
 
 
@@ -1281,26 +1301,26 @@ if (wheels["outer-nav"] != undefined) {
 
 
     last_dest = this_dest;
-    
-//console.log("trigger_wheelNav",this_notch);
+
+    //console.log("trigger_wheelNav",this_notch);
 
 }
 
-function popAWheelie(dest){ // this removes the inner rings when you click on navigation and reloads them as necessary
+function popAWheelie(dest) { // this removes the inner rings when you click on navigation and reloads them as necessary
     if (dest == "outer-nav") { // if outer ring
-        if(wheels["inner-nav"] != undefined){ //and inner ring exists
+        if (wheels["inner-nav"] != undefined) { //and inner ring exists
             wheels["inner-nav"].raphael.remove(); // destroy it
-        
-            if(wheels["inner-subnav"] != undefined){//if  inner subnav
-                wheels["inner-subnav"].raphael.remove()//destoy that too.
+
+            if (wheels["inner-subnav"] != undefined) { //if  inner subnav
+                wheels["inner-subnav"].raphael.remove() //destoy that too.
             }
         }
 
-    } else if(dest == "inner-nav") { // if you select from the inner nave
+    } else if (dest == "inner-nav") { // if you select from the inner nave
         if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
             wheels["inner-subnav"].raphael.remove() //destroy it
         }
-    } 
+    }
     /*
      if (wheels["inner-nav"] != undefined) { //and inner ring exists
          wheels["inner-nav"].raphael.remove(); // destroy it
@@ -1310,12 +1330,12 @@ function popAWheelie(dest){ // this removes the inner rings when you click on na
          }
      } 
      */
-     /*if (dest == "inner-subnav") { // if you select from the inner nave
-         if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
-             wheels["inner-subnav"].raphael.remove() //destroy it
-             
-         }
-     }*/
+    /*if (dest == "inner-subnav") { // if you select from the inner nave
+        if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
+            wheels["inner-subnav"].raphael.remove() //destroy it
+            
+        }
+    }*/
 
 
 }
