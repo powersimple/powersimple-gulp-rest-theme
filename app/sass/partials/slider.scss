@@ -1,51 +1,77 @@
-#slider-wrap{
-     position: absolute;
-}
-#slider {
-    background: #555;
+
+#slider-wrap {
+    
     position: absolute;
-    opacity: 0.5;
-    border: 5px ridge #666;
-    border-radius: 1vh;
-    visibility:hidden;
-    z-index: 5000;
+    z-index: 1500;
+    background-color: #fff;
    //positioning handled dynamically in app.js
 
-}
-#slider.ui-slider-vertical{
-        height: 61.8vh;
-        width: 3.4vh;
+    #slider.ui-slider-vertical{
+            height: 61.8vh;
+            width: 3.4vh;
+            background: #222;
+            position: absolute;
+            opacity:0.5;
+            border:5px ridge #333;
+            border-radius:1vh;
+            .ui-slider-handle {
+                border-radius: 1em;
+                width: 6vh;
+                height:3vh;
+                margin-left:-1.618vh;
+                background-color: #999;
+                border: 5px ridge #777;
+                
+            }
+    }
+    #slider.ui-slider-horizontal {
+        height: 3.4vw;
+        width: 61.8vw;
         background: #222;
         position: absolute;
-        opacity:0.5;
-        border:5px ridge #333;
-        border-radius:1vh;
+        opacity: 0.5;
+        border: 5px ridge #333;
+        border-radius: 1vh;
         .ui-slider-handle {
             border-radius: 1em;
-            width: 6vh;
-            height:3vh;
-            margin-left:-1.618vh;
+            width: 3vw;
+            height:6vw;
+            margin-top:-1.618vw;
             background-color: #999;
             border: 5px ridge #777;
-            
+        
         }
-}
-#slider.ui-slider-horizontal {
-    height: 3.4vw;
-    width: 61.8vw;
-    background: #222;
-    position: absolute;
-    opacity: 0.5;
-    border: 5px ridge #333;
-    border-radius: 1vh;
-    .ui-slider-handle {
-        border-radius: 1em;
-        width: 3vw;
-        height:6vw;
-        margin-top:-1.618vw;
-        background-color: #999;
-        border: 5px ridge #777;
-       
+
+    }
+    .up-arrow-vertical {
+        top: 0;
+        transform: rotate(-90deg);
+        margin-top: -5vh;
+    }
+
+    .down-arrow-vertical {
+        bottom: 0;
+        transform: rotate(90deg);
+        margin-top:5vh;
+        
+    }
+    .up-arrow-horizontal {
+        right: 0;
+        transform: rotate(0deg);
+    }
+
+    .down-arrow-horizontal {
+        left: 0;
+        transform: rotate(180deg);
+        margin-left:-5vh;
+    }
+
+    .arrow {
+        position: absolute;
+        width: 4vh;
+        opacity: 0.5;
+        height: 4vh;
+        cursor:pointer;
     }
 
 }
@@ -116,3 +142,4 @@
 .ui-slider-vertical .ui-slider-range-max {
     top: 0;
 }
+

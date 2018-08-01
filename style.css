@@ -35,20 +35,16 @@ html, body { height: 100vh; width: 100vw; margin: 0px; padding: 0px; overflow: h
 
 #stars { height: 100%; margin: 0px; padding: 0px; position: absolute; z-index: 0; }
 
-#logo { left: 50%; position: absolute; z-index: 2; width: 38.2%; margin-left: -19.1%; top: 1vh; }
-@media (max-width: 539px) { #logo { width: 86.85%; margin-left: -43.425%; } }
-@media (min-width: 540px) and (max-width: 1024px) { #logo { width: 61.8%; margin-left: -30.9%; } }
+header { height: 0; }
 
-#laurel { color: #fff; position: absolute; right: 0; padding: 5px; text-align: justify; display: inline-block; }
+#logo { z-index: 2; width: 38.2%; margin: -1vw auto; position: relative; }
+@media (max-width: 539px) { #logo { width: 80%; } }
+@media (min-width: 540px) and (max-width: 1024px) { #logo { width: 61.8%; } }
+
+#laurel { color: #fff; position: relative; text-align: center; width: 100%; padding: 5px; display: inline-block; }
+@media (max-width: 539px) { #laurel { font-size: 3vw; } }
 
 #masthead, #colophon { font-family: 'Rubik', sans-serif; background-color: #000; }
-
-#article { width: 100%; height: 100%; position: absolute; font-size: 1em; z-index: 2; /* THIS PART HANDLES THE FONT- 
-for slides, positioning is in .slide-wrap in slick.scss */ }
-#article h2 { font-size: 200%; font-weight: bold; text-align: center; text-shadow: 1px 1px #fff; margin-bottom: .5em; }
-#article section { line-height: 120%; color: #fff; background-color: rgba(61, 61, 61, 0.8); font-size: 120%; text-shadow: 1px 1px #333; }
-#article section a { color: #fff200; }
-#article section a:hover { color: #0f0; }
 
 @media screen and (max-width: 767px) { #masthead #wp-custom-header-media img { top: -8%; } }
 #masthead .navigation-top { background-color: #333; }
@@ -71,20 +67,34 @@ for slides, positioning is in .slide-wrap in slick.scss */ }
 footer { position: absolute; width: 100%; bottom: 0; }
 footer #fork-this { position: absolute; right: 0; bottom: 0; height: 15vh; width: 15vh; opacity: 0.5; }
 footer #fork-this #fork-this-svg { position: absolute; right: 0; bottom: 0; width: 100%; height: 100%; opacity: 0.9; }
+@media (max-width: 539px) { footer #fork-this { display: none; } }
 
-#circle-mask svg { position: absolute; top: 0; left: 0; }
+#circle-mask svg { position: absolute; top: 0; left: 0; display: none; }
 #circle-mask svg mask rect { fill: white; }
 #circle-mask svg mask circle { overflow: hidden; }
 #circle-mask svg > rect { fill: black; -webkit-mask: url(#mask); mask: url(#mask); }
-#circle-mask video { position: absolute; top: 0; left: 1px; z-index: -1; overflow: hidden; height: 99%; opacity: 0.8; }
+#circle-mask #bg-video { display: none; }
+#circle-mask video { border-radius: 50%; position: absolute; top: 0; left: 1px; z-index: -1; overflow: hidden; height: 99%; opacity: 0.9; }
 
 .video-wrapper { position: relative; padding-bottom: 56.25%; /* 16:9 */ padding-top: 25px; height: 0; }
 .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 .video-wrapper .video-phi-narrow { width: 38%; }
 .video-wrapper .left { left: 0; }
 
-#featured-image-container { position: absolute; width: 19.09vw; height: 19.09vw; padding: 0px; border-radius: 5%; top: 50%; left: 2vw; margin-top: -9.545%; opacity: 1; border: 1px solid #ccc; overflow: hidden; color: #fff; }
-#featured-image-container img { width: 100%; height: auto; z-index: 1000; }
+#featured-image-wrap { position: absolute; width: 20vw; height: 20vw; padding: 0px; top: 50%; left: 2vw; margin-top: -10%; opacity: 1; color: #fff; }
+#featured-image-wrap img { width: 100%; height: auto; z-index: 1000; }
+#featured-image-wrap div { text-align: center; width: 100%; line-height: 120%; }
+#featured-image-wrap #featured-image-header { bottom: 100%; }
+#featured-image-wrap #featured-image-header #featured-image-title { font-size: 150%; position: absolute; margin-top: -2em; }
+#featured-image-wrap #featured-image-header #featured-image-caption { font-size: 80%; font-style: italic; position: absolute; margin-top: -1.2em; }
+#featured-image-wrap #featured-image-footer { top: 100%; }
+#featured-image-wrap #featured-image-footer #featured-image-description { font-size: 100%; position: absolute; margin-top: 1.2em; }
+#featured-image-wrap #featured-image-container { border-radius: 50%; border: 1px solid #ccc; overflow: hidden; width: 100%; height: 100%; }
+
+#featured-image-projector { display: none; position: absolute; width: 9.09vw; height: 9.09vw; padding: 0px; border-radius: 50%; top: 50%; left: 2vw; margin-top: -9.545%; opacity: 1; overflow: hidden; color: #fff; transform: scale(3) scaleZ(1.2) rotateX(-16deg) rotateY(98deg) skewX(-16deg); transform-origin: 0% 23%; perspective: 230; -webkit-transform: scale(3) scaleZ(1.2) rotateX(-16deg) rotateY(98deg) skewX(-16deg); -webkit-transform-origin: 0% 23%; -webkit-perspective: 230; -webkit-perspective-origin: 50% 50%; -moz-transform: scale(3) scaleZ(1.2) rotateX(-16deg) rotateY(98deg) skewX(-16deg); -moz-transform-origin: 0% 23%; -moz-perspective: 230; -moz-perspective-origin: 50% 50%; -o-transform: scale(3) scaleZ(1.2) rotateX(-16deg) rotateY(98deg) skewX(-16deg); -o-transform-origin: 0% 23%; -o-perspective: 230; }
+#featured-image-projector img { width: 100%; height: auto; z-index: 1000; }
+
+.featured-caption { position: absolute; top: -10px; }
 
 #button_container { font-family: Helvetica, Sans-serif; font-size: 24px; position: relative; margin: .8em auto; width: 552px; height: 294px; z-index: 1; }
 
@@ -257,13 +267,16 @@ footer #fork-this #fork-this-svg { position: absolute; right: 0; bottom: 0; widt
 .circular-menu .menu-button { position: absolute; top: calc(50% - 30px); left: calc(50% - 30px); text-decoration: none; text-align: center; color: #444; border-radius: 50%; display: block; height: 40px; width: 40px; line-height: 40px; padding: 10px; background: #dde; }
 .circular-menu .menu-button:hover { opacity: 0.5; }
 
-#slider { background: #555; position: absolute; opacity: 0.5; border: 5px ridge #666; border-radius: 1vh; visibility: hidden; z-index: 5000; }
-
-#slider.ui-slider-vertical { height: 61.8vh; width: 3.4vh; background: #222; position: absolute; opacity: 0.5; border: 5px ridge #333; border-radius: 1vh; }
-#slider.ui-slider-vertical .ui-slider-handle { border-radius: 1em; width: 6vh; height: 3vh; margin-left: -1.618vh; background-color: #999; border: 5px ridge #777; }
-
-#slider.ui-slider-horizontal { height: 3.4vw; width: 61.8vw; background: #222; position: absolute; opacity: 0.5; border: 5px ridge #333; border-radius: 1vh; }
-#slider.ui-slider-horizontal .ui-slider-handle { border-radius: 1em; width: 3vw; height: 6vw; margin-top: -1.618vw; background-color: #999; border: 5px ridge #777; }
+#slider-wrap { position: absolute; z-index: 1500; background-color: #fff; }
+#slider-wrap #slider.ui-slider-vertical { height: 61.8vh; width: 3.4vh; background: #222; position: absolute; opacity: 0.5; border: 5px ridge #333; border-radius: 1vh; }
+#slider-wrap #slider.ui-slider-vertical .ui-slider-handle { border-radius: 1em; width: 6vh; height: 3vh; margin-left: -1.618vh; background-color: #999; border: 5px ridge #777; }
+#slider-wrap #slider.ui-slider-horizontal { height: 3.4vw; width: 61.8vw; background: #222; position: absolute; opacity: 0.5; border: 5px ridge #333; border-radius: 1vh; }
+#slider-wrap #slider.ui-slider-horizontal .ui-slider-handle { border-radius: 1em; width: 3vw; height: 6vw; margin-top: -1.618vw; background-color: #999; border: 5px ridge #777; }
+#slider-wrap .up-arrow-vertical { top: 0; -webkit-transform: rotate(-90deg); transform: rotate(-90deg); margin-top: -5vh; }
+#slider-wrap .down-arrow-vertical { bottom: 0; -webkit-transform: rotate(90deg); transform: rotate(90deg); margin-top: 5vh; }
+#slider-wrap .up-arrow-horizontal { right: 0; -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+#slider-wrap .down-arrow-horizontal { left: 0; -webkit-transform: rotate(180deg); transform: rotate(180deg); margin-left: -5vh; }
+#slider-wrap .arrow { position: absolute; width: 4vh; opacity: 0.5; height: 4vh; cursor: pointer; }
 
 .ui-slider { position: relative; text-align: left; }
 
@@ -297,6 +310,13 @@ footer #fork-this #fork-this-svg { position: absolute; right: 0; bottom: 0; widt
 .slideshow .slide-wrap section div.content { padding-right: 50px; margin-right: -50px; }
 .slideshow .slide-wrap section p { margin-bottom: 0.5em; line-height: 120%; }
 @media (max-width: 480px) { .slideshow .slide-wrap section p { font-size: 3vw; } }
+
+#article { width: 100%; height: 100%; position: absolute; font-size: 1em; z-index: 2;  /* THIS PART HANDLES THE FONT- 
+for slides, positioning is in .slide-wrap in slick.scss */ }
+#article h2 { font-size: 200%; font-weight: bold; text-align: center; text-shadow: 1px 1px #fff; margin-bottom: .5em; }
+#article section { line-height: 120%; color: #fff; font-size: 120%; text-shadow: 1px 1px #333; }
+#article section a { color: #fff200; }
+#article section a:hover { color: #0f0; }
 
 .slick-slider { position: relative; display: block; -webkit-box-sizing: border-box; box-sizing: border-box; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -ms-touch-action: pan-y; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
 

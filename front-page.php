@@ -1,13 +1,14 @@
 <?php
 get_header(); ?>
 <header>
-  <div id="logo">
+
+  <div id="laurel">
+   <?=get_bloginfo('description')?>
+  </div>
+    <div id="logo">
     <?php 
     include "svg/powersimple.svg";
   ?>
-  </div>
-  <div id="laurel">
-   <?=get_bloginfo('description')?>
   </div>
 </header>
 <canvas id="matrix"></canvas>
@@ -15,9 +16,20 @@ get_header(); ?>
 <div id="main" role="main">
 
 
+ 
+    <div id="featured-image-wrap">
+      <div id="featured-image-header" class="featured-caption">
+        <div id="featured-image-title" ></div>
+        <div id="featured-image-caption" ></div>
+      </div>
+      <?php
+?>
+<div id="featured-image-container"><img id="featured-image" src="<?=$src?>" alt="" ></div>
 
-    <div id="featured-image-container"><?php
-?><img id="featured-image" src="<?=$src?>" alt="" >
+
+<div id="featured-image-footer" class="featured-caption">
+        <div id="featured-image-description"></div>
+      </div>
 </div>
     
 
@@ -31,9 +43,10 @@ get_header(); ?>
   <div id="circle-mask">
       <!---->
       <div id="bg-video">
-          <video id="video" autoplay="autoplay" muted="muted" preload="auto" loop="loop">
+          <video id="video" controls="true " autoplay="autoplay" muted="muted" preload="auto" loop="loop">
               <source src="#" type="video/mp4">
           </video>
+          
       </div>
 
     <article id="article" class="slideshow">
@@ -62,11 +75,12 @@ get_header(); ?>
       <div id="inner-subnav" class="wheelNav"></div>
     </nav>
 </div><!--main-->
+    
 
   <div id="slider-wrap">
-  <div id="up-arrow"><?php include "svg/arrow-key.svg"; ?></div>
-    <div id="slider"></div>
-  <div id="down-arrow"><?php include "svg/arrow-key.svg"; ?></div>
-  </div>
+    <div id="up-arrow" class="arrow"><?php include "svg/arrow-key.svg";?></div>
+      <div id="slider"></div>
+    <div id="down-arrow" class="arrow"><?php include "svg/arrow-key.svg";?></div>
+</div>
 <?php
 get_footer(); ?>

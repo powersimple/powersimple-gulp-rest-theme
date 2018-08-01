@@ -116,7 +116,7 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
     data[d].dest = dest;
     data[d].slice = outer_counter;
     data[d].notch = counter;
-    grandparent = counter,
+    grandparent = counter;
     data_nav.push(data[d]);
     slug_nav[data[d].slug] = counter;
 

@@ -17,7 +17,10 @@ function setSlider(){
        
      });
    
-     
+     jQuery('.slick-dots li button').on('click', function (e) {
+   e.stopPropagation(); // use this
+  //console.log("slick dot clicked")
+});
  
  
  }
@@ -76,6 +79,41 @@ function setSlider(){
     return false;
   });
   */
+
+  $('div.arrow').on('click', function (e) {
+    e.stopPropagation(); // use this
+    var id = $(this).attr("id");
+    
+    var next_notch = current_notch;
+
+    if(id == 'down-arrow'){
+      
+      if(next_notch == 0){
+        next_notch = linear_nav.length-1
+      } else {
+        next_notch--
+      }
+      
+      
+      
+    } else if(id == 'up-arrow'){
+
+
+
+       if (next_notch == linear_nav.length-1) {
+         next_notch = 0
+       } else {
+         next_notch++
+       }
+    }
+    console.log('arrow_next',next_notch)
+    setSliderNotch(next_notch)
+
+
+
+
+  });
+
 })(jQuery)
  
 
@@ -93,5 +131,7 @@ function setSlider(){
       triggerWheelNav(notch)
        //selectNavItem(notch);
     }
+    current_notch = notch;
   // document.title = linear_nav[notch].title+" | "+site_title
  }
+

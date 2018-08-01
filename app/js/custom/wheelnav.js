@@ -162,11 +162,12 @@ function triggerWheelNav(notch) {
 
 
 
-    //console.log("last-dest: "+ last_dest, "this-dest:"+this_dest)
+    
 
     if (this_dest == 'outer-nav') {
         if (wheels["inner-nav"] != undefined) {
             wheels[this_dest].navigateWheel(this_notch.slice)
+
         }
         popAWheelie("inner-nav")
         if (this_notch.children.length > 0) {
@@ -182,9 +183,8 @@ function triggerWheelNav(notch) {
 
     } else if (this_dest == 'inner-nav') {
 
-         
-
-
+        
+        console.log(last_outer_notch, last_inner_notch,notch,this_notch)
         if (last_outer_notch != this_notch.parent) { //if we go backwards we need to change the parent.
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice) //dialback the outer ring to its slice
             makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
@@ -192,10 +192,11 @@ function triggerWheelNav(notch) {
             last_outer_notch = this_notch.parent
 
         } else {
+
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice)
             if (wheels["inner-nav"] != undefined) { //if the inner nav exists
-                console.log('same parent')
-
+               
+            console.log(' != undefined')
                 wheels[this_dest].navigateWheel(this_notch.slice)
                 if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
                     wheels["inner-subnav"].raphael.remove() //destroy it
@@ -204,7 +205,7 @@ function triggerWheelNav(notch) {
 
             } else {
                
-
+                      console.log('  undefined')
                 makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)
                 wheels[this_dest].navigateWheel(this_notch.slice)
             }

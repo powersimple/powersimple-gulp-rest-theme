@@ -10,32 +10,48 @@ Otherwise, the results you want, may not be the results it returns.
 Sort: For sanity's sake, it's best that you sort posts by ID, so when inspecting your endpoint, they are in order
 Hence, the REST_post_filter variable below.
 */
-    function refreshJSON(){
+    function getEndpoints(){ // BUILDS URLS FOR REST API ENDPOINTS
 
-        $REST_post_filter = "filter[orderby]=ID&order=asc&per_page=100";
-        $REST_CONFIG =array(
-            "posts"=>"fields=id,type,title,content,slug,excerpt,thumbnail_url,video,type&".$REST_post_filter,
-            "pages"=>"fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type&".$REST_post_filter,
-            "project"=>"fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype&".$REST_post_filter,
-            "categories"=>"fields=id,name,count,slug,description,category_posts,children",
-            "tags"=>"fields=id,name,slug,tag_posts",
-            "menus"=>"menus"
+        $REST_post_filter = "filter[orderby]=ID&order=asc&per_page=100";// handles order and pagination
+
+        $REST_CONFIG =array(//An array of url arguments
+            "posts"=>"fields=id,type,title,content,slug,excerpt,featured_media,screen_images,video,type,cats,tags&".$REST_post_filter,
+            "pages"=>"fields=id,type,title,content,slug,excerpt,featured_media,screen_images,featured_video,cats,tags,type&".$REST_post_filter,
+            "project"=>"fields=id,type,title,content,slug,excerpt,project_info,featured_media,screen_images,featured_video,type,cats,tags&".$REST_post_filter,
+            "categories"=>"fields=id,name,count,slug,description,posts,children",
+            "tags"=>"fields=id,name,slug,posts&".$REST_post_filter,
+            "menus"=>"menus",
+            "media"=>"fields=id,data&".$REST_post_filter
         );
 
-        $url_path = "http://".$_SERVER['HTTP_HOST']."/wp-json/wp/v2/";
-        $server_path = get_template_directory()."/app/json/";
+        $url_path = "http://".$_SERVER['HTTP_HOST']."/wp-json/wp/v2/";//pendpoint path
+        $server_path = get_template_directory()."/app/json/";//destination folder for writing
+ 
+        if(@$_GET['endpoints']){//header for list of endpoints
+                print "<strong>ENDPOINTS:</strong>
+                <ul>";
+        }
         
-        foreach($REST_CONFIG as $key => $value){
+        foreach($REST_CONFIG as $key => $value){//loops through the array of endpoints above
            $url = $url_path.$key."?".$value;
            $server = $server_path.$key.".json";
-           writeJSON($url,$server);
-        }
+           if(@$_GET['publish']){
+            writeJSON($url,$server);
+           }
+              if(@$_GET['endpoints']){//prints endpoing urls
+                print "<li><a href='$url'>$key</a><br></li>";
+              }
 
-       //phpinfo();
-    //  print $posts_path = "http://".$_SERVER['HTTP_HOST']."/wp-json/wp/v2/posts?fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type&filter[orderby]=ID&order=asc&per_page=100";
-   //   print "<br>".$file_path = get_template_directory()."/app/json/posts.json";
-      //get_template_directory();
+            
+        }
+        if(@$_GET['endpoints']){
+            print "</ul>";
+            die();//kills the page load so you can see the endpoint urls
+        }
       //writeJSON($posts_path,$file_path);
+
+        
+
     }
     function writeJSON($posts_path,$file_path){
         $data = file_get_contents($posts_path);
@@ -43,10 +59,10 @@ Hence, the REST_post_filter variable below.
         fwrite($handle, $data);
         fclose($handle);
     }
-    if(@$_GET['publish'] == 1){
-        refreshJSON();
+    if(@$_GET['publish'] || @$_GET['endpoints']){
+        getEndpoints();
        
     }
     
-    //add_action( 'save_post', 'refreshJSON');// this will run if you save a post.
+    //add_action( 'save_post', 'refreshJSON');// this will run if you save a post. Too much overhead for every save so better to trigger manually
 ?>

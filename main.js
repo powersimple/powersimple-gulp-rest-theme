@@ -1,94 +1,167 @@
-
-var increment = 'vw'
-var orientation = 'vertical'// this var is used by the slider
-var _w = jQuery(window).width()
-var _h = jQuery(window).height()
+var increment = 'vw',
+  orientation = 'vertical', // this var is used by the slider
+  _w = jQuery(window).width(),
+  _h = jQuery(window).height(),
+  aspect = _w / _h,
+  current_notch = 0
 jQuery(document).ready(function () {
-  
-   
-    jQuery(".wheelnav-outer-nav-title").css("display:none;");
-    reposition_screen()
+
+
+  jQuery(".wheelnav-outer-nav-title").css("display:none;");
+  reposition_screen()
 })
-function calibrateCircle(id,size,increment){
+
+function calibrateCircle(id, size, increment) {
   //console.log("calibrate",id,size,increment)
-  jQuery(id).css('width', size+increment)
-  jQuery(id).css('height', size+increment)
-  jQuery(id).css('margin-left', ((size/2)*-1)+increment)
-  jQuery(id).css('margin-top', ((size/2)*-1)+increment)
+  jQuery(id).css('width', size + increment)
+  jQuery(id).css('height', size + increment)
+  jQuery(id).css('margin-left', ((size / 2) * -1) + increment)
+  jQuery(id).css('margin-top', ((size / 2) * -1) + increment)
 
 }
 
-function pinSlider(){
- 
-    if (_w >= _h) {
-      orientation = 'vertical'
-      slider_left = (_w / 2) + ((_h * 0.8) / 2) + _w/10 + "px"
-      //console.log(slider_left);
-      
-      jQuery("#slider.ui-slider-vertical").css("left", slider_left)
-      jQuery("#slider.ui-slider-vertical").css("top", "19.9%")
+function pinSlider() {
 
-    } else {
-      orientation = 'horizontal'
-      slider_top = (_h / 2) + ((_w * 0.8) / 2) + 24 + "px"
-      jQuery("#slider.ui-slider-horizontal").css("top", slider_top)
-      jQuery("#slider.ui-slider-horizontal").css("left", "19.9%")
-    }
+  if (_w >= _h) {
+    orientation = 'vertical'
+    slider_left = (_w / 2) + ((_h * 0.8) / 2) + _w / 10 + "px"
+
+    //console.log(slider_left);
+
+    jQuery("#slider-wrap").css("left", slider_left)
+    jQuery("#slider-wrap").css("top", "19.9%")
+    jQuery("#slider-wrap").css("height", "67%")
+    jQuery("#slider-wrap").css("width", "auto")
+
+    jQuery("#up-arrow").addClass("up-arrow-vertical")
+    jQuery("#up-arrow").removeClass("up-arrow-horizontal")
+
+    jQuery("#down-arrow").addClass("down-arrow-vertical")
+    jQuery("#down-arrow").removeClass("down-arrow-horizontal")
+
+  } else {
+    orientation = 'horizontal'
+    slider_top = (_h / 2) + ((_w * 0.8) / 2) + 24 + "px"
+    jQuery("#slider-wrap").css("top", slider_top)
+    jQuery("#slider-wrap").css("left", "19.9%")
+    jQuery("#slider-wrap").css("width", "68%")
+    jQuery("#slider-wrap").css("height", "auto")
+
+    jQuery("#up-arrow").removeClass("up-arrow-vertical")
+    jQuery("#up-arrow").addClass("up-arrow-horizontal")
+
+    jQuery("#down-arrow").removeClass("down-arrow-vertical")
+    jQuery("#down-arrow").addClass("down-arrow-horizontal")
+
+  }
+}
+
+function positionProjector() {
+  var top = 50,
+      width = "20vw",
+      height = "20vw";
+
+  if (aspect > 1.15 && aspect < 1.5) {
+    top = ((aspect - 1) * 100) + "%";
+    width = "10vw"
+    height = "10vw"
+    fontSize = 1.2
+  } else if (aspect > 0.50 && aspect <= 1.15) {
+    top = "20%"
+    width = "15vw"
+    height = "15vw"
+    fontSize = 1
+  } else if (aspect >= 1.5) {
+    top = "50%";
+    width = '20vw'
+    height = '20vw'
+    fontSize = 1.5
+  }
+  jQuery("#featured-image-wrap").css("top", top)
+  jQuery("#featured-image-wrap").css("width", width)
+  jQuery("#featured-image-wrap").css("height", height)
+
+  jQuery("#featured-image-header").css("fontSize", fontSize+'em')
+  jQuery("#featured-image-footer").css("fontSize", fontSize*0.8+"em")
+   console.log("aspect",aspect,top);
+
+
 }
 
 
+function logoSize() {
 
-function reposition_screen () {
+  if (aspect > 1.75) {
+
+    //jQuery('#logo').css('width',(aspect*10)+"vh");
+
+
+  }
+}
+
+
+function reposition_screen() {
   jQuery('#main').css('height', '100vw')
   jQuery('#main').css('width', '100vh')
 
 
+
+
+
+
   setSlider()
-  pinSlider ();
- jQuery("#slider").css("visibility", "visible")
-  var  calibrate_elements = [
-    { id:".phi-centered",
-      size: 61.8,//use number, it needs to be divided
-      increment:"vw"
+  positionProjector()
+  pinSlider();
+  logoSize();
+  jQuery("#slider").css("visibility", "visible")
+
+
+  var calibrate_elements = [{
+      id: ".phi-centered",
+      size: 61.8, //use number, it needs to be divided
+      increment: "vw"
     },
-    { id:"#outer-ring",
-      size: 80,//use number, it needs to be divided
-      increment:"vw"
+    {
+      id: "#outer-ring",
+      size: 80, //use number, it needs to be divided
+      increment: "vw"
     },
-    { id:"#inner-ring",
-      size: 72,//use number, it needs to be divided
-      increment:"vw"
+    {
+      id: "#inner-ring",
+      size: 72, //use number, it needs to be divided
+      increment: "vw"
     },
-    { id:"#inner-subring",
-      size: 65,//use number, it needs to be divided
-      increment:"vw"
+    {
+      id: "#inner-subring",
+      size: 65, //use number, it needs to be divided
+      increment: "vw"
     }
-    
+
   ]
 
-  
-  for(var e=0; e<calibrate_elements.length;e++) {
+
+  for (var e = 0; e < calibrate_elements.length; e++) {
     var ob = calibrate_elements[e]
-    if(_w<540){
-      ob.size+=14;
+    if (_w < 540) {
+      ob.size += 14;
     }
-    
-      if (_w > _h) {
 
-        if(ob.increment == 'vw'){
-          ob.increment = 'vh' //because if landscape orientation needs to be measured to viewer height;
-        }
+    if (_w > _h) {
 
-        calibrateCircle(ob.id,ob.size,ob.increment)
-
-        jQuery(".slick-track").css('height', "61.8vh")
-
-      } else {
-      
-       calibrateCircle(ob.id,ob.size,ob.increment)
-       jQuery(".slick-track").css('height', "61.8vw")
+      if (ob.increment == 'vw') {
+        ob.increment = 'vh' //because if landscape orientation needs to be measured to viewer height;
       }
+
+      calibrateCircle(ob.id, ob.size, ob.increment)
+
+      jQuery(".slick-track").css('height', "61.8vh")
+
+    } else {
+
+      calibrateCircle(ob.id, ob.size, ob.increment)
+      jQuery(".slick-track").css('height', "61.8vw")
     }
+  }
 
 
   jQuery('#stars').css('height', '100vh')
@@ -99,45 +172,78 @@ function reposition_screen () {
 jQuery(window).resize(function () {
   _w = jQuery(window).width()
   _h = jQuery(window).height()
-  
+
   if (_w > _h) {
     increment = 'vh'
   } else {
     increment = 'vw'
   }
-   
+  aspect = _w / _h
   reposition_screen()
 
 })
 
-function setSlideContent(slide,id){
-   
-  if(posts[id] !=undefined){ 
-    jQuery("#slide"+slide+" h2").html(posts[+id].title)
-    jQuery("#slide" + slide + " section div.content").html(posts[ + id].content)
+function setSlideContent(slide, id) {
+
+  if (posts[id] != undefined) {
+    jQuery("#slide" + slide + " h2").html(posts[+id].title)
+    jQuery("#slide" + slide + " section div.content").html(posts[+id].content)
     $carousel.slick('slickGoTo', slide);
   } else {
     //console.log("post undefined", slide, id, posts)
   }
 }
 
+function setRelated(post) {
+  // console.log("related",post,post.cats, post.tags,posts)
+  related = {
+    'project': [],
+    'page': [],
+    'post': []
+  }
+  var this_post = null,
+    this_cat = null
+  for (var c = 0; c < post.cats.length; c++) {
+    //this_cat = categories[post.cats[c]].name
+    console.log("cat", post.cats[c], categories[post.cats[c]].name, categories[post.cats[c]].posts);
+    for (var p = 0; p < categories[post.cats[c]].posts.length; p++) {
+      this_post = categories[post.cats[c]].posts[p]
+      console.log(this_cat, "post", p, this_post, posts[this_post])
+    }
+  }
 
-function setContent(dest,object_id,object){
-    var slide = posts_nav[object_id]
-   // console.log("setContent",object_id,object)
-        if (posts[object_id] != undefined) {
-          page_title = posts[object_id].title + " | " + site_title;
-          document.title = page_title
 
 
-          jQuery("#featured-image").attr('src', posts[object_id].thumbnail_url['square-large'])
-          //console.log(posts[object_id].thumbnail_url['square-small']);
-         
 
-        }
-              setSlideContent(slide, object_id)
+}
 
-        /*
+
+
+function setContent(dest, object_id, object) {
+  var slide = posts_nav[object_id]
+  var featured_image = posts[object_id].featured_media;
+
+  console.log("setContent",object_id,object,posts[object_id])
+  if (posts[object_id] != undefined) {
+    console.log("selected post", posts[object_id])
+    page_title = posts[object_id].title + " | " + site_title;
+    document.title = page_title
+
+    setImage(posts[object_id].featured_media, "#featured-image", "square");
+
+    //jQuery("#featured-image-projected").attr('src', featured_image)
+    var video_path = uploads_path + "" + posts[object_id].featured_video.video_path;
+
+    
+    setVideo(posts[object_id].featured_video.video_id,"#bg-video")
+    setRelated(posts[object_id])
+
+    console.log("tags", posts[object_id].tags)
+
+  }
+  setSlideContent(slide, object_id)
+
+  /*
         for category wheels
         if(cat_children.length>0){
           for(c=0;c<cat_children.length;c++){
@@ -161,9 +267,8 @@ function setContent(dest,object_id,object){
       } else {
         
       }*/
-     
-} 
 
+}
 function displayPage(dest, posts) {
   var cards = ''
   // console.log(posts)
@@ -282,7 +387,7 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
     data[d].dest = dest;
     data[d].slice = outer_counter;
     data[d].notch = counter;
-    grandparent = counter,
+    grandparent = counter;
     data_nav.push(data[d]);
     slug_nav[data[d].slug] = counter;
 
@@ -454,7 +559,7 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = []
+var posts = {}, categories = {}, tags = {}, menus = {}, media = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = [], related = {}
 function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API
@@ -462,10 +567,10 @@ function getStaticJSON (route, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
    // local absolute path to the REST API + routing arguments
-  var endpoint = json_path+route+".json"
-console.log("endpoint",endpoint);
+  var json_data = json_path+route+".json"
+console.log("jsonfile",json_data);
   jQuery.ajax({
-    url: endpoint, // the url 
+    url: json_data, // the url
     data: '',
     success: function (data, textStatus, request) {
       //console.log(endpoint,data)
@@ -494,13 +599,19 @@ getStaticJSON('project', setPosts, '#projects') // get the projects
 getStaticJSON('categories',  setCategories, '#category-menu') // returns the children of a specified parent category
 
 // retrieves all categories for the development category
-getStaticJSON('tags', setTags, 'tags') // returns the tags
+getStaticJSON('tags', setTags, '#tags') // returns the tags
 
 // retrieves top menu
 getStaticJSON('menus', setMenus, '#main-menu') // returns the tags
 
+getStaticJSON('media', setMedia, '#media')
 
-
+function setMedia(data, dest) {
+  for(var m=0;m<data.length;m++){
+    media[data[m].id] = data[m].data;
+  }
+  console.log("media",media);
+}
 
 function setPosts (data, dest) { // special function for the any post type
 
@@ -552,7 +663,7 @@ if(Array.isArray(data)){
         break
     }
   }
-//console.log(type, posts)
+console.log(type, posts)
    
    
   return posts
@@ -629,7 +740,7 @@ function setCategories (data, dest) {
   for (var i = 0;i < data.length;i++) {//creates object of categories by key
     categories[data[i].id] = data[i]
   }
-   //console.log('categories', categories)
+   console.log('categories', categories)
   //displayCategories(dest, categories)
   return data
 }
@@ -637,8 +748,8 @@ function setTags (data, dest) {
   for (var i = 0; i < data.length; i++) {
     tags[data[i].id] = data[i]
   }
-  //  console.log('tags', tags)
-  displayTags(dest, tags)
+ console.log('tags', tags)
+ // displayTags(dest, tags)
   return data
 }
 
@@ -775,6 +886,509 @@ function draw() {
 
 initCanvas();
 setInterval(draw, 160);
+function setImage(id,dest,size){
+
+    if(media[id]!=undefined){
+    
+        var full_path = uploads_path + media[id].path // uploads path is in header
+        var src = media[id].file; // this defaults to the basic file
+    
+      
+        jQuery(dest).attr("alt", alt);
+
+
+        if(size == 'square'){ // if for a square area
+            src = getSquareVersion(media[id].meta.sizes,dest) // get the size version of the sq
+            console.log(src)
+        } else{
+            src = media[id].meta.sizes[size] // returns specified size
+        }
+
+        var alt = media[id].alt;
+        jQuery(dest).attr("src",full_path+src);
+        jQuery(dest).attr("alt", alt);
+        setMediaText(id,dest);
+        console.log("featured",src,alt);
+
+    }
+}
+function wrapTag(tag,str){
+    return "<"+tag+">"+str+"</"+tag+">"
+}
+function setMediaText(id,dest){
+    console.log("caption",media[id]);
+    jQuery(dest+"-title").html(media[id].title)
+    jQuery(dest+"-caption").html(media[id].caption)
+    jQuery(dest+"-description").html(media[id].desc)
+}
+function getSquareVersion(sizes,dest){
+
+   box = { // object getting the container dimensions
+           w: jQuery(dest).parent().width(),
+           h: jQuery(dest).parent().height()
+   }
+
+console.log("get rect", box)
+
+
+ 
+    if (box.w > 1280 || box.h > 1280) { //over 1500 use large
+        return sizes['sq-lg']
+    } else if ((box.w > 250 || box.h > 250) && (box.w <= 1280 || box.h <= 1280)) {
+        return sizes['sq-med']
+    } else {
+        return sizes['sq-sm']
+    }
+
+
+} 
+function setVideo(id,dest){
+    
+
+    if (media[id] != undefined) {
+
+        var full_path = uploads_path + media[id].path // uploads path is in header
+        var src = media[id].file; // this defaults to the basic file
+
+        var video = jQuery(dest+' video source').attr("src", full_path+src);
+        jQuery(dest).css("display", "block");
+        console.log("unhide video player")
+
+        jQuery(dest + ' video')[0].load();
+        video = jQuery(dest + ' video source').attr("src", full_path + src);
+    } else {
+        console.log("no video, hide player")
+        jQuery(dest).css("display", "none");
+    }
+}
+/*
+window.onload = init;
+console.ward = function() {}; // what warnings?
+
+function init() {
+  var root = new THREERoot({
+    createCameraControls: !true,
+    antialias: (window.devicePixelRatio === 1),
+    fov: 80
+  });
+
+  root.renderer.setClearColor(0x000000, 0);
+  root.renderer.setPixelRatio(window.devicePixelRatio || 1);
+  root.camera.position.set(0, 0, 60);
+
+  var width = 100;
+  var height = 60;
+
+  var slide = new Slide(width, height, 'out');
+	var l1 = new THREE.ImageLoader();
+	l1.setCrossOrigin('Anonymous');
+  slide.setImage(l1.load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/winter.jpg'));
+  root.scene.add(slide);
+
+  var slide2 = new Slide(width, height, 'in');
+  var l2 = new THREE.ImageLoader();
+	l2.setCrossOrigin('Anonymous');
+	slide2.setImage(l2.load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/spring.jpg'));
+  root.scene.add(slide2);
+
+  var tl = new TimelineMax({repeat:-1, repeatDelay:1.0, yoyo: true});
+
+  tl.add(slide.transition(), 0);
+  tl.add(slide2.transition(), 0);
+
+  createTweenScrubber(tl);
+
+  window.addEventListener('keyup', function(e) {
+    if (e.keyCode === 80) {
+      tl.paused(!tl.paused());
+    }
+  });
+}
+
+////////////////////
+// CLASSES
+////////////////////
+
+function Slide(width, height, animationPhase) {
+  var plane = new THREE.PlaneGeometry(width, height, width * 2, height * 2);
+
+  THREE.BAS.Utils.separateFaces(plane);
+
+  var geometry = new SlideGeometry(plane);
+
+  geometry.bufferUVs();
+
+  var aAnimation = geometry.createAttribute('aAnimation', 2);
+  var aStartPosition = geometry.createAttribute('aStartPosition', 3);
+  var aControl0 = geometry.createAttribute('aControl0', 3);
+  var aControl1 = geometry.createAttribute('aControl1', 3);
+  var aEndPosition = geometry.createAttribute('aEndPosition', 3);
+
+  var i, i2, i3, i4, v;
+
+  var minDuration = 0.8;
+  var maxDuration = 1.2;
+  var maxDelayX = 0.9;
+  var maxDelayY = 0.125;
+  var stretch = 0.11;
+
+  this.totalDuration = maxDuration + maxDelayX + maxDelayY + stretch;
+
+  var startPosition = new THREE.Vector3();
+  var control0 = new THREE.Vector3();
+  var control1 = new THREE.Vector3();
+  var endPosition = new THREE.Vector3();
+
+  var tempPoint = new THREE.Vector3();
+
+  function getControlPoint0(centroid) {
+    var signY = Math.sign(centroid.y);
+
+    tempPoint.x = THREE.Math.randFloat(0.1, 0.3) * 50;
+    tempPoint.y = signY * THREE.Math.randFloat(0.1, 0.3) * 70;
+    tempPoint.z = THREE.Math.randFloatSpread(20);
+
+    return tempPoint;
+  }
+
+  function getControlPoint1(centroid) {
+    var signY = Math.sign(centroid.y);
+
+    tempPoint.x = THREE.Math.randFloat(0.3, 0.6) * 50;
+    tempPoint.y = -signY * THREE.Math.randFloat(0.3, 0.6) * 70;
+    tempPoint.z = THREE.Math.randFloatSpread(20);
+
+    return tempPoint;
+  }
+
+  for (i = 0, i2 = 0, i3 = 0, i4 = 0; i < geometry.faceCount; i++, i2 += 6, i3 += 9, i4 += 12) {
+    var face = plane.faces[i];
+    var centroid = THREE.BAS.Utils.computeCentroid(plane, face);
+
+    // animation
+    var duration = THREE.Math.randFloat(minDuration, maxDuration);
+    var delayX = THREE.Math.mapLinear(centroid.x, -width * 0.5, width * 0.5, 0.0, maxDelayX);
+    var delayY;
+
+    if (animationPhase === 'in') {
+      delayY = THREE.Math.mapLinear(Math.abs(centroid.y), 0, height * 0.5, 0.0, maxDelayY)
+    }
+    else {
+      delayY = THREE.Math.mapLinear(Math.abs(centroid.y), 0, height * 0.5, maxDelayY, 0.0)
+    }
+
+    for (v = 0; v < 6; v += 2) {
+      aAnimation.array[i2 + v]     = delayX + delayY + (Math.random() * stretch * duration);
+      aAnimation.array[i2 + v + 1] = duration;
+    }
+
+    // positions
+
+    endPosition.copy(centroid);
+    startPosition.copy(centroid);
+
+    if (animationPhase === 'in') {
+      control0.copy(centroid).sub(getControlPoint0(centroid));
+      control1.copy(centroid).sub(getControlPoint1(centroid));
+    }
+    else { // out
+      control0.copy(centroid).add(getControlPoint0(centroid));
+      control1.copy(centroid).add(getControlPoint1(centroid));
+    }
+
+    for (v = 0; v < 9; v += 3) {
+      aStartPosition.array[i3 + v]     = startPosition.x;
+      aStartPosition.array[i3 + v + 1] = startPosition.y;
+      aStartPosition.array[i3 + v + 2] = startPosition.z;
+
+      aControl0.array[i3 + v]     = control0.x;
+      aControl0.array[i3 + v + 1] = control0.y;
+      aControl0.array[i3 + v + 2] = control0.z;
+
+      aControl1.array[i3 + v]     = control1.x;
+      aControl1.array[i3 + v + 1] = control1.y;
+      aControl1.array[i3 + v + 2] = control1.z;
+
+      aEndPosition.array[i3 + v]     = endPosition.x;
+      aEndPosition.array[i3 + v + 1] = endPosition.y;
+      aEndPosition.array[i3 + v + 2] = endPosition.z;
+    }
+  }
+
+  var material = new THREE.BAS.BasicAnimationMaterial(
+    {
+      shading: THREE.FlatShading,
+      side: THREE.DoubleSide,
+      uniforms: {
+        uTime: {type: 'f', value: 0}
+      },
+      shaderFunctions: [
+        THREE.BAS.ShaderChunk['cubic_bezier'],
+        //THREE.BAS.ShaderChunk[(animationPhase === 'in' ? 'ease_out_cubic' : 'ease_in_cubic')],
+        THREE.BAS.ShaderChunk['ease_in_out_cubic'],
+        THREE.BAS.ShaderChunk['quaternion_rotation']
+      ],
+      shaderParameters: [
+        'uniform float uTime;',
+        'attribute vec2 aAnimation;',
+        'attribute vec3 aStartPosition;',
+        'attribute vec3 aControl0;',
+        'attribute vec3 aControl1;',
+        'attribute vec3 aEndPosition;',
+      ],
+      shaderVertexInit: [
+        'float tDelay = aAnimation.x;',
+        'float tDuration = aAnimation.y;',
+        'float tTime = clamp(uTime - tDelay, 0.0, tDuration);',
+        'float tProgress = ease(tTime, 0.0, 1.0, tDuration);'
+        //'float tProgress = tTime / tDuration;'
+      ],
+      shaderTransformPosition: [
+        (animationPhase === 'in' ? 'transformed *= tProgress;' : 'transformed *= 1.0 - tProgress;'),
+        'transformed += cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, tProgress);'
+      ]
+    },
+    {
+      map: new THREE.Texture(),
+    }
+  );
+
+  THREE.Mesh.call(this, geometry, material);
+
+  this.frustumCulled = false;
+}
+Slide.prototype = Object.create(THREE.Mesh.prototype);
+Slide.prototype.constructor = Slide;
+Object.defineProperty(Slide.prototype, 'time', {
+  get: function () {
+    return this.material.uniforms['uTime'].value;
+  },
+  set: function (v) {
+    this.material.uniforms['uTime'].value = v;
+  }
+});
+
+Slide.prototype.setImage = function(image) {
+  this.material.uniforms.map.value.image = image;
+  this.material.uniforms.map.value.needsUpdate = true;
+};
+
+Slide.prototype.transition = function() {
+  return TweenMax.fromTo(this, 3.0, {time:0.0}, {time:this.totalDuration, ease:Power0.easeInOut});
+};
+
+
+function SlideGeometry(model) {
+  THREE.BAS.ModelBufferGeometry.call(this, model);
+}
+SlideGeometry.prototype = Object.create(THREE.BAS.ModelBufferGeometry.prototype);
+SlideGeometry.prototype.constructor = SlideGeometry;
+SlideGeometry.prototype.bufferPositions = function () {
+  var positionBuffer = this.createAttribute('position', 3).array;
+
+  for (var i = 0; i < this.faceCount; i++) {
+    var face = this.modelGeometry.faces[i];
+    var centroid = THREE.BAS.Utils.computeCentroid(this.modelGeometry, face);
+
+    var a = this.modelGeometry.vertices[face.a];
+    var b = this.modelGeometry.vertices[face.b];
+    var c = this.modelGeometry.vertices[face.c];
+
+    positionBuffer[face.a * 3]     = a.x - centroid.x;
+    positionBuffer[face.a * 3 + 1] = a.y - centroid.y;
+    positionBuffer[face.a * 3 + 2] = a.z - centroid.z;
+
+    positionBuffer[face.b * 3]     = b.x - centroid.x;
+    positionBuffer[face.b * 3 + 1] = b.y - centroid.y;
+    positionBuffer[face.b * 3 + 2] = b.z - centroid.z;
+
+    positionBuffer[face.c * 3]     = c.x - centroid.x;
+    positionBuffer[face.c * 3 + 1] = c.y - centroid.y;
+    positionBuffer[face.c * 3 + 2] = c.z - centroid.z;
+  }
+};
+
+
+function THREERoot(params) {
+  params = utils.extend({
+    fov: 60,
+    zNear: 10,
+    zFar: 100000,
+
+    createCameraControls: true
+  }, params);
+
+  this.renderer = new THREE.WebGLRenderer({
+    antialias: params.antialias,
+    alpha: true
+  });
+  this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  document.getElementById('three-container').appendChild(this.renderer.domElement);
+
+  this.camera = new THREE.PerspectiveCamera(
+    params.fov,
+    window.innerWidth / window.innerHeight,
+    params.zNear,
+    params.zfar
+  );
+
+  this.scene = new THREE.Scene();
+
+  if (params.createCameraControls) {
+    this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+  }
+
+  this.resize = this.resize.bind(this);
+  this.tick = this.tick.bind(this);
+
+  this.resize();
+  this.tick();
+
+  window.addEventListener('resize', this.resize, false);
+}
+THREERoot.prototype = {
+  tick: function () {
+    this.update();
+    this.render();
+    requestAnimationFrame(this.tick);
+  },
+  update: function () {
+    this.controls && this.controls.update();
+  },
+  render: function () {
+    this.renderer.render(this.scene, this.camera);
+  },
+  resize: function () {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+};
+
+////////////////////
+// UTILS
+////////////////////
+
+var utils = {
+  extend: function (dst, src) {
+    for (var key in src) {
+      dst[key] = src[key];
+    }
+
+    return dst;
+  },
+  randSign: function () {
+    return Math.random() > 0.5 ? 1 : -1;
+  },
+  ease: function (ease, t, b, c, d) {
+    return b + ease.getRatio(t / d) * c;
+  },
+  fibSpherePoint: (function () {
+    var vec = {x: 0, y: 0, z: 0};
+    var G = Math.PI * (3 - Math.sqrt(5));
+
+    return function (i, n, radius) {
+      var step = 2.0 / n;
+      var r, phi;
+
+      vec.y = i * step - 1 + (step * 0.5);
+      r = Math.sqrt(1 - vec.y * vec.y);
+      phi = i * G;
+      vec.x = Math.cos(phi) * r;
+      vec.z = Math.sin(phi) * r;
+
+      radius = radius || 1;
+
+      vec.x *= radius;
+      vec.y *= radius;
+      vec.z *= radius;
+
+      return vec;
+    }
+  })(),
+  spherePoint: (function () {
+    return function (u, v) {
+      u === undefined && (u = Math.random());
+      v === undefined && (v = Math.random());
+
+      var theta = 2 * Math.PI * u;
+      var phi = Math.acos(2 * v - 1);
+
+      var vec = {};
+      vec.x = (Math.sin(phi) * Math.cos(theta));
+      vec.y = (Math.sin(phi) * Math.sin(theta));
+      vec.z = (Math.cos(phi));
+
+      return vec;
+    }
+  })()
+};
+
+function createTweenScrubber(tween, seekSpeed) {
+  seekSpeed = seekSpeed || 0.001;
+
+  function stop() {
+    TweenMax.to(tween, 1, {timeScale:0});
+  }
+
+  function resume() {
+    TweenMax.to(tween, 1, {timeScale:1});
+  }
+
+  function seek(dx) {
+    var progress = tween.progress();
+    var p = THREE.Math.clamp((progress + (dx * seekSpeed)), 0, 1);
+
+    tween.progress(p);
+  }
+
+  var _cx = 0;
+
+  // desktop
+  var mouseDown = false;
+  document.body.style.cursor = 'pointer';
+
+  window.addEventListener('mousedown', function(e) {
+    mouseDown = true;
+    document.body.style.cursor = 'ew-resize';
+    _cx = e.clientX;
+    stop();
+  });
+  window.addEventListener('mouseup', function(e) {
+    mouseDown = false;
+    document.body.style.cursor = 'pointer';
+    resume();
+  });
+  window.addEventListener('mousemove', function(e) {
+    if (mouseDown === true) {
+      var cx = e.clientX;
+      var dx = cx - _cx;
+      _cx = cx;
+
+      seek(dx);
+    }
+  });
+  // mobile
+  window.addEventListener('touchstart', function(e) {
+    _cx = e.touches[0].clientX;
+    stop();
+    e.preventDefault();
+  });
+  window.addEventListener('touchend', function(e) {
+    resume();
+    e.preventDefault();
+  });
+  window.addEventListener('touchmove', function(e) {
+    var cx = e.touches[0].clientX;
+    var dx = cx - _cx;
+    _cx = cx;
+
+    seek(dx);
+    e.preventDefault();
+  });
+}
+*/
 var gotoslide = function(slide){
  // console.log("click on slick dot ", slide);
   setSlideContent(notch, linear_nav[slide].object_id)
@@ -882,7 +1496,10 @@ function setSlider(){
        
      });
    
-     
+     jQuery('.slick-dots li button').on('click', function (e) {
+   e.stopPropagation(); // use this
+  //console.log("slick dot clicked")
+});
  
  
  }
@@ -941,6 +1558,41 @@ function setSlider(){
     return false;
   });
   */
+
+  $('div.arrow').on('click', function (e) {
+    e.stopPropagation(); // use this
+    var id = $(this).attr("id");
+    
+    var next_notch = current_notch;
+
+    if(id == 'down-arrow'){
+      
+      if(next_notch == 0){
+        next_notch = linear_nav.length-1
+      } else {
+        next_notch--
+      }
+      
+      
+      
+    } else if(id == 'up-arrow'){
+
+
+
+       if (next_notch == linear_nav.length-1) {
+         next_notch = 0
+       } else {
+         next_notch++
+       }
+    }
+    console.log('arrow_next',next_notch)
+    setSliderNotch(next_notch)
+
+
+
+
+  });
+
 })(jQuery)
  
 
@@ -958,8 +1610,10 @@ function setSlider(){
       triggerWheelNav(notch)
        //selectNavItem(notch);
     }
+    current_notch = notch;
   // document.title = linear_nav[notch].title+" | "+site_title
  }
+
 
 // Declare three.js variables
 var camera, scene, renderer, stars = []
@@ -1208,11 +1862,12 @@ function triggerWheelNav(notch) {
 
 
 
-    //console.log("last-dest: "+ last_dest, "this-dest:"+this_dest)
+    
 
     if (this_dest == 'outer-nav') {
         if (wheels["inner-nav"] != undefined) {
             wheels[this_dest].navigateWheel(this_notch.slice)
+
         }
         popAWheelie("inner-nav")
         if (this_notch.children.length > 0) {
@@ -1228,9 +1883,8 @@ function triggerWheelNav(notch) {
 
     } else if (this_dest == 'inner-nav') {
 
-         
-
-
+        
+        console.log(last_outer_notch, last_inner_notch,notch,this_notch)
         if (last_outer_notch != this_notch.parent) { //if we go backwards we need to change the parent.
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice) //dialback the outer ring to its slice
             makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
@@ -1238,10 +1892,11 @@ function triggerWheelNav(notch) {
             last_outer_notch = this_notch.parent
 
         } else {
+
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice)
             if (wheels["inner-nav"] != undefined) { //if the inner nav exists
-                console.log('same parent')
-
+               
+            console.log(' != undefined')
                 wheels[this_dest].navigateWheel(this_notch.slice)
                 if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
                     wheels["inner-subnav"].raphael.remove() //destroy it
@@ -1250,7 +1905,7 @@ function triggerWheelNav(notch) {
 
             } else {
                
-
+                      console.log('  undefined')
                 makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)
                 wheels[this_dest].navigateWheel(this_notch.slice)
             }

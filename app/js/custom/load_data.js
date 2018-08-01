@@ -3,7 +3,7 @@
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = []
+var posts = {}, categories = {}, tags = {}, menus = {}, media = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = [], related = {}
 function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API
@@ -11,10 +11,10 @@ function getStaticJSON (route, callback, dest) {
   // Pass in the name of a function and it will return the data to that function
 
    // local absolute path to the REST API + routing arguments
-  var endpoint = json_path+route+".json"
-console.log("endpoint",endpoint);
+  var json_data = json_path+route+".json"
+console.log("jsonfile",json_data);
   jQuery.ajax({
-    url: endpoint, // the url 
+    url: json_data, // the url
     data: '',
     success: function (data, textStatus, request) {
       //console.log(endpoint,data)
@@ -43,13 +43,19 @@ getStaticJSON('project', setPosts, '#projects') // get the projects
 getStaticJSON('categories',  setCategories, '#category-menu') // returns the children of a specified parent category
 
 // retrieves all categories for the development category
-getStaticJSON('tags', setTags, 'tags') // returns the tags
+getStaticJSON('tags', setTags, '#tags') // returns the tags
 
 // retrieves top menu
 getStaticJSON('menus', setMenus, '#main-menu') // returns the tags
 
+getStaticJSON('media', setMedia, '#media')
 
-
+function setMedia(data, dest) {
+  for(var m=0;m<data.length;m++){
+    media[data[m].id] = data[m].data;
+  }
+  console.log("media",media);
+}
 
 function setPosts (data, dest) { // special function for the any post type
 
@@ -101,7 +107,7 @@ if(Array.isArray(data)){
         break
     }
   }
-//console.log(type, posts)
+console.log(type, posts)
    
    
   return posts
@@ -178,7 +184,7 @@ function setCategories (data, dest) {
   for (var i = 0;i < data.length;i++) {//creates object of categories by key
     categories[data[i].id] = data[i]
   }
-   //console.log('categories', categories)
+   console.log('categories', categories)
   //displayCategories(dest, categories)
   return data
 }
@@ -186,8 +192,8 @@ function setTags (data, dest) {
   for (var i = 0; i < data.length; i++) {
     tags[data[i].id] = data[i]
   }
-  //  console.log('tags', tags)
-  displayTags(dest, tags)
+ console.log('tags', tags)
+ // displayTags(dest, tags)
   return data
 }
 

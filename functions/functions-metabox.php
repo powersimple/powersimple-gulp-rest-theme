@@ -82,7 +82,33 @@
     }
     add_filter( 'rwmb_meta_boxes', 'ps_metabox' );
             
+function selectScreenImage( $meta_boxes ) {
+	$prefix = '';
 
+	$meta_boxes[] = array(
+		'id' => 'screen_image',
+		'title' => esc_html__( 'Screen Image', 'metabox-online-generator' ),
+		'post_types' => array( 'post', 'page','project' ),
+		'context' => 'advanced',
+		'priority' => 'default',
+		'autosave' => false,
+		'fields' => array(
+			array(
+				'id' => 'screen_image',
+				'type' => 'image_advanced',
+				'name' => esc_html__( 'Screen Image', 'metabox-online-generator' ),
+				'desc' => esc_html__( 'Appears in Screen', 'metabox-online-generator' ),
+				'force_delete' => false,
+				'max_file_uploads' => '10',
+				'options' => array(),
+				'attributes' => array(),
+			),
+		),
+	);
+
+	return $meta_boxes;
+}
+add_filter( 'rwmb_meta_boxes', 'selectScreenImage' );
 
 
     

@@ -2,14 +2,20 @@
 
 
 
-/*WP REST API CUSTOM ENDPOINT. RETURNS SPECIFIC THUMBNAIL URL*/ 
+/*WP REST API CUSTOM ENDPOINTS. RETURNS SPECIFIC THUMBNAIL URL*/ 
 
+
+/*
+
+	TAGS
+
+*/
 add_action( 'rest_api_init', 'register_posts_by_tag' );
  
 function register_posts_by_tag() {
  
-	// register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
-	register_rest_field( 'tag', 'tag_posts', array(
+
+	register_rest_field( 'tag', 'posts', array(
 		'get_callback' => 'get_posts_by_tag',
 		'schema' => null,
 		)
@@ -19,7 +25,7 @@ function register_posts_by_tag() {
 function get_posts_by_tag( $object ) {
 
 	$args = array(
-    'post_type'      => 'project', 
+    'post_type'      => array('project','post','page'), 
     'posts_per_page' => -1,
     'post_status'    => 'publish',
     'fields' => 'ids',
@@ -35,18 +41,32 @@ function get_posts_by_tag( $object ) {
 		
 	return get_posts($args); 
 }
+function getPostsByTag(){
+	$all_tags = get_tags();
+	$tag_id = array();
+	foreach( $all_tags as $tag ) {
+		$tag_id[] = $tag->term_id;
+	}
+
+	$args = array(
+		'numberposts' => 5,
+		'tag__in' => $tag_id
+	);
+	$myposts = get_posts( $args );
+}
 
 
 /*
-		/project info endpoint
-*/
 
+	CATEGORIES
+
+*/
 
 add_action( 'rest_api_init', 'register_posts_by_category' );
  
 function register_posts_by_category() {
  
-	register_rest_field( 'category', 'category_posts', array(
+	register_rest_field( 'category', 'posts', array(
 		'get_callback' => 'get_posts_by_category',
 		'schema' => null,
 		)
@@ -82,7 +102,7 @@ function get_cat_children( $object ) {// this returns the child categories to th
 function get_posts_by_category( $object ) {
 
 	$args = array(
-    'post_type'      => 'project', 
+    'post_type'      => array('post','page','project'), // where post types are represented
     'posts_per_page' => -1,
     'post_status'    => 'publish',
     'fields' => 'ids',
@@ -99,6 +119,10 @@ function get_posts_by_category( $object ) {
 	return get_posts($args); 
 }
 
+/*
+	CUSTOM MENU ROUTING
+*/
+
 function get_menu() {
     # Change 'menu' to your own navigation slug.
     return wp_get_nav_menu_items('menu');
@@ -107,16 +131,91 @@ function get_menu() {
 add_action( 'rest_api_init', function () {
         register_rest_route( 'myroutes', '/menu', array(
         'methods' => 'GET',
-        'callback' => 'get_menu',
+		'callback' => 'get_menu',
+		'schema' => null
     ) );
 } );
 
-add_action( 'rest_api_init', 'register_thumbnail_url' );
  
+
+/* 
+	media
+*/
+add_action( 'rest_api_init', 'register_media_data' );
+ function register_media_data() {
+ 
+
+	register_rest_field( 'attachment', 'data', array(//THE ROUTE IS MEDIA/the type is attachment
+		'get_callback' => 'get_media_data'
+
+		)
+	);
+}
+ 
+function get_media_data( $object ) {
+	$data = array();   
+	$url = wp_upload_dir();
+	$upload_path = $url['baseurl']."/";
+	$file_path = str_replace($upload_path,'',wp_get_attachment_url($object['id']));
+	$file = basename($file_path);
+	$path = str_replace($file,"",$file_path);
+	$mime = get_post_mime_type( $object['id'] );
+	$meta  = (array) wp_get_attachment_metadata( $object['id'],true);
+
+
+	$meta_data = array();
+	/*
+		HERE IS A STUPID FUCKING WORKAROUND THAT SHOULD NOT BE 
+		The meta data properties are only accessible inside a loop for some dumb reason.
+	*/
+	if(strpos($mime,'mage/') && !strpos($mime,'svg')){ // the i is left of so the strpos returns a postive value
+		$meta_data = array();
+		foreach($meta as $key => $value){
+			if($key == 'width'){
+				$meta_data['w'] = $value;
+			} else if($key == 'height'){
+				$meta_data['h'] = $value;
+			} else if($key == 'sizes'){
+				$meta_data['sizes'] = array();
+				foreach($meta[$key] as $size_name => $props){
+					$meta_data['sizes'][$size_name] = $meta[$key][$size_name]['file'];
+				}
+			}
+
+			//
+		}
+	} else {
+		//let non image mimetypes pass their full metadata
+		$meta_data = $meta;
+	}
+	$data = array(
+	
+		'alt' => get_post_meta($object['id'],"_wp_attachment_image_alt",true),
+		'caption' => wp_get_attachment_caption($object['id']),
+		'title'=> get_the_title($object['id']),
+		'desc' => wpautop(get_the_content($object['id'])),
+		'path'=> $path,
+		'file' => $file,
+		'mime' => $mime,
+		'meta' => $meta_data
+		
+	);
+
+ return $data;//from functions.php,
+
+}
+
+
+
+
+/* 
+	IMAGES
+*/
+add_action( 'rest_api_init', 'register_thumbnail_url' );
 function register_thumbnail_url() {
  
-	// register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
-	register_rest_field( ['project','page'], 'thumbnail_url', array(
+
+	register_rest_field( ['project','page','post'], 'thumbnail_url', array(
 		'get_callback' => 'get_thumbnail_url',
 		'schema' => null,
 		)
@@ -124,20 +223,20 @@ function register_thumbnail_url() {
 }
  
 function get_thumbnail_url( $object ) {
+	
  return getThumbnailVersions($object['featured_media']);//from functions.php,
 }
 
 
-/*
-		/project info endpoint
+/* 
+	IMAGE VERSIONS
 */
-
 
 add_action( 'rest_api_init', 'register_thumbnail_url_versions' );
  function register_thumbnail_url_versions() {
  
-	// register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
-	register_rest_field( 'project', 'thumbnail_versions', array(
+
+	register_rest_field( array('project','page','post'), 'thumbnail_versions', array(
 		'get_callback' => 'get_thumbnail_versions',
 		'schema' => null,
 		)
@@ -148,16 +247,39 @@ function get_thumbnail_versions( $object ) {
 
  return getThumbnailVersions( $object['id'] );//from functions.php,
 }
-/*
-		/project info endpoint
-*/
 
+/*
+	Screen Images
+
+*/
+add_action( 'rest_api_init', 'register_screen_images' );
+ function register_screen_images() {
+ 
+
+	register_rest_field( array('project','page','post'), 'screen_images', array(
+		'get_callback' => 'get_screen_images'
+
+		)
+	);
+}
+ 
+function get_screen_images( $object ) {
+
+ return get_post_meta($object['id'],"screen_image") ;//from functions.php,
+}
+
+
+
+
+/* 
+	FEATURED VIDEO
+*/
 
 add_action( 'rest_api_init', 'register_featured_video' );
  function register_featured_video() {
  
-	// register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
-	register_rest_field( 'project', 'featured_video', array(
+
+	register_rest_field( array('project','post','page'), 'featured_video', array(
 		'get_callback' => 'get_featured_video',
 		'schema' => null,
 		)
@@ -168,11 +290,11 @@ function get_featured_video( $object ) {
 	$post_id = $object['id'];
 	$video_id = get_post_meta($post_id,"featured_video",true);
 	$url = wp_upload_dir();
-	$path = $url['baseurl']."/".get_post_meta($video_id,"_wp_attached_file",true);
+	$path = $url['baseurl']."/";
 		
 		 
 		$video = array(
-			"video_path"=>$path,
+			"video_id"=>$video_id,
 			"video_url"=>get_post_meta($post_id,"featured_video_url",true),
 			"video_aspect"=>get_post_meta($post_id,"video_aspect",true),
 		);
@@ -180,48 +302,66 @@ function get_featured_video( $object ) {
 
 	return @$video;//from functions.php,
 }
+
 /*
-		/project info endpoint
+	REGISTER POST CATEGORIES		
 */
 
+add_action( 'rest_api_init', 'register_post_cats' );
 
+function register_post_cats() {
 
-function getPostsByTag(){
-	$all_tags = get_tags();
-	$tag_id = array();
-	foreach( $all_tags as $tag ) {
-		$tag_id[] = $tag->term_id;
-	}
-
-	$args = array(
-		'numberposts' => 5,
-		'tag__in' => $tag_id
+		register_rest_field( array('project','post','page'), 'cats', array(
+			'get_callback' => 'get_post_cats',
+			'schema' => null,
+		)
 	);
-	$myposts = get_posts( $args );
 }
+function get_post_cats($object){
+	$post_id = $object['id'];
+	return wp_get_post_categories( $post_id,array( 'fields' => 'ids' ));
+}
+
+/*
+	REGISTER POST TAGS		
+*/
+add_action( 'rest_api_init', 'register_post_tags' );
+
+function register_post_tags() {
+
+		register_rest_field( array('project','post','page'), 'tags', array(
+			'get_callback' => 'get_post_tags',
+			'schema' => null,
+		)
+	);
+}
+function get_post_tags($object){
+	$post_id = $object['id'];
+	return wp_get_post_tags( $post_id,array( 'fields' => 'ids' ));
+}
+
 
 
 /*WP REST API CUSTOM ENDPOINT. RETURNS SPECIFIC OBJECT OF PROJECT INFO*/ 
 
-		add_action( 'rest_api_init', 'register_project_info' );
+	add_action( 'rest_api_init', 'register_project_info' );
 		
-		function register_project_info() {
+	function register_project_info() {
 		
 		register_rest_field( 'project', 'project_info', array(
 			'get_callback' => 'get_project_info',
 			'schema' => null,
 			)
 		);
-		}
+	}
 		
 		function get_project_info( $object ) {
-			$post_id = $object['id'];
+		$post_id = $object['id'];
 			$project_info = array(
-				"title"=>get_post_meta($post_id,"psmetabox-project_title",true),
-				"url"=>get_post_meta($post_id,"psmetabox-project_url",true),
-				"client"=>get_post_meta($post_id,"psmetabox-project_client",true),
-				"agency"=>get_post_meta($post_id,"psmetabox-agency",true),
-				"tags" => wp_get_post_tags( $post_id,array( 'fields' => 'ids' ) )
+				"title"=>get_post_meta($post_id,"project_title",true),
+				"url"=>get_post_meta($post_id,"project_url",true),
+				"client"=>get_post_meta($post_id,"project_client",true),
+				"agency"=>get_post_meta($post_id,"agency",true)
 				
 			);
 
@@ -234,196 +374,4 @@ function getPostsByTag(){
 */
 
 
-
-function get_portfolio_categories(){
-	
-	$portfolios = get_portfolios();
-	$portfolio_categories = array();
-	$portfolio_categories["all"] = array();
-	
-	foreach($portfolios as $key => $portfolio){
-		extract( $portfolio);
-	
-		 $categories = get_the_category( $id);
-		// $portfolio['portfolioship_level'] = get_post_meta($id,"portfolioship_level",true);
-		
-	
-		foreach ( $categories  as $key => $value ) {
-			
-			$value = (array) $value;
-		  extract($value);
-		 	 
-			 if(!array_key_exists($slug,$portfolio_categories)){
-			 	$portfolio_categories[$slug]  = array();
-             }
-             
-			 $portfolioship_level=
-			array_push($portfolio_categories[$slug],$portfolio);
-            //var_dump($value);
-           // print "<BR><BR>";
-			
-		}
-		
-		
-	}
-    //	var_dump($portfolio_categories);
-
-    return $portfolio_categories;
-	
-	
-	
-}
-
-function display_portfolio_links($portfolios){
-	
-		ob_start();
-		print '<ul class="portfolio-category">';
-	
-	
-		foreach($portfolios as $key => $value){
-			extract((array) $value);
-				print $key;
-			$portfolio_url = get_post_meta($id,"portfolio_url",true);
-				print "<li class='portfolio'><a href=\"$portfolio_url\" target=\"_blank\">
-				<img src=\"$src\" title\"$title\">$title</a>
-				<span class=\"portfolioship-level\">$portfolioship_level</span>
-				</li>
-				
-				";
-		}
-		print "<ul>";
-	
-	return ob_get_clean();
-}
-function display_portfolio_categories($portfolios){
-	
-		ob_start();
-		print '<ul class="portfolio-category">';
-	
-		foreach(@$portfolios as $key => $value){
-			
-			extract((array) $value);
-			
-				print "<li class='portfolio'><a href=\"$link\">
-				<img src=\"$src\" title\"$title\"></a>
-				
-				</li>
-				";
-		}
-		print "<ul>";
-	
-	return ob_get_clean();
-}
-function display_portfolios($cols,$use="thumbnail"){
-	$padding = $cols-1;
-	$width = intval((100-($cols+1))/$cols);
-	
-	
-	$portfolios = get_portfolios($use);
-	ob_start();
-		print "<ul style='padding-left:1%'>";
-		foreach($portfolios as $key => $value){
-			extract($value);
-				print "<li class='portfolio' style='margin-right:1%;width:$width%;padding-bottom:$width%;' title='$title'><a href=\"$link\">
-				<img src=\"$src\" title\"$title\"></a></li>
-				";
-		}
-		print "<ul>";
-	return ob_get_clean();
-}
-function get_portfolio_media($slug){
-	$attachments = array();
-	$attachments['videos'] = array();
-	ob_start();
-	 $args = array(
-      'post_type' => 'video',
-      "category_media" => $slug,
-      'post_status' => 'publish',
-	  'orderby' => 'menu_order',
-	  'order' => 'ASC'
-    );
-	
-	$videos = get_posts($args);
-	foreach ($videos as $key =>  $value){
-		
-		extract( (array) $value);
-		$post_fields = array();
-		$post_fields['ID'] = $ID;
-		$post_fields['post_title'] = $post_title;
-		$post_fields['post_content'] = $post_content;
-		$post_fields['video_url'] = get_post_meta($ID,"video_url",true);
-		
-		$img = wp_get_attachment_image_src( get_post_thumbnail_id( $ID), "thumb");
-		$post_fields['src'] = $img[0];
-		array_push($attachments['videos'],$post_fields);
-	}
-	
-	
-	
-	
-	 $ids = mcm_get_attachment_ids(array("category"=>"$slug"));
-	 //var_dump($ids);
-	$attachments['case_studies'] = array();
-	$attachments['white_papers'] = array();
-	$attachments['brochures'] = array();
-	$upload_dir = wp_upload_dir();
-	//var_dump($upload_dir);
-	$upload_path = $upload_dir['baseurl'];
-	foreach(explode(",",$ids) as $key=>$value){ 
-		$post_fields = array();
-		$this_post = get_post($value,ARRAY_A);
-		$post_fields['ID'] = $value;
-		$post_fields['post_title'] = $this_post['post_title'];
-		$post_fields['post_excerpt'] = $this_post['post_excerpt'];
-		$post_fields['post_mime_type'] = $this_post['post_mime_type'];
-		$post_fields['url'] = $upload_path . "/". get_post_meta($value,"_wp_attached_file",true);
-		
-		if(has_term( "case-study", "category_media", $value )){
-			array_push($attachments['case_studies'],$post_fields);
-			
-		} else if (has_term( "white-paper", "category_media", $value )) {
-			array_push($attachments['white_papers'],$post_fields);
-		} else if (has_term( "brochure", "category_media", $value )) {
-			array_push($attachments['brochures'],$post_fields);
-		}
-		
-	
-	}
-	return $attachments;
-}
-function display_attachment_list($attachments){
-	
-	
-	ob_start();
-		print "<ul>";
-		foreach($attachments as $key => $value){
-			extract($value);
-			if($post_mime_type == 'application/pdf'){
-				$class = "pdf";
-			}
-			$title_clean = str_replace('"','',$post_title);
-			
-			print "<li class=\"pdf\">
-				 	<a class=\"iframe\" href=\"$url\" title=\"$title_clean\">$post_title</a><br>
-					<span>$post_excerpt</span>
-			</li>";	
-			
-		}
-	
-	
-		print "</ul>";	
-	return ob_get_clean();
-	
-}
-if ( function_exists('register_sidebars') ){
-    register_sidebar( array(
-        'name' => __( 'portfolios Menu', 'theme-slug' ),
-        'id' => 'portfolios-menu',
-        'description' => __( '', 'theme-slug' ),
-        'before_widget' => '<li id="%1$s" class="widget %2$s">',
-	'after_widget'  => '</li>',
-	'before_title'  => '<h2 class="widgettitle">',
-	'after_title'   => '</h2>',
-    ) );
-}
 ?>
