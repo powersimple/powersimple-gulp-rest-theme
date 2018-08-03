@@ -3,7 +3,7 @@
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, media = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = [], related = {}
+var posts = {}, taxonomies = {}, categories = {}, tags = {}, menus = {}, media = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = [], related = {}
 function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API

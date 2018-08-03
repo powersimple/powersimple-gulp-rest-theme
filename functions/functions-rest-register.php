@@ -152,7 +152,8 @@ add_action( 'rest_api_init', 'register_media_data' );
 	);
 }
  
-function get_media_data( $object ) {
+function get_media_data( $object ) { //this function builds the data for a lean json packet of media
+
 	$data = array();   
 	$url = wp_upload_dir();
 	$upload_path = $url['baseurl']."/";
@@ -165,7 +166,7 @@ function get_media_data( $object ) {
 
 	$meta_data = array();
 	/*
-		HERE IS A STUPID FUCKING WORKAROUND THAT SHOULD NOT BE 
+	
 		The meta data properties are only accessible inside a loop for some dumb reason.
 	*/
 	if(strpos($mime,'mage/') && !strpos($mime,'svg')){ // the i is left of so the strpos returns a postive value
@@ -372,6 +373,18 @@ function get_post_tags($object){
 /*
 		/project info endpoint
 */
+//without this the widgets and menus options in wp-admin disappear.
+if ( function_exists('register_sidebars') ){
+    register_sidebar( array(
+        'name' => __( 'Footer', 'powersimple' ),
+        'id' => 'footer',
+        'description' => __( '', 'powersimple' ),
+        'before_widget' => '',
+	'after_widget'  => '',
+	'before_title'  => '',
+	'after_title'   => '',
+    ) );
+}
 
 
 ?>

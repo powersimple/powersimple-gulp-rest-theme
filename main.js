@@ -142,8 +142,11 @@ function reposition_screen() {
 
   for (var e = 0; e < calibrate_elements.length; e++) {
     var ob = calibrate_elements[e]
+
+    
+
     if (_w < 540) {
-      ob.size += 14;
+     // ob.size += 14;
     }
 
     if (_w > _h) {
@@ -157,7 +160,7 @@ function reposition_screen() {
       jQuery(".slick-track").css('height', "61.8vh")
 
     } else {
-
+     // ob.size += 14
       calibrateCircle(ob.id, ob.size, ob.increment)
       jQuery(".slick-track").css('height', "61.8vw")
     }
@@ -195,27 +198,61 @@ function setSlideContent(slide, id) {
 }
 
 function setRelated(post) {
-  // console.log("related",post,post.cats, post.tags,posts)
-  related = {
-    'project': [],
-    'page': [],
-    'post': []
-  }
+
   var this_post = null,
-    this_cat = null
-  for (var c = 0; c < post.cats.length; c++) {
-    //this_cat = categories[post.cats[c]].name
-    console.log("cat", post.cats[c], categories[post.cats[c]].name, categories[post.cats[c]].posts);
-    for (var p = 0; p < categories[post.cats[c]].posts.length; p++) {
-      this_post = categories[post.cats[c]].posts[p]
-      console.log(this_cat, "post", p, this_post, posts[this_post])
+  this_cat = null //defaults
+
+  related = {} // create empty object
+  related.cats = {}//vessel for related categories
+  related.tags = {}//vessel for related tags 
+  //if you put in another taxonomy, add it to the loop above.
+
+  var local_data =  {
+      'cats':categories,
+      'tags':tags
+    }//put taxonomies into object using alias in post
+
+
+  /*
+    ready for a ridiculous triple summersault? Let's do this!
+    You see, the nested loop for related content will work the same for categories and tags, so why not put an outer loop of the local data to loop through them, so if this function changes, it does so once. 
+  */
+  for(var r in related){ //loop through related taxonomy aliases to get name dynamically
+    // r is the taxonomy alias =>string
+
+    for (var t = 0; t < post[r].length; t++) { // loop through array of taxonomies of the post object that got passed in.
+      //t is the array key of the taxonomy =>int
+     // console.log(r,posts[r])
+      for (var p = 0; p < local_data[r][post[r][t]].posts.length; p++) {
+        //p is the post_id of the related post from the taxonomy
+        this_post = local_data[r][post[r][t]].posts[p] // id of post in question
+        if(post.id != this_post){ // exclude self
+          if(posts[this_post] != undefined){ //proceed if post exists
+            var type = posts[this_post].type // set the post type locally
+            if(related[r][type]==undefined){ // if this related post type doesn't have an object yet
+              related[r][type] = {}//then create one to stuff the posts in 
+
+            }
+            related[r] [type][this_post] = this_post; // by using an object by id prevents duplicates
+
+
+          }
+
+        }
+      }
     }
   }
 
+    delete local_data // no reason keeping the aliased taxonomies in memory
 
-
-
+    console.log("related",related)
+    return related
 }
+
+
+
+
+
 
 
 
@@ -237,7 +274,12 @@ function setContent(dest, object_id, object) {
     
     setVideo(posts[object_id].featured_video.video_id,"#bg-video")
     setRelated(posts[object_id])
+    if (posts[object_id].screen_images.length >0){
 
+        setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
+    } else {
+      jQuery('#screen-image-container').html('')
+    }
     console.log("tags", posts[object_id].tags)
 
   }
@@ -269,6 +311,92 @@ function setContent(dest, object_id, object) {
       }*/
 
 }
+
+    var photoCount = 6;
+    var pieceCount = 6;
+    var onPhoto = 0;
+    var pieceCompleteCount = 0;
+    var delay;
+
+    var transitions = ['center', 'random']
+    var transitionType = 0;
+    var images = []
+    var viewerDest = null
+    console.log("circleviwer loaded")
+    function circleViewer(dest,images) {
+        console.log("CIRCLE VIEWER PRELOAD",dest,images)
+        images = images
+        viewerDest = dest
+        for (var i = 0; i < images.length; i++) {
+            jQuery('#preload').append('<img src="'+images[i].src+'">')
+        };
+        loadCircleViewer(dest,images);
+       
+    }
+
+    function loadCircleViewer(dest,images) {
+        jQuery(dest+'-container').html('');
+        for ( var i = 0; i < images.length; i++) {
+            var newWidth = (((100 - (100 / pieceCount) * i)) / 100) * 100; //((pieceWidth - ((pieceWidth / pieceCount) * i)) / pieceWidth) * 100;
+            var newBackgroundSize = 100 + (100 - newWidth) / newWidth * 100; //100 + (100 - newWidth);
+            var newTop = ((100 / pieceCount) * i) / 2;
+
+            jQuery(dest+'-container').append('<div class="section" id="piece' + i + '" style="top: ' + newTop + '%; left: ' + newTop + '%; width: ' + newWidth + '%; height: ' + newWidth + '%; background-size:' + newBackgroundSize + '%; background-image: url('+images[i].src+')"></div>')
+        };
+        nextSlide(images);
+    }
+
+    function nextSlide(images) {
+        clearInterval(delay);
+        pieceCompleteCount = 0;
+        ++onPhoto;
+        if (onPhoto >= photoCount) {
+            onPhoto = 0;
+        }
+        console.log("next",images)
+        for (var i = 0; i < images.length; i++) {
+            var spinDelay = 0;
+            var spin = 360;
+            var piece = jQuery('#piece' + i);
+            var image = images[i]
+            switch (transitions[transitionType]) {
+                case 'random':
+                    spinDelay = Math.random() / 2;
+                    spin = Math.random() * 360;
+                    break;
+                case 'center':
+                    spinDelay = (pieceCount - i) / 10;
+                    spin = 181;
+                    break;
+            }
+
+            TweenMax.to(piece, 1, {
+                delay: spinDelay,
+                directionalRotation: spin + '_long',
+                onComplete: completeRotation,
+                onCompleteParams: [piece,image],
+                ease: Power4.easeIn
+            })
+        }
+    }
+
+    function completeRotation(piece,image) {
+        console.log("piece",piece)
+        piece.css('background-image', 'url('+image.src+')');
+        TweenMax.to(piece, 2, {
+            directionalRotation: '0_short',
+            onComplete: finishPieceanimation,
+            ease: Elastic.easeOut
+        })
+    }
+
+    function finishPieceanimation() {
+        ++pieceCompleteCount;
+        if (pieceCompleteCount == pieceCount) {
+            delay = setInterval(nextSlide, 1000);
+        }
+    }
+
 function displayPage(dest, posts) {
   var cards = ''
   // console.log(posts)
@@ -559,7 +687,7 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, categories = {}, tags = {}, menus = {}, media = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = [], related = {}
+var posts = {}, taxonomies = {}, categories = {}, tags = {}, menus = {}, media = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = [], related = {}
 function getStaticJSON (route, callback, dest) {
   // route =  the type 
   // param = url arguments for the REST API
@@ -887,56 +1015,81 @@ function draw() {
 initCanvas();
 setInterval(draw, 160);
 function setImage(id,dest,size){
-
+    setMediaText(id,dest)
     if(media[id]!=undefined){
-    
+                jQuery(dest+"-wrap").attr("visibility",'hidden')
+
         var full_path = uploads_path + media[id].path // uploads path is in header
         var src = media[id].file; // this defaults to the basic file
     
       
-        jQuery(dest).attr("alt", alt);
 
+        if (media[id].mime == "image/svg+xml"){// if it's an SVG, let the src pass through
 
-        if(size == 'square'){ // if for a square area
-            src = getSquareVersion(media[id].meta.sizes,dest) // get the size version of the sq
-            console.log(src)
-        } else{
-            src = media[id].meta.sizes[size] // returns specified size
+        } else {//for real images
+
+            if(size == 'square'){ // if for a square area
+                src = getSquareVersion(media[id].meta.sizes,dest) // get the size version of the sq
+                console.log(src)
+            } else{
+                src = media[id].meta.sizes[size] // returns specified size
+            }
+
         }
+      
+        if(dest == ''){//set path to '' to return the src only
+        console.log("Src return", full_path + src)
+            return full_path+src;
+        } else { // if dest is specified, set the src to the id and 
+            jQuery(dest).attr("src",full_path+src)
+            setMediaText(id,dest)
+        }
+        jQuery(dest+"-wrap").css("visibility",'visible')
 
-        var alt = media[id].alt;
-        jQuery(dest).attr("src",full_path+src);
-        jQuery(dest).attr("alt", alt);
-        setMediaText(id,dest);
-        console.log("featured",src,alt);
-
+    } else {
+        jQuery(dest+"-wrap").css("visibility",'hidden')
     }
 }
+
+
+
 function wrapTag(tag,str){
     return "<"+tag+">"+str+"</"+tag+">"
 }
 function setMediaText(id,dest){
-    console.log("caption",media[id]);
-    jQuery(dest+"-title").html(media[id].title)
-    jQuery(dest+"-caption").html(media[id].caption)
-    jQuery(dest+"-description").html(media[id].desc)
+
+    if(media[id]!=undefined){
+        console.log("caption",media[id]);
+        jQuery(dest+"-title").html(media[id].title)
+        jQuery(dest+"-caption").html(media[id].caption)
+        jQuery(dest+"-description").html(media[id].desc)
+        jQuery(dest).attr("alt", media[id].alt);
+    } else {
+        console.log("clear media text",dest);
+        jQuery(dest+"-title").html('')
+        jQuery(dest+"-caption").html('')
+        jQuery(dest+"-description").html('')
+        jQuery(dest).attr("alt", '');
+    }
+    
 }
+
 function getSquareVersion(sizes,dest){
 
    box = { // object getting the container dimensions
            w: jQuery(dest).parent().width(),
            h: jQuery(dest).parent().height()
    }
+   console.log("box",box)
 
-console.log("get rect", box)
-
-
- 
     if (box.w > 1280 || box.h > 1280) { //over 1500 use large
+        console.log("sq-lg")
         return sizes['sq-lg']
     } else if ((box.w > 250 || box.h > 250) && (box.w <= 1280 || box.h <= 1280)) {
+        console.log("sq-med")
         return sizes['sq-med']
     } else {
+        console.log("sq-sm")
         return sizes['sq-sm']
     }
 
@@ -955,12 +1108,30 @@ function setVideo(id,dest){
         console.log("unhide video player")
 
         jQuery(dest + ' video')[0].load();
+        
         video = jQuery(dest + ' video source').attr("src", full_path + src);
     } else {
         console.log("no video, hide player")
         jQuery(dest).css("display", "none");
     }
 }
+function setScreenImages(screen_images,dest,callback){
+    var images = []
+    for(var i=0;i<screen_images.length;i++){
+         images.push({
+            "src": setImage(screen_images[i],'',"square"),
+            "data": media[screen_images[i]]
+         })
+       
+    }
+    circleViewer(dest,images)
+  //  callback(dest,images)
+    console.log("setScreenImages", screen_images, dest, images);
+
+
+}
+
+
 /*
 window.onload = init;
 console.ward = function() {}; // what warnings?
@@ -1727,6 +1898,7 @@ var menu_config = {
     },
     last_outer_notch = 0,
     last_inner_notch = 0
+    
 
 /**/
 var menu_raphael = {}

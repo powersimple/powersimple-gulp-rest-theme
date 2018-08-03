@@ -32,6 +32,8 @@
         wp_register_script('three', '//cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js', null,'1.1', true); 
         wp_enqueue_script('three');
         
+        wp_register_script('tweenmax', '//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js', null,'1.1', true); 
+        wp_enqueue_script('tweenmax');
    
 
         

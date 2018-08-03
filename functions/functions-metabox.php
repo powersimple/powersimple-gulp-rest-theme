@@ -89,7 +89,7 @@ function selectScreenImage( $meta_boxes ) {
 		'id' => 'screen_image',
 		'title' => esc_html__( 'Screen Image', 'metabox-online-generator' ),
 		'post_types' => array( 'post', 'page','project' ),
-		'context' => 'advanced',
+		'context' => 'side',
 		'priority' => 'default',
 		'autosave' => false,
 		'fields' => array(

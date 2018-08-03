@@ -142,8 +142,11 @@ function reposition_screen() {
 
   for (var e = 0; e < calibrate_elements.length; e++) {
     var ob = calibrate_elements[e]
+
+    
+
     if (_w < 540) {
-      ob.size += 14;
+     // ob.size += 14;
     }
 
     if (_w > _h) {
@@ -157,7 +160,7 @@ function reposition_screen() {
       jQuery(".slick-track").css('height', "61.8vh")
 
     } else {
-
+     // ob.size += 14
       calibrateCircle(ob.id, ob.size, ob.increment)
       jQuery(".slick-track").css('height', "61.8vw")
     }
@@ -195,27 +198,61 @@ function setSlideContent(slide, id) {
 }
 
 function setRelated(post) {
-  // console.log("related",post,post.cats, post.tags,posts)
-  related = {
-    'project': [],
-    'page': [],
-    'post': []
-  }
+
   var this_post = null,
-    this_cat = null
-  for (var c = 0; c < post.cats.length; c++) {
-    //this_cat = categories[post.cats[c]].name
-    console.log("cat", post.cats[c], categories[post.cats[c]].name, categories[post.cats[c]].posts);
-    for (var p = 0; p < categories[post.cats[c]].posts.length; p++) {
-      this_post = categories[post.cats[c]].posts[p]
-      console.log(this_cat, "post", p, this_post, posts[this_post])
+  this_cat = null //defaults
+
+  related = {} // create empty object
+  related.cats = {}//vessel for related categories
+  related.tags = {}//vessel for related tags 
+  //if you put in another taxonomy, add it to the loop above.
+
+  var local_data =  {
+      'cats':categories,
+      'tags':tags
+    }//put taxonomies into object using alias in post
+
+
+  /*
+    ready for a ridiculous triple summersault? Let's do this!
+    You see, the nested loop for related content will work the same for categories and tags, so why not put an outer loop of the local data to loop through them, so if this function changes, it does so once. 
+  */
+  for(var r in related){ //loop through related taxonomy aliases to get name dynamically
+    // r is the taxonomy alias =>string
+
+    for (var t = 0; t < post[r].length; t++) { // loop through array of taxonomies of the post object that got passed in.
+      //t is the array key of the taxonomy =>int
+     // console.log(r,posts[r])
+      for (var p = 0; p < local_data[r][post[r][t]].posts.length; p++) {
+        //p is the post_id of the related post from the taxonomy
+        this_post = local_data[r][post[r][t]].posts[p] // id of post in question
+        if(post.id != this_post){ // exclude self
+          if(posts[this_post] != undefined){ //proceed if post exists
+            var type = posts[this_post].type // set the post type locally
+            if(related[r][type]==undefined){ // if this related post type doesn't have an object yet
+              related[r][type] = {}//then create one to stuff the posts in 
+
+            }
+            related[r] [type][this_post] = this_post; // by using an object by id prevents duplicates
+
+
+          }
+
+        }
+      }
     }
   }
 
+    delete local_data // no reason keeping the aliased taxonomies in memory
 
-
-
+    console.log("related",related)
+    return related
 }
+
+
+
+
+
 
 
 
@@ -237,7 +274,12 @@ function setContent(dest, object_id, object) {
     
     setVideo(posts[object_id].featured_video.video_id,"#bg-video")
     setRelated(posts[object_id])
+    if (posts[object_id].screen_images.length >0){
 
+        setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
+    } else {
+      jQuery('#screen-image-container').html('')
+    }
     console.log("tags", posts[object_id].tags)
 
   }

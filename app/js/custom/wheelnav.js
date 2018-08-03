@@ -27,6 +27,7 @@ var menu_config = {
     },
     last_outer_notch = 0,
     last_inner_notch = 0
+    
 
 /**/
 var menu_raphael = {}

@@ -1,8 +1,6 @@
-
 body {
     background-color: #000;
     font-family: 'Cabin', sans-serif;
-   
 }
 
 html,
@@ -12,8 +10,8 @@ body {
     margin: 0px;
     padding: 0px;
     overflow: hidden;
-    line-height:120%;
-    font-size:1em;
+    line-height: 120%;
+    font-size: 1em;
 }
 
 #stars {
@@ -23,54 +21,46 @@ body {
     position: absolute;
     z-index: 0;
 }
-header{
+
+header {
     height: 0;
 }
+
 #logo {
-   
     z-index: 2;
     width: 38.2%;
-    margin:-1vw auto;
+    margin: -1vw auto;
     position: relative;
     @media (max-width: 539px) {
         width: 80%;
-       
-        
     }
     @media (min-width:540px) and (max-width:1024px) {
         width: 61.8%;
-      
-        
     }
 }
 
 #laurel {
-    color:#fff;
+    color: #fff;
     position: relative;
     text-align: center;
-    width:100%;
-    padding:5px;
-    
-    display:inline-block;
+    width: 100%;
+    padding: 5px;
+    display: inline-block;
     @media (max-width: 539px) {
         font-size:3vw;
-     
     }
-
-    @media (min-width:540px) and (max-width:1024px) {
-        
-    }
+    @media (min-width:540px) and (max-width:1024px) {}
 }
-
 
 #masthead,
 #colophon {
     font-family: 'Rubik', sans-serif;
     background-color: #000;
 }
-
-
-
+#preload
+{
+	display: none;
+}
 #masthead {
     #wp-custom-header-media img {
         @media screen and (max-width: 767px) {
@@ -135,34 +125,37 @@ header{
 }
 
 footer {
-    
     position: absolute;
     width: 100%;
-  
     bottom: 0;
-    #fork-this{
+    #footer{
+        color:#fff;
+        text-align: center;
+        margin-bottom:0.5em;
+    }
+    #fork-this {
         position: absolute;
-        right:0;
-        bottom:0;
-        height:15vh;
-        width:15vh;
-        opacity:0.5;
-        #fork-this-svg{
+        right: 0;
+        bottom: 0;
+        height: 15vh;
+        width: 15vh;
+        opacity: 0.5;
+        #fork-this-svg {
             position: absolute;
-        right:0;
-        bottom:0;
-        width: 100%;
-        height:100%;
-        opacity:0.9;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.9;
         }
-            @media (max-width: 539px) {
-                display: none;
-            }
+        @media (max-width: 539px) {
+            display: none;
+        }
     }
 }
 
 #circle-mask {
-   // display: none;//THIS HAD BORDERS, better to use border-radius on the video
+    // display: none;//THIS HAD BORDERS, better to use border-radius on the video
     svg {
         position: absolute;
         top: 0;
@@ -180,12 +173,11 @@ footer {
         -webkit-mask: url(#mask);
         mask: url(#mask);
     }
-    #bg-video{
-      display:none;
+    #bg-video {
+        display: none;
     }
     video {
-        border-radius:50%;
-      
+        border-radius: 50%;
         position: absolute;
         top: 0;
         left: 1px;
@@ -193,9 +185,9 @@ footer {
         overflow: hidden;
         height: 99%;
         opacity: 0.9;
-        
     }
 }
+
 .video-wrapper {
     position: relative;
     padding-bottom: 56.25%;

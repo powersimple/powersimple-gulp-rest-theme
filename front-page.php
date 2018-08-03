@@ -22,15 +22,14 @@ get_header(); ?>
         <div id="featured-image-title" ></div>
         <div id="featured-image-caption" ></div>
       </div>
-      <?php
-?>
-<div id="featured-image-container"><img id="featured-image" src="<?=$src?>" alt="" ></div>
+     
+      <div id="featured-image-container"><img id="featured-image" src="<?=$src?>" alt="" ></div>
 
 
-<div id="featured-image-footer" class="featured-caption">
+      <div id="featured-image-footer" class="featured-caption">
         <div id="featured-image-description"></div>
       </div>
-</div>
+  </div>
     
 
 
@@ -38,10 +37,26 @@ get_header(); ?>
 
 
 <span class="ripple"></span>
- 
+<div id="screen-image-wrap">
+      <div id="screen-image-header" class="screen-caption">
+        <div id="screen-image-title" ></div>
+        <div id="screen-image-caption" ></div>
+      </div>
+      <div id="screen-image-container"></div>
+
+
+        <div id="screen-image-footer" class="screen-caption">
+        <div id="screen-image-description"></div>
+      </div>
+</div>
+
 
   <div id="circle-mask">
       <!---->
+     
+
+ 
+
       <div id="bg-video">
           <video id="video" controls="true " autoplay="autoplay" muted="muted" preload="auto" loop="loop">
               <source src="#" type="video/mp4">

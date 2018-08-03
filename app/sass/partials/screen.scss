@@ -93,3 +93,52 @@
         opacity: 0.5;
     }
 }
+#screen-image-wrap{
+    background:rgba(0,250,0,0.1);
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    position: absolute;
+   
+    img {
+        width: 100%;
+        height: auto;
+        z-index: 1000;
+    }
+    div {
+        text-align: center;
+        width: 100%;
+        line-height:120%;
+    }
+    #screen-image-header {
+        bottom: 100%;
+        #screen-image-title {
+            font-size: 150%;
+            position: absolute;
+            margin-top: -2em;
+            
+        
+        }
+        #screen-image-caption {
+            font-size: 80%;
+            font-style: italic;
+            position: absolute;
+            margin-top: -1.2em
+        }
+    }
+    #screen-image-footer {
+        #screen-image-description {
+            font-size: 100%;
+            position: absolute;
+            margin-top: 1.2em;
+        }
+        top:100%;
+    }
+    #screen-image-container {
+        border-radius: 50%;
+        border: 1px solid #ccc;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+}
