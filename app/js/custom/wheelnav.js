@@ -121,28 +121,10 @@ function makeWheelNav(dest, data, _p) {
 
 
         wheels[dest].navItems[i].navigateFunction = function () {
-            // console.log("WheelNav to notch", this.data.notch)
-            jQuery("#slider").slider("option", "value", this.data.notch)
-            // console.log(child_dest,"this",this.data);
-            if (dest != "inner-subnav") {
-                if (this.data.children.length > 0) {
-                    popAWheelie(dest)
+            /*Click event for wheel*/
 
-
-
-                    //makeWheelNav(child_dest,  this.data.children, child_params)
-                    //   console.log("setSLiderNotch", this.data.slug, child_dest)
-                    setSliderNotch(slug_nav[this.data.slug])
-                } else {
-                    //console.log("no-children of",dest)
-                    popAWheelie(dest)
-
-
-                }
-            }
-
-
-            setContent(child_dest, this.data.object_id, this.data.object)
+            jQuery("#slider").slider("option", "value", this.data.notch) //positions the slider handle
+            setSliderNotch(slug_nav[this.data.slug]) // triggers the notch
 
         }
 

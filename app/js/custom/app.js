@@ -197,57 +197,7 @@ function setSlideContent(slide, id) {
   }
 }
 
-function setRelated(post) {
 
-  var this_post = null,
-  this_cat = null //defaults
-
-  related = {} // create empty object
-  related.cats = {}//vessel for related categories
-  related.tags = {}//vessel for related tags 
-  //if you put in another taxonomy, add it to the loop above.
-
-  var local_data =  {
-      'cats':categories,
-      'tags':tags
-    }//put taxonomies into object using alias in post
-
-
-  /*
-    ready for a ridiculous triple summersault? Let's do this!
-    You see, the nested loop for related content will work the same for categories and tags, so why not put an outer loop of the local data to loop through them, so if this function changes, it does so once. 
-  */
-  for(var r in related){ //loop through related taxonomy aliases to get name dynamically
-    // r is the taxonomy alias =>string
-
-    for (var t = 0; t < post[r].length; t++) { // loop through array of taxonomies of the post object that got passed in.
-      //t is the array key of the taxonomy =>int
-     // console.log(r,posts[r])
-      for (var p = 0; p < local_data[r][post[r][t]].posts.length; p++) {
-        //p is the post_id of the related post from the taxonomy
-        this_post = local_data[r][post[r][t]].posts[p] // id of post in question
-        if(post.id != this_post){ // exclude self
-          if(posts[this_post] != undefined){ //proceed if post exists
-            var type = posts[this_post].type // set the post type locally
-            if(related[r][type]==undefined){ // if this related post type doesn't have an object yet
-              related[r][type] = {}//then create one to stuff the posts in 
-
-            }
-            related[r] [type][this_post] = this_post; // by using an object by id prevents duplicates
-
-
-          }
-
-        }
-      }
-    }
-  }
-
-    delete local_data // no reason keeping the aliased taxonomies in memory
-
-    console.log("related",related)
-    return related
-}
 
 
 

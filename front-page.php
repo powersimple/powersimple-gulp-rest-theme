@@ -91,6 +91,7 @@ get_header(); ?>
     </nav>
 </div><!--main-->
     
+  <section id="related"></section>
 
   <div id="slider-wrap">
     <div id="up-arrow" class="arrow"><?php include "svg/arrow-key.svg";?></div>

@@ -119,7 +119,7 @@ function setSlider(){
 
  function setSliderNotch(notch){
  
-  console.log("notch",data_nav[notch],notch)
+    console.log("notch",data_nav[notch],notch)
    location.hash = posts[data_nav[notch].object_id].slug
 
  

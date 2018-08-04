@@ -1,12 +1,13 @@
 function setImage(id,dest,size){
     setMediaText(id,dest)
+    console.log("set image",media[id])
     if(media[id]!=undefined){
                 jQuery(dest+"-wrap").attr("visibility",'hidden')
 
         var full_path = uploads_path + media[id].path // uploads path is in header
         var src = media[id].file; // this defaults to the basic file
     
-      
+       
 
         if (media[id].mime == "image/svg+xml"){// if it's an SVG, let the src pass through
 
@@ -31,10 +32,22 @@ function setImage(id,dest,size){
         jQuery(dest+"-wrap").css("visibility",'visible')
 
     } else {
+     
         jQuery(dest+"-wrap").css("visibility",'hidden')
     }
+
 }
 
+
+/* GET FEATURED IMAGE BY POST ID */
+function setFeatured(id,size){
+    if(posts[id] != undefined){
+        if(posts[id].featured_media>0){
+            return  setImage(posts[id].featured_media,'',size)
+        }
+    }
+
+}
 
 
 function wrapTag(tag,str){
