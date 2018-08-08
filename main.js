@@ -1,15 +1,106 @@
-var increment = 'vw',
+var posts = {}, 
+  taxonomies = {},
+  categories = {},
+  tags = {},
+  menus = {},
+  media = {},
+  linear_nav = [],
+  posts_nav = {},
+  posts_slug_ids = {},
+  slug_nav = {},
+  data_nav = [],
+  last_dest = 'outer-nav',
+  menu_levels = [],
+  related = {},
+  increment = 'vw',
   orientation = 'vertical', // this var is used by the slider
   _w = jQuery(window).width(),
   _h = jQuery(window).height(),
   aspect = _w / _h,
   current_notch = 0
+
+
+  var menu_config = {
+    'top-menu': {
+        'menu_type': 'wheel',
+        'location': '#outer-nav',
+        '_p': {
+            'maxPercent': 1,
+            'min': 0.91,
+            'max': 1,
+            'sel_min': 0.91,
+            'sel_max': 1,
+        }
+    },
+    'social-links': {
+        'menu_type': 'social',
+        'location': '#social',
+        '_p': {
+            'maxPercent': 1,
+            'min': 0.91,
+            'max': 1,
+            'sel_min': 0.91,
+            'sel_max': 1,
+        }
+    },
+    'projects': {
+        'menu_type': 'projects',
+        'location': '#projects',
+        '_p': {
+            'maxPercent': 1,
+            'min': 0.91,
+            'max': 1,
+            'sel_min': 0.91,
+            'sel_max': 1,
+        }
+    }
+},
+inner_nav_params = {
+    'maxPercent': 1,
+    'min': 0.91,
+    'max': 1,
+    'sel_min': 0.91,
+    'sel_max': 1.0,
+},
+inner_subnav_params = {
+    'maxPercent': 1,
+    'min': 0.90,
+    'max': 1,
+    'sel_min': 0.90,
+    'sel_max': 1.0,
+},
+last_outer_notch = 0,
+last_inner_notch = 0
+
+
+/**/
+var menu_raphael = {}
+var wheels = {}
+
 jQuery(document).ready(function () {
-
-
   jQuery(".wheelnav-outer-nav-title").css("display:none;");
   reposition_screen()
 })
+
+jQuery(window).resize(function () {
+  _w = jQuery(window).width()
+  _h = jQuery(window).height()
+
+  if (_w > _h) {
+    increment = 'vh'
+  } else {
+    increment = 'vw'
+  }
+  aspect = _w / _h
+  reposition_screen()
+
+})
+
+function init(){
+
+}
+
+
 
 function calibrateCircle(id, size, increment) {
   //console.log("calibrate",id,size,increment)
@@ -104,11 +195,6 @@ function reposition_screen() {
   jQuery('#main').css('height', '100vw')
   jQuery('#main').css('width', '100vh')
 
-
-
-
-
-
   setSlider()
   positionProjector()
   pinSlider();
@@ -166,36 +252,13 @@ function reposition_screen() {
     }
   }
 
-
+  jQuery('#matrix').css('height', '100vh')
+  jQuery('#matrix').css('width', '100vw')
   jQuery('#stars').css('height', '100vh')
   jQuery('#stars').css('width', '100vw')
 }
 
 
-jQuery(window).resize(function () {
-  _w = jQuery(window).width()
-  _h = jQuery(window).height()
-
-  if (_w > _h) {
-    increment = 'vh'
-  } else {
-    increment = 'vw'
-  }
-  aspect = _w / _h
-  reposition_screen()
-
-})
-
-function setSlideContent(slide, id) {
-
-  if (posts[id] != undefined) {
-    jQuery("#slide" + slide + " h2").html(posts[+id].title)
-    jQuery("#slide" + slide + " section div.content").html(posts[+id].content)
-    $carousel.slick('slickGoTo', slide);
-  } else {
-    //console.log("post undefined", slide, id, posts)
-  }
-}
 
 
 
@@ -206,61 +269,7 @@ function setSlideContent(slide, id) {
 
 
 
-function setContent(dest, object_id, object) {
-  var slide = posts_nav[object_id]
-  var featured_image = posts[object_id].featured_media;
 
-  console.log("setContent",object_id,object,posts[object_id])
-  if (posts[object_id] != undefined) {
-    console.log("selected post", posts[object_id])
-    page_title = posts[object_id].title + " | " + site_title;
-    document.title = page_title
-
-    setImage(posts[object_id].featured_media, "#featured-image", "square");
-
-    //jQuery("#featured-image-projected").attr('src', featured_image)
-    var video_path = uploads_path + "" + posts[object_id].featured_video.video_path;
-
-    
-    setVideo(posts[object_id].featured_video.video_id,"#bg-video")
-    setRelated(posts[object_id])
-    if (posts[object_id].screen_images.length >0){
-
-        setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
-    } else {
-      jQuery('#screen-image-container').html('')
-    }
-    console.log("tags", posts[object_id].tags)
-
-  }
-  setSlideContent(slide, object_id)
-
-  /*
-        for category wheels
-        if(cat_children.length>0){
-          for(c=0;c<cat_children.length;c++){
-            
-            data.push({
-                  id : categories[cat_children[c]].id,
-                  title : categories[cat_children[c]].name,
-                  type: "category",
-                  children: categories[cat_children[c]].children
-              }
-            )
-            
-          }
-          
-
-          makeWheelNav(dest, data, inner_subnav_params)
-          //
-
-        
-
-      } else {
-        
-      }*/
-
-}
 
     var photoCount = 6;
     var pieceCount = 6;
@@ -347,6 +356,64 @@ function setContent(dest, object_id, object) {
         }
     }
 
+function setContent(dest, object_id, object) {
+  var slide = posts_nav[object_id]
+  var featured_image = posts[object_id].featured_media;
+
+  console.log("setContent",object_id,object,posts[object_id])
+  if (posts[object_id] != undefined) {
+    console.log("selected post", posts[object_id])
+    page_title = posts[object_id].title + " | " + site_title;
+    document.title = page_title
+
+    setImage(posts[object_id].featured_media, "#featured-image", "square");
+
+    //jQuery("#featured-image-projected").attr('src', featured_image)
+    var video_path = uploads_path + "" + posts[object_id].featured_video.video_path;
+
+    
+    setVideo(posts[object_id].featured_video.video_id,"#bg-video")
+    setRelated(posts[object_id])
+    if (posts[object_id].screen_images.length >0){
+
+        setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
+    } else {
+      jQuery('#screen-image-container').html('')
+    }
+    console.log("tags", posts[object_id].tags)
+
+  }
+  setSlideContent(slide, object_id)
+
+  /*
+        for category wheels
+        if(cat_children.length>0){
+          for(c=0;c<cat_children.length;c++){
+            
+            data.push({
+                  id : categories[cat_children[c]].id,
+                  title : categories[cat_children[c]].name,
+                  type: "category",
+                  children: categories[cat_children[c]].children
+              }
+            )
+            
+          }
+          
+
+          makeWheelNav(dest, data, inner_subnav_params)
+          //
+
+        
+
+      } else {
+        
+      }*/
+
+}
+
+/*
+//OLD
 function displayPage(dest, posts) {
   var cards = ''
   // console.log(posts)
@@ -402,13 +469,6 @@ function displayProjectCard(id) {
   return card
 }
 
-function menu_order(a, b) {
-  if (a.menu_order < b.menu_order)
-    return -1;
-  if (a.menu_order > b.menu_order)
-    return 1;
-  return 0;
-}
 
 function post_order(a, b) {
   if (a < b)
@@ -418,196 +478,7 @@ function post_order(a, b) {
   return 0;
 }
 
-function setLinearNav(menu) {
-  var counter = 0
 
-  for (var i in menu.items) {
-
-
-    menu.items[i].post = posts[menu.items[i].object_id]
-    menu.items[i].slug = posts[menu.items[i].object_id].slug
-
-
-    id = menu.items[i].object_id.toString()
-    linear_nav.push(menu.items[i])
-
-    posts_nav[id] = counter;
-    counter++;
-  }
-  linear_nav.sort(menu_order);
-  //SET SLUG NAV
-  for (var n = 0; n < linear_nav.length; n++) {
-
-  }
-
-  setSlider(linear_nav)
-  setSlides(linear_nav)
-  //console.log("linear_nav", linear_nav);
-  //console.log("posts_nav", posts_nav);
-
-
-}
-
-function setLinearDataNav(data) { // sets local data into linear array for wheel
-
-  var counter = 0,
-      outer_counter = 0,
-      inner_counter = 0,
-      inner_subcounter = 0,
-      grandparent = 0,
-      next_parent = 0,
-      dest = 'outer-nav'
-
-  // THESE 3 NESTED LOOPS POPULATE THE data_nav array WITH WHAT IT NEEDS TO BUILD THE WHEEL AND HAVE IT BE CONTROLLED BY THE ORDERED NOTCHES FROM THE NAV
-
-  for (var d = 0; d < data.length; d++) { //outer
-    dest = 'outer-nav'
-    data[d].dest = dest;
-    data[d].slice = outer_counter;
-    data[d].notch = counter;
-    grandparent = counter;
-    data_nav.push(data[d]);
-    slug_nav[data[d].slug] = counter;
-
-    counter++;
-    for (var c = 0; c < data[d].children.length; c++) { //children
-      data[d].children[c].dest = "inner-nav"
-      data[d].children[c].slice = c
-      data[d].children[c].notch = counter
-      data[d].children[c].parent = grandparent
-      next_parent = counter
-      data_nav.push(data[d].children[c])
-      slug_nav[data[d].children[c].slug] = counter;
-      counter++
-      for (var g = 0; g < data[d].children[c].children.length; g++) { //grandchildren
-        data[d].children[c].children[g].dest = "inner-subnav"
-        data[d].children[c].children[g].slice = g
-        data[d].children[c].children[g].notch = counter
-        data[d].children[c].children[g].grandparent = grandparent
-        data[d].children[c].children[g].parent = next_parent
-
-        data_nav.push(data[d].children[c].children[g])
-        slug_nav[data[d].children[c].children[g].slug] = counter;
-        counter++
-      }
-     // console.log("dataNav", data);
-    }
-
-    outer_counter++;
-
-  }
-
- console.log("dataNav", data_nav);
- // console.log("slug_nav", slug_nav);
-}
-
-
-function displayMenus() {
-  var data = [];
-
-  for (var m in menus) {
-    if (menu_config[m] != undefined) {
-      var items = ''
-
-      //menus[m].items.sort(function(a,b){return a.menu_order-b.menu_order})
-
-
-
-      menu_array = [];
-      for (var i in menus[m].items) {
-        // console.log('menu item', menus[m].items[i], menu_config[m].location)
-        if (menus[m].items[i].parent == 0) {
-          // console.log("menu", menus[m].items[i].title)
-
-          menu_array.push(menus[m].items[i]);
-        }
-        // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
-
-      }
-      menu_array.sort(menu_order);
-
-
-      var children = [];
-
-
-      for (var a = 0; a < menu_array.length; a++) {
-        children = [];
-
-        for (var c = 0; c < menu_array[a].children.length; c++) {
-          var grandchildren = [];
-          var nested_children = menus[m].items[menu_array[a].children[c]].children;
-          for (var g = 0; g < nested_children.length; g++) {
-            grandchildren.push( // data for childe menus
-              {
-                "title": menus[m].items[nested_children[g]].title,
-
-                "slug": posts[menus[m].items[nested_children[g]].object_id].slug,
-                "object": menus[m].items[nested_children[g]].object,
-                "object_id": menus[m].items[nested_children[g]].object_id, // the post id
-
-              }
-            )
-
-          }
-
-
-
-          children.push( // data for childe menus
-            {
-              "title": menus[m].items[menu_array[a].children[c]].title,
-              "slug": posts[menus[m].items[menu_array[a].children[c]].object_id].slug,
-              "object": menus[m].items[menu_array[a].children[c]].object,
-              "object_id": menus[m].items[menu_array[a].children[c]].object_id, // the post id
-              "children": grandchildren
-            }
-          )
-
-        }
-
-
-        data.push({ // data for top level
-          "title": menu_array[a].title,
-          //"id": menu_array[a].id,
-          "slug": posts[menu_array[a].object_id].slug,
-          "object": menu_array[a].object,
-          "object_id": menu_array[a].object_id, //the post_id
-          "children": children
-        })
-
-      }
-      menu_levels = data;
-      setLinearDataNav(data);
-      setLinearNav(menus[m])
-
-
-      jQuery(menu_config[m].location).html(items)
-     setSlideShow(); // creates slides for the slick carousel
-      makeWheelNav("outer-nav", menu_levels, menu_config[m]._p)
-      if (location.hash != '') {
-        var slug = location.hash.replace("#", "");
-        console.log("set by slugHash", slug, slug_nav[slug])
-        
-        setSliderNotch(slug_nav[slug])
-      } else {
-
-        if (menu_config[m].menu_type == "wheel") {
-          // THIS IS THE INITIAL LOADING OF THE WHEEL
-
-          
-        }
-      }
-      console.log('makeouterwheel',menu_levels);
-
-     
-    
-      
-
-      //circleMenu('.circle a')
-    }
-  }
-
-
-}
 
 function displayTags(dest, tags) {
   for (var i in tags) {
@@ -632,30 +503,33 @@ jQuery('#portfolio').on('click', '.nav__item', function () {
 
   // console.log('posts', categories[cat].category_posts)
 })
+*/
 // pass the type in the route
 // param = url arguments for the REST API
 // callback is a dynamic function name 
 // Pass the name of a function and it will return the data to that function
 
-var posts = {}, taxonomies = {}, categories = {}, tags = {}, menus = {}, media = {}, linear_nav = [], posts_nav= {}, posts_slug_ids = {}, slug_nav = {}, data_nav = [], last_dest = 'outer-nav',menu_levels = [], related = {}
-function getStaticJSON (route, callback, dest) {
-  // route =  the type 
-  // param = url arguments for the REST API
-  // callback = dynamic function name 
-  // Pass in the name of a function and it will return the data to that function
 
-   // local absolute path to the REST API + routing arguments
-  var json_data = json_path+route+".json"
-console.log("jsonfile",json_data);
+
+function getStaticJSON(route, callback) {
+  /*
+    route =  the type 
+    param = url arguments for the REST API
+]   callback = dynamic function name 
+    Pass in the name of a function and it will return the data to that function
+    */
+
+  var json_data = json_path + route + ".json" // local absolute path to the REST API + routing arguments
+  //console.log("jsonfile",json_data);
   jQuery.ajax({
     url: json_data, // the url
     data: '',
     success: function (data, textStatus, request) {
       //console.log(endpoint,data)
       return data,
-      
-        callback(data, dest) // this is the callback that sends the data to your custom function
-        
+
+        callback(data) // this is the callback that sends the data to your custom function
+
     },
     error: function (data, textStatus, request) {
       //console.log(endpoint,data.responseText)
@@ -665,232 +539,187 @@ console.log("jsonfile",json_data);
   })
 }
 
-getStaticJSON('posts', setPosts, '#posts') // get posts
+getStaticJSON('posts', setPosts) // get posts
 
 // retrieves all projects, with fields from REST API
-getStaticJSON('pages', setPosts, '#pages') // get pages
+getStaticJSON('pages', setPosts) // get pages
 
 // retrieves all projects, with fields from REST API
-getStaticJSON('project', setPosts, '#projects') // get the projects
+getStaticJSON('project', setPosts) // get the projects
 
 // retrieves all categories for the development category
-getStaticJSON('categories',  setCategories, '#category-menu') // returns the children of a specified parent category
+getStaticJSON('categories', setCategories) // returns the children of a specified parent category
 
 // retrieves all categories for the development category
-getStaticJSON('tags', setTags, '#tags') // returns the tags
+getStaticJSON('tags', setTags) // returns the tags
 
 // retrieves top menu
-getStaticJSON('menus', setMenus, '#main-menu') // returns the tags
+getStaticJSON('menus', setMenus) // returns the tags
 
-getStaticJSON('media', setMedia, '#media')
+getStaticJSON('media', setMedia)
 
 function setMedia(data, dest) {
-  for(var m=0;m<data.length;m++){
+  for (var m = 0; m < data.length; m++) {
     media[data[m].id] = data[m].data;
   }
-  console.log("media",media);
+  console.log("media", media);
 }
 
-function setPosts (data, dest) { // special function for the any post type
+function setPosts(data) { // special function for the any post type
 
   var type = 'post'
- 
 
-if(Array.isArray(data)){
 
-  for (var i = 0;i < data.length;i++) { // loop through the list of data
-    //console.log("home", data[i].id)
-    /*
-      The REST API nests the output of title and content in the rendered variable, 
-      so we must unpack and set it our way, which is just .title and .content
-    */
-    if (data[i].title !== undefined && data[i].title.rendered !== undefined) { // make sure the var is there
-      data[i].title = data[i].title.rendered // lose that stupid rendered parameter
-    }
+  if (Array.isArray(data)) {
 
-    if (data[i].content !== undefined && data[i].content.rendered !== undefined) { // make sure the var is there
-      data[i].content = data[i].content.rendered // lose the unnecessary "rendered" parameter
-    }
-    
-    
-    //console.log(dest,data[i]);
-    if (data[i].type !== undefined) { // make sure the var is there
-      type = data[i].type // set the type for the log
+    for (var i = 0; i < data.length; i++) { // loop through the list of data
+      //console.log("home", data[i].id)
+      /*
+        The REST API nests the output of title and content in the rendered variable, 
+        so we must unpack and set it our way, which is just .title and .content
+      */
+      if (data[i].title !== undefined && data[i].title.rendered !== undefined) { // make sure the var is there
+        data[i].title = data[i].title.rendered // lose that stupid rendered parameter
+      }
+
+      if (data[i].content !== undefined && data[i].content.rendered !== undefined) { // make sure the var is there
+        data[i].content = data[i].content.rendered // lose the unnecessary "rendered" parameter
+      }
+
+
       
-      posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+      if (data[i].type !== undefined) { // make sure the var is there
+        type = data[i].type // set the type for the log
+
+        posts[data[i].id] = data[i] // adds a key of the post id to address all data in the post as a JSON object
+      }
+
     }
-    
-  } 
-}  else {
+  } else {
     type = data.type // set the type for the log
-      
-      posts[data.id] = data // adds a key of the post id to address all data in the post as a JSON object
 
-}
+    posts[data.id] = data // adds a key of the post id to address all data in the post as a JSON object
+
+  }
 
   if (type !== undefined) {
     switch (type) {
       case type = 'project':
-     
+
         break
       case type = 'post':
-     
+
         break
       case type = 'page':
-  
+
         break
     }
   }
-console.log(type, posts)
-   
-   
+  console.log(type, posts)
+
+
   return posts
 }
 
-function setMenuItem (dest,item) {
+function setMenuItem(item) {
   //console.log("setMenuItem",item)
-  this_item = {}
-  this_item.menu_id = item.ID
+  var this_item = {}
+  this_item.menu_id = item.id
   this_item.title = item.title
 
   this_item.menu_order = item.menu_order
   this_item.object = item.object
   this_item.object_id = item.object_id
   this_item.parent = item.menu_item_parent
-  this_item.dest = dest
-
+  this_item.slug = item.slug
+  this_item.url = item.url
   
+
+
   this_item.children = []
 
   return this_item
 }
 
-function setMenu (dest,slug, items) {
+function setMenu(slug, items) {
+  
   menu = {}
   for (var i = 0; i < items.length; i++) {
-    menu[items[i].ID] = setMenuItem(dest,items[i])
+   //console.log("menu_items",items[i])
+    menu[items[i].id] = setMenuItem(items[i])
+
     if (items[i].menu_item_parent != 0) { //recursive
-      menu[items[i].menu_item_parent].children.push(items[i].ID)
-     
-    } else {
       
+      menu[items[i].menu_item_parent].children.push(items[i].id)
+
+    } else {
+
     }
-    menus[dest].menu_array.push(menu[items[i].ID])
+  menus[slug].menu_array.push(menu[items[i].id])
 
   }
   //console.log("MENU ARRAY",menus[dest].menu_array)
- //console.log("SetMenu",slug, menu)
+  console.log("SetMenu",slug, menu)
   return menu
 }
-function setMenus (data, dest) {
-  //console.log("raw menu data",data)
-  menus[dest] = {};
-  menus[dest].menu_array = [];
-  for (var i = 0; i < data.length; i++) {
-    menus[data[i].slug] = {}
+
+function setMenus(data) {
+console.log("raw menu data",data) // all the menu data
+ 
+  
+
+ 
+  for (var i = 0; i < data.length; i++) {//loop through menus
+    menus[data[i].slug] = {} // store data in slug object 
     menus[data[i].slug].name = data[i].name
-   // menus[data[i].slug].slug = data[i].slug
-    menus[data[i].slug].items = setMenu(dest,data[i].slug, data[i].items)
+    menus[data[i].slug].menu_array = [] // this instance gets built in the setMenu Function called for the items object
+    menus[data[i].slug].slug = data[i].slug
+    menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
+    // now that menu_array is complete we use it to build our menu levels
+    menus[data[i].slug].levels = setMenuLevels(data[i].slug);
+  //  console.log("set menu", items)
+    
   }
 
+
+
+
+  console.log("MENUS", menus)
+ 
   
-  
-  //console.log("MENUS", menus)
-  //console.log("menu array",menus[dest])
-  displayMenus();
 
 }
 
 
 
 
-function setChildCategories (data, dest) {
-  for (var i = 0;i < data.length;i++) {
+function setChildCategories(data) {
+  for (var i = 0; i < data.length; i++) {
     categories[data[i].id] = data[i]
   }
   // console.log('categories', categories)
-  //displayCategories(dest, categories)
+
   return data
 }
 
-function setCategories (data, dest) {
-  //console.log("categories json", dest, data)
-  for (var i = 0;i < data.length;i++) {//creates object of categories by key
+function setCategories(data) {
+
+  for (var i = 0; i < data.length; i++) { //creates object of categories by key
     categories[data[i].id] = data[i]
   }
-   console.log('categories', categories)
-  //displayCategories(dest, categories)
+  console.log('categories', categories)
+
   return data
 }
-function setTags (data, dest) {
+
+function setTags(data) {
   for (var i = 0; i < data.length; i++) {
     tags[data[i].id] = data[i]
   }
- console.log('tags', tags)
- // displayTags(dest, tags)
+  console.log('tags', tags)
+
   return data
 }
-
-
-
-
-
-
-
-/* 
-=== 
-  HERE LIES THE GRAVE OF THE VERSION THAT HIT THE REST API EVERY TIME THE USER HIT THE PAGE
-  ALAS, SO INEFFICIENT THAT WAS. NOW, in functions/rest-json.php, the json is rendered statically upon save
-====
-
-// THE FORMER FUNCTION GET REST WHICH CONCATENATED THE VARIABLES NEEDED TO RETRIEVE.
-function getREST(route, params, callback, dest) {
-  // route =  the type 
-  // param = url arguments for the REST API
-  // callback = dynamic function name 
-  // Pass in the name of a function and it will return the data to that function
-
-  var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  console.log('endpoint', endpoint + "?" + params)
-  jQuery.ajax({
-    url: endpoint, // the url 
-    data: params,
-    success: function (data, textStatus, request) {
-      //console.log(endpoint,data)
-      return data,
-
-        callback(data, dest) // this is the callback that sends the data to your custom function
-
-    },
-    error: function (data, textStatus, request) {
-      console.log(endpoint, data.responseText)
-    },
-
-    cache: false
-  })
-}
-
-
-//HERE ARE ALL THE FUNCTION CALLS, LEFT HERE FOR POSTERITY IN CASE YOU WISH TO ATTEMPT SUCH TOMFOOLERY
-var REST_post_filter = "filter[orderby]=ID&order=asc&per_page=100";
-
-getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type&'+REST_post_filter, setPosts, '#posts') // get posts
-
-// retrieves all projects, with fields from REST API
-getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,video,type&'+REST_post_filter, setPosts, '#pages') // get pages
-
-// retrieves all projects, with fields from REST API
-getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype&'+REST_post_filter, setPosts, '#projects') // get the projects
-
-// retrieves all categories for the development category
-getREST('categories', 'fields=id,name,count,slug,description,category_posts,children', setCategories, '#category-menu') // returns the children of a specified parent category
-
-// retrieves all categories for the development category
-getREST('tags', 'fields=id,name,slug,tag_posts', setTags, 'tags') // returns the tags
-
-// retrieves top menu
-getREST('menus', '', setMenus, '#main-menu') // returns the tags
-*/
 var canvas = document.getElementById('matrix');
 var ctx = canvas.getContext('2d');
 var fontSize = 18;
@@ -1096,6 +925,268 @@ function setScreenImages(screen_images,dest,callback){
 
 
 
+function setMenuLevels(slug){// items = object of whole menu
+    levels = [];
+    var items = menus[slug].items
+    
+    for(i in items){
+        if(items[i].parent == 0){
+            console.log("level0",i,items[i])
+            levels.push(menuLevelItem(items[i],items))
+
+        } else {
+           // console.log("level0", items[i])
+        }
+    }
+    
+     console.log("menulevels", levels)
+    
+    /*var levels = [];
+    var menu_array = menus[slug].menu_array
+    var last_parent_key = 0
+    console.log("menu_array "+slug, menu_array)
+    var previous_parent = 0;
+    var level = 0;
+    for (var a = 0; a < menu_array.length; a++) {
+      
+         // data.push(menuLevelItem(a,menus[slug].menu_array[a]))
+       
+        if(menu_array[a].parent == 0){
+            console.log("menu_array par ent" + slug, menu_array[a])
+            last_parent_key = a;
+            level = 0
+        } else {
+            level++
+            previous_parent = a;
+           
+            if (menu_array[a].children.length>0){
+                console.log("menu_array grandchild" + slug, last_parent_key, a, menu_array[a])
+            } else {
+                console.log("menu_array child" + slug, last_parent_key, a, menu_array[a])
+            }
+        }
+
+
+    }
+    console.log("menulevels",levels)
+    return levels*/
+}
+
+
+function menuLevelItem(item,items){
+   
+    if(item.children.length >0){
+        console.log(item.menu_id,item.children)
+        return menuLevelData(item)
+    } else {
+        return menuLevelData(item)
+    }
+
+    /*
+    
+    return  { // data for top level 
+        "title": item.title,
+        "id": item.id,
+        "slug": item.slug,
+        "object": item.object,
+        "object_id": item.object_id, //the post_id
+        "children": item.children, // ge
+        "url": item.url
+    }*/
+  
+    //console.log(a,item)
+   
+
+
+  
+     
+    //  children.push(menuLevelItem(items[items[i].children[c]].id, items))
+        
+        /*
+        var item = items[i]
+        var level_item = { // data for top level 
+            "title": item.title,
+            "id": item.id,
+            "slug": item.slug,
+            "object": item.object,
+            "object_id": item.object_id, //the post_id
+            "children": children, // ge
+            "url": item.url
+        }*/
+   
+  //return level_item;
+
+
+}
+function menuLevelData(item){
+    return { // data for top level 
+        "title": item.title,
+        "id": item.id,
+        "slug": item.slug,
+        "object": item.object,
+        "object_id": item.object_id, //the post_id
+        "children": item.children, // ge
+        "url": item.url
+    }
+}
+
+
+function buildMenuData() {
+    var data = []; // array to store nested menu data in
+
+    for (var m in menus) { // outer loop of menus; m = menu name
+        console.log("set linear", m,menu)
+
+
+
+
+        if (menu_config[m] != undefined) { // continue if undefined
+
+           
+            console.log("MENU ARRAY", menu_array)
+            var children = []; // empty array for children
+
+
+            for (var a = 0; a < menu_array.length; a++) {
+                children = [];
+                console.log(menu_array[a])
+                data.push({ // data for top level 
+                    "title": menu_array[a].title,
+                    //"id": menu_array[a].id,
+                    "slug": slug,
+                    "object": menu_array[a].object,
+                    "object_id": menu_array[a].object_id, //the post_id
+                    "children": children, // ge
+                    "url": url
+                })
+
+            } // loops through menu array
+            /*
+            menu_levels = data;
+            console.log("MENU DATA", data)
+            setLinearDataNav(data);
+
+            
+            
+
+            setSlider(linear_nav)
+            setSlides(linear_nav)
+
+            setSlideShow(); // creates slides for the slick carousel
+            makeWheelNav("outer-nav", menu_levels, menu_config[m]._p)
+
+            if (location.hash != '') {
+                var slug = location.hash.replace("#", "");
+                console.log("set by slugHash", slug, slug_nav[slug])
+
+                setSliderNotch(slug_nav[slug])
+            } else {
+
+                if (menu_config[m].menu_type == "wheel") {
+                    // THIS IS THE INITIAL LOADING OF THE WHEEL
+
+
+                }
+            }
+
+            console.log('makeouterwheel', menu_levels);
+            */
+
+           
+        }
+        
+    }
+
+
+}
+
+function setLinearNav(m, menu) {
+    console.log("set linear", m,menu)
+    var counter = 0
+    var linear_nav = []
+    var posts_nav = []
+    for (var i in menu.items) {
+
+
+        menu.items[i].post = posts[menu.items[i].object_id]
+        //menu.items[i].slug = posts[menu.items[i].object_id].slug
+
+
+        id = menu.items[i].object_id.toString()
+        linear_nav.push(menu.items[i])
+        posts_nav[id] = counter;
+        counter++;
+    }
+    linear_nav.sort(menu_order);
+    menus[m].linear = linear_nav;
+    
+    menus[m].posts = posts_nav;
+
+
+
+
+}
+
+function setLinearDataNav(data) { // sets local data into linear array for wheel
+
+    var counter = 0,
+        outer_counter = 0,
+        inner_counter = 0,
+        inner_subcounter = 0,
+        grandparent = 0,
+        next_parent = 0,
+        dest = 'outer-nav'
+
+    // THESE 3 NESTED LOOPS POPULATE THE data_nav array WITH WHAT IT NEEDS TO BUILD THE WHEEL AND HAVE IT BE CONTROLLED BY THE ORDERED NOTCHES FROM THE NAV
+
+    for (var d = 0; d < data.length; d++) { //outer
+        dest = 'outer-nav'
+        data[d].dest = dest;
+        data[d].slice = outer_counter;
+        data[d].notch = counter;
+        grandparent = counter;
+        data_nav.push(data[d]);
+        slug_nav[data[d].slug] = counter;
+
+        counter++;
+        for (var c = 0; c < data[d].children.length; c++) { //children
+            data[d].children[c].dest = "inner-nav"
+            data[d].children[c].slice = c
+            data[d].children[c].notch = counter
+            data[d].children[c].parent = grandparent
+            next_parent = counter
+            data_nav.push(data[d].children[c])
+            slug_nav[data[d].children[c].slug] = counter;
+            counter++
+            for (var g = 0; g < data[d].children[c].children.length; g++) { //grandchildren
+                data[d].children[c].children[g].dest = "inner-subnav"
+                data[d].children[c].children[g].slice = g
+                data[d].children[c].children[g].notch = counter
+                data[d].children[c].children[g].grandparent = grandparent
+                data[d].children[c].children[g].parent = next_parent
+
+                data_nav.push(data[d].children[c].children[g])
+                slug_nav[data[d].children[c].children[g].slug] = counter;
+                counter++
+            }
+            // console.log("dataNav", data);
+        }
+
+        outer_counter++;
+
+    }
+
+    console.log("dataNav", data_nav);
+    // console.log("slug_nav", slug_nav);
+}
+
+function menu_order(a, b) {
+    if (a.menu_order < b.menu_order)
+        return -1;
+    if (a.menu_order > b.menu_order)
+        return 1;
+    return 0;
+}
 /*
 window.onload = init;
 console.ward = function() {}; // what warnings?
@@ -1629,9 +1720,10 @@ function setRelated(post) {
 
         if(posts[id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
+            console.log("projects ",menus['projects'])
         }
 
-      console.log("select Related ",posts[id].type,posts[id].title)
+     
   
 
 
@@ -1717,6 +1809,16 @@ function setSlide(slide,id){
   slide +='\n</div></div>\n';
 
   return slide
+}
+function setSlideContent(slide, id) {
+
+  if (posts[id] != undefined) {
+    jQuery("#slide" + slide + " h2").html(posts[+id].title)
+    jQuery("#slide" + slide + " section div.content").html(posts[+id].content)
+    $carousel.slick('slickGoTo', slide);
+  } else {
+    //console.log("post undefined", slide, id, posts)
+  }
 }
 
 
@@ -1988,40 +2090,7 @@ jQuery(window).on('resize', function () {
 //renderer.setSize(window.innerWidth, window.innerHeight)
 
 
-var menu_config = {
-        'top-menu': {
-            'menu_type': 'wheel',
-            'location': '#outer-nav',
-            '_p': {
-                'maxPercent': 1,
-                'min': 0.91,
-                'max': 1,
-                'sel_min': 0.91,
-                'sel_max': 1,
-            }
-        }
-    },
-    inner_nav_params = {
-        'maxPercent': 1,
-        'min': 0.91,
-        'max': 1,
-        'sel_min': 0.91,
-        'sel_max': 1.0,
-    },
-    inner_subnav_params = {
-        'maxPercent': 1,
-        'min': 0.90,
-        'max': 1,
-        'sel_min': 0.90,
-        'sel_max': 1.0,
-    },
-    last_outer_notch = 0,
-    last_inner_notch = 0
-    
 
-/**/
-var menu_raphael = {}
-var wheels = {}
 
 function makeWheelNav(dest, data, _p) {
 
@@ -2126,22 +2195,20 @@ function makeWheelNav(dest, data, _p) {
 }
 
 function triggerWheelNav(notch) {
+    /* this is where all the logic to control the wheel behaviors*/
 
-    var this_notch = data_nav[notch]
-    var this_dest = this_notch.dest;
+
+    var this_notch = data_nav[notch] // gets the data for the notch
+    var this_dest = this_notch.dest; // the notch knows what part of the circle.
 
     console.log("trigger wheel, notch:", this_notch, " | dest:", this_dest);
 
-
-
-
     
 
-    if (this_dest == 'outer-nav') {
+    if (this_dest == 'outer-nav') { // top level menu goes to outer ring
         if (wheels["inner-nav"] != undefined) {
             wheels[this_dest].navigateWheel(this_notch.slice)
-
-        }
+       }
         popAWheelie("inner-nav")
         if (this_notch.children.length > 0) {
 

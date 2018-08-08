@@ -37,6 +37,16 @@ function setSlide(slide,id){
 
   return slide
 }
+function setSlideContent(slide, id) {
+
+  if (posts[id] != undefined) {
+    jQuery("#slide" + slide + " h2").html(posts[+id].title)
+    jQuery("#slide" + slide + " section div.content").html(posts[+id].content)
+    $carousel.slick('slickGoTo', slide);
+  } else {
+    //console.log("post undefined", slide, id, posts)
+  }
+}
 
 
 function setSlides(){

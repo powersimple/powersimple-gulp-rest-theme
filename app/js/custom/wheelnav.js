@@ -1,37 +1,4 @@
-var menu_config = {
-        'top-menu': {
-            'menu_type': 'wheel',
-            'location': '#outer-nav',
-            '_p': {
-                'maxPercent': 1,
-                'min': 0.91,
-                'max': 1,
-                'sel_min': 0.91,
-                'sel_max': 1,
-            }
-        }
-    },
-    inner_nav_params = {
-        'maxPercent': 1,
-        'min': 0.91,
-        'max': 1,
-        'sel_min': 0.91,
-        'sel_max': 1.0,
-    },
-    inner_subnav_params = {
-        'maxPercent': 1,
-        'min': 0.90,
-        'max': 1,
-        'sel_min': 0.90,
-        'sel_max': 1.0,
-    },
-    last_outer_notch = 0,
-    last_inner_notch = 0
-    
 
-/**/
-var menu_raphael = {}
-var wheels = {}
 
 function makeWheelNav(dest, data, _p) {
 
@@ -136,22 +103,20 @@ function makeWheelNav(dest, data, _p) {
 }
 
 function triggerWheelNav(notch) {
+    /* this is where all the logic to control the wheel behaviors*/
 
-    var this_notch = data_nav[notch]
-    var this_dest = this_notch.dest;
+
+    var this_notch = data_nav[notch] // gets the data for the notch
+    var this_dest = this_notch.dest; // the notch knows what part of the circle.
 
     console.log("trigger wheel, notch:", this_notch, " | dest:", this_dest);
 
-
-
-
     
 
-    if (this_dest == 'outer-nav') {
+    if (this_dest == 'outer-nav') { // top level menu goes to outer ring
         if (wheels["inner-nav"] != undefined) {
             wheels[this_dest].navigateWheel(this_notch.slice)
-
-        }
+       }
         popAWheelie("inner-nav")
         if (this_notch.children.length > 0) {
 

@@ -16,7 +16,6 @@
     var site_title = "<?=get_bloginfo('name')?>";
     var json_path = "<?=get_stylesheet_directory_uri()?>/app/json/";
     var uploads_path =  "<?=$url['baseurl']?>/";
-
 </script>
 </head>
 

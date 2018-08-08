@@ -1,15 +1,28 @@
-var increment = 'vw',
-  orientation = 'vertical', // this var is used by the slider
-  _w = jQuery(window).width(),
-  _h = jQuery(window).height(),
-  aspect = _w / _h,
-  current_notch = 0
+
 jQuery(document).ready(function () {
-
-
   jQuery(".wheelnav-outer-nav-title").css("display:none;");
   reposition_screen()
 })
+
+jQuery(window).resize(function () {
+  _w = jQuery(window).width()
+  _h = jQuery(window).height()
+
+  if (_w > _h) {
+    increment = 'vh'
+  } else {
+    increment = 'vw'
+  }
+  aspect = _w / _h
+  reposition_screen()
+
+})
+
+function init(){
+
+}
+
+
 
 function calibrateCircle(id, size, increment) {
   //console.log("calibrate",id,size,increment)
@@ -104,11 +117,6 @@ function reposition_screen() {
   jQuery('#main').css('height', '100vw')
   jQuery('#main').css('width', '100vh')
 
-
-
-
-
-
   setSlider()
   positionProjector()
   pinSlider();
@@ -166,36 +174,13 @@ function reposition_screen() {
     }
   }
 
-
+  jQuery('#matrix').css('height', '100vh')
+  jQuery('#matrix').css('width', '100vw')
   jQuery('#stars').css('height', '100vh')
   jQuery('#stars').css('width', '100vw')
 }
 
 
-jQuery(window).resize(function () {
-  _w = jQuery(window).width()
-  _h = jQuery(window).height()
-
-  if (_w > _h) {
-    increment = 'vh'
-  } else {
-    increment = 'vw'
-  }
-  aspect = _w / _h
-  reposition_screen()
-
-})
-
-function setSlideContent(slide, id) {
-
-  if (posts[id] != undefined) {
-    jQuery("#slide" + slide + " h2").html(posts[+id].title)
-    jQuery("#slide" + slide + " section div.content").html(posts[+id].content)
-    $carousel.slick('slickGoTo', slide);
-  } else {
-    //console.log("post undefined", slide, id, posts)
-  }
-}
 
 
 
@@ -206,58 +191,3 @@ function setSlideContent(slide, id) {
 
 
 
-function setContent(dest, object_id, object) {
-  var slide = posts_nav[object_id]
-  var featured_image = posts[object_id].featured_media;
-
-  console.log("setContent",object_id,object,posts[object_id])
-  if (posts[object_id] != undefined) {
-    console.log("selected post", posts[object_id])
-    page_title = posts[object_id].title + " | " + site_title;
-    document.title = page_title
-
-    setImage(posts[object_id].featured_media, "#featured-image", "square");
-
-    //jQuery("#featured-image-projected").attr('src', featured_image)
-    var video_path = uploads_path + "" + posts[object_id].featured_video.video_path;
-
-    
-    setVideo(posts[object_id].featured_video.video_id,"#bg-video")
-    setRelated(posts[object_id])
-    if (posts[object_id].screen_images.length >0){
-
-        setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
-    } else {
-      jQuery('#screen-image-container').html('')
-    }
-    console.log("tags", posts[object_id].tags)
-
-  }
-  setSlideContent(slide, object_id)
-
-  /*
-        for category wheels
-        if(cat_children.length>0){
-          for(c=0;c<cat_children.length;c++){
-            
-            data.push({
-                  id : categories[cat_children[c]].id,
-                  title : categories[cat_children[c]].name,
-                  type: "category",
-                  children: categories[cat_children[c]].children
-              }
-            )
-            
-          }
-          
-
-          makeWheelNav(dest, data, inner_subnav_params)
-          //
-
-        
-
-      } else {
-        
-      }*/
-
-}
