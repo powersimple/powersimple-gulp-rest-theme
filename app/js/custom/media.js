@@ -83,7 +83,7 @@ function getSquareVersion(sizes,dest){
     //    console.log("sq-lg")
         return sizes['sq-lg']
     } else if ((box.w > 250 || box.h > 250) && (box.w <= 1280 || box.h <= 1280)) {
-        console.log("sq-med")
+       // console.log("sq-med")
         return sizes['sq-med']
     } else {
       //  console.log("sq-sm")

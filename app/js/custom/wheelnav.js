@@ -259,21 +259,7 @@ function popAWheelie(dest) { // this removes the inner rings when you click on n
             wheels["inner-subnav"].raphael.remove() //destroy it
         }
     }
-    /*
-     if (wheels["inner-nav"] != undefined) { //and inner ring exists
-         wheels["inner-nav"].raphael.remove(); // destroy it
-         child_dest = "inner-nav" //outer's inner
-         if (wheels["inner-subnav"] != undefined) { //if  inner subnav
-             wheels["inner-subnav"].raphael.remove() //destoy that too.
-         }
-     } 
-     */
-    /*if (dest == "inner-subnav") { // if you select from the inner nave
-        if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
-            wheels["inner-subnav"].raphael.remove() //destroy it
-            
-        }
-    }*/
+    
 
 
 }

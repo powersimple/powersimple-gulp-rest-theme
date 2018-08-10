@@ -126,9 +126,35 @@ if ( ! class_exists( 'WP_REST_Menus' ) ) :
                 $rest_menus[ $i ]['slug']        = $menu['slug'];
                 $rest_menus[ $i ]['description'] = $menu['description'];
                 $rest_menus[ $i ]['count']       = $menu['count'];
+/*
+                    hack to customize items to educe bloat
+                    This reduced menu json file size by more than 80%
+                */           
+                $items = wp_get_nav_menu_items( $menu['term_id'] );
+                $custom_items = array();
+                foreach($items as $key => $value){
+                    // this gets rid of the infernal and wasteful printing of the absolute path in a url for local.
+                    $url = str_replace("http:","",$value->url);
+                    $url = str_replace("https:","",$value->url);
+                    $url = str_replace(get_site_url(),"",$value->url);
+                    array_push($custom_items,
+                        array(
+                            "ID"=>$value->ID,
+                            "object"=>$value->object,
+                            "object_id"=>$value->object_id,
+                            "menu_item_parent"=>$value->menu_item_parent,
+                            "menu_order"=>$value->menu_order,
+                            "title"=>$value->title,
+                            "url"=>$url,
+                            "slug"=>$value->post_name,
+                            "post_parent" => $value->post_parent                        )
+                    );
+                }
+              
 
+                $rest_menus[$i]['items'] = $menu['term_id'] ? $custom_items : array();
                 //hack to add items to menu call
-                $rest_menus[$i]['items'] = $menu['term_id'] ? wp_get_nav_menu_items( $menu['term_id'] ) : array();
+             //  $rest_menus[$i]['items'] = $menu['term_id'] ? wp_get_nav_menu_items( $menu['term_id'] ) : array();
                 
 
                 //commented out, because it's not necessary
@@ -194,6 +220,7 @@ if ( ! class_exists( 'WP_REST_Menus' ) ) :
          * @param  $menu_items
          * @param  $parent
          * @return array
+         * 
          */
         private function nested_menu_items( &$menu_items, $parent = null ) {
 
