@@ -20,38 +20,41 @@ function calibrateCircle(id, size, increment) {
 
 }
 
-function pinSlider() {
+function positionNavElements() {
 
   if (_w >= _h) {
     orientation = 'vertical'
     slider_left = (_w / 2) + ((_h * 0.8) / 2) + _w / 10 + "px"
 
     //console.log(slider_left);
+    if(aspect >1 && aspect<1.25){
+      jQuery("#slider-wrap, #related").addClass("narrow")
+    } else {
+      jQuery("#slider-wrap, #related").removeClass("narrow")
+    }
+   
 
-    jQuery("#slider-wrap").css("left", slider_left)
-    jQuery("#slider-wrap").css("top", "19.9%")
-    jQuery("#slider-wrap").css("height", "67%")
-    jQuery("#slider-wrap").css("width", "auto")
+    jQuery("#slider-wrap, #related").addClass("vertical")
+    jQuery("#slider-wrap, #related").removeClass("horizontal")
 
-    jQuery("#up-arrow").addClass("up-arrow-vertical")
-    jQuery("#up-arrow").removeClass("up-arrow-horizontal")
 
-    jQuery("#down-arrow").addClass("down-arrow-vertical")
-    jQuery("#down-arrow").removeClass("down-arrow-horizontal")
+    
 
   } else {
     orientation = 'horizontal'
     slider_top = (_h / 2) + ((_w * 0.8) / 2) + 24 + "px"
-    jQuery("#slider-wrap").css("top", slider_top)
-    jQuery("#slider-wrap").css("left", "19.9%")
-    jQuery("#slider-wrap").css("width", "68%")
-    jQuery("#slider-wrap").css("height", "auto")
+    if (aspect < 1 && aspect > 0.75) {
+      jQuery("#slider-wrap, #related").addClass("narrow")
 
-    jQuery("#up-arrow").removeClass("up-arrow-vertical")
-    jQuery("#up-arrow").addClass("up-arrow-horizontal")
+    } else {
+      jQuery("#slider-wrap, #related").removeClass("narrow")
 
-    jQuery("#down-arrow").removeClass("down-arrow-vertical")
-    jQuery("#down-arrow").addClass("down-arrow-horizontal")
+    }
+
+    jQuery("#slider-wrap, #related").addClass("horizontal")
+    jQuery("#slider-wrap, #related").removeClass("vertical")
+    
+  
 
   }
 }
@@ -83,7 +86,7 @@ function positionProjector() {
 
   jQuery("#featured-image-header").css("fontSize", fontSize+'em')
   jQuery("#featured-image-footer").css("fontSize", fontSize*0.8+"em")
-   console.log("aspect",aspect,top);
+   //console.log("aspect",aspect,top);
 
 
 }
@@ -111,7 +114,7 @@ function reposition_screen() {
 
   setSlider()
   positionProjector()
-  pinSlider();
+  positionNavElements();
   logoSize();
   jQuery("#slider").css("visibility", "visible")
 
@@ -210,9 +213,9 @@ function setContent(dest, object_id, object) {
   var slide = posts_nav[object_id]
   var featured_image = posts[object_id].featured_media;
 
-  console.log("setContent",object_id,object,posts[object_id])
+  //console.log("setContent",object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
-    console.log("selected post", posts[object_id])
+    //console.log("selected post", posts[object_id])
     page_title = posts[object_id].title + " | " + site_title;
     document.title = page_title
 
@@ -230,7 +233,7 @@ function setContent(dest, object_id, object) {
     } else {
       jQuery('#screen-image-container').html('')
     }
-    console.log("tags", posts[object_id].tags)
+//   console.log("tags", posts[object_id].tags)
 
   }
   setSlideContent(slide, object_id)

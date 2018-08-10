@@ -9,7 +9,7 @@ function setSlider(){
        value: 0,
        slide: function( event, ui ) {
          setSliderNotch(ui.value)
-         console.log("slider",ui.value)
+      //   console.log("slider",ui.value)
         // jQuery( "#amount" ).val( ui.value );
        }
  
@@ -106,7 +106,7 @@ function setSlider(){
          next_notch++
        }
     }
-    console.log('arrow_next',next_notch)
+    //console.log('arrow_next',next_notch)
     setSliderNotch(next_notch)
 
 
@@ -119,11 +119,11 @@ function setSlider(){
 
  function setSliderNotch(notch){
  
-    console.log("notch",data_nav[notch],notch)
+  //console.log("notch",data_nav[notch],notch)
    location.hash = posts[data_nav[notch].object_id].slug
 
  
-   console.log("set slider notch", notch,location.hash)
+   //console.log("set slider notch", notch,location.hash)
    jQuery("#slider").slider('value', notch);
     if (linear_nav[notch] != undefined){
       

@@ -21,7 +21,7 @@ function setSlideShow(){
     prevArrow: '<i class="slick-arrow slick-prev"></i>',
      
   });
-   console.log("set slideshow")
+   //console.log("set slideshow")
 }
 function setSlide(slide,id){
   /*

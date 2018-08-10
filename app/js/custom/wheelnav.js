@@ -140,7 +140,7 @@ function triggerWheelNav(notch) {
     var this_notch = data_nav[notch]
     var this_dest = this_notch.dest;
 
-    console.log("trigger wheel, notch:", this_notch, " | dest:", this_dest);
+   // console.log("trigger wheel, notch:", this_notch, " | dest:", this_dest);
 
 
 
@@ -167,7 +167,7 @@ function triggerWheelNav(notch) {
     } else if (this_dest == 'inner-nav') {
 
         
-        console.log(last_outer_notch, last_inner_notch,notch,this_notch)
+       // console.log(last_outer_notch, last_inner_notch,notch,this_notch)
         if (last_outer_notch != this_notch.parent) { //if we go backwards we need to change the parent.
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice) //dialback the outer ring to its slice
             makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
@@ -179,7 +179,7 @@ function triggerWheelNav(notch) {
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice)
             if (wheels["inner-nav"] != undefined) { //if the inner nav exists
                
-            console.log(' != undefined')
+           // console.log(' != undefined')
                 wheels[this_dest].navigateWheel(this_notch.slice)
                 if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
                     wheels["inner-subnav"].raphael.remove() //destroy it
@@ -188,7 +188,7 @@ function triggerWheelNav(notch) {
 
             } else {
                
-                      console.log('  undefined')
+                     // console.log('  undefined')
                 makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)
                 wheels[this_dest].navigateWheel(this_notch.slice)
             }
@@ -214,7 +214,7 @@ function triggerWheelNav(notch) {
             last_outer_notch = this_notch.grandparent // set the outer notch back so we can go forward again.
         }
         if (last_inner_notch != this_notch.parent) { //who's your daddy?
-            console.log("where have I gone wrong?", this_notch);
+          //  console.log("where have I gone wrong?", this_notch);
             //receate the inner ring for the parent
             wheels["inner-nav"].navigateWheel(data_nav[this_notch.parent].slice)
             //now we can dial the inner ring where it belongs

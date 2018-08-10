@@ -1,6 +1,6 @@
 function setImage(id,dest,size){
     setMediaText(id,dest)
-    console.log("set image",media[id])
+    //console.log("set image",media[id])
     if(media[id]!=undefined){
                 jQuery(dest+"-wrap").attr("visibility",'hidden')
 
@@ -15,7 +15,7 @@ function setImage(id,dest,size){
 
             if(size == 'square'){ // if for a square area
                 src = getSquareVersion(media[id].meta.sizes,dest) // get the size version of the sq
-                console.log(src)
+             //   console.log(src)
             } else{
                 src = media[id].meta.sizes[size] // returns specified size
             }
@@ -23,7 +23,7 @@ function setImage(id,dest,size){
         }
       
         if(dest == ''){//set path to '' to return the src only
-        console.log("Src return", full_path + src)
+     //   console.log("Src return", full_path + src)
             return full_path+src;
         } else { // if dest is specified, set the src to the id and 
             jQuery(dest).attr("src",full_path+src)
@@ -56,13 +56,13 @@ function wrapTag(tag,str){
 function setMediaText(id,dest){
 
     if(media[id]!=undefined){
-        console.log("caption",media[id]);
+       // console.log("caption",media[id]);
         jQuery(dest+"-title").html(media[id].title)
         jQuery(dest+"-caption").html(media[id].caption)
         jQuery(dest+"-description").html(media[id].desc)
         jQuery(dest).attr("alt", media[id].alt);
     } else {
-        console.log("clear media text",dest);
+        //console.log("clear media text",dest);
         jQuery(dest+"-title").html('')
         jQuery(dest+"-caption").html('')
         jQuery(dest+"-description").html('')
@@ -77,16 +77,16 @@ function getSquareVersion(sizes,dest){
            w: jQuery(dest).parent().width(),
            h: jQuery(dest).parent().height()
    }
-   console.log("box",box)
+  // console.log("box",box)
 
     if (box.w > 1280 || box.h > 1280) { //over 1500 use large
-        console.log("sq-lg")
+    //    console.log("sq-lg")
         return sizes['sq-lg']
     } else if ((box.w > 250 || box.h > 250) && (box.w <= 1280 || box.h <= 1280)) {
         console.log("sq-med")
         return sizes['sq-med']
     } else {
-        console.log("sq-sm")
+      //  console.log("sq-sm")
         return sizes['sq-sm']
     }
 
@@ -102,13 +102,13 @@ function setVideo(id,dest){
 
         var video = jQuery(dest+' video source').attr("src", full_path+src);
         jQuery(dest).css("display", "block");
-        console.log("unhide video player")
+    //    console.log("unhide video player")
 
         jQuery(dest + ' video')[0].load();
         
         video = jQuery(dest + ' video source').attr("src", full_path + src);
     } else {
-        console.log("no video, hide player")
+    //    console.log("no video, hide player")
         jQuery(dest).css("display", "none");
     }
 }
@@ -123,7 +123,7 @@ function setScreenImages(screen_images,dest,callback){
     }
     circleViewer(dest,images)
   //  callback(dest,images)
-    console.log("setScreenImages", screen_images, dest, images);
+    //console.log("setScreenImages", screen_images, dest, images);
 
 
 }

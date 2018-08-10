@@ -506,7 +506,7 @@
     $.fn.addNode = function (parent, name, options) {
         var obj = this[0];
         var node = obj.nodes[obj.nodes.length] = new Node(obj, name, parent, options);
-        console.log(obj.root);
+       // console.log(obj.root);
         obj
             .root
             .animateToStatic();

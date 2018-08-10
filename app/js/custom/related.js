@@ -68,13 +68,13 @@ function setRelated(post) {
                 post_id = related[tax][type][p]
                 var bg_image = '';
                 var src = setFeatured(post_id,"thumbnail");
-                console.log("set related",src,post_id);
+                //console.log("set related",src,post_id);
                 if(src !=''){
                    
                     bg_image = ' style="background-image:url('+src+')"'
                 }
                 rel_list += '<li '+bg_image+' class="ui-widget '+type+'" data-rel="'+post_id+'">'
-                    console.log("related post",post_id)
+                   // console.log("related post",post_id)
                     rel_list += post_id
                 rel_list += '</li>'
 
@@ -89,7 +89,7 @@ function setRelated(post) {
 
 
   function tipHoverContent(id){
-    console.log("hover tip",id)
+    //console.log("hover tip",id)
     var tipContent = '';
     if(posts[id].type == 'project'){
         tipContent +='<span class="hover-title">'+posts[id].project_info.client+'</span>' 
@@ -135,13 +135,13 @@ function setRelated(post) {
             selectRelatedPost(id);
 
         }).on("mouseover",function(){
-            console.log("related"+id,"mouseover");
+        //    console.log("related"+id,"mouseover");
         }).on("mouseout",function(){
-            console.log("related"+id,"mouseoout");
+        //    console.log("related"+id,"mouseoout");
         }).on("mousedown",function(){
-            console.log("related"+id,"mousedown");
+        //    console.log("related"+id,"mousedown");
         }).on("mouseup",function(){
-            console.log("related"+id,"mouseup");
+        //    console.log("related"+id,"mouseup");
         });
 
         tip += '<div class="rel-tooltip"'+bg_image+'>'

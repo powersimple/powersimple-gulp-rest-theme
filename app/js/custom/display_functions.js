@@ -148,7 +148,7 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
 
   }
 
- console.log("dataNav", data_nav);
+// console.log("dataNav", data_nav);
  // console.log("slug_nav", slug_nav);
 }
 
@@ -236,7 +236,7 @@ function displayMenus() {
       makeWheelNav("outer-nav", menu_levels, menu_config[m]._p)
       if (location.hash != '') {
         var slug = location.hash.replace("#", "");
-        console.log("set by slugHash", slug, slug_nav[slug])
+        //console.log("set by slugHash", slug, slug_nav[slug])
         
         setSliderNotch(slug_nav[slug])
       } else {
@@ -247,7 +247,7 @@ function displayMenus() {
           
         }
       }
-      console.log('makeouterwheel',menu_levels);
+      //console.log('makeouterwheel',menu_levels);
 
      
     

@@ -12,7 +12,7 @@ function getStaticJSON (route, callback, dest) {
 
    // local absolute path to the REST API + routing arguments
   var json_data = json_path+route+".json"
-console.log("jsonfile",json_data);
+//console.log("jsonfile",json_data);
   jQuery.ajax({
     url: json_data, // the url
     data: '',
@@ -54,7 +54,7 @@ function setMedia(data, dest) {
   for(var m=0;m<data.length;m++){
     media[data[m].id] = data[m].data;
   }
-  console.log("media",media);
+  //console.log("media",media);
 }
 
 function setPosts (data, dest) { // special function for the any post type
@@ -107,7 +107,7 @@ if(Array.isArray(data)){
         break
     }
   }
-console.log(type, posts)
+//console.log(type, posts)
    
    
   return posts
@@ -184,7 +184,7 @@ function setCategories (data, dest) {
   for (var i = 0;i < data.length;i++) {//creates object of categories by key
     categories[data[i].id] = data[i]
   }
-   console.log('categories', categories)
+ //  console.log('categories', categories)
   //displayCategories(dest, categories)
   return data
 }
@@ -192,7 +192,7 @@ function setTags (data, dest) {
   for (var i = 0; i < data.length; i++) {
     tags[data[i].id] = data[i]
   }
- console.log('tags', tags)
+ //console.log('tags', tags)
  // displayTags(dest, tags)
   return data
 }

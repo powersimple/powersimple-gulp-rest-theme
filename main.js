@@ -20,38 +20,41 @@ function calibrateCircle(id, size, increment) {
 
 }
 
-function pinSlider() {
+function positionNavElements() {
 
   if (_w >= _h) {
     orientation = 'vertical'
     slider_left = (_w / 2) + ((_h * 0.8) / 2) + _w / 10 + "px"
 
     //console.log(slider_left);
+    if(aspect >1 && aspect<1.25){
+      jQuery("#slider-wrap, #related").addClass("narrow")
+    } else {
+      jQuery("#slider-wrap, #related").removeClass("narrow")
+    }
+   
 
-    jQuery("#slider-wrap").css("left", slider_left)
-    jQuery("#slider-wrap").css("top", "19.9%")
-    jQuery("#slider-wrap").css("height", "67%")
-    jQuery("#slider-wrap").css("width", "auto")
+    jQuery("#slider-wrap, #related").addClass("vertical")
+    jQuery("#slider-wrap, #related").removeClass("horizontal")
 
-    jQuery("#up-arrow").addClass("up-arrow-vertical")
-    jQuery("#up-arrow").removeClass("up-arrow-horizontal")
 
-    jQuery("#down-arrow").addClass("down-arrow-vertical")
-    jQuery("#down-arrow").removeClass("down-arrow-horizontal")
+    
 
   } else {
     orientation = 'horizontal'
     slider_top = (_h / 2) + ((_w * 0.8) / 2) + 24 + "px"
-    jQuery("#slider-wrap").css("top", slider_top)
-    jQuery("#slider-wrap").css("left", "19.9%")
-    jQuery("#slider-wrap").css("width", "68%")
-    jQuery("#slider-wrap").css("height", "auto")
+    if (aspect < 1 && aspect > 0.75) {
+      jQuery("#slider-wrap, #related").addClass("narrow")
 
-    jQuery("#up-arrow").removeClass("up-arrow-vertical")
-    jQuery("#up-arrow").addClass("up-arrow-horizontal")
+    } else {
+      jQuery("#slider-wrap, #related").removeClass("narrow")
 
-    jQuery("#down-arrow").removeClass("down-arrow-vertical")
-    jQuery("#down-arrow").addClass("down-arrow-horizontal")
+    }
+
+    jQuery("#slider-wrap, #related").addClass("horizontal")
+    jQuery("#slider-wrap, #related").removeClass("vertical")
+    
+  
 
   }
 }
@@ -83,7 +86,7 @@ function positionProjector() {
 
   jQuery("#featured-image-header").css("fontSize", fontSize+'em')
   jQuery("#featured-image-footer").css("fontSize", fontSize*0.8+"em")
-   console.log("aspect",aspect,top);
+   //console.log("aspect",aspect,top);
 
 
 }
@@ -111,7 +114,7 @@ function reposition_screen() {
 
   setSlider()
   positionProjector()
-  pinSlider();
+  positionNavElements();
   logoSize();
   jQuery("#slider").css("visibility", "visible")
 
@@ -210,9 +213,9 @@ function setContent(dest, object_id, object) {
   var slide = posts_nav[object_id]
   var featured_image = posts[object_id].featured_media;
 
-  console.log("setContent",object_id,object,posts[object_id])
+  //console.log("setContent",object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
-    console.log("selected post", posts[object_id])
+    //console.log("selected post", posts[object_id])
     page_title = posts[object_id].title + " | " + site_title;
     document.title = page_title
 
@@ -230,7 +233,7 @@ function setContent(dest, object_id, object) {
     } else {
       jQuery('#screen-image-container').html('')
     }
-    console.log("tags", posts[object_id].tags)
+//   console.log("tags", posts[object_id].tags)
 
   }
   setSlideContent(slide, object_id)
@@ -497,7 +500,7 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
 
   }
 
- console.log("dataNav", data_nav);
+// console.log("dataNav", data_nav);
  // console.log("slug_nav", slug_nav);
 }
 
@@ -585,7 +588,7 @@ function displayMenus() {
       makeWheelNav("outer-nav", menu_levels, menu_config[m]._p)
       if (location.hash != '') {
         var slug = location.hash.replace("#", "");
-        console.log("set by slugHash", slug, slug_nav[slug])
+        //console.log("set by slugHash", slug, slug_nav[slug])
         
         setSliderNotch(slug_nav[slug])
       } else {
@@ -596,7 +599,7 @@ function displayMenus() {
           
         }
       }
-      console.log('makeouterwheel',menu_levels);
+      //console.log('makeouterwheel',menu_levels);
 
      
     
@@ -646,7 +649,7 @@ function getStaticJSON (route, callback, dest) {
 
    // local absolute path to the REST API + routing arguments
   var json_data = json_path+route+".json"
-console.log("jsonfile",json_data);
+//console.log("jsonfile",json_data);
   jQuery.ajax({
     url: json_data, // the url
     data: '',
@@ -688,7 +691,7 @@ function setMedia(data, dest) {
   for(var m=0;m<data.length;m++){
     media[data[m].id] = data[m].data;
   }
-  console.log("media",media);
+  //console.log("media",media);
 }
 
 function setPosts (data, dest) { // special function for the any post type
@@ -741,7 +744,7 @@ if(Array.isArray(data)){
         break
     }
   }
-console.log(type, posts)
+//console.log(type, posts)
    
    
   return posts
@@ -818,7 +821,7 @@ function setCategories (data, dest) {
   for (var i = 0;i < data.length;i++) {//creates object of categories by key
     categories[data[i].id] = data[i]
   }
-   console.log('categories', categories)
+ //  console.log('categories', categories)
   //displayCategories(dest, categories)
   return data
 }
@@ -826,7 +829,7 @@ function setTags (data, dest) {
   for (var i = 0; i < data.length; i++) {
     tags[data[i].id] = data[i]
   }
- console.log('tags', tags)
+ //console.log('tags', tags)
  // displayTags(dest, tags)
   return data
 }
@@ -966,7 +969,7 @@ initCanvas();
 setInterval(draw, 160);
 function setImage(id,dest,size){
     setMediaText(id,dest)
-    console.log("set image",media[id])
+    //console.log("set image",media[id])
     if(media[id]!=undefined){
                 jQuery(dest+"-wrap").attr("visibility",'hidden')
 
@@ -981,7 +984,7 @@ function setImage(id,dest,size){
 
             if(size == 'square'){ // if for a square area
                 src = getSquareVersion(media[id].meta.sizes,dest) // get the size version of the sq
-                console.log(src)
+             //   console.log(src)
             } else{
                 src = media[id].meta.sizes[size] // returns specified size
             }
@@ -989,7 +992,7 @@ function setImage(id,dest,size){
         }
       
         if(dest == ''){//set path to '' to return the src only
-        console.log("Src return", full_path + src)
+     //   console.log("Src return", full_path + src)
             return full_path+src;
         } else { // if dest is specified, set the src to the id and 
             jQuery(dest).attr("src",full_path+src)
@@ -1022,13 +1025,13 @@ function wrapTag(tag,str){
 function setMediaText(id,dest){
 
     if(media[id]!=undefined){
-        console.log("caption",media[id]);
+       // console.log("caption",media[id]);
         jQuery(dest+"-title").html(media[id].title)
         jQuery(dest+"-caption").html(media[id].caption)
         jQuery(dest+"-description").html(media[id].desc)
         jQuery(dest).attr("alt", media[id].alt);
     } else {
-        console.log("clear media text",dest);
+        //console.log("clear media text",dest);
         jQuery(dest+"-title").html('')
         jQuery(dest+"-caption").html('')
         jQuery(dest+"-description").html('')
@@ -1043,16 +1046,16 @@ function getSquareVersion(sizes,dest){
            w: jQuery(dest).parent().width(),
            h: jQuery(dest).parent().height()
    }
-   console.log("box",box)
+  // console.log("box",box)
 
     if (box.w > 1280 || box.h > 1280) { //over 1500 use large
-        console.log("sq-lg")
+    //    console.log("sq-lg")
         return sizes['sq-lg']
     } else if ((box.w > 250 || box.h > 250) && (box.w <= 1280 || box.h <= 1280)) {
         console.log("sq-med")
         return sizes['sq-med']
     } else {
-        console.log("sq-sm")
+      //  console.log("sq-sm")
         return sizes['sq-sm']
     }
 
@@ -1068,13 +1071,13 @@ function setVideo(id,dest){
 
         var video = jQuery(dest+' video source').attr("src", full_path+src);
         jQuery(dest).css("display", "block");
-        console.log("unhide video player")
+    //    console.log("unhide video player")
 
         jQuery(dest + ' video')[0].load();
         
         video = jQuery(dest + ' video source').attr("src", full_path + src);
     } else {
-        console.log("no video, hide player")
+    //    console.log("no video, hide player")
         jQuery(dest).css("display", "none");
     }
 }
@@ -1089,7 +1092,7 @@ function setScreenImages(screen_images,dest,callback){
     }
     circleViewer(dest,images)
   //  callback(dest,images)
-    console.log("setScreenImages", screen_images, dest, images);
+    //console.log("setScreenImages", screen_images, dest, images);
 
 
 }
@@ -1594,13 +1597,13 @@ function setRelated(post) {
                 post_id = related[tax][type][p]
                 var bg_image = '';
                 var src = setFeatured(post_id,"thumbnail");
-                console.log("set related",src,post_id);
+                //console.log("set related",src,post_id);
                 if(src !=''){
                    
                     bg_image = ' style="background-image:url('+src+')"'
                 }
                 rel_list += '<li '+bg_image+' class="ui-widget '+type+'" data-rel="'+post_id+'">'
-                    console.log("related post",post_id)
+                   // console.log("related post",post_id)
                     rel_list += post_id
                 rel_list += '</li>'
 
@@ -1615,7 +1618,7 @@ function setRelated(post) {
 
 
   function tipHoverContent(id){
-    console.log("hover tip",id)
+    //console.log("hover tip",id)
     var tipContent = '';
     if(posts[id].type == 'project'){
         tipContent +='<span class="hover-title">'+posts[id].project_info.client+'</span>' 
@@ -1629,9 +1632,10 @@ function setRelated(post) {
 
         if(posts[id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
+            console.log("projects ",menus['projects'])
         }
 
-      console.log("select Related ",posts[id].type,posts[id].title)
+     
   
 
 
@@ -1660,13 +1664,13 @@ function setRelated(post) {
             selectRelatedPost(id);
 
         }).on("mouseover",function(){
-            console.log("related"+id,"mouseover");
+        //    console.log("related"+id,"mouseover");
         }).on("mouseout",function(){
-            console.log("related"+id,"mouseoout");
+        //    console.log("related"+id,"mouseoout");
         }).on("mousedown",function(){
-            console.log("related"+id,"mousedown");
+        //    console.log("related"+id,"mousedown");
         }).on("mouseup",function(){
-            console.log("related"+id,"mouseup");
+        //    console.log("related"+id,"mouseup");
         });
 
         tip += '<div class="rel-tooltip"'+bg_image+'>'
@@ -1702,7 +1706,7 @@ function setSlideShow(){
     prevArrow: '<i class="slick-arrow slick-prev"></i>',
      
   });
-   console.log("set slideshow")
+   //console.log("set slideshow")
 }
 function setSlide(slide,id){
   /*
@@ -1778,7 +1782,7 @@ function setSlider(){
        value: 0,
        slide: function( event, ui ) {
          setSliderNotch(ui.value)
-         console.log("slider",ui.value)
+      //   console.log("slider",ui.value)
         // jQuery( "#amount" ).val( ui.value );
        }
  
@@ -1875,7 +1879,7 @@ function setSlider(){
          next_notch++
        }
     }
-    console.log('arrow_next',next_notch)
+    //console.log('arrow_next',next_notch)
     setSliderNotch(next_notch)
 
 
@@ -1888,11 +1892,11 @@ function setSlider(){
 
  function setSliderNotch(notch){
  
-    console.log("notch",data_nav[notch],notch)
+  //console.log("notch",data_nav[notch],notch)
    location.hash = posts[data_nav[notch].object_id].slug
 
  
-   console.log("set slider notch", notch,location.hash)
+   //console.log("set slider notch", notch,location.hash)
    jQuery("#slider").slider('value', notch);
     if (linear_nav[notch] != undefined){
       
@@ -2130,7 +2134,7 @@ function triggerWheelNav(notch) {
     var this_notch = data_nav[notch]
     var this_dest = this_notch.dest;
 
-    console.log("trigger wheel, notch:", this_notch, " | dest:", this_dest);
+   // console.log("trigger wheel, notch:", this_notch, " | dest:", this_dest);
 
 
 
@@ -2157,7 +2161,7 @@ function triggerWheelNav(notch) {
     } else if (this_dest == 'inner-nav') {
 
         
-        console.log(last_outer_notch, last_inner_notch,notch,this_notch)
+       // console.log(last_outer_notch, last_inner_notch,notch,this_notch)
         if (last_outer_notch != this_notch.parent) { //if we go backwards we need to change the parent.
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice) //dialback the outer ring to its slice
             makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
@@ -2169,7 +2173,7 @@ function triggerWheelNav(notch) {
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice)
             if (wheels["inner-nav"] != undefined) { //if the inner nav exists
                
-            console.log(' != undefined')
+           // console.log(' != undefined')
                 wheels[this_dest].navigateWheel(this_notch.slice)
                 if (wheels["inner-subnav"] != undefined) { //and there's an inner subnav
                     wheels["inner-subnav"].raphael.remove() //destroy it
@@ -2178,7 +2182,7 @@ function triggerWheelNav(notch) {
 
             } else {
                
-                      console.log('  undefined')
+                     // console.log('  undefined')
                 makeWheelNav("inner-nav", data_nav[this_notch.parent].children, inner_nav_params)
                 wheels[this_dest].navigateWheel(this_notch.slice)
             }
@@ -2204,7 +2208,7 @@ function triggerWheelNav(notch) {
             last_outer_notch = this_notch.grandparent // set the outer notch back so we can go forward again.
         }
         if (last_inner_notch != this_notch.parent) { //who's your daddy?
-            console.log("where have I gone wrong?", this_notch);
+          //  console.log("where have I gone wrong?", this_notch);
             //receate the inner ring for the parent
             wheels["inner-nav"].navigateWheel(data_nav[this_notch.parent].slice)
             //now we can dial the inner ring where it belongs
