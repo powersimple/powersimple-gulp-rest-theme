@@ -143,7 +143,7 @@ function displayMenus() {
       setLinearDataNav(data);
       setLinearNav(menus[m])
 
-      console.log(menu_config[m].location, items)
+      console.log(menu_config[m].location)
       jQuery(menu_config[m].location).html(items)
      setSlideShow(); // creates slides for the slick carousel
       makeWheelNav("outer-nav", menu_levels, menu_config[m]._p)

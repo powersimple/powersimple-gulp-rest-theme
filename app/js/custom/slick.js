@@ -1,6 +1,6 @@
 var gotoslide = function(slide){
- // console.log("click on slick dot ", slide);
-  setSlideContent(notch, linear_nav[slide].object_id)
+  console.log("click on slick dot ", slide);
+   setSlideContent(notch, linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
 jQuery('.slick-dots li button').on('click', function (e) {
@@ -19,8 +19,8 @@ function setSlideShow(){
     focusoOnSelect: true,
     nextArrow: '<i class="slick-arrow slick-next"></i>',
     prevArrow: '<i class="slick-arrow slick-prev"></i>',
-     
   });
+
    //console.log("set slideshow")
 }
 function setSlide(slide,id){
@@ -34,10 +34,8 @@ function setSlide(slide,id){
   slide += '\n\t<div class="img-wrap"></div>'
   slide += '\n\t<section><div class="content"></div></section>'
   slide +='\n</div></div>\n';
-
   return slide
 }
-
 
 function setSlides(){
   var id="0"
@@ -52,21 +50,19 @@ function setSlides(){
   } else {
   
   for(i=0;linear_nav[i];i++){
-    
+    console.log("slides", linear_nav[i])
      id = linear_nav[i].object_id.toString()
   
       slides += setSlide(i,id)
    
   }
- // console.log("slides rendered")
-
+ console.log("slides rendered")
 
   jQuery('#article').html(slides);
  
   }
-
-
 }
+
 var $carousel = jQuery('.slideshow');
 jQuery(document).on('keydown', function(e) {
     if(e.keyCode == 37) {

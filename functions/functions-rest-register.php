@@ -270,8 +270,6 @@ function get_screen_images( $object ) {
 }
 
 
-
-
 /* 
 	FEATURED VIDEO
 */

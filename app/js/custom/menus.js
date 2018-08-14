@@ -17,9 +17,9 @@ function setMenu(dest, slug, items) {
     //console.log("setMenu",dest,slug,items)
     for (var i = 0; i < items.length; i++) {
         menu[items[i].ID] = setMenuItem(dest, items[i])
-        console.log("setMenu", items[i].ID, slug, items)
+       // console.log("setMenu", items[i].ID, slug, items)
         if (items[i].menu_item_parent != 0) { //recursive
-            menu[items[i].menu_item_parent].children.push(items[i].ID)
+            menu[items[i].menu_item_parent].children.push(items[i].ID)//children empty array is created in setMenuItem
 
         } else {
 
@@ -45,7 +45,7 @@ function setMenuItem(dest, item) {
     this_item.dest = dest
 
 
-    this_item.children = []
+    this_item.children = []//this array is populated in Set Menu
 
     return this_item
 }

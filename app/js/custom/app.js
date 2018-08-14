@@ -192,8 +192,8 @@ jQuery(window).resize(function () {
 function setSlideContent(slide, id) {
 
   if (posts[id] != undefined) {
-    jQuery("#slide" + slide + " h2").html(posts[+id].title)
-    jQuery("#slide" + slide + " section div.content").html(posts[+id].content)
+    jQuery("#slide" + slide + " h2").html(posts[id].title)
+    jQuery("#slide" + slide + " section div.content").html(posts[id].content)
     $carousel.slick('slickGoTo', slide);
   } else {
     //console.log("post undefined", slide, id, posts)
@@ -204,20 +204,41 @@ function setSlideContent(slide, id) {
 
 
 
+function setText(){
+  if (languages != undefined) { // wpml present
 
+    if(state.language == languages.default){//use defaults
+      page_title = posts[state.post_id].title + " | " + site_title;
+    } else { // get data. 
+
+      page_title = retreiveML('posts',"title",state.post_id,state.language)
+      console.log("new page title " + page_title)
+
+    }
+
+  } else { // wpml not present, use default
+    
+
+    page_title = posts[state.post_id].title + " | " + site_title;
+    
+  }
+  //set variables
+  document.title = page_title;
+}
 
 
 
 
 function setContent(dest, object_id, object) {
-  var slide = posts_nav[object_id]
+  state.slide = posts_nav[object_id]
   var featured_image = posts[object_id].featured_media;
 
   //console.log("setContent",object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
     //console.log("selected post", posts[object_id])
-    page_title = posts[object_id].title + " | " + site_title;
-    document.title = page_title
+    state.post_id = object_id;
+    setText();
+    
 
     setImage(posts[object_id].featured_media, "#featured-image", "square");
 
@@ -236,7 +257,8 @@ function setContent(dest, object_id, object) {
 //   console.log("tags", posts[object_id].tags)
 
   }
-  setSlideContent(slide, object_id)
+
+  setSlideContent(state.slide, object_id)
 
   /*
         for category wheels

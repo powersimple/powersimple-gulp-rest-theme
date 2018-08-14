@@ -10,19 +10,25 @@ Otherwise, the results you want, may not be the results it returns.
 Sort: For sanity's sake, it's best that you sort posts by ID, so when inspecting your endpoint, they are in order
 Hence, the REST_post_filter variable below.
 */
+$GLOBALS['REST_post_filter'] = "filter[orderby]=ID&order=asc&per_page=100";// handles order and pagination
+
+$GLOBALS['REST_CONFIG'] =array(//An array of url arguments
+            "posts"=>"fields=id,type,title,content,slug,excerpt,languages,featured_media,screen_images,video,type,cats,tags&".$GLOBALS['REST_post_filter'],
+            "pages"=>"fields=id,type,title,content,slug,excerpt,languages,featured_media,screen_images,featured_video,cats,tags,type&".$GLOBALS['REST_post_filter'],
+            "project"=>"fields=id,type,title,content,slug,excerpt,languages,project_info,featured_media,screen_images,featured_video,type,cats,tags&".$GLOBALS['REST_post_filter'],
+            "categories"=>"fields=id,name,count,slug,description,posts,children",
+            "tags"=>"fields=id,name,slug,posts&".$GLOBALS['REST_post_filter'],
+            "menus"=>"menus",
+            "media"=>"fields=id,data&".$GLOBALS['REST_post_filter']
+        );
+
+// for WPML Comment this out if you aren't using it.
+require_once("functions-wpml-languages.php");
+
+        
     function getEndpoints(){ // BUILDS URLS FOR REST API ENDPOINTS
 
-        $REST_post_filter = "filter[orderby]=ID&order=asc&per_page=100";// handles order and pagination
-
-        $REST_CONFIG =array(//An array of url arguments
-            "posts"=>"fields=id,type,title,content,slug,excerpt,featured_media,screen_images,video,type,cats,tags&".$REST_post_filter,
-            "pages"=>"fields=id,type,title,content,slug,excerpt,featured_media,screen_images,featured_video,cats,tags,type&".$REST_post_filter,
-            "project"=>"fields=id,type,title,content,slug,excerpt,project_info,featured_media,screen_images,featured_video,type,cats,tags&".$REST_post_filter,
-            "categories"=>"fields=id,name,count,slug,description,posts,children",
-            "tags"=>"fields=id,name,slug,posts&".$REST_post_filter,
-            "menus"=>"menus",
-            "media"=>"fields=id,data&".$REST_post_filter
-        );
+       
 
         $url_path = "http://".$_SERVER['HTTP_HOST']."/wp-json/wp/v2/";//pendpoint path
         $server_path = get_template_directory()."/app/json/";//destination folder for writing
@@ -32,8 +38,19 @@ Hence, the REST_post_filter variable below.
                 <ul>";
         }
         
-        foreach($REST_CONFIG as $key => $value){//loops through the array of endpoints above
-           $url = $url_path.$key."?".$value;
+        foreach($GLOBALS['REST_CONFIG'] as $key => $value){//loops through the array of endpoints above
+
+           $url = $url_path.$key."?".$value; // default, value passes params in REST_CONFIG array
+     
+            if(function_exists('icl_object_id')){// if WPML is here. 
+                if($value == 'language'){ //language = $key, will not work with arguments
+                    //see path registrations in WPML Languages
+                    $url = $url_path.$key;// this is the REST API url with the language last
+                }
+
+            }
+
+           
            $server = $server_path.$key.".json";
            if(@$_GET['publish']){
             writeJSON($url,$server);

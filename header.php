@@ -17,6 +17,15 @@
     var json_path = "<?=get_stylesheet_directory_uri()?>/app/json/";
     var uploads_path =  "<?=$url['baseurl']?>/";
 
+    <?php
+         if(function_exists('icl_object_id')){
+            global $sitepress;
+            print "var languages = ".json_encode(getLanguageList());
+           
+
+         }
+    ?>
+
 </script>
 </head>
 

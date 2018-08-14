@@ -70,7 +70,7 @@ function makeWheelNav(dest, data, _p) {
     };
 
     for (i = 0; i < data.length; i++) {
-        // console.log(data[i]);
+       console.log(data[i]);
         titles.push(data[i].title);
         ids.push(data[i].id)
     }

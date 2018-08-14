@@ -148,8 +148,13 @@ footer {
             height: 100%;
             opacity: 0.9;
         }
+        @media (max-width: 1024px) {
+             height: 8vh;
+             width: 8vh;
+        }
         @media (max-width: 539px) {
             display: none;
+           
         }
     }
 }

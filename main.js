@@ -192,8 +192,8 @@ jQuery(window).resize(function () {
 function setSlideContent(slide, id) {
 
   if (posts[id] != undefined) {
-    jQuery("#slide" + slide + " h2").html(posts[+id].title)
-    jQuery("#slide" + slide + " section div.content").html(posts[+id].content)
+    jQuery("#slide" + slide + " h2").html(posts[id].title)
+    jQuery("#slide" + slide + " section div.content").html(posts[id].content)
     $carousel.slick('slickGoTo', slide);
   } else {
     //console.log("post undefined", slide, id, posts)
@@ -204,20 +204,41 @@ function setSlideContent(slide, id) {
 
 
 
+function setText(){
+  if (languages != undefined) { // wpml present
 
+    if(state.language == languages.default){//use defaults
+      page_title = posts[state.post_id].title + " | " + site_title;
+    } else { // get data. 
+
+      page_title = retreiveML('posts',"title",state.post_id,state.language)
+      console.log("new page title " + page_title)
+
+    }
+
+  } else { // wpml not present, use default
+    
+
+    page_title = posts[state.post_id].title + " | " + site_title;
+    
+  }
+  //set variables
+  document.title = page_title;
+}
 
 
 
 
 function setContent(dest, object_id, object) {
-  var slide = posts_nav[object_id]
+  state.slide = posts_nav[object_id]
   var featured_image = posts[object_id].featured_media;
 
   //console.log("setContent",object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
     //console.log("selected post", posts[object_id])
-    page_title = posts[object_id].title + " | " + site_title;
-    document.title = page_title
+    state.post_id = object_id;
+    setText();
+    
 
     setImage(posts[object_id].featured_media, "#featured-image", "square");
 
@@ -236,7 +257,8 @@ function setContent(dest, object_id, object) {
 //   console.log("tags", posts[object_id].tags)
 
   }
-  setSlideContent(slide, object_id)
+
+  setSlideContent(state.slide, object_id)
 
   /*
         for category wheels
@@ -495,7 +517,7 @@ function displayMenus() {
       setLinearDataNav(data);
       setLinearNav(menus[m])
 
-      console.log(menu_config[m].location, items)
+      console.log(menu_config[m].location)
       jQuery(menu_config[m].location).html(items)
      setSlideShow(); // creates slides for the slick carousel
       makeWheelNav("outer-nav", menu_levels, menu_config[m]._p)
@@ -570,9 +592,10 @@ var posts = {},
   data_nav = [],
   last_dest = 'outer-nav',
   menu_levels = [],
-  related = {}
+  related = {},
+  state = {}
 
-function getStaticJSON(route, callback, dest) {
+function getStaticJSON(route, callback,dest) {
   // route =  the type 
   // param = url arguments for the REST API
   // callback = dynamic function name 
@@ -588,7 +611,7 @@ function getStaticJSON(route, callback, dest) {
       //console.log(endpoint,data)
       return data,
 
-        callback(data, dest) // this is the callback that sends the data to your custom function
+        callback(data,dest) // this is the callback that sends the data to your custom function
 
     },
     error: function (data, textStatus, request) {
@@ -599,33 +622,33 @@ function getStaticJSON(route, callback, dest) {
   })
 }
 
-getStaticJSON('posts', setPosts, '#posts') // get posts
+getStaticJSON('posts', setPosts) // get posts
 
 // retrieves all projects, with fields from REST API
-getStaticJSON('pages', setPosts, '#pages') // get pages
+getStaticJSON('pages', setPosts) // get pages
 
 // retrieves all projects, with fields from REST API
-getStaticJSON('project', setPosts, '#projects') // get the projects
+getStaticJSON('project', setPosts) // get the projects
 
 // retrieves all categories for the development category
-getStaticJSON('categories', setCategories, '#category-menu') // returns the children of a specified parent category
+getStaticJSON('categories', setCategories) // returns the children of a specified parent category
 
 // retrieves all categories for the development category
-getStaticJSON('tags', setTags, '#tags') // returns the tags
+getStaticJSON('tags', setTags) // returns the tags
 
 // retrieves top menu
 getStaticJSON('menus', setMenus, '#main-menu') // returns the tags
 
-getStaticJSON('media', setMedia, '#media')
 
-function setMedia(data, dest) {
+
+function setMedia(data) {
   for (var m = 0; m < data.length; m++) {
     media[data[m].id] = data[m].data;
   }
   //console.log("media",media);
 }
 
-function setPosts(data, dest) { // special function for the any post type
+function setPosts(data) { // special function for the any post type
 
   var type = 'post'
 
@@ -675,7 +698,7 @@ function setPosts(data, dest) { // special function for the any post type
         break
     }
   }
-  //console.log(type, posts)
+  console.log(type, posts)
 
 
   return posts
@@ -967,9 +990,9 @@ function setMenu(dest, slug, items) {
     //console.log("setMenu",dest,slug,items)
     for (var i = 0; i < items.length; i++) {
         menu[items[i].ID] = setMenuItem(dest, items[i])
-        console.log("setMenu", items[i].ID, slug, items)
+       // console.log("setMenu", items[i].ID, slug, items)
         if (items[i].menu_item_parent != 0) { //recursive
-            menu[items[i].menu_item_parent].children.push(items[i].ID)
+            menu[items[i].menu_item_parent].children.push(items[i].ID)//children empty array is created in setMenuItem
 
         } else {
 
@@ -995,7 +1018,7 @@ function setMenuItem(dest, item) {
     this_item.dest = dest
 
 
-    this_item.children = []
+    this_item.children = []//this array is populated in Set Menu
 
     return this_item
 }
@@ -1679,8 +1702,8 @@ function setRelated(post) {
     });
   } )(jQuery);
 var gotoslide = function(slide){
- // console.log("click on slick dot ", slide);
-  setSlideContent(notch, linear_nav[slide].object_id)
+  console.log("click on slick dot ", slide);
+   setSlideContent(notch, linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
 jQuery('.slick-dots li button').on('click', function (e) {
@@ -1699,8 +1722,8 @@ function setSlideShow(){
     focusoOnSelect: true,
     nextArrow: '<i class="slick-arrow slick-next"></i>',
     prevArrow: '<i class="slick-arrow slick-prev"></i>',
-     
   });
+
    //console.log("set slideshow")
 }
 function setSlide(slide,id){
@@ -1714,10 +1737,8 @@ function setSlide(slide,id){
   slide += '\n\t<div class="img-wrap"></div>'
   slide += '\n\t<section><div class="content"></div></section>'
   slide +='\n</div></div>\n';
-
   return slide
 }
-
 
 function setSlides(){
   var id="0"
@@ -1732,21 +1753,19 @@ function setSlides(){
   } else {
   
   for(i=0;linear_nav[i];i++){
-    
+    console.log("slides", linear_nav[i])
      id = linear_nav[i].object_id.toString()
   
       slides += setSlide(i,id)
    
   }
- // console.log("slides rendered")
-
+ console.log("slides rendered")
 
   jQuery('#article').html(slides);
  
   }
-
-
 }
+
 var $carousel = jQuery('.slideshow');
 jQuery(document).on('keydown', function(e) {
     if(e.keyCode == 37) {
@@ -1770,28 +1789,28 @@ function setSlider(){
   //console.log("Set Slider", orientation, linear_nav.length)
    
      jQuery( "#slider" ).slider({
-       orientation: orientation,
-       range: "max",
-       min: 0,
-       max: linear_nav.length,
-       value: 0,
-       slide: function( event, ui ) {
-         setSliderNotch(ui.value)
-      //   console.log("slider",ui.value)
-        // jQuery( "#amount" ).val( ui.value );
-       }
- 
- 
-       
-     });
-   
-     jQuery('.slick-dots li button').on('click', function (e) {
-   e.stopPropagation(); // use this
-  //console.log("slick dot clicked")
-});
- 
- 
- }
+        orientation: orientation,
+        range: "max",
+        min: 0,
+        max: linear_nav.length,
+        value: 0,
+        slide: function( event, ui ) {
+          setSliderNotch(ui.value)
+        //   console.log("slider",ui.value)
+          // jQuery( "#amount" ).val( ui.value );
+            }
+      
+      
+            
+          });
+        
+          jQuery('.slick-dots li button').on('click', function (e) {
+        e.stopPropagation(); // use this
+        //console.log("slick dot clicked")
+    });
+      
+    
+    }
  /*
  jQuery('#slider').on('mousewheel', function(event) {
    event.preventDefault();
@@ -1986,31 +2005,31 @@ jQuery(window).on('resize', function () {
 })
 //renderer.setSize(window.innerWidth, window.innerHeight)
 
-function setChildCategories(data, dest) {
+function setChildCategories(data) {
   for (var i = 0; i < data.length; i++) {
     categories[data[i].id] = data[i]
   }
   // console.log('categories', categories)
-  //displayCategories(dest, categories)
+ 
   return data
 }
 
-function setCategories(data, dest) {
-  //console.log("categories json", dest, data)
+function setCategories(data) {
+  //console.log("categories json", data)
   for (var i = 0; i < data.length; i++) { //creates object of categories by key
     categories[data[i].id] = data[i]
   }
   //  console.log('categories', categories)
-  //displayCategories(dest, categories)
+ 
   return data
 }
 
-function setTags(data, dest) {
+function setTags(data) {
   for (var i = 0; i < data.length; i++) {
     tags[data[i].id] = data[i]
   }
   //console.log('tags', tags)
-  // displayTags(dest, tags)
+  
   return data
 }
 
@@ -2089,7 +2108,7 @@ function makeWheelNav(dest, data, _p) {
     };
 
     for (i = 0; i < data.length; i++) {
-        // console.log(data[i]);
+       console.log(data[i]);
         titles.push(data[i].title);
         ids.push(data[i].id)
     }
@@ -2282,3 +2301,98 @@ function popAWheelie(dest) { // this removes the inner rings when you click on n
 
 
 }
+function initLanguageMenu(container){
+    if(languages != undefined){
+        console.log("languages",languages)
+        state.language = languages.default;
+        var language_menu = "<ul>"
+        for(var code in languages){
+            if(code != 'default'){
+                var active_language = ''
+                if (code == state.language)
+                {
+                    active_language = ' class="active-language"'
+                }
+                language_menu += '<li id="'+code+'"'+active_language+'>'+languages[code].native+'</li>'
+
+                
+
+            }        
+        }
+        language_menu += "</ul>"
+    }
+ //console.log(container + " ul li")
+    jQuery(container).on("click",'li',function(e){
+        
+        state.language = jQuery(this).attr('id');
+         for (var code in languages) {
+            if(code == state.language){
+                //console.log(code+' add')
+                if (code != languages.default) { // not the default language
+
+                    if (languages[code].data == undefined) { // tests to see if this language data is loaded or not
+                        console.log("fetch language for the first time ", code)
+                        getStaticJSON(code, setLanguage, code)//load language data. Passing language code as first param
+                        
+                    } else {
+                       // console.log(code + "already loaded ", languages[code].data)
+                    
+                    }
+                }
+                state.language = code
+                changeLanguage(code)
+                jQuery('#'+code).addClass('active-language') // set the class on the language switcher to active
+            } else {
+                //console.log(code+ ' remove')
+                jQuery('#'+code).removeClass('active-language') // remove the active class
+            }
+         }
+    
+        //console.log(state.language)
+
+    })
+   
+    jQuery(container).html(language_menu)
+
+
+}
+function retreiveML(struct,field,id,language){
+
+    if(struct == 'posts'){
+        if (posts[id].languages != undefined){
+           
+            if (posts[id].languages[language]!= undefined) {
+                var translation_id = posts[id].languages[language].id
+                return posts[translation_id][field]
+            }
+        } 
+         return posts[id][field]
+
+    }
+
+}
+
+
+// retrieves language specific data
+
+
+function setLanguage(data,code) {
+    
+    languages[code].data = data;
+    //console.log(code,"data", data)
+    for(var d in data){
+        if (data[d].type == 'page' || data[d].type == 'post' || data[d].type == 'project'){
+        console.log(data[d].type, d )
+        posts[d] = data[d];
+        }
+    
+    }
+    console.log(posts)
+    changeLanguage(code);
+   
+}
+function changeLanguage(code){
+ console.log("change language", code)
+}
+
+initLanguageMenu("#language-menu");

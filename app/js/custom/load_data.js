@@ -16,9 +16,10 @@ var posts = {},
   data_nav = [],
   last_dest = 'outer-nav',
   menu_levels = [],
-  related = {}
+  related = {},
+  state = {}
 
-function getStaticJSON(route, callback, dest) {
+function getStaticJSON(route, callback,dest) {
   // route =  the type 
   // param = url arguments for the REST API
   // callback = dynamic function name 
@@ -34,7 +35,7 @@ function getStaticJSON(route, callback, dest) {
       //console.log(endpoint,data)
       return data,
 
-        callback(data, dest) // this is the callback that sends the data to your custom function
+        callback(data,dest) // this is the callback that sends the data to your custom function
 
     },
     error: function (data, textStatus, request) {
@@ -45,33 +46,33 @@ function getStaticJSON(route, callback, dest) {
   })
 }
 
-getStaticJSON('posts', setPosts, '#posts') // get posts
+getStaticJSON('posts', setPosts) // get posts
 
 // retrieves all projects, with fields from REST API
-getStaticJSON('pages', setPosts, '#pages') // get pages
+getStaticJSON('pages', setPosts) // get pages
 
 // retrieves all projects, with fields from REST API
-getStaticJSON('project', setPosts, '#projects') // get the projects
+getStaticJSON('project', setPosts) // get the projects
 
 // retrieves all categories for the development category
-getStaticJSON('categories', setCategories, '#category-menu') // returns the children of a specified parent category
+getStaticJSON('categories', setCategories) // returns the children of a specified parent category
 
 // retrieves all categories for the development category
-getStaticJSON('tags', setTags, '#tags') // returns the tags
+getStaticJSON('tags', setTags) // returns the tags
 
 // retrieves top menu
 getStaticJSON('menus', setMenus, '#main-menu') // returns the tags
 
-getStaticJSON('media', setMedia, '#media')
 
-function setMedia(data, dest) {
+
+function setMedia(data) {
   for (var m = 0; m < data.length; m++) {
     media[data[m].id] = data[m].data;
   }
   //console.log("media",media);
 }
 
-function setPosts(data, dest) { // special function for the any post type
+function setPosts(data) { // special function for the any post type
 
   var type = 'post'
 
@@ -121,7 +122,7 @@ function setPosts(data, dest) { // special function for the any post type
         break
     }
   }
-  //console.log(type, posts)
+  console.log(type, posts)
 
 
   return posts

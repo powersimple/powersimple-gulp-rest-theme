@@ -2,28 +2,28 @@ function setSlider(){
   //console.log("Set Slider", orientation, linear_nav.length)
    
      jQuery( "#slider" ).slider({
-       orientation: orientation,
-       range: "max",
-       min: 0,
-       max: linear_nav.length,
-       value: 0,
-       slide: function( event, ui ) {
-         setSliderNotch(ui.value)
-      //   console.log("slider",ui.value)
-        // jQuery( "#amount" ).val( ui.value );
-       }
- 
- 
-       
-     });
-   
-     jQuery('.slick-dots li button').on('click', function (e) {
-   e.stopPropagation(); // use this
-  //console.log("slick dot clicked")
-});
- 
- 
- }
+        orientation: orientation,
+        range: "max",
+        min: 0,
+        max: linear_nav.length,
+        value: 0,
+        slide: function( event, ui ) {
+          setSliderNotch(ui.value)
+        //   console.log("slider",ui.value)
+          // jQuery( "#amount" ).val( ui.value );
+            }
+      
+      
+            
+          });
+        
+          jQuery('.slick-dots li button').on('click', function (e) {
+        e.stopPropagation(); // use this
+        //console.log("slick dot clicked")
+    });
+      
+    
+    }
  /*
  jQuery('#slider').on('mousewheel', function(event) {
    event.preventDefault();
