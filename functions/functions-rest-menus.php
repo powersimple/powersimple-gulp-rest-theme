@@ -7,9 +7,10 @@
  * 1) we don't need a V1 version
  * 2) the plugin namespace is different, when it should not need an exception
  * 3) The menus call does not have items in the menus query, so a hack introduced to put them there.
- * 4) it's a lightweight plug-in that might as well be part of the theme.
+ * 4) it's a lightweight plug-in that might as well be part of the theme. (should really be part  of core)
  * 5) this plugin is not updated because the WP Native REST API Supplanted the 3rd party versions.
  * Search for "hack" to locate the hacks in the comments
+ * Search for "bug", because they exist
  * 
  * 
  * 
@@ -112,7 +113,8 @@ if ( ! class_exists( 'WP_REST_Menus' ) ) :
         public static function get_menus() {
 
             $rest_url = trailingslashit( get_rest_url() . self::get_plugin_namespace() . '/menus/' );
-            $wp_menus = wp_get_nav_menus();
+
+            $wp_menus = wp_get_nav_menus();//BUG THIS RETURNS AN EXTRA COPY OF THE FIRST MENU FOR NO REASON
 
             $i = 0;
             $rest_menus = array();
@@ -126,6 +128,7 @@ if ( ! class_exists( 'WP_REST_Menus' ) ) :
                 $rest_menus[ $i ]['slug']        = $menu['slug'];
                 $rest_menus[ $i ]['description'] = $menu['description'];
                 $rest_menus[ $i ]['count']       = $menu['count'];
+                
 /*
                     hack to customize items to educe bloat
                     This reduced menu json file size by more than 80%

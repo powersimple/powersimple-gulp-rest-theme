@@ -2,7 +2,9 @@ function setRelated(post) {
 
     /*
   
-      This is fun! This sets the related variable as an object of taxonomies, containing an array of related post ids sorted by
+      This is fun! 
+      This sets the related variable as an object of taxonomies, 
+      containing an array of related post ids
   
     */
   
@@ -55,7 +57,7 @@ function setRelated(post) {
     displayRelated()
      
 
-      //console.log("related",related)
+     console.log("related",related)
       
   }
   function displayRelated(){

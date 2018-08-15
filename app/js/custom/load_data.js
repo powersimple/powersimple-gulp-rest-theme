@@ -17,7 +17,13 @@ var posts = {},
   last_dest = 'outer-nav',
   menu_levels = [],
   related = {},
-  state = {}
+  state = {},
+  menu_config = {
+    'top-menu': {
+      'menu_type': 'wheel',
+      'location': '#outer-nav'
+    }
+  }
 
 function getStaticJSON(route, callback,dest) {
   // route =  the type 
@@ -61,15 +67,16 @@ getStaticJSON('categories', setCategories) // returns the children of a specifie
 getStaticJSON('tags', setTags) // returns the tags
 
 // retrieves top menu
-getStaticJSON('menus', setMenus, '#main-menu') // returns the tags
+getStaticJSON('menus', setMenus) // returns the tags
 
+getStaticJSON('media', setMedia) // returns the tags
 
 
 function setMedia(data) {
   for (var m = 0; m < data.length; m++) {
     media[data[m].id] = data[m].data;
   }
-  //console.log("media",media);
+ console.log("media",media);
 }
 
 function setPosts(data) { // special function for the any post type
@@ -122,7 +129,7 @@ function setPosts(data) { // special function for the any post type
         break
     }
   }
-  console.log(type, posts)
+  
 
 
   return posts
@@ -135,59 +142,3 @@ function setPosts(data) { // special function for the any post type
 
 
 
-
-
-/* 
-=== 
-  HERE LIES THE GRAVE OF THE VERSION THAT HIT THE REST API EVERY TIME THE USER HIT THE PAGE
-  ALAS, SO INEFFICIENT THAT WAS. NOW, in functions/rest-json.php, the json is rendered statically upon save
-====
-
-// THE FORMER FUNCTION GET REST WHICH CONCATENATED THE VARIABLES NEEDED TO RETRIEVE.
-function getREST(route, params, callback, dest) {
-  // route =  the type 
-  // param = url arguments for the REST API
-  // callback = dynamic function name 
-  // Pass in the name of a function and it will return the data to that function
-
-  var endpoint = '/wp-json/wp/v2/' + route // local absolute path to the REST API + routing arguments
-  console.log('endpoint', endpoint + "?" + params)
-  jQuery.ajax({
-    url: endpoint, // the url 
-    data: params,
-    success: function (data, textStatus, request) {
-      //console.log(endpoint,data)
-      return data,
-
-        callback(data, dest) // this is the callback that sends the data to your custom function
-
-    },
-    error: function (data, textStatus, request) {
-      console.log(endpoint, data.responseText)
-    },
-
-    cache: false
-  })
-}
-
-
-//HERE ARE ALL THE FUNCTION CALLS, LEFT HERE FOR POSTERITY IN CASE YOU WISH TO ATTEMPT SUCH TOMFOOLERY
-var REST_post_filter = "filter[orderby]=ID&order=asc&per_page=100";
-
-getREST('posts', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_video,type&'+REST_post_filter, setPosts, '#posts') // get posts
-
-// retrieves all projects, with fields from REST API
-getREST('pages', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,video,type&'+REST_post_filter, setPosts, '#pages') // get pages
-
-// retrieves all projects, with fields from REST API
-getREST('project', 'fields=id,type,title,content,slug,excerpt,thumbnail_url,project_info,thumbnail_versions,featured_videotype&'+REST_post_filter, setPosts, '#projects') // get the projects
-
-// retrieves all categories for the development category
-getREST('categories', 'fields=id,name,count,slug,description,category_posts,children', setCategories, '#category-menu') // returns the children of a specified parent category
-
-// retrieves all categories for the development category
-getREST('tags', 'fields=id,name,slug,tag_posts', setTags, 'tags') // returns the tags
-
-// retrieves top menu
-getREST('menus', '', setMenus, '#main-menu') // returns the tags
-*/

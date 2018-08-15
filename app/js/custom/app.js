@@ -205,7 +205,7 @@ function setSlideContent(slide, id) {
 
 
 function setText(){
-  if (languages != undefined) { // wpml present
+  if (typeof languages !== 'undefined') { // wpml present
 
     if(state.language == languages.default){//use defaults
       page_title = posts[state.post_id].title + " | " + site_title;

@@ -50,7 +50,7 @@ function setSlides(){
   } else {
   
   for(i=0;linear_nav[i];i++){
-    console.log("slides", linear_nav[i])
+   // console.log("slides", linear_nav[i])
      id = linear_nav[i].object_id.toString()
   
       slides += setSlide(i,id)

@@ -1,5 +1,5 @@
 function initLanguageMenu(container){
-    if(languages != undefined){
+    
         console.log("languages",languages)
         state.language = languages.default;
         var language_menu = "<ul>"
@@ -15,8 +15,8 @@ function initLanguageMenu(container){
                 
 
             }        
-        }
-        language_menu += "</ul>"
+        
+        //language_menu += "</ul>"//FIX
     }
  //console.log(container + " ul li")
     jQuery(container).on("click",'li',function(e){
@@ -45,10 +45,10 @@ function initLanguageMenu(container){
             }
          }
     
-        //console.log(state.language)
+        console.log(language_menu,state.language)
 
     })
-   
+    console.log(language_menu, state.language)
     jQuery(container).html(language_menu)
 
 
@@ -63,7 +63,7 @@ function retreiveML(struct,field,id,language){
                 return posts[translation_id][field]
             }
         } 
-         return posts[id][field]
+        return posts[id][field]
 
     }
 
@@ -79,17 +79,18 @@ function setLanguage(data,code) {
     //console.log(code,"data", data)
     for(var d in data){
         if (data[d].type == 'page' || data[d].type == 'post' || data[d].type == 'project'){
-        console.log(data[d].type, d )
+        console.log(data[d].type, d, data[d].of )
         posts[d] = data[d];
         }
     
     }
-    console.log(posts)
+    console.log("set",linear_nav);
     changeLanguage(code);
    
 }
 function changeLanguage(code){
  console.log("change language", code)
 }
-
-initLanguageMenu("#language-menu");
+if(typeof languages !== 'undefined') {
+    initLanguageMenu("#language-menu");
+}

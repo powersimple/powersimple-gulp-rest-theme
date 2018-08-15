@@ -155,7 +155,7 @@ function getLastAPIParam(){ // this find the end of the url and returns it as a 
     return $last_part; 
 }
 
-function getWPMLPosts($obj){
+function getWPMLPosts($obj){ // this creates the object for translated posts.
     global $wpdb;
     $sql = "select ID, post_title, post_content, post_type, post_name from wp_posts where ID = $obj->element_id";
     $post = $wpdb->get_row($sql);
@@ -163,7 +163,8 @@ function getWPMLPosts($obj){
             'title'=>$post->post_title,
             'content'=>$post->post_content,
             'type' => $post->post_type,
-            'slug' => $post->post_name
+            'slug' => $post->post_name,
+            'of'=>intval($obj->trid)
         ));
     
     return $result;
