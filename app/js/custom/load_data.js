@@ -72,12 +72,6 @@ getStaticJSON('menus', setMenus) // returns the tags
 getStaticJSON('media', setMedia) // returns the tags
 
 
-function setMedia(data) {
-  for (var m = 0; m < data.length; m++) {
-    media[data[m].id] = data[m].data;
-  }
- console.log("media",media);
-}
 
 function setPosts(data) { // special function for the any post type
 
