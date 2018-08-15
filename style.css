@@ -187,15 +187,15 @@ footer #fork-this #fork-this-svg { position: absolute; right: 0; bottom: 0; widt
 
 .ripple:after { -webkit-animation-delay: .8s; animation-delay: .8s; animation-delay: .8s; top: 25px; left: 0; }
 
-#outer-ring { position: absolute; top: 50%; left: 50%; z-index: 100; width: 80em; height: 80em; margin-left: -40em; margin-top: -40em; border-radius: 50%; }
+#outer-ring { position: absolute; top: 50%; left: 50%; z-index: 100; width: 80em; height: 80em; margin-left: -40em; margin-top: -40em; border-radius: 50%; overflow: hidden; }
 
-#inner-ring { position: absolute; top: 50%; left: 50%; z-index: 1100; width: 75em; height: 75em; margin-left: -37.5em; margin-top: -37.5em; border-radius: 50%; }
+#inner-ring { position: absolute; top: 50%; left: 50%; z-index: 1100; width: 75em; height: 75em; margin-left: -37.5em; margin-top: -37.5em; border-radius: 50%; overflow: hidden; }
 
-#inner-subring { position: absolute; top: 50%; left: 50%; z-index: 1300; width: 68em; height: 68em; margin-left: -34em; margin-top: -34em; border-radius: 50%; }
+#inner-subring { position: absolute; top: 50%; left: 50%; z-index: 1300; width: 68em; height: 68em; margin-left: -34em; margin-top: -34em; border-radius: 50%; overflow: hidden; }
 
 .wheelNavGitHub { height: 210px; width: 210px; margin: auto; -webkit-transition: ease 1s; transition: ease 1s; }
 
-.wheelNav { width: 100%; height: 100%; margin-top: -50%; margin: auto; -webkit-transition: ease 1s; transition: ease 1s; }
+.wheelNav { width: 100%; height: 100%; margin-top: -50%; border-radius: 50%; margin: auto; -webkit-transition: ease 1s; transition: ease 1s; overflow: hidden; }
 
 .wheelNavGitHub > svg, .wheelNav > svg { width: 100%; height: 100%; }
 

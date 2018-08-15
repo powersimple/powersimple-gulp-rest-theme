@@ -2,7 +2,7 @@ function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    console.log("media", media);
+    //console.log("media", media);
 }
 
 function setImage(id, dest, size) {

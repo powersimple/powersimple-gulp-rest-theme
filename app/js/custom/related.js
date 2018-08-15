@@ -105,7 +105,8 @@ function setRelated(post) {
 
         if(posts[id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
-            console.log("projects ",menus['projects'])
+
+            console.log(id,"projects ",posts[id])
         }
 
      

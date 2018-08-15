@@ -17,13 +17,7 @@ var posts = {},
   last_dest = 'outer-nav',
   menu_levels = [],
   related = {},
-  state = {},
-  menu_config = {
-    'top-menu': {
-      'menu_type': 'wheel',
-      'location': '#outer-nav'
-    }
-  }
+  state = {}
 
 function getStaticJSON(route, callback,dest) {
   // route =  the type 

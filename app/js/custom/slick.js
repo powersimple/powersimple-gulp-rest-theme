@@ -1,6 +1,6 @@
 var gotoslide = function(slide){
   console.log("click on slick dot ", slide);
-   setSlideContent(notch, linear_nav[slide].object_id)
+   setSlideContent(notch, menus['wheel-menu'].linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
 jQuery('.slick-dots li button').on('click', function (e) {
@@ -37,26 +37,26 @@ function setSlide(slide,id){
   return slide
 }
 
-function setSlides(){
+function setSlides(m){
   var id="0"
   var content = ''
   var title = ''
   var slides = ''
- //console.log("Begin Render Slides", linear_nav, posts)
+ console.log("Begin Render Slides",m,"|")
  
   if(posts == undefined){
     //console.log("No Posts Data Yet",  posts)
     window.setTimeout(setSlides(), 100);//without this, we cannot relay that the post data is available yet
   } else {
   
-  for(i=0;linear_nav[i];i++){
-   // console.log("slides", linear_nav[i])
-     id = linear_nav[i].object_id.toString()
+  for(i=0;menus[m].linear_nav[i];i++){
+   // console.log("slides", menus[m].linear_nav[i])
+     id = menus[m].linear_nav[i].object_id.toString()
   
       slides += setSlide(i,id)
    
   }
- console.log("slides rendered")
+ //console.log("slides rendered",slides)
 
   jQuery('#article').html(slides);
  
@@ -78,7 +78,7 @@ jQuery('a[data-slide]').click(function(e) {
   e.preventDefault();
   var slide = jQuery(this).data('slide');
   //console.log("click on slick dot ", slide);
-  setSlideContent(notch, linear_nav[slide].object_id)
+  setSlideContent(notch, menus['wheel-menu'].linear_nav[slide].object_id)
   //$carousel.slick('slickGoTo', slideno);
 
 });

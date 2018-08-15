@@ -112,7 +112,7 @@ function reposition_screen() {
 
 
 
-  setSlider()
+  setSlider('wheel-menu')
   positionProjector()
   positionNavElements();
   logoSize();
@@ -190,7 +190,7 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-
+console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)

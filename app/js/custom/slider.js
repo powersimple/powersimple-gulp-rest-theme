@@ -1,11 +1,11 @@
-function setSlider(){
+function setSlider(m){
   //console.log("Set Slider", orientation, linear_nav.length)
    
      jQuery( "#slider" ).slider({
         orientation: orientation,
         range: "max",
         min: 0,
-        max: linear_nav.length,
+        max: menus[m].linear_nav.length,
         value: 0,
         slide: function( event, ui ) {
           setSliderNotch(ui.value)
@@ -89,7 +89,7 @@ function setSlider(){
     if(id == 'down-arrow'){
       
       if(next_notch == 0){
-        next_notch = linear_nav.length-1
+        next_notch = menus['wheel-menu'].linear_nav.length - 1
       } else {
         next_notch--
       }
@@ -100,7 +100,7 @@ function setSlider(){
 
 
 
-       if (next_notch == linear_nav.length-1) {
+       if (next_notch == menus['wheel-menu'].linear_nav.length - 1) {
          next_notch = 0
        } else {
          next_notch++
@@ -125,7 +125,7 @@ function setSlider(){
  
    //console.log("set slider notch", notch,location.hash)
    jQuery("#slider").slider('value', notch);
-    if (linear_nav[notch] != undefined){
+    if (menus['wheel-menu'].linear_nav[notch] != undefined){
       
       setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
       triggerWheelNav(notch)

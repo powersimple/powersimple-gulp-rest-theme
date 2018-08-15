@@ -112,7 +112,7 @@ function reposition_screen() {
 
 
 
-  setSlider()
+  setSlider('wheel-menu')
   positionProjector()
   positionNavElements();
   logoSize();
@@ -190,7 +190,7 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-
+console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)
@@ -391,13 +391,7 @@ var posts = {},
   last_dest = 'outer-nav',
   menu_levels = [],
   related = {},
-  state = {},
-  menu_config = {
-    'top-menu': {
-      'menu_type': 'wheel',
-      'location': '#outer-nav'
-    }
-  }
+  state = {}
 
 function getStaticJSON(route, callback,dest) {
   // route =  the type 
@@ -588,7 +582,7 @@ function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    console.log("media", media);
+    //console.log("media", media);
 }
 
 function setImage(id, dest, size) {
@@ -723,6 +717,17 @@ function setScreenImages(screen_images, dest, callback) {
 
 
 }
+var menu_config = {
+    'wheel-menu': {
+        'menu_type': 'wheel',
+        'location': '#outer-nav'
+    }/*,
+    'projects':{
+         'menu_type': 'project',
+         'location': '#projects'
+    }*/
+}
+
 function setMenus(data, dest) {
     //console.log("raw menu data",data)
  
@@ -784,31 +789,28 @@ function menu_order(a, b) {
     return 0;
 }
 
-function setLinearNav(menu) {
+function setLinearNav(m) {
     var counter = 0
-
-    for (var i in menu.items) {
+    menus[m].linear_nav = []
+    for (var i in menus[m].items) {
 
 
        // menu.items[i].post = posts[menu.items[i].object_id]
-        menu.items[i].slug = posts[menu.items[i].object_id].slug
+        menus[m].items[i].slug = posts[menus[m].items[i].object_id].slug
 
 
-        id = menu.items[i].object_id.toString()
-        linear_nav.push(menu.items[i])
+        id = menus[m].items[i].object_id
+        menus[m].linear_nav.push(menus[m].items[i])
 
         posts_nav[id] = counter;
         counter++;
     }
-    linear_nav.sort(menu_order);
-    //SET SLUG NAV
-    for (var n = 0; n < linear_nav.length; n++) {
+    menus[m].linear_nav.sort(menu_order);
+    setSlider(m)
+    setSlides(m)
 
-    }
-
-    setSlider(linear_nav)
-    setSlides(linear_nav)
-  //  console.log("linear_nav", linear_nav);
+    
+  //  console.log("linear_nav", menus[m]linear_nav);
   //  console.log("posts_nav", posts_nav);
 
 }
@@ -869,6 +871,7 @@ function buildMenuData() {
     var data = [];
 
     for (var m in menus) {
+        console.log('menu loop',m)
         if (menu_config[m] != undefined) {
             var items = ''
 
@@ -940,7 +943,8 @@ function buildMenuData() {
             }
             menu_levels = data;
             setLinearDataNav(data);
-            setLinearNav(menus[m])
+            setLinearNav(m)
+           
 
             //console.log("menu", menu_config[m].location, items)
           //  jQuery(menu_config[m].location).html(items)
@@ -1509,7 +1513,8 @@ function setRelated(post) {
 
         if(posts[id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
-            console.log("projects ",menus['projects'])
+
+            console.log(id,"projects ",posts[id])
         }
 
      
@@ -1562,7 +1567,7 @@ function setRelated(post) {
   } )(jQuery);
 var gotoslide = function(slide){
   console.log("click on slick dot ", slide);
-   setSlideContent(notch, linear_nav[slide].object_id)
+   setSlideContent(notch, menus['wheel-menu'].linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
 jQuery('.slick-dots li button').on('click', function (e) {
@@ -1599,26 +1604,26 @@ function setSlide(slide,id){
   return slide
 }
 
-function setSlides(){
+function setSlides(m){
   var id="0"
   var content = ''
   var title = ''
   var slides = ''
- //console.log("Begin Render Slides", linear_nav, posts)
+ console.log("Begin Render Slides",m,"|")
  
   if(posts == undefined){
     //console.log("No Posts Data Yet",  posts)
     window.setTimeout(setSlides(), 100);//without this, we cannot relay that the post data is available yet
   } else {
   
-  for(i=0;linear_nav[i];i++){
-   // console.log("slides", linear_nav[i])
-     id = linear_nav[i].object_id.toString()
+  for(i=0;menus[m].linear_nav[i];i++){
+   // console.log("slides", menus[m].linear_nav[i])
+     id = menus[m].linear_nav[i].object_id.toString()
   
       slides += setSlide(i,id)
    
   }
- console.log("slides rendered")
+ //console.log("slides rendered",slides)
 
   jQuery('#article').html(slides);
  
@@ -1640,18 +1645,18 @@ jQuery('a[data-slide]').click(function(e) {
   e.preventDefault();
   var slide = jQuery(this).data('slide');
   //console.log("click on slick dot ", slide);
-  setSlideContent(notch, linear_nav[slide].object_id)
+  setSlideContent(notch, menus['wheel-menu'].linear_nav[slide].object_id)
   //$carousel.slick('slickGoTo', slideno);
 
 });
-function setSlider(){
+function setSlider(m){
   //console.log("Set Slider", orientation, linear_nav.length)
    
      jQuery( "#slider" ).slider({
         orientation: orientation,
         range: "max",
         min: 0,
-        max: linear_nav.length,
+        max: menus[m].linear_nav.length,
         value: 0,
         slide: function( event, ui ) {
           setSliderNotch(ui.value)
@@ -1735,7 +1740,7 @@ function setSlider(){
     if(id == 'down-arrow'){
       
       if(next_notch == 0){
-        next_notch = linear_nav.length-1
+        next_notch = menus['wheel-menu'].linear_nav.length - 1
       } else {
         next_notch--
       }
@@ -1746,7 +1751,7 @@ function setSlider(){
 
 
 
-       if (next_notch == linear_nav.length-1) {
+       if (next_notch == menus['wheel-menu'].linear_nav.length - 1) {
          next_notch = 0
        } else {
          next_notch++
@@ -1771,7 +1776,7 @@ function setSlider(){
  
    //console.log("set slider notch", notch,location.hash)
    jQuery("#slider").slider('value', notch);
-    if (linear_nav[notch] != undefined){
+    if (menus['wheel-menu'].linear_nav[notch] != undefined){
       
       setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
       triggerWheelNav(notch)
@@ -2240,7 +2245,7 @@ function setLanguage(data,code) {
         }
     
     }
-    console.log("set",linear_nav);
+    console.log("set", menus['wheel-menu'].linear_nav);
     changeLanguage(code);
    
 }

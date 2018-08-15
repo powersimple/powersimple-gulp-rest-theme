@@ -1,3 +1,14 @@
+var menu_config = {
+    'wheel-menu': {
+        'menu_type': 'wheel',
+        'location': '#outer-nav'
+    }/*,
+    'projects':{
+         'menu_type': 'project',
+         'location': '#projects'
+    }*/
+}
+
 function setMenus(data, dest) {
     //console.log("raw menu data",data)
  
@@ -59,31 +70,28 @@ function menu_order(a, b) {
     return 0;
 }
 
-function setLinearNav(menu) {
+function setLinearNav(m) {
     var counter = 0
-
-    for (var i in menu.items) {
+    menus[m].linear_nav = []
+    for (var i in menus[m].items) {
 
 
        // menu.items[i].post = posts[menu.items[i].object_id]
-        menu.items[i].slug = posts[menu.items[i].object_id].slug
+        menus[m].items[i].slug = posts[menus[m].items[i].object_id].slug
 
 
-        id = menu.items[i].object_id.toString()
-        linear_nav.push(menu.items[i])
+        id = menus[m].items[i].object_id
+        menus[m].linear_nav.push(menus[m].items[i])
 
         posts_nav[id] = counter;
         counter++;
     }
-    linear_nav.sort(menu_order);
-    //SET SLUG NAV
-    for (var n = 0; n < linear_nav.length; n++) {
+    menus[m].linear_nav.sort(menu_order);
+    setSlider(m)
+    setSlides(m)
 
-    }
-
-    setSlider(linear_nav)
-    setSlides(linear_nav)
-  //  console.log("linear_nav", linear_nav);
+    
+  //  console.log("linear_nav", menus[m]linear_nav);
   //  console.log("posts_nav", posts_nav);
 
 }
@@ -144,6 +152,7 @@ function buildMenuData() {
     var data = [];
 
     for (var m in menus) {
+        console.log('menu loop',m)
         if (menu_config[m] != undefined) {
             var items = ''
 
@@ -215,7 +224,8 @@ function buildMenuData() {
             }
             menu_levels = data;
             setLinearDataNav(data);
-            setLinearNav(menus[m])
+            setLinearNav(m)
+           
 
             //console.log("menu", menu_config[m].location, items)
           //  jQuery(menu_config[m].location).html(items)

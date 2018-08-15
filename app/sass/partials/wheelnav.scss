@@ -3,25 +3,26 @@
     top:50%;
     left:50%;
     z-index: 100;
-//  background-color:rgba(256,0,0,0.1);
+ //background-color:rgba(256,0,0,0.1);
     width:80em;
     height:80em;
     margin-left:-40em;
     margin-top:-40em;
     border-radius: 50%;
-    
+     overflow:hidden;
 }
 #inner-ring{
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 1100;
-// background-color: rgba(255, 255, 0, 0.2);
+ //background-color: rgba(255, 255, 0, 0.2);
     width: 75em;
     height: 75em;
     margin-left: -37.5em;
     margin-top: -37.5em;
     border-radius: 50%;
+     overflow:hidden;
 }
 #inner-subring{
     position: absolute;
@@ -34,6 +35,12 @@
     margin-left: -34em;
     margin-top: -34em;
     border-radius: 50%;
+     overflow:hidden;
+}
+
+#outer-ring, #inner-ring,
+#inner-subring {
+  //  background-color: rgba(255, 190, 0, 0.2);
 }
 
 
@@ -51,12 +58,13 @@
     width:100%;
     height:100%;
     margin-top:-50%;
-
+    border-radius:50%;
     margin: auto;
     -moz-transition: ease 1s;
     -o-transition: ease 1s;
     -webkit-transition: ease 1s;
     transition: ease 1s;
+    overflow:hidden;
 }
 
 .wheelNavGitHub > svg,

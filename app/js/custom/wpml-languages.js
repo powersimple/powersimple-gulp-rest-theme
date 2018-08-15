@@ -84,7 +84,7 @@ function setLanguage(data,code) {
         }
     
     }
-    console.log("set",linear_nav);
+    console.log("set", menus['wheel-menu'].linear_nav);
     changeLanguage(code);
    
 }
