@@ -2,12 +2,12 @@ function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    //console.log("media", media);
+    console.log("media", media);
 }
 
 function setImage(id, dest, size) {
     setMediaText(id, dest)
-    //console.log("set image",media[id])
+    console.log("set image",id,size,media[id])
     if (media[id] != undefined) {
         jQuery(dest + "-wrap").attr("visibility", 'hidden')
 
@@ -30,17 +30,21 @@ function setImage(id, dest, size) {
         }
 
         if (dest == '') { //set path to '' to return the src only
-            //   console.log("Src return", full_path + src)
+               console.log("Src return", full_path + src)
             return full_path + src;
+
+
+
+
         } else { // if dest is specified, set the src to the id and 
-            jQuery(dest).attr("src", full_path + src)
-            setMediaText(id, dest)
+            jQuery(dest).attr("src", full_path + src) //set the source of the image
+            setMediaText(id, dest) // set the text
         }
-        jQuery(dest + "-wrap").css("visibility", 'visible')
+        jQuery(dest + "-wrap").css("visibility", 'visible') // show the wrapper
 
     } else {
 
-        jQuery(dest + "-wrap").css("visibility", 'hidden')
+        jQuery(dest + "-wrap").css("visibility", 'hidden') // hide the wrapper
     }
 
 }
@@ -125,6 +129,7 @@ function setVideo(id, dest) {
 function setScreenImages(screen_images, dest, callback) {
     var images = []
     for (var i = 0; i < screen_images.length; i++) {
+        console.log(screen_images[i])
         images.push({
             "src": setImage(screen_images[i], '', "square"),
             "data": media[screen_images[i]]
@@ -133,7 +138,7 @@ function setScreenImages(screen_images, dest, callback) {
     }
     circleViewer(dest, images)
     //  callback(dest,images)
-    //console.log("setScreenImages", screen_images, dest, images);
+    console.log("setScreenImages", screen_images, dest, images);
 
 
 }

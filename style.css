@@ -103,7 +103,7 @@ footer #fork-this #fork-this-svg { position: absolute; right: 0; bottom: 0; widt
 #related { position: absolute; background: rgba(0, 0, 250, 0.4); }
 #related ul li { border-radius: 50%; border: 1px solid #fff; width: 50px; height: 50px; margin: 5px auto; color: #ccc; text-align: center; cursor: pointer; }
 
-#related.vertical { top: 20%; right: 15%; width: 75px; height: 65%; }
+#related.vertical { top: 20%; right: 12%; width: 75px; height: 65%; }
 #related.vertical ul { margin-bottom: 1em; }
 
 #related.horizontal { top: 90%; left: 15%; width: 67%; height: 75px; }

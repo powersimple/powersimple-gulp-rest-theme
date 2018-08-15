@@ -18,9 +18,11 @@ function setMenus(data, dest) {
         menus[data[i].slug].name = data[i].name
         menus[data[i].slug].slug = data[i].slug
         menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
+        
     }
     buildMenuData();
-    console.log(menus)
+    console.log("raw menu data", menus)
+    initSite()
 }
 
 function setMenu(slug, items) {
@@ -72,7 +74,7 @@ function menu_order(a, b) {
 
 function setLinearNav(m) {
     var counter = 0
-    menus[m].linear_nav = []
+    menus[m].linear_nav = [];
     for (var i in menus[m].items) {
 
 
@@ -83,13 +85,11 @@ function setLinearNav(m) {
         id = menus[m].items[i].object_id
         menus[m].linear_nav.push(menus[m].items[i])
 
-        posts_nav[id] = counter;
+      
         counter++;
     }
     menus[m].linear_nav.sort(menu_order);
-    setSlider(m)
-    setSlides(m)
-
+    
     
   //  console.log("linear_nav", menus[m]linear_nav);
   //  console.log("posts_nav", posts_nav);
@@ -149,10 +149,15 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
   //   console.log("slug_nav", slug_nav);
 }
 function buildMenuData() {
-    var data = [];
 
+
+
+
+    
+    var data = [];
+  
     for (var m in menus) {
-        console.log('menu loop',m)
+        //console.log('menu loop',m)
         if (menu_config[m] != undefined) {
             var items = ''
 
@@ -198,7 +203,7 @@ function buildMenuData() {
                     }
 
 
-                    console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
+                  //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
                     children.push( // data for childe menus
                         {
                             "title": menus[m].items[menu_array[a].children[c]].title,
@@ -224,26 +229,7 @@ function buildMenuData() {
             }
             menu_levels = data;
             setLinearDataNav(data);
-            setLinearNav(m)
-           
-
-            //console.log("menu", menu_config[m].location, items)
-          //  jQuery(menu_config[m].location).html(items)
-            setSlideShow(); // creates slides for the slick carousel
-            makeWheelNav("outer-nav", menu_levels, wheel_nav_params)
-            if (location.hash != '') {
-                var slug = location.hash.replace("#", "");
-                //console.log("set by slugHash", slug, slug_nav[slug])
-
-                setSliderNotch(slug_nav[slug])
-            } else {
-
-                if (menu_config[m].menu_type == "wheel") {
-                    // THIS IS THE INITIAL LOADING OF THE WHEEL
-
-
-                }
-            }
+            setLinearNav('wheel-menu')
             //console.log('makeouterwheel',menu_levels);
 
 

@@ -1,6 +1,6 @@
 
-    var photoCount = 6;
-    var pieceCount = 6;
+    var photoCount = 0;
+    var pieceCount = 0;
     var onPhoto = 0;
     var pieceCompleteCount = 0;
     var delay;
@@ -9,12 +9,16 @@
     var transitionType = 0;
     var images = []
     var viewerDest = null
-    console.log("circleviwer loaded")
+    //console.log("circleviwer loaded")
     function circleViewer(dest,images) {
-        console.log("CIRCLE VIEWER PRELOAD",dest,images)
         images = images
+        photoCount = images.length
+        pieceCount = images.length
+        console.log("CIRCLE VIEWER PRELOAD",dest,images,pieceCount)
+        
         viewerDest = dest
         for (var i = 0; i < images.length; i++) {
+
             jQuery('#preload').append('<img src="'+images[i].src+'">')
         };
         loadCircleViewer(dest,images);

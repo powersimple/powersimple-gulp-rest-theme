@@ -19,7 +19,8 @@ function generateChars() {
 }
 
 // Initialize default canvas state
-function initCanvas() {
+function initMatrix() {
+    console.log('start matrix')
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -69,5 +70,5 @@ function draw() {
     }
 }
 
-initCanvas();
+
 setInterval(draw, 160);

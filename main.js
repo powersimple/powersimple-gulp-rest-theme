@@ -9,7 +9,44 @@ jQuery(document).ready(function () {
 
   jQuery(".wheelnav-outer-nav-title").css("display:none;");
   reposition_screen()
+  
+
 })
+
+function initSite(){ // called from the menus callback
+
+   
+
+      var m = 'wheel-menu'
+      
+      setSlider(m)
+      setSlides(m)
+
+
+      //console.log("menu", menu_config[m].location, items)
+      //  jQuery(menu_config[m].location).html(items)
+      setSlideShow(); // creates slides for the slick carousel
+      makeWheelNav("outer-nav", menu_levels, wheel_nav_params)
+      if (location.hash != '') {
+        var slug = location.hash.replace("#", "");
+        //console.log("set by slugHash", slug, slug_nav[slug])
+        
+        setSliderNotch(slug_nav[slug])
+
+      } else {
+
+        if (menu_config[m].menu_type == "wheel") {
+          // THIS IS THE INITIAL LOADING OF THE WHEEL
+
+
+        }
+      }
+      initMatrix();
+      console.log(menus)
+}
+
+
+
 
 function calibrateCircle(id, size, increment) {
   //console.log("calibrate",id,size,increment)
@@ -249,8 +286,8 @@ function setContent(dest, object_id, object) {
     setVideo(posts[object_id].featured_video.video_id,"#bg-video")
     setRelated(posts[object_id])
     if (posts[object_id].screen_images.length >0){
-
-        setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
+      
+      setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
     } else {
       jQuery('#screen-image-container').html('')
     }
@@ -258,7 +295,7 @@ function setContent(dest, object_id, object) {
 
   }
 
-  setSlideContent(state.slide, object_id)
+  setSlideContent(dest, object_id)
 
   /*
         for category wheels
@@ -287,8 +324,8 @@ function setContent(dest, object_id, object) {
 
 }
 
-    var photoCount = 6;
-    var pieceCount = 6;
+    var photoCount = 0;
+    var pieceCount = 0;
     var onPhoto = 0;
     var pieceCompleteCount = 0;
     var delay;
@@ -297,12 +334,16 @@ function setContent(dest, object_id, object) {
     var transitionType = 0;
     var images = []
     var viewerDest = null
-    console.log("circleviwer loaded")
+    //console.log("circleviwer loaded")
     function circleViewer(dest,images) {
-        console.log("CIRCLE VIEWER PRELOAD",dest,images)
         images = images
+        photoCount = images.length
+        pieceCount = images.length
+        console.log("CIRCLE VIEWER PRELOAD",dest,images,pieceCount)
+        
         viewerDest = dest
         for (var i = 0; i < images.length; i++) {
+
             jQuery('#preload').append('<img src="'+images[i].src+'">')
         };
         loadCircleViewer(dest,images);
@@ -383,7 +424,6 @@ var posts = {},
   tags = {},
   menus = {},
   media = {},
-  linear_nav = [],
   posts_nav = {},
   posts_slug_ids = {},
   slug_nav = {},
@@ -526,7 +566,8 @@ function generateChars() {
 }
 
 // Initialize default canvas state
-function initCanvas() {
+function initMatrix() {
+    console.log('start matrix')
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -576,18 +617,18 @@ function draw() {
     }
 }
 
-initCanvas();
+
 setInterval(draw, 160);
 function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    //console.log("media", media);
+    console.log("media", media);
 }
 
 function setImage(id, dest, size) {
     setMediaText(id, dest)
-    //console.log("set image",media[id])
+    console.log("set image",id,size,media[id])
     if (media[id] != undefined) {
         jQuery(dest + "-wrap").attr("visibility", 'hidden')
 
@@ -610,17 +651,21 @@ function setImage(id, dest, size) {
         }
 
         if (dest == '') { //set path to '' to return the src only
-            //   console.log("Src return", full_path + src)
+               console.log("Src return", full_path + src)
             return full_path + src;
+
+
+
+
         } else { // if dest is specified, set the src to the id and 
-            jQuery(dest).attr("src", full_path + src)
-            setMediaText(id, dest)
+            jQuery(dest).attr("src", full_path + src) //set the source of the image
+            setMediaText(id, dest) // set the text
         }
-        jQuery(dest + "-wrap").css("visibility", 'visible')
+        jQuery(dest + "-wrap").css("visibility", 'visible') // show the wrapper
 
     } else {
 
-        jQuery(dest + "-wrap").css("visibility", 'hidden')
+        jQuery(dest + "-wrap").css("visibility", 'hidden') // hide the wrapper
     }
 
 }
@@ -705,6 +750,7 @@ function setVideo(id, dest) {
 function setScreenImages(screen_images, dest, callback) {
     var images = []
     for (var i = 0; i < screen_images.length; i++) {
+        console.log(screen_images[i])
         images.push({
             "src": setImage(screen_images[i], '', "square"),
             "data": media[screen_images[i]]
@@ -713,7 +759,7 @@ function setScreenImages(screen_images, dest, callback) {
     }
     circleViewer(dest, images)
     //  callback(dest,images)
-    //console.log("setScreenImages", screen_images, dest, images);
+    console.log("setScreenImages", screen_images, dest, images);
 
 
 }
@@ -737,9 +783,11 @@ function setMenus(data, dest) {
         menus[data[i].slug].name = data[i].name
         menus[data[i].slug].slug = data[i].slug
         menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
+        
     }
     buildMenuData();
-    console.log(menus)
+    console.log("raw menu data", menus)
+    initSite()
 }
 
 function setMenu(slug, items) {
@@ -791,7 +839,7 @@ function menu_order(a, b) {
 
 function setLinearNav(m) {
     var counter = 0
-    menus[m].linear_nav = []
+    menus[m].linear_nav = [];
     for (var i in menus[m].items) {
 
 
@@ -802,13 +850,11 @@ function setLinearNav(m) {
         id = menus[m].items[i].object_id
         menus[m].linear_nav.push(menus[m].items[i])
 
-        posts_nav[id] = counter;
+      
         counter++;
     }
     menus[m].linear_nav.sort(menu_order);
-    setSlider(m)
-    setSlides(m)
-
+    
     
   //  console.log("linear_nav", menus[m]linear_nav);
   //  console.log("posts_nav", posts_nav);
@@ -868,10 +914,15 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
   //   console.log("slug_nav", slug_nav);
 }
 function buildMenuData() {
-    var data = [];
 
+
+
+
+    
+    var data = [];
+  
     for (var m in menus) {
-        console.log('menu loop',m)
+        //console.log('menu loop',m)
         if (menu_config[m] != undefined) {
             var items = ''
 
@@ -917,7 +968,7 @@ function buildMenuData() {
                     }
 
 
-                    console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
+                  //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
                     children.push( // data for childe menus
                         {
                             "title": menus[m].items[menu_array[a].children[c]].title,
@@ -943,26 +994,7 @@ function buildMenuData() {
             }
             menu_levels = data;
             setLinearDataNav(data);
-            setLinearNav(m)
-           
-
-            //console.log("menu", menu_config[m].location, items)
-          //  jQuery(menu_config[m].location).html(items)
-            setSlideShow(); // creates slides for the slick carousel
-            makeWheelNav("outer-nav", menu_levels, wheel_nav_params)
-            if (location.hash != '') {
-                var slug = location.hash.replace("#", "");
-                //console.log("set by slugHash", slug, slug_nav[slug])
-
-                setSliderNotch(slug_nav[slug])
-            } else {
-
-                if (menu_config[m].menu_type == "wheel") {
-                    // THIS IS THE INITIAL LOADING OF THE WHEEL
-
-
-                }
-            }
+            setLinearNav('wheel-menu')
             //console.log('makeouterwheel',menu_levels);
 
 
@@ -1649,113 +1681,114 @@ jQuery('a[data-slide]').click(function(e) {
   //$carousel.slick('slickGoTo', slideno);
 
 });
-function setSlider(m){
+function setSlider(m) {
   //console.log("Set Slider", orientation, linear_nav.length)
-   
-     jQuery( "#slider" ).slider({
-        orientation: orientation,
-        range: "max",
-        min: 0,
-        max: menus[m].linear_nav.length,
-        value: 0,
-        slide: function( event, ui ) {
-          setSliderNotch(ui.value)
-        //   console.log("slider",ui.value)
-          // jQuery( "#amount" ).val( ui.value );
-            }
-      
-      
-            
-          });
-        
-          jQuery('.slick-dots li button').on('click', function (e) {
-        e.stopPropagation(); // use this
-        //console.log("slick dot clicked")
-    });
-      
-    
-    }
- /*
- jQuery('#slider').on('mousewheel', function(event) {
-   event.preventDefault();
-   value = jQuery( "#slider" ).slider( "value" );
- 
-   console.log(event.deltaX, event.deltaY, event.deltaFactor);
- 
-   //Mousewheel Scrolled up
-   if(event.deltaY == -1){
-       //alert("scrolled down");
-       value = value+1;
-       setSliderNotch(value)
-   }
-   //Mousewheel Scrolled down
-   else if(event.deltaY == 1){
-      //alert("scrolled up");
-       value = value-1;
-       setSliderNotch(value)
-       
-   }
-   
- });*/
- (function($){
-/*
-  $('#slider').bind('mousewheel DOMMouseScroll', function (e) {
-    var delta = 0,
-      element = $(this),
-      value, result, oe;
-    oe = e.originalEvent; // for jQuery >=1.7
-    value = element.slider('value');
 
-    if (oe.wheelDelta) {
-      delta = -oe.wheelDelta;
-    }
-    if (oe.detail) {
-      delta = oe.detail * 40;
+  jQuery("#slider").slider({
+    orientation: orientation,
+    range: "max",
+    min: 0,
+    max: menus[m].linear_nav.length,
+    value: 0,
+    slide: function (event, ui) {
+      setSliderNotch(ui.value)
+      //   console.log("slider",ui.value)
+      // jQuery( "#amount" ).val( ui.value );
     }
 
-    value -= delta / 8;
-    if (value > 100) {
-      value = 100;
-    }
-    if (value < 0) {
-      value = 0;
-    }
 
-    result = element.slider('option', 'slide').call(element, e, {
-      value: value
-    });
-    if (result !== false) {
-      element.slider('value', value);
-    }
-    return false;
+
   });
-  */
+
+  jQuery('.slick-dots li button').on('click', function (e) {
+    e.stopPropagation(); // use this
+    //console.log("slick dot clicked")
+  });
+
+
+}
+/*
+  jQuery('#slider').on('mousewheel', function(event) {
+    event.preventDefault();
+    value = jQuery( "#slider" ).slider( "value" );
+  
+    console.log(event.deltaX, event.deltaY, event.deltaFactor);
+  
+    //Mousewheel Scrolled up
+    if(event.deltaY == -1){
+        //alert("scrolled down");
+        value = value+1;
+        setSliderNotch(value)
+    }
+    //Mousewheel Scrolled down
+    else if(event.deltaY == 1){
+      //alert("scrolled up");
+        value = value-1;
+        setSliderNotch(value)
+        
+    }
+    
+  });
+*/
+(function ($) {
+  /*
+    $('#slider').bind('mousewheel DOMMouseScroll', function (e) {
+      var delta = 0,
+        element = $(this),
+        value, result, oe;
+      oe = e.originalEvent; // for jQuery >=1.7
+      value = element.slider('value');
+
+      if (oe.wheelDelta) {
+        delta = -oe.wheelDelta;
+      }
+      if (oe.detail) {
+        delta = oe.detail * 40;
+      }
+
+      value -= delta / 8;
+      if (value > 100) {
+        value = 100;
+      }
+      if (value < 0) {
+        value = 0;
+      }
+
+      result = element.slider('option', 'slide').call(element, e, {
+        value: value
+      });
+      if (result !== false) {
+        element.slider('value', value);
+      }
+      return false;
+    });
+    */
 
   $('div.arrow').on('click', function (e) {
     e.stopPropagation(); // use this
     var id = $(this).attr("id");
-    
+
     var next_notch = current_notch;
 
-    if(id == 'down-arrow'){
-      
-      if(next_notch == 0){
+    if (id == 'down-arrow') {
+
+      if (next_notch == 0) {
         next_notch = menus['wheel-menu'].linear_nav.length - 1
       } else {
         next_notch--
       }
-      
-      
-      
-    } else if(id == 'up-arrow'){
 
 
 
-       if (next_notch == menus['wheel-menu'].linear_nav.length - 1) {
-         next_notch = 0
-       } else {
-         next_notch++
-       }
+    } else if (id == 'up-arrow') {
+
+
+
+      if (next_notch == menus['wheel-menu'].linear_nav.length - 1) {
+        next_notch = 0
+      } else {
+        next_notch++
+      }
     }
     //console.log('arrow_next',next_notch)
     setSliderNotch(next_notch)
@@ -1766,27 +1799,25 @@ function setSlider(m){
   });
 
 })(jQuery)
- 
 
- function setSliderNotch(notch){
- 
-  console.log("notch",data_nav[notch],notch)
-   location.hash = posts[data_nav[notch].object_id].slug
 
- 
-   //console.log("set slider notch", notch,location.hash)
-   jQuery("#slider").slider('value', notch);
-    if (menus['wheel-menu'].linear_nav[notch] != undefined){
-      
-      setContent(notch, data_nav[notch].object_id, data_nav[notch].object_id)
-      triggerWheelNav(notch)
-       //selectNavItem(notch);
-    }
-    current_notch = notch;
+function setSliderNotch(notch) {
+
+  console.log("notch", data_nav[notch], notch)
+  location.hash = posts[data_nav[notch].object_id].slug
+
+
+  //console.log("set slider notch", notch,location.hash)
+  jQuery("#slider").slider('value', notch);
+  if (menus['wheel-menu'].linear_nav[notch] != undefined) {
+
+    setContent(notch, data_nav[notch].object_id, data_nav[notch].object)
+    triggerWheelNav(notch)
+    //selectNavItem(notch);
+  }
+  current_notch = notch;
   // document.title = linear_nav[notch].title+" | "+site_title
- }
-
-
+}
 // Declare three.js variables
 var camera, scene, renderer, stars = []
 
@@ -1945,7 +1976,7 @@ function makeWheelNav(dest, data, _p) {
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
-    //console.log(dest,data,_p);
+    console.log(dest,data,_p);
     wheels[dest].spreaderEnable = false;
     //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;

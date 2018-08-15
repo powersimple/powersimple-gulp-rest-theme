@@ -9,7 +9,44 @@ jQuery(document).ready(function () {
 
   jQuery(".wheelnav-outer-nav-title").css("display:none;");
   reposition_screen()
+  
+
 })
+
+function initSite(){ // called from the menus callback
+
+   
+
+      var m = 'wheel-menu'
+      
+      setSlider(m)
+      setSlides(m)
+
+
+      //console.log("menu", menu_config[m].location, items)
+      //  jQuery(menu_config[m].location).html(items)
+      setSlideShow(); // creates slides for the slick carousel
+      makeWheelNav("outer-nav", menu_levels, wheel_nav_params)
+      if (location.hash != '') {
+        var slug = location.hash.replace("#", "");
+        //console.log("set by slugHash", slug, slug_nav[slug])
+        
+        setSliderNotch(slug_nav[slug])
+
+      } else {
+
+        if (menu_config[m].menu_type == "wheel") {
+          // THIS IS THE INITIAL LOADING OF THE WHEEL
+
+
+        }
+      }
+      initMatrix();
+      console.log(menus)
+}
+
+
+
 
 function calibrateCircle(id, size, increment) {
   //console.log("calibrate",id,size,increment)
@@ -249,8 +286,8 @@ function setContent(dest, object_id, object) {
     setVideo(posts[object_id].featured_video.video_id,"#bg-video")
     setRelated(posts[object_id])
     if (posts[object_id].screen_images.length >0){
-
-        setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
+      
+      setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
     } else {
       jQuery('#screen-image-container').html('')
     }
@@ -258,7 +295,7 @@ function setContent(dest, object_id, object) {
 
   }
 
-  setSlideContent(state.slide, object_id)
+  setSlideContent(dest, object_id)
 
   /*
         for category wheels
