@@ -1,3 +1,6 @@
+
+
+
 var increment = 'vw',
   orientation = 'vertical', // this var is used by the slider
   _w = jQuery(window).width(),
@@ -14,9 +17,11 @@ jQuery(document).ready(function () {
 })
 
 function initSite(){ // called from the menus callback
-
+    //console.log("load",data_loaded.length,data_score)
+    if(menu == undefined){
+        window.setTimeout(initSite(), 100);
+    }
    
-
       var m = 'wheel-menu'
       
       setSlider(m)
@@ -25,7 +30,7 @@ function initSite(){ // called from the menus callback
 
       //console.log("menu", menu_config[m].location, items)
       //  jQuery(menu_config[m].location).html(items)
-      setSlideShow(); // creates slides for the slick carousel
+      setSlideShow('wheel-menu'); // creates slides for the slick carousel
       makeWheelNav("outer-nav", menu_levels, wheel_nav_params)
       if (location.hash != '') {
         var slug = location.hash.replace("#", "");
@@ -42,7 +47,7 @@ function initSite(){ // called from the menus callback
         }
       }
       initMatrix();
-      console.log(menus)
+      //console.log(menus)
 }
 
 
@@ -74,8 +79,6 @@ function positionNavElements() {
     jQuery("#slider-wrap, #related").addClass("vertical")
     jQuery("#slider-wrap, #related").removeClass("horizontal")
 
-
-    
 
   } else {
     orientation = 'horizontal'
@@ -227,7 +230,8 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-console.log("setSlideContent", slide, id )
+  //console.log("setSlideContent", slide, id )
+  
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)
@@ -249,7 +253,7 @@ function setText(){
     } else { // get data. 
 
       page_title = retreiveML('posts',"title",state.post_id,state.language)
-      console.log("new page title " + page_title)
+      //console.log("new page title " + page_title)
 
     }
 

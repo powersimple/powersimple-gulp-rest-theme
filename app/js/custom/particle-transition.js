@@ -1,8 +1,7 @@
+//window.onload = init;
+//console.ward = function() {}; // what warnings?
 /*
-window.onload = init;
-console.ward = function() {}; // what warnings?
-
-function init() {
+function initParticleTranstion(dest) {
   var root = new THREERoot({
     createCameraControls: !true,
     antialias: (window.devicePixelRatio === 1),
@@ -13,25 +12,28 @@ function init() {
   root.renderer.setPixelRatio(window.devicePixelRatio || 1);
   root.camera.position.set(0, 0, 60);
 
+  var particleSlides = []
+  var slideLoader = []
   var width = 100;
   var height = 60;
+  var tl = new TimelineMax({
+    repeat: -1,
+    repeatDelay: 1.0,
+    yoyo: true
+  });
+  for (var i = 0; i < state.screen_images.length; i++) {
+    particleSlides[i] = new Slide(width, height, 'out');
+    slideLoader[i] = new THREE.ImageLoader();
+    slideLoader[i].setCrossOrigin('Anonymous');
+    console.log("SRC"+state.screen_images[i].src)
+    slideLoader[i].load(state.screen_images[i].src, function (img) {
+     particleSlides[i].setImage(img);
+    })
 
-  var slide = new Slide(width, height, 'out');
-	var l1 = new THREE.ImageLoader();
-	l1.setCrossOrigin('Anonymous');
-  slide.setImage(l1.load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/winter.jpg'));
-  root.scene.add(slide);
-
-  var slide2 = new Slide(width, height, 'in');
-  var l2 = new THREE.ImageLoader();
-	l2.setCrossOrigin('Anonymous');
-	slide2.setImage(l2.load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/spring.jpg'));
-  root.scene.add(slide2);
-
-  var tl = new TimelineMax({repeat:-1, repeatDelay:1.0, yoyo: true});
-
-  tl.add(slide.transition(), 0);
-  tl.add(slide2.transition(), 0);
+    
+    root.scene.add(slide[0]);
+    tl.add(slide[i].transition(), 0);
+  }
 
   createTweenScrubber(tl);
 
@@ -260,7 +262,7 @@ function THREERoot(params) {
     alpha: true
   });
   this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-  document.getElementById('three-container').appendChild(this.renderer.domElement);
+  document.getElementById('#screen-image-container').appendChild(this.renderer.domElement);
 
   this.camera = new THREE.PerspectiveCamera(
     params.fov,

@@ -57,7 +57,7 @@ function setRelated(post) {
     displayRelated()
      
 
-     console.log("related",related)
+     //console.log("related",related)
       
   }
   function displayRelated(){
@@ -106,7 +106,7 @@ function setRelated(post) {
         if(posts[id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
 
-            console.log(id,"projects ",posts[id])
+            //console.log(id,"projects ",posts[id])
         }
 
      

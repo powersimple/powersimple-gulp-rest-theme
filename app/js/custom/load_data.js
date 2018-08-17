@@ -15,8 +15,11 @@ var posts = {},
   data_nav = [],
   last_dest = 'outer-nav',
   menu_levels = [],
+  menu_slides = [], // an array for all 
   related = {},
-  state = {}
+  state = {},
+  data_score = 7,
+  data_loaded = []
 
 function getStaticJSON(route, callback,dest) {
   // route =  the type 
@@ -32,6 +35,7 @@ function getStaticJSON(route, callback,dest) {
     data: '',
     success: function (data, textStatus, request) {
       //console.log(endpoint,data)
+//      data_loaded.push(callback);
       return data,
 
         callback(data,dest) // this is the callback that sends the data to your custom function

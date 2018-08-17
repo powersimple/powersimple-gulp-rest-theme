@@ -45,10 +45,10 @@ function initLanguageMenu(container){
             }
          }
     
-        console.log(language_menu,state.language)
+       // console.log(language_menu,state.language)
 
     })
-    console.log(language_menu, state.language)
+    //console.log(language_menu, state.language)
     jQuery(container).html(language_menu)
 
 
@@ -79,17 +79,17 @@ function setLanguage(data,code) {
     //console.log(code,"data", data)
     for(var d in data){
         if (data[d].type == 'page' || data[d].type == 'post' || data[d].type == 'project'){
-        console.log(data[d].type, d, data[d].of )
+        //console.log(data[d].type, d, data[d].of )
         posts[d] = data[d];
         }
     
     }
-    console.log("set", menus['wheel-menu'].linear_nav);
+    //console.log("set", menus['wheel-menu'].linear_nav);
     changeLanguage(code);
    
 }
 function changeLanguage(code){
- console.log("change language", code)
+ //console.log("change language", code)
 }
 if(typeof languages !== 'undefined') {
     initLanguageMenu("#language-menu");

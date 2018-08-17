@@ -21,7 +21,7 @@ function setMenus(data, dest) {
         
     }
     buildMenuData();
-    console.log("raw menu data", menus)
+    //console.log("raw menu data", menus)
     initSite()
 }
 
@@ -150,95 +150,99 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
 }
 function buildMenuData() {
 
+    // needs post variable
+    if (posts == undefined) {
+        //console.log("No Posts Data Yet",  posts)
+        window.setTimeout(buildMenuData(), 10);
+    } else {
 
-
-
+        
+        var data = [];
     
-    var data = [];
-  
-    for (var m in menus) {
-        //console.log('menu loop',m)
-        if (menu_config[m] != undefined) {
-            var items = ''
+        for (var m in menus) { // 
+            //console.log('menu loop',m)
+            if (menu_config[m] != undefined) { 
+                var items = ''
 
-            //menus[m].items.sort(function(a,b){return a.menu_order-b.menu_order})
+                //menus[m].items.sort(function(a,b){return a.menu_order-b.menu_order})
 
 
 
-            menu_array = [];
-            for (var i in menus[m].items) {
-                // console.log('menu item', menus[m].items[i], menu_config[m].location)
-                if (menus[m].items[i].parent == 0) {
-                    // console.log("menu", menus[m].items[i].title)
+                menu_array = [];
+                for (var i in menus[m].items) {
+                    // console.log('menu item', menus[m].items[i], menu_config[m].location)
+                    if (menus[m].items[i].parent == 0) {
+                        // console.log("menu", menus[m].items[i].title)
 
-                    menu_array.push(menus[m].items[i]);
+                        menu_array.push(menus[m].items[i]);
+                    }
+                    // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
+
                 }
-                // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
-
-            }
-            menu_array.sort(menu_order);
+                menu_array.sort(menu_order);
 
 
-            var children = [];
+                var children = [];
 
 
-            for (var a = 0; a < menu_array.length; a++) {
-                children = [];
+                for (var a = 0; a < menu_array.length; a++) {
+                    children = [];
 
-                for (var c = 0; c < menu_array[a].children.length; c++) {
-                    var grandchildren = [];
-                    var nested_children = menus[m].items[menu_array[a].children[c]].children;
-                    for (var g = 0; g < nested_children.length; g++) {
-                        grandchildren.push( // data for childe menus
+                    for (var c = 0; c < menu_array[a].children.length; c++) {
+                        var grandchildren = [];
+                        var nested_children = menus[m].items[menu_array[a].children[c]].children;
+                        for (var g = 0; g < nested_children.length; g++) {
+                            grandchildren.push( // data for childe menus
+                                {
+                                    "title": menus[m].items[nested_children[g]].title,
+
+                                    "slug": posts[menus[m].items[nested_children[g]].object_id].slug,
+                                    "object": menus[m].items[nested_children[g]].object,
+                                    "object_id": menus[m].items[nested_children[g]].object_id, // the post id
+
+                                }
+                            )
+
+                        }
+
+
+                    //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
+                        children.push( // data for childe menus
                             {
-                                "title": menus[m].items[nested_children[g]].title,
-
-                                "slug": posts[menus[m].items[nested_children[g]].object_id].slug,
-                                "object": menus[m].items[nested_children[g]].object,
-                                "object_id": menus[m].items[nested_children[g]].object_id, // the post id
-
+                                "title": menus[m].items[menu_array[a].children[c]].title,
+                                "slug": posts[menus[m].items[menu_array[a].children[c]].object_id].slug,
+                                "object": menus[m].items[menu_array[a].children[c]].object,
+                                "object_id": menus[m].items[menu_array[a].children[c]].object_id, // the post id
+                                "children": grandchildren
                             }
                         )
 
                     }
 
 
-                  //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
-                    children.push( // data for childe menus
-                        {
-                            "title": menus[m].items[menu_array[a].children[c]].title,
-                            "slug": posts[menus[m].items[menu_array[a].children[c]].object_id].slug,
-                            "object": menus[m].items[menu_array[a].children[c]].object,
-                            "object_id": menus[m].items[menu_array[a].children[c]].object_id, // the post id
-                            "children": grandchildren
-                        }
-                    )
+                    data.push({ // data for top level
+                        "title": menu_array[a].title,
+                        //"id": menu_array[a].id,
+                        "slug": posts[menu_array[a].object_id].slug,
+                        "object": menu_array[a].object,
+                        "object_id": menu_array[a].object_id, //the post_id
+                        "children": children
+                    })
 
                 }
+                menu_levels = data;
+                setLinearDataNav(data);
+                setLinearNav('wheel-menu')
+                //console.log('makeouterwheel',menu_levels);
 
 
-                data.push({ // data for top level
-                    "title": menu_array[a].title,
-                    //"id": menu_array[a].id,
-                    "slug": posts[menu_array[a].object_id].slug,
-                    "object": menu_array[a].object,
-                    "object_id": menu_array[a].object_id, //the post_id
-                    "children": children
-                })
 
+
+
+                //circleMenu('.circle a')
             }
-            menu_levels = data;
-            setLinearDataNav(data);
-            setLinearNav('wheel-menu')
-            //console.log('makeouterwheel',menu_levels);
-
-
-
-
-
-            //circleMenu('.circle a')
         }
-    }
 
+    }
 
 }

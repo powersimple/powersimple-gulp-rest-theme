@@ -1,13 +1,15 @@
 var gotoslide = function(slide){
-  console.log("click on slick dot ", slide);
+  //console.log("click on slick dot ", slide);
    setSlideContent(notch, menus['wheel-menu'].linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
+
 jQuery('.slick-dots li button').on('click', function (e) {
    e.stopPropagation(); // use this
   //console.log("slick dot clicked")
 });
-function setSlideShow(){
+
+function setSlideShow(menu){
   jQuery('.slideshow').slick({
   //	autoplay: true,
     dots: false,
@@ -17,8 +19,8 @@ function setSlideShow(){
     fade: true,
     cssEase:  'linear',
     focusoOnSelect: true,
-    nextArrow: '<i class="slick-arrow slick-next"></i>',
-    prevArrow: '<i class="slick-arrow slick-prev"></i>',
+    //nextArrow: '<i class="slick-arrow slick-next"></i>',
+    //prevArrow: '<i class="slick-arrow slick-prev"></i>',
   });
 
    //console.log("set slideshow")
@@ -42,11 +44,11 @@ function setSlides(m){
   var content = ''
   var title = ''
   var slides = ''
- console.log("Begin Render Slides",m,"|")
+ //console.log("Begin Render Slides",m,"|")
  
   if(posts == undefined){
     //console.log("No Posts Data Yet",  posts)
-    window.setTimeout(setSlides(), 100);//without this, we cannot relay that the post data is available yet
+    window.setTimeout(setSlides(m), 100);//without this, we cannot relay that the post data is available yet
   } else {
   
   for(i=0;menus[m].linear_nav[i];i++){

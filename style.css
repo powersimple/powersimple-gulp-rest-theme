@@ -1,5 +1,5 @@
 /*
-Theme Name: Powersimple
+Theme Name: Full Circle
 
 Author: Ben Erwin, Powersimple, LLC
 Author URI: https://Powersimple/
@@ -398,7 +398,7 @@ for slides, positioning is in .slide-wrap in slick.scss */ }
 .slick-dots li button { font-size: 0; line-height: 0; width: 20px; height: 20px; padding: 5px; cursor: pointer; color: #3bbfd6; border: 0; outline: none; background: #3bbfd6; border-radius: 50%; }
 .slick-dots li.active { background: #522b1c; }
 
-.slick-prev, .slick-next { font-size: 1em; line-height: 0; position: absolute; top: 32%; display: block; width: 30px; max-width: 8%; height: 30px; margin-top: -10px; padding: 0; cursor: pointer; color: #3bbfd6; border: none; outline: none; border-radius: 50%; z-index: 100; }
+.slick-prev, .slick-next { font-size: 1em; line-height: 0; position: absolute; top: 32%; display: block; width: 30px; max-width: 8%; height: 30px; margin-top: -10px; padding: 0; cursor: pointer; color: #3bbfd6; border: none; outline: none; border-radius: 50%; z-index: 100; display: none; }
 
 .slick-prev { left: -20px; content: ">"; }
 

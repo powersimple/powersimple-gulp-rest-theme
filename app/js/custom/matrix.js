@@ -20,7 +20,7 @@ function generateChars() {
 
 // Initialize default canvas state
 function initMatrix() {
-    console.log('start matrix')
+    //console.log('start matrix')
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -37,7 +37,7 @@ function initMatrix() {
 
 // Resize canvas to fit window
 window.onresize = function () {
-    initCanvas();
+    initMatrix();
 };
 
 function draw() {

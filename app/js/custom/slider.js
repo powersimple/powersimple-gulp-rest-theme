@@ -120,7 +120,13 @@ function setSlider(m) {
 
 function setSliderNotch(notch) {
 
-  console.log("notch", data_nav[notch], notch)
+  if (state.circle_delay != undefined) {
+      ///console.log("delay", state.circle_delay)
+    clearInterval(state.circle_delay);
+     //console.log("stop delay", state.circle_delay)
+  }
+  
+  //console.log("notch", data_nav[notch], notch)
   location.hash = posts[data_nav[notch].object_id].slug
 
 

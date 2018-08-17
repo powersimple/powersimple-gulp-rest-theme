@@ -3,53 +3,59 @@
     var pieceCount = 0;
     var onPhoto = 0;
     var pieceCompleteCount = 0;
-    var delay;
+ //this is the interval that needs to be stoped.
 
     var transitions = ['center', 'random']
     var transitionType = 0;
-    var images = []
+    
     var viewerDest = null
     //console.log("circleviwer loaded")
-    function circleViewer(dest,images) {
-        images = images
-        photoCount = images.length
-        pieceCount = images.length
-        console.log("CIRCLE VIEWER PRELOAD",dest,images,pieceCount)
+    function circleViewer(dest) {
+        
+        photoCount = state.screen_images.length
+        pieceCount = state.screen_images.length
+        console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
         
         viewerDest = dest
-        for (var i = 0; i < images.length; i++) {
+        for (var i = 0; i < state.screen_images.length; i++) {
 
-            jQuery('#preload').append('<img src="'+images[i].src+'">')
+            jQuery('#preload').append('<img src="' + state.screen_images[i].src + '">')
         };
-        loadCircleViewer(dest,images);
-       
+        jQuery(window).load(function(){
+           
+
+        })
+        loadCircleViewer(dest);
     }
 
-    function loadCircleViewer(dest,images) {
+    function loadCircleViewer(dest, screen_images) {
         jQuery(dest+'-container').html('');
-        for ( var i = 0; i < images.length; i++) {
+        for (var i = 0; i < state.screen_images.length; i++) {
             var newWidth = (((100 - (100 / pieceCount) * i)) / 100) * 100; //((pieceWidth - ((pieceWidth / pieceCount) * i)) / pieceWidth) * 100;
             var newBackgroundSize = 100 + (100 - newWidth) / newWidth * 100; //100 + (100 - newWidth);
             var newTop = ((100 / pieceCount) * i) / 2;
 
-            jQuery(dest+'-container').append('<div class="section" id="piece' + i + '" style="top: ' + newTop + '%; left: ' + newTop + '%; width: ' + newWidth + '%; height: ' + newWidth + '%; background-size:' + newBackgroundSize + '%; background-image: url('+images[i].src+')"></div>')
+            jQuery(dest+'-container').append('<div class="section" id="piece' + i + '" style="top: ' + newTop + '%; left: ' + newTop + '%; width: ' + newWidth + '%; height: ' + newWidth + '%; background-size:' + newBackgroundSize + '%; background-image: url(' + state.screen_images[i].src + ')"></div>')
         };
-        nextSlide(images);
+        //console.log("IMAGES", dest, state.screen_images)
+        nextSlide();
     }
 
-    function nextSlide(images) {
-        clearInterval(delay);
+    function nextSlide() {
+
+        clearInterval(state.circle_delay);
         pieceCompleteCount = 0;
         ++onPhoto;
         if (onPhoto >= photoCount) {
             onPhoto = 0;
         }
-        console.log("next",images)
-        for (var i = 0; i < images.length; i++) {
+        
+    //console.log("next", state.screen_images)
+        for (var i = 0; i < state.screen_images.length; i++) {
             var spinDelay = 0;
             var spin = 360;
             var piece = jQuery('#piece' + i);
-            var image = images[i]
+            var image = state.screen_images[i]
             switch (transitions[transitionType]) {
                 case 'random':
                     spinDelay = Math.random() / 2;
@@ -72,7 +78,7 @@
     }
 
     function completeRotation(piece,image) {
-        console.log("piece",piece)
+        //console.log("piece", piece, image.src)
         piece.css('background-image', 'url('+image.src+')');
         TweenMax.to(piece, 2, {
             directionalRotation: '0_short',
@@ -84,6 +90,6 @@
     function finishPieceanimation() {
         ++pieceCompleteCount;
         if (pieceCompleteCount == pieceCount) {
-            delay = setInterval(nextSlide, 1000);
+            state.circle_delay = setInterval(nextSlide, 1000);
         }
     }

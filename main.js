@@ -1,3 +1,6 @@
+
+
+
 var increment = 'vw',
   orientation = 'vertical', // this var is used by the slider
   _w = jQuery(window).width(),
@@ -14,9 +17,11 @@ jQuery(document).ready(function () {
 })
 
 function initSite(){ // called from the menus callback
-
+    //console.log("load",data_loaded.length,data_score)
+    if(menu == undefined){
+        window.setTimeout(initSite(), 100);
+    }
    
-
       var m = 'wheel-menu'
       
       setSlider(m)
@@ -25,7 +30,7 @@ function initSite(){ // called from the menus callback
 
       //console.log("menu", menu_config[m].location, items)
       //  jQuery(menu_config[m].location).html(items)
-      setSlideShow(); // creates slides for the slick carousel
+      setSlideShow('wheel-menu'); // creates slides for the slick carousel
       makeWheelNav("outer-nav", menu_levels, wheel_nav_params)
       if (location.hash != '') {
         var slug = location.hash.replace("#", "");
@@ -42,7 +47,7 @@ function initSite(){ // called from the menus callback
         }
       }
       initMatrix();
-      console.log(menus)
+      //console.log(menus)
 }
 
 
@@ -74,8 +79,6 @@ function positionNavElements() {
     jQuery("#slider-wrap, #related").addClass("vertical")
     jQuery("#slider-wrap, #related").removeClass("horizontal")
 
-
-    
 
   } else {
     orientation = 'horizontal'
@@ -227,7 +230,8 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-console.log("setSlideContent", slide, id )
+  //console.log("setSlideContent", slide, id )
+  
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)
@@ -249,7 +253,7 @@ function setText(){
     } else { // get data. 
 
       page_title = retreiveML('posts',"title",state.post_id,state.language)
-      console.log("new page title " + page_title)
+      //console.log("new page title " + page_title)
 
     }
 
@@ -328,53 +332,59 @@ function setContent(dest, object_id, object) {
     var pieceCount = 0;
     var onPhoto = 0;
     var pieceCompleteCount = 0;
-    var delay;
+ //this is the interval that needs to be stoped.
 
     var transitions = ['center', 'random']
     var transitionType = 0;
-    var images = []
+    
     var viewerDest = null
     //console.log("circleviwer loaded")
-    function circleViewer(dest,images) {
-        images = images
-        photoCount = images.length
-        pieceCount = images.length
-        console.log("CIRCLE VIEWER PRELOAD",dest,images,pieceCount)
+    function circleViewer(dest) {
+        
+        photoCount = state.screen_images.length
+        pieceCount = state.screen_images.length
+        console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
         
         viewerDest = dest
-        for (var i = 0; i < images.length; i++) {
+        for (var i = 0; i < state.screen_images.length; i++) {
 
-            jQuery('#preload').append('<img src="'+images[i].src+'">')
+            jQuery('#preload').append('<img src="' + state.screen_images[i].src + '">')
         };
-        loadCircleViewer(dest,images);
-       
+        jQuery(window).load(function(){
+           
+
+        })
+        loadCircleViewer(dest);
     }
 
-    function loadCircleViewer(dest,images) {
+    function loadCircleViewer(dest, screen_images) {
         jQuery(dest+'-container').html('');
-        for ( var i = 0; i < images.length; i++) {
+        for (var i = 0; i < state.screen_images.length; i++) {
             var newWidth = (((100 - (100 / pieceCount) * i)) / 100) * 100; //((pieceWidth - ((pieceWidth / pieceCount) * i)) / pieceWidth) * 100;
             var newBackgroundSize = 100 + (100 - newWidth) / newWidth * 100; //100 + (100 - newWidth);
             var newTop = ((100 / pieceCount) * i) / 2;
 
-            jQuery(dest+'-container').append('<div class="section" id="piece' + i + '" style="top: ' + newTop + '%; left: ' + newTop + '%; width: ' + newWidth + '%; height: ' + newWidth + '%; background-size:' + newBackgroundSize + '%; background-image: url('+images[i].src+')"></div>')
+            jQuery(dest+'-container').append('<div class="section" id="piece' + i + '" style="top: ' + newTop + '%; left: ' + newTop + '%; width: ' + newWidth + '%; height: ' + newWidth + '%; background-size:' + newBackgroundSize + '%; background-image: url(' + state.screen_images[i].src + ')"></div>')
         };
-        nextSlide(images);
+        //console.log("IMAGES", dest, state.screen_images)
+        nextSlide();
     }
 
-    function nextSlide(images) {
-        clearInterval(delay);
+    function nextSlide() {
+
+        clearInterval(state.circle_delay);
         pieceCompleteCount = 0;
         ++onPhoto;
         if (onPhoto >= photoCount) {
             onPhoto = 0;
         }
-        console.log("next",images)
-        for (var i = 0; i < images.length; i++) {
+        
+    //console.log("next", state.screen_images)
+        for (var i = 0; i < state.screen_images.length; i++) {
             var spinDelay = 0;
             var spin = 360;
             var piece = jQuery('#piece' + i);
-            var image = images[i]
+            var image = state.screen_images[i]
             switch (transitions[transitionType]) {
                 case 'random':
                     spinDelay = Math.random() / 2;
@@ -397,7 +407,7 @@ function setContent(dest, object_id, object) {
     }
 
     function completeRotation(piece,image) {
-        console.log("piece",piece)
+        //console.log("piece", piece, image.src)
         piece.css('background-image', 'url('+image.src+')');
         TweenMax.to(piece, 2, {
             directionalRotation: '0_short',
@@ -409,7 +419,7 @@ function setContent(dest, object_id, object) {
     function finishPieceanimation() {
         ++pieceCompleteCount;
         if (pieceCompleteCount == pieceCount) {
-            delay = setInterval(nextSlide, 1000);
+            state.circle_delay = setInterval(nextSlide, 1000);
         }
     }
 
@@ -430,8 +440,11 @@ var posts = {},
   data_nav = [],
   last_dest = 'outer-nav',
   menu_levels = [],
+  menu_slides = [], // an array for all 
   related = {},
-  state = {}
+  state = {},
+  data_score = 7,
+  data_loaded = []
 
 function getStaticJSON(route, callback,dest) {
   // route =  the type 
@@ -447,6 +460,7 @@ function getStaticJSON(route, callback,dest) {
     data: '',
     success: function (data, textStatus, request) {
       //console.log(endpoint,data)
+//      data_loaded.push(callback);
       return data,
 
         callback(data,dest) // this is the callback that sends the data to your custom function
@@ -567,7 +581,7 @@ function generateChars() {
 
 // Initialize default canvas state
 function initMatrix() {
-    console.log('start matrix')
+    //console.log('start matrix')
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -584,7 +598,7 @@ function initMatrix() {
 
 // Resize canvas to fit window
 window.onresize = function () {
-    initCanvas();
+    initMatrix();
 };
 
 function draw() {
@@ -623,12 +637,12 @@ function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    console.log("media", media);
+    //console.log("media", media);
 }
 
 function setImage(id, dest, size) {
     setMediaText(id, dest)
-    console.log("set image",id,size,media[id])
+    //console.log("set image",id,size,media[id])
     if (media[id] != undefined) {
         jQuery(dest + "-wrap").attr("visibility", 'hidden')
 
@@ -643,7 +657,7 @@ function setImage(id, dest, size) {
 
             if (size == 'square') { // if for a square area
                 src = getSquareVersion(media[id].meta.sizes, dest) // get the size version of the sq
-                //   console.log(src)
+                 //console.log('square',src)
             } else {
                 src = media[id].meta.sizes[size] // returns specified size
             }
@@ -651,7 +665,7 @@ function setImage(id, dest, size) {
         }
 
         if (dest == '') { //set path to '' to return the src only
-               console.log("Src return", full_path + src)
+               //console.log("Src return", full_path + src)
             return full_path + src;
 
 
@@ -660,6 +674,7 @@ function setImage(id, dest, size) {
         } else { // if dest is specified, set the src to the id and 
             jQuery(dest).attr("src", full_path + src) //set the source of the image
             setMediaText(id, dest) // set the text
+            return full_path + src;
         }
         jQuery(dest + "-wrap").css("visibility", 'visible') // show the wrapper
 
@@ -707,10 +722,10 @@ function setMediaText(id, dest) {
 function getSquareVersion(sizes, dest) {
 
     box = { // object getting the container dimensions
-        w: jQuery(dest).parent().width(),
-        h: jQuery(dest).parent().height()
+        w: jQuery(dest + "-container").width(),
+        h: jQuery(dest + "-container").height()
     }
-    // console.log("box",box)
+    // console.log("box",box,"dest"+dest,sizes)
 
     if (box.w > 1280 || box.h > 1280) { //over 1500 use large
         //    console.log("sq-lg")
@@ -750,16 +765,19 @@ function setVideo(id, dest) {
 function setScreenImages(screen_images, dest, callback) {
     var images = []
     for (var i = 0; i < screen_images.length; i++) {
-        console.log(screen_images[i])
+        //console.log(screen_images[i])
         images.push({
-            "src": setImage(screen_images[i], '', "square"),
+            "src": setImage(screen_images[i], '#screen-image', "square"),
             "data": media[screen_images[i]]
         })
 
     }
-    circleViewer(dest, images)
+    state.screen_images = images
+    //console.log("set ScreenImages", screen_images, dest, images);
+    initParticleTranstion(dest)
+    //circleViewer(dest, state.screen_images) // buggy
     //  callback(dest,images)
-    console.log("setScreenImages", screen_images, dest, images);
+   
 
 
 }
@@ -786,7 +804,7 @@ function setMenus(data, dest) {
         
     }
     buildMenuData();
-    console.log("raw menu data", menus)
+    //console.log("raw menu data", menus)
     initSite()
 }
 
@@ -915,103 +933,106 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
 }
 function buildMenuData() {
 
+    // needs post variable
+    if (posts == undefined) {
+        //console.log("No Posts Data Yet",  posts)
+        window.setTimeout(buildMenuData(), 10);
+    } else {
 
-
-
+        
+        var data = [];
     
-    var data = [];
-  
-    for (var m in menus) {
-        //console.log('menu loop',m)
-        if (menu_config[m] != undefined) {
-            var items = ''
+        for (var m in menus) { // 
+            //console.log('menu loop',m)
+            if (menu_config[m] != undefined) { 
+                var items = ''
 
-            //menus[m].items.sort(function(a,b){return a.menu_order-b.menu_order})
+                //menus[m].items.sort(function(a,b){return a.menu_order-b.menu_order})
 
 
 
-            menu_array = [];
-            for (var i in menus[m].items) {
-                // console.log('menu item', menus[m].items[i], menu_config[m].location)
-                if (menus[m].items[i].parent == 0) {
-                    // console.log("menu", menus[m].items[i].title)
+                menu_array = [];
+                for (var i in menus[m].items) {
+                    // console.log('menu item', menus[m].items[i], menu_config[m].location)
+                    if (menus[m].items[i].parent == 0) {
+                        // console.log("menu", menus[m].items[i].title)
 
-                    menu_array.push(menus[m].items[i]);
+                        menu_array.push(menus[m].items[i]);
+                    }
+                    // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
+
                 }
-                // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
-
-            }
-            menu_array.sort(menu_order);
+                menu_array.sort(menu_order);
 
 
-            var children = [];
+                var children = [];
 
 
-            for (var a = 0; a < menu_array.length; a++) {
-                children = [];
+                for (var a = 0; a < menu_array.length; a++) {
+                    children = [];
 
-                for (var c = 0; c < menu_array[a].children.length; c++) {
-                    var grandchildren = [];
-                    var nested_children = menus[m].items[menu_array[a].children[c]].children;
-                    for (var g = 0; g < nested_children.length; g++) {
-                        grandchildren.push( // data for childe menus
+                    for (var c = 0; c < menu_array[a].children.length; c++) {
+                        var grandchildren = [];
+                        var nested_children = menus[m].items[menu_array[a].children[c]].children;
+                        for (var g = 0; g < nested_children.length; g++) {
+                            grandchildren.push( // data for childe menus
+                                {
+                                    "title": menus[m].items[nested_children[g]].title,
+
+                                    "slug": posts[menus[m].items[nested_children[g]].object_id].slug,
+                                    "object": menus[m].items[nested_children[g]].object,
+                                    "object_id": menus[m].items[nested_children[g]].object_id, // the post id
+
+                                }
+                            )
+
+                        }
+
+
+                    //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
+                        children.push( // data for childe menus
                             {
-                                "title": menus[m].items[nested_children[g]].title,
-
-                                "slug": posts[menus[m].items[nested_children[g]].object_id].slug,
-                                "object": menus[m].items[nested_children[g]].object,
-                                "object_id": menus[m].items[nested_children[g]].object_id, // the post id
-
+                                "title": menus[m].items[menu_array[a].children[c]].title,
+                                "slug": posts[menus[m].items[menu_array[a].children[c]].object_id].slug,
+                                "object": menus[m].items[menu_array[a].children[c]].object,
+                                "object_id": menus[m].items[menu_array[a].children[c]].object_id, // the post id
+                                "children": grandchildren
                             }
                         )
 
                     }
 
 
-                  //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
-                    children.push( // data for childe menus
-                        {
-                            "title": menus[m].items[menu_array[a].children[c]].title,
-                            "slug": posts[menus[m].items[menu_array[a].children[c]].object_id].slug,
-                            "object": menus[m].items[menu_array[a].children[c]].object,
-                            "object_id": menus[m].items[menu_array[a].children[c]].object_id, // the post id
-                            "children": grandchildren
-                        }
-                    )
+                    data.push({ // data for top level
+                        "title": menu_array[a].title,
+                        //"id": menu_array[a].id,
+                        "slug": posts[menu_array[a].object_id].slug,
+                        "object": menu_array[a].object,
+                        "object_id": menu_array[a].object_id, //the post_id
+                        "children": children
+                    })
 
                 }
+                menu_levels = data;
+                setLinearDataNav(data);
+                setLinearNav('wheel-menu')
+                //console.log('makeouterwheel',menu_levels);
 
 
-                data.push({ // data for top level
-                    "title": menu_array[a].title,
-                    //"id": menu_array[a].id,
-                    "slug": posts[menu_array[a].object_id].slug,
-                    "object": menu_array[a].object,
-                    "object_id": menu_array[a].object_id, //the post_id
-                    "children": children
-                })
 
+
+
+                //circleMenu('.circle a')
             }
-            menu_levels = data;
-            setLinearDataNav(data);
-            setLinearNav('wheel-menu')
-            //console.log('makeouterwheel',menu_levels);
-
-
-
-
-
-            //circleMenu('.circle a')
         }
+
     }
 
-
 }
+//window.onload = init;
+//console.ward = function() {}; // what warnings?
 /*
-window.onload = init;
-console.ward = function() {}; // what warnings?
-
-function init() {
+function initParticleTranstion(dest) {
   var root = new THREERoot({
     createCameraControls: !true,
     antialias: (window.devicePixelRatio === 1),
@@ -1022,25 +1043,28 @@ function init() {
   root.renderer.setPixelRatio(window.devicePixelRatio || 1);
   root.camera.position.set(0, 0, 60);
 
+  var particleSlides = []
+  var slideLoader = []
   var width = 100;
   var height = 60;
+  var tl = new TimelineMax({
+    repeat: -1,
+    repeatDelay: 1.0,
+    yoyo: true
+  });
+  for (var i = 0; i < state.screen_images.length; i++) {
+    particleSlides[i] = new Slide(width, height, 'out');
+    slideLoader[i] = new THREE.ImageLoader();
+    slideLoader[i].setCrossOrigin('Anonymous');
+    console.log("SRC"+state.screen_images[i].src)
+    slideLoader[i].load(state.screen_images[i].src, function (img) {
+     particleSlides[i].setImage(img);
+    })
 
-  var slide = new Slide(width, height, 'out');
-	var l1 = new THREE.ImageLoader();
-	l1.setCrossOrigin('Anonymous');
-  slide.setImage(l1.load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/winter.jpg'));
-  root.scene.add(slide);
-
-  var slide2 = new Slide(width, height, 'in');
-  var l2 = new THREE.ImageLoader();
-	l2.setCrossOrigin('Anonymous');
-	slide2.setImage(l2.load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/spring.jpg'));
-  root.scene.add(slide2);
-
-  var tl = new TimelineMax({repeat:-1, repeatDelay:1.0, yoyo: true});
-
-  tl.add(slide.transition(), 0);
-  tl.add(slide2.transition(), 0);
+    
+    root.scene.add(slide[0]);
+    tl.add(slide[i].transition(), 0);
+  }
 
   createTweenScrubber(tl);
 
@@ -1269,7 +1293,7 @@ function THREERoot(params) {
     alpha: true
   });
   this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-  document.getElementById('three-container').appendChild(this.renderer.domElement);
+  document.getElementById('#screen-image-container').appendChild(this.renderer.domElement);
 
   this.camera = new THREE.PerspectiveCamera(
     params.fov,
@@ -1497,7 +1521,7 @@ function setRelated(post) {
     displayRelated()
      
 
-     console.log("related",related)
+     //console.log("related",related)
       
   }
   function displayRelated(){
@@ -1546,7 +1570,7 @@ function setRelated(post) {
         if(posts[id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
 
-            console.log(id,"projects ",posts[id])
+            //console.log(id,"projects ",posts[id])
         }
 
      
@@ -1598,15 +1622,17 @@ function setRelated(post) {
     });
   } )(jQuery);
 var gotoslide = function(slide){
-  console.log("click on slick dot ", slide);
+  //console.log("click on slick dot ", slide);
    setSlideContent(notch, menus['wheel-menu'].linear_nav[slide].object_id)
     $( '.slideshow' ).slickGoTo(parseInt(slide));
 }
+
 jQuery('.slick-dots li button').on('click', function (e) {
    e.stopPropagation(); // use this
   //console.log("slick dot clicked")
 });
-function setSlideShow(){
+
+function setSlideShow(menu){
   jQuery('.slideshow').slick({
   //	autoplay: true,
     dots: false,
@@ -1616,8 +1642,8 @@ function setSlideShow(){
     fade: true,
     cssEase:  'linear',
     focusoOnSelect: true,
-    nextArrow: '<i class="slick-arrow slick-next"></i>',
-    prevArrow: '<i class="slick-arrow slick-prev"></i>',
+    //nextArrow: '<i class="slick-arrow slick-next"></i>',
+    //prevArrow: '<i class="slick-arrow slick-prev"></i>',
   });
 
    //console.log("set slideshow")
@@ -1641,11 +1667,11 @@ function setSlides(m){
   var content = ''
   var title = ''
   var slides = ''
- console.log("Begin Render Slides",m,"|")
+ //console.log("Begin Render Slides",m,"|")
  
   if(posts == undefined){
     //console.log("No Posts Data Yet",  posts)
-    window.setTimeout(setSlides(), 100);//without this, we cannot relay that the post data is available yet
+    window.setTimeout(setSlides(m), 100);//without this, we cannot relay that the post data is available yet
   } else {
   
   for(i=0;menus[m].linear_nav[i];i++){
@@ -1803,7 +1829,13 @@ function setSlider(m) {
 
 function setSliderNotch(notch) {
 
-  console.log("notch", data_nav[notch], notch)
+  if (state.circle_delay != undefined) {
+      ///console.log("delay", state.circle_delay)
+    clearInterval(state.circle_delay);
+     //console.log("stop delay", state.circle_delay)
+  }
+  
+  //console.log("notch", data_nav[notch], notch)
   location.hash = posts[data_nav[notch].object_id].slug
 
 
@@ -1976,7 +2008,7 @@ function makeWheelNav(dest, data, _p) {
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
-    console.log(dest,data,_p);
+    //console.log(dest,data,_p);
     wheels[dest].spreaderEnable = false;
     //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
@@ -2237,10 +2269,10 @@ function initLanguageMenu(container){
             }
          }
     
-        console.log(language_menu,state.language)
+       // console.log(language_menu,state.language)
 
     })
-    console.log(language_menu, state.language)
+    //console.log(language_menu, state.language)
     jQuery(container).html(language_menu)
 
 
@@ -2271,17 +2303,17 @@ function setLanguage(data,code) {
     //console.log(code,"data", data)
     for(var d in data){
         if (data[d].type == 'page' || data[d].type == 'post' || data[d].type == 'project'){
-        console.log(data[d].type, d, data[d].of )
+        //console.log(data[d].type, d, data[d].of )
         posts[d] = data[d];
         }
     
     }
-    console.log("set", menus['wheel-menu'].linear_nav);
+    //console.log("set", menus['wheel-menu'].linear_nav);
     changeLanguage(code);
    
 }
 function changeLanguage(code){
- console.log("change language", code)
+ //console.log("change language", code)
 }
 if(typeof languages !== 'undefined') {
     initLanguageMenu("#language-menu");

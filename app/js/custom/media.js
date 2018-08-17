@@ -2,12 +2,12 @@ function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    console.log("media", media);
+    //console.log("media", media);
 }
 
 function setImage(id, dest, size) {
     setMediaText(id, dest)
-    console.log("set image",id,size,media[id])
+    //console.log("set image",id,size,media[id])
     if (media[id] != undefined) {
         jQuery(dest + "-wrap").attr("visibility", 'hidden')
 
@@ -22,7 +22,7 @@ function setImage(id, dest, size) {
 
             if (size == 'square') { // if for a square area
                 src = getSquareVersion(media[id].meta.sizes, dest) // get the size version of the sq
-                //   console.log(src)
+                 //console.log('square',src)
             } else {
                 src = media[id].meta.sizes[size] // returns specified size
             }
@@ -30,7 +30,7 @@ function setImage(id, dest, size) {
         }
 
         if (dest == '') { //set path to '' to return the src only
-               console.log("Src return", full_path + src)
+               //console.log("Src return", full_path + src)
             return full_path + src;
 
 
@@ -39,6 +39,7 @@ function setImage(id, dest, size) {
         } else { // if dest is specified, set the src to the id and 
             jQuery(dest).attr("src", full_path + src) //set the source of the image
             setMediaText(id, dest) // set the text
+            return full_path + src;
         }
         jQuery(dest + "-wrap").css("visibility", 'visible') // show the wrapper
 
@@ -86,10 +87,10 @@ function setMediaText(id, dest) {
 function getSquareVersion(sizes, dest) {
 
     box = { // object getting the container dimensions
-        w: jQuery(dest).parent().width(),
-        h: jQuery(dest).parent().height()
+        w: jQuery(dest + "-container").width(),
+        h: jQuery(dest + "-container").height()
     }
-    // console.log("box",box)
+    // console.log("box",box,"dest"+dest,sizes)
 
     if (box.w > 1280 || box.h > 1280) { //over 1500 use large
         //    console.log("sq-lg")
@@ -129,16 +130,19 @@ function setVideo(id, dest) {
 function setScreenImages(screen_images, dest, callback) {
     var images = []
     for (var i = 0; i < screen_images.length; i++) {
-        console.log(screen_images[i])
+        //console.log(screen_images[i])
         images.push({
-            "src": setImage(screen_images[i], '', "square"),
+            "src": setImage(screen_images[i], '#screen-image', "square"),
             "data": media[screen_images[i]]
         })
 
     }
-    circleViewer(dest, images)
+    state.screen_images = images
+    //console.log("set ScreenImages", screen_images, dest, images);
+    initParticleTranstion(dest)
+    //circleViewer(dest, state.screen_images) // buggy
     //  callback(dest,images)
-    console.log("setScreenImages", screen_images, dest, images);
+   
 
 
 }
