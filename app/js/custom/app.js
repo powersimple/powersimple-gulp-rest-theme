@@ -23,7 +23,7 @@ function initSite(){ // called from the menus callback
     }
    
       var m = 'wheel-menu'
-      
+      var slug = location.hash = '#about'
       setSlider(m)
       setSlides(m)
 
@@ -32,8 +32,9 @@ function initSite(){ // called from the menus callback
       //  jQuery(menu_config[m].location).html(items)
       setSlideShow('wheel-menu'); // creates slides for the slick carousel
       makeWheelNav("outer-nav", menu_levels, wheel_nav_params)
+     
       if (location.hash != '') {
-        var slug = location.hash.replace("#", "");
+        slug = location.hash.replace("#", "");
         //console.log("set by slugHash", slug, slug_nav[slug])
         
         setSliderNotch(slug_nav[slug])
@@ -46,6 +47,9 @@ function initSite(){ // called from the menus callback
 
         }
       }
+      setSliderNotch(slug_nav[slug])
+
+
       initMatrix();
       //console.log(menus)
 }
@@ -230,8 +234,7 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-  //console.log("setSlideContent", slide, id )
-  
+console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)
@@ -253,7 +256,7 @@ function setText(){
     } else { // get data. 
 
       page_title = retreiveML('posts',"title",state.post_id,state.language)
-      //console.log("new page title " + page_title)
+      console.log("new page title " + page_title)
 
     }
 

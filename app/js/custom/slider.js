@@ -1,27 +1,28 @@
 function setSlider(m) {
-  //console.log("Set Slider", orientation, linear_nav.length)
+ 
 
-  jQuery("#slider").slider({
-    orientation: orientation,
-    range: "max",
-    min: 0,
-    max: menus[m].linear_nav.length,
-    value: 0,
-    slide: function (event, ui) {
-      setSliderNotch(ui.value)
-      //   console.log("slider",ui.value)
-      // jQuery( "#amount" ).val( ui.value );
-    }
+  if(menus[m] !== 'undefined'){
+    jQuery("#slider").slider({
+      orientation: orientation,
+      range: "max",
+      min: 0,
+      max: menus[m].linear_nav.length,
+      value: 0,
+      slide: function (event, ui) {
+        setSliderNotch(ui.value)
+        //   console.log("slider",ui.value)
+        // jQuery( "#amount" ).val( ui.value );
+      }
 
 
 
-  });
+    });
 
-  jQuery('.slick-dots li button').on('click', function (e) {
-    e.stopPropagation(); // use this
-    //console.log("slick dot clicked")
-  });
-
+    jQuery('.slick-dots li button').on('click', function (e) {
+      e.stopPropagation(); // use this
+      //console.log("slick dot clicked")
+    });
+  }
 
 }
 /*

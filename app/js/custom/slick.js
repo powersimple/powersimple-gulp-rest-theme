@@ -52,7 +52,7 @@ function setSlides(m){
   } else {
   
   for(i=0;menus[m].linear_nav[i];i++){
-   // console.log("slides", menus[m].linear_nav[i])
+    //console.log("slides", menus[m].linear_nav[i])
      id = menus[m].linear_nav[i].object_id.toString()
   
       slides += setSlide(i,id)

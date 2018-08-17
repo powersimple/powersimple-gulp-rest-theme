@@ -234,12 +234,12 @@ button, input{
     margin-top: -10px;
     padding: 0;
     cursor: pointer;
-   color: #3bbfd6;
+    color: #3bbfd6;
     border: none;
     outline: none;
     border-radius: 50%;
     z-index: 100;
-    display: none;
+    display: none !important;
 }
 
 .slick-prev {

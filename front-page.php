@@ -23,7 +23,7 @@ get_header(); ?>
         <div id="featured-image-caption" ></div>
       </div>
      
-      <div id="featured-image-container"><img id="featured-image" src="<?=$src?>" alt="" ></div>
+      <div id="featured-image-container"><img id="featured-image" src="<?=@$src?>" alt="" ></div>
 
 
       <div id="featured-image-footer" class="featured-caption">

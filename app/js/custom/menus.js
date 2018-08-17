@@ -14,7 +14,7 @@ function setMenus(data, dest) {
  
     for (var i = 0; i < data.length; i++) {
         menus[data[i].slug] = {},
-        menus[data[i].slug].menu_array = [];
+        menus[data[i].slug].menu_array = []
         menus[data[i].slug].name = data[i].name
         menus[data[i].slug].slug = data[i].slug
         menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
@@ -91,8 +91,8 @@ function setLinearNav(m) {
     menus[m].linear_nav.sort(menu_order);
     
     
-  //  console.log("linear_nav", menus[m]linear_nav);
-  //  console.log("posts_nav", posts_nav);
+   console.log("linear_nav", menus[m].linear_nav);
+    console.log("posts_nav", posts_nav);
 
 }
 

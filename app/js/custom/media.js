@@ -7,7 +7,7 @@ function setMedia(data) {
 
 function setImage(id, dest, size) {
     setMediaText(id, dest)
-    //console.log("set image",id,size,media[id])
+    console.log("set image",id,size,media[id])
     if (media[id] != undefined) {
         jQuery(dest + "-wrap").attr("visibility", 'hidden')
 
@@ -15,7 +15,7 @@ function setImage(id, dest, size) {
         var src = media[id].file; // this defaults to the basic file
 
 
-
+        jQuery(dest + "-wrap").css("visibility", 'visible')
         if (media[id].mime == "image/svg+xml") { // if it's an SVG, let the src pass through
 
         } else { //for real images
@@ -41,7 +41,7 @@ function setImage(id, dest, size) {
             setMediaText(id, dest) // set the text
             return full_path + src;
         }
-        jQuery(dest + "-wrap").css("visibility", 'visible') // show the wrapper
+        // show the wrapper
 
     } else {
 
@@ -54,6 +54,7 @@ function setImage(id, dest, size) {
 /* GET FEATURED IMAGE BY POST ID */
 function setFeatured(id, size) {
     if (posts[id] != undefined) {
+        console.log("setFeatured",id,size)
         if (posts[id].featured_media > 0) {
             return setImage(posts[id].featured_media, '', size)
         }
@@ -139,8 +140,10 @@ function setScreenImages(screen_images, dest, callback) {
     }
     state.screen_images = images
     //console.log("set ScreenImages", screen_images, dest, images);
-    initParticleTranstion(dest)
+    
+    //initParticleTranstion(dest)
     //circleViewer(dest, state.screen_images) // buggy
+    
     //  callback(dest,images)
    
 

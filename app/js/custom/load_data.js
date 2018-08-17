@@ -120,7 +120,7 @@ function setPosts(data) { // special function for the any post type
         break
     }
   }
-  
+  console.log("posts",posts)
 
 
   return posts
