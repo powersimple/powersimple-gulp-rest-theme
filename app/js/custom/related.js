@@ -63,13 +63,22 @@ function setRelated(post) {
   function displayRelated(){
     jQuery("#related").html('');
     rel_list = ''
+      var aspect = getAspect(jQuery("#related ul li").width(), jQuery("#related ul li").height())
+
+
     for(var tax in related){ // loop through Taxonomies
         rel_list += '<ul class="'+tax+'">'//
+
         for(var type in related[tax]){
             for(var p=0;p< related[tax][type].length;p++ ){
-                post_id = related[tax][type][p]
-                var bg_image = '';
-                var src = setFeatured(post_id,"thumbnail");
+                post_id = related[tax][type][p]  // post_id of related content
+                var bg_image = ''; // default empty
+                var src = '' // default empty
+                var media_id = getMediaID(post_id,'featured_media') // returns media id or zero if media object is undefined
+                
+                if(media_id != 0){
+                  src = getImageSRC(media_id,'#related ul li','thumbnail')
+                }
                 //console.log("set related",src,post_id);
                 if(src !=''){
                    
@@ -126,25 +135,31 @@ function setRelated(post) {
       items: "[data-rel]",// tootip for related data
     //  tooltipClass:'rel-tip',
       content: function() {
-        var id = $(this).data('rel') ;
+        var post_id = $(this).data('rel') ;
         var tip = ''
-        var bg_image = '';
-        var src = setFeatured(id,"thumbnail");
-        if(src !=''){
-            bg_image = ' style="background-image:url('+src+')"'
-        }
+        var bg_image = ''; // default empty
+        var src = '' // default empty
+        var media_id = getMediaID(post_id, 'featured_media') // returns media id or zero if media object is undefined
 
+        if (media_id != 0) {
+          src = getImageSRC(media_id, '.rel-tooltip', 'thumbnail');
+        }
+        console.log("set related",src,post_id,media_id);
+        if (src != '') {
+
+          bg_image = ' style="background-image:url(' + src + ')"'
+        }
         $(this).on("click",function(){
             selectRelatedPost(id);
 
         }).on("mouseover",function(){
-        //    console.log("related"+id,"mouseover");
+        //    console.log("related"+post_id,"mouseover");
         }).on("mouseout",function(){
-        //    console.log("related"+id,"mouseoout");
+        //    console.log("related"+post_id,"mouseoout");
         }).on("mousedown",function(){
-        //    console.log("related"+id,"mousedown");
+        //    console.log("related"+post_id,"mousedown");
         }).on("mouseup",function(){
-        //    console.log("related"+id,"mouseup");
+        //    console.log("related"+post_id,"mouseup");
         });
 
         tip += '<div class="rel-tooltip"'+bg_image+'>'

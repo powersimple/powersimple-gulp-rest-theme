@@ -1,6 +1,6 @@
 function initLanguageMenu(container){
     
-        console.log("languages",languages)
+       // console.log("languages",languages)
         state.language = languages.default;
         var language_menu = "<ul>"
         for(var code in languages){

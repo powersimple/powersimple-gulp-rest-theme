@@ -17,6 +17,22 @@ get_header(); ?>
   
   <div id="language-menu"></div>
  
+    <div id="featured"></div>
+    <script type="x-template" id="featured-template">
+      <div class="image-header image-caption">
+          <div class="title"></div>
+          <div class="caption"></div>
+      </div>
+        
+      <div class="image-container"><img class="image" src="" alt="" ></div>
+      <div class="image-footer image-caption">
+        <div class="description"></div>
+      </div>
+    </script>
+
+   
+
+
     <div id="featured-image-wrap">
       <div id="featured-image-header" class="featured-caption">
         <div id="featured-image-title" ></div>

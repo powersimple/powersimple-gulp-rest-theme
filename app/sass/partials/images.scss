@@ -1,4 +1,6 @@
-#featured-image-wrap {
+#featured-image-wrap { // MARKED FOR DEATH
+    display:none;
+    /*
     position: absolute;
     width: 20vw;
     height: 20vw;
@@ -49,6 +51,7 @@
         width: 100%;
         height: 100%;
     }
+    */
 }
 
 #featured-image-projector {

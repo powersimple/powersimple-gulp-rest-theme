@@ -91,8 +91,8 @@ function setLinearNav(m) {
     menus[m].linear_nav.sort(menu_order);
     
     
-   console.log("linear_nav", menus[m].linear_nav);
-    console.log("posts_nav", posts_nav);
+   //console.log("linear_nav", menus[m].linear_nav);
+   // console.log("posts_nav", posts_nav);
 
 }
 

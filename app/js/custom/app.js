@@ -234,7 +234,7 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-console.log("setSlideContent", slide, id )
+//console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)
@@ -274,8 +274,8 @@ function setText(){
 
 
 function setContent(dest, object_id, object) {
-  state.slide = posts_nav[object_id]
-  var featured_image = posts[object_id].featured_media;
+  state.slide = posts_nav[object_id] //
+  state.object_id = object_id
 
   //console.log("setContent",object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
@@ -284,9 +284,13 @@ function setContent(dest, object_id, object) {
     setText();
     
 
-    setImage(posts[object_id].featured_media, "#featured-image", "square");
+    setImage(object_id, //post id (ideally)
+      "featured", //destination = id of empty tag and template waiting for its goodness
+      'featured_media', //the attr of the objectg that we're passing, in this case, this is featured media
+      "flip" // the type of effect that awaits
+    );
 
-    //jQuery("#featured-image-projected").attr('src', featured_image)
+   
     var video_path = uploads_path + "" + posts[object_id].featured_video.video_path;
 
     

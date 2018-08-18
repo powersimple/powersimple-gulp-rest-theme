@@ -17,9 +17,19 @@ var posts = {},
   menu_levels = [],
   menu_slides = [], // an array for all 
   related = {},
-  state = {},
   data_score = 7,
-  data_loaded = []
+  data_loaded = [],
+  state = {}
+
+  state.featured = {
+    'transition': {
+      'type': 'flip',
+      'face': 'front'
+    }
+  }
+
+
+
 
 function getStaticJSON(route, callback,dest) {
   // route =  the type 
@@ -120,7 +130,7 @@ function setPosts(data) { // special function for the any post type
         break
     }
   }
-  console.log("posts",posts)
+  //console.log("posts",posts)
 
 
   return posts

@@ -234,7 +234,7 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-console.log("setSlideContent", slide, id )
+//console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)
@@ -274,8 +274,8 @@ function setText(){
 
 
 function setContent(dest, object_id, object) {
-  state.slide = posts_nav[object_id]
-  var featured_image = posts[object_id].featured_media;
+  state.slide = posts_nav[object_id] //
+  state.object_id = object_id
 
   //console.log("setContent",object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
@@ -284,9 +284,13 @@ function setContent(dest, object_id, object) {
     setText();
     
 
-    setImage(posts[object_id].featured_media, "#featured-image", "square");
+    setImage(object_id, //post id (ideally)
+      "featured", //destination = id of empty tag and template waiting for its goodness
+      'featured_media', //the attr of the objectg that we're passing, in this case, this is featured media
+      "flip" // the type of effect that awaits
+    );
 
-    //jQuery("#featured-image-projected").attr('src', featured_image)
+   
     var video_path = uploads_path + "" + posts[object_id].featured_video.video_path;
 
     
@@ -455,6 +459,7 @@ function setContent(dest, object_id, object) {
      * Model declaration
      */
     var Flip = function ($el, options, callback) {
+        console.log('flip',$el,options,callback)
         // Define default setting
         this.setting = {
             axis: "y",
@@ -816,9 +821,19 @@ var posts = {},
   menu_levels = [],
   menu_slides = [], // an array for all 
   related = {},
-  state = {},
   data_score = 7,
-  data_loaded = []
+  data_loaded = [],
+  state = {}
+
+  state.featured = {
+    'transition': {
+      'type': 'flip',
+      'face': 'front'
+    }
+  }
+
+
+
 
 function getStaticJSON(route, callback,dest) {
   // route =  the type 
@@ -919,7 +934,7 @@ function setPosts(data) { // special function for the any post type
         break
     }
   }
-  console.log("posts",posts)
+  //console.log("posts",posts)
 
 
   return posts
@@ -1007,31 +1022,59 @@ function draw() {
 
 
 setInterval(draw, 160);
+
 function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
     //console.log("media", media);
 }
+function getMediaID(post_id,attr){
+    //console.log(post_id,attr)
+    if (posts[id][attr] != undefined) { //is featured_media defined
+         var media_id = posts[post_id][attr]
+         
+        if (media_id > 0) { // is it set to a value above zero?
+            
+            if(media[media_id] != undefined){
+                return media_id
+            } else {
+                return 0
+            }
 
-function setImage(id, dest, size) {
-    setMediaText(id, dest)
-    console.log("set image",id,size,media[id])
+            // returns 
+
+
+        } else {
+            return 0
+        }
+
+    } else {
+        return 0
+    }
+        
+
+}
+function getImageSRC(id, dest, size) { // id = media id
+
+    //console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
-        jQuery(dest + "-wrap").attr("visibility", 'hidden')
+
 
         var full_path = uploads_path + media[id].path // uploads path is in header
         var src = media[id].file; // this defaults to the basic file
 
 
-        jQuery(dest + "-wrap").css("visibility", 'visible')
-        if (media[id].mime == "image/svg+xml") { // if it's an SVG, let the src pass through
 
+        if (media[id].mime == "image/svg+xml") { // if it's an SVG, let the src pass through
+            return full_path + src;
         } else { //for real images
 
             if (size == 'square') { // if for a square area
                 src = getSquareVersion(media[id].meta.sizes, dest) // get the size version of the sq
-                 //console.log('square',src)
+                //console.log('square',src)
+            } else if (size == 'square') {
+
             } else {
                 src = media[id].meta.sizes[size] // returns specified size
             }
@@ -1039,35 +1082,174 @@ function setImage(id, dest, size) {
         }
 
         if (dest == '') { //set path to '' to return the src only
-               //console.log("Src return", full_path + src)
+            //console.log("Src return", full_path + src)
             return full_path + src;
 
 
 
 
         } else { // if dest is specified, set the src to the id and 
-            jQuery(dest).attr("src", full_path + src) //set the source of the image
-            setMediaText(id, dest) // set the text
+
             return full_path + src;
         }
         // show the wrapper
 
     } else {
 
-        jQuery(dest + "-wrap").css("visibility", 'hidden') // hide the wrapper
+        return ''
     }
 
 }
 
+function toggleFace(dest, type) {
+    //console.log("toggle-face", dest, type, state[dest])
+    if (state[dest].transition.face == 'front') {
+        return 'back'
+    } else {
+        return 'front'
+    }
+}
+
+function loadTemplate(dest, type) { // dest is name of place to put template, type = transition type
+    //console.log("load template",dest,type)
+    var template = jQuery('#' + dest + "-template").html(); // gets the empty contents of x-template script tag for this dest
+    if (type == "flip") { // requires a front back wraper around template contents
+        var front = '<div class="card front">' + template + '</div>' // wraps template in a front class
+        var back = '<div class="card back">' + template + '</div>' // wrapte template in a back class
+        jQuery('#' + dest).html(front + back); // loads both front and back into template into dest
+    } else {
+         jQuery('#' + dest).html(template); // defaults to empty template contents
+    }
+
+}
+function clearImageText(){
+
+}
+function getAspect(w,h){
+    if(w == h){
+        return 'square'
+    } else {
+        return w/h
+    }
+
+}
+function setImageContent(loc,title,caption,desc,alt,src){
+        
+        //console.log("SET IMAGE CONTENT",loc,title,caption,desc,alt,src)
+        setTimeout(function () {
+        jQuery(loc + " .title").html(title)
+        jQuery(loc + " .caption").html(caption)
+        jQuery(loc + " .description").html(desc)
+        jQuery(loc + " .image").attr('alt',alt)
+        jQuery(loc + " .image").attr('src', src)
+        },250)
+
+}
+
+
+
+
+function transitionImage(dest, type, media_id) {
+
+    if (jQuery('#' + dest).html() == '' || state[dest].transition != type) { // load the template, only if you need to
+        state[dest].transition.type = type // if transition type has changed, set it
+        loadTemplate(dest, type)
+    }
+    var aspect = getAspect(jQuery("#" + dest).width(), jQuery("#" + dest).height()) // pass the sizes of the destination to get the aspect
+    var src = getImageSRC(media_id, dest + ' .image', aspect) //returns appropriate image sice.
+    if (type == 'flip'){
+        var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
+        //console.log(dest, type, media_id)
+        if(media[media_id] != undefined){
+            /*
+            //console.log('next face', next_face)
+            var flip_chain = {
+                flip_out: function () {
+                        jQuery(dest).css('transform', 'rotateY(90deg)')
+                        console.log('flipout')
+                        return flip_chain
+                    },
+                set_content: function () {
+                    setImageContent( '#' + dest + " ." + next_face, //uses "loc" instead of dest to allow for card faces.
+                        media[media_id].title,
+                        media[media_id].caption,
+                        media[media_id].desc,
+                        media[media_id].alt,
+                        src)
+                                            return flip_chain
+
+                },
+                flip_in: function() {
+                    //jQuery(dest).css('transform', 'rotateY(90deg)')
+                    console.log('flipin')
+
+                    return flip_chain
+                }
+            }
+            flip_chain.flip_out().set_content().flip_in()
+            */
+
+  
+            setImageContent('#' + dest + " ." + next_face, //uses "loc" instead of dest to allow for card faces.
+                  media[media_id].title,
+                  media[media_id].caption,
+                  media[media_id].desc,
+                  media[media_id].alt,
+                  src)
+               
+                state[dest].transition.face = next_face
+            /*jQuery(function () {
+                jQuery("#"+dest).flip({
+                    axis: "y", // y or x
+                    reverse: false, // true and false
+                    trigger: "hover", // click or hover
+                    speed: '250',
+                    autoSize: false
+                });
+            })*/
+         //   console.log('next face', next_face)
+          
+        } else {
+            setImageContent('#' + dest + " ." + next_face,'','','','','')
+        }
+         jQuery('#' + dest).toggleClass('is-flipped')
+
+    }
+
+
+    
+    
+
+}
+
+
+
 
 /* GET FEATURED IMAGE BY POST ID */
-function setFeatured(id, size) {
-    if (posts[id] != undefined) {
-        console.log("setFeatured",id,size)
-        if (posts[id].featured_media > 0) {
-            return setImage(posts[id].featured_media, '', size)
+function setImage(post_id, dest, attr, type, size) {
+    //console.log("set image", post_id, size)
+    var transition_type = "flip"
+    if (posts[post_id] != undefined) { //you passed a post ID, is it there?
+        var media_id = getMediaID(post_id,attr) //returns zero if doesn't exist
+        
+        if (media_id >0 ) { //is media_id
+        jQuery('#' + dest).fadeIn()
+              
+               // var src = getImageSRC(media_id, dest + '-image', 'square')
+               // setMediaText(media_id, dest + '-image')
+               // jQuery("#" + dest + '-image').attr("src", src)
+                transitionImage(dest, transition_type, media_id)
+
+                //console.log("set", media_id, src)
+            
+           
+        } else {
+            //console.log("media off", media_id)
+            jQuery('#'+dest).fadeOut()
         }
+        
     }
+    
 
 }
 
@@ -1080,16 +1262,16 @@ function setMediaText(id, dest) {
 
     if (media[id] != undefined) {
         // console.log("caption",media[id]);
-        jQuery(dest + "-title").html(media[id].title)
-        jQuery(dest + "-caption").html(media[id].caption)
-        jQuery(dest + "-description").html(media[id].desc)
-        jQuery(dest).attr("alt", media[id].alt);
+        jQuery('#' + dest + "-title").html(media[id].title)
+        jQuery('#' + dest + "-caption").html(media[id].caption)
+        jQuery('#' + dest + "-description").html(media[id].desc)
+        jQuery('#' + dest).attr("alt", media[id].alt);
     } else {
         //console.log("clear media text",dest);
-        jQuery(dest + "-title").html('')
-        jQuery(dest + "-caption").html('')
-        jQuery(dest + "-description").html('')
-        jQuery(dest).attr("alt", '');
+        jQuery('#' + dest + "-title").html('')
+        jQuery('#' + dest + "-caption").html('')
+        jQuery('#' + dest + "-description").html('')
+        jQuery('#' + dest).attr("alt", '');
     }
 
 }
@@ -1149,12 +1331,12 @@ function setScreenImages(screen_images, dest, callback) {
     }
     state.screen_images = images
     //console.log("set ScreenImages", screen_images, dest, images);
-    
+
     //initParticleTranstion(dest)
     //circleViewer(dest, state.screen_images) // buggy
-    
+
     //  callback(dest,images)
-   
+
 
 
 }
@@ -1251,8 +1433,8 @@ function setLinearNav(m) {
     menus[m].linear_nav.sort(menu_order);
     
     
-   console.log("linear_nav", menus[m].linear_nav);
-    console.log("posts_nav", posts_nav);
+   //console.log("linear_nav", menus[m].linear_nav);
+   // console.log("posts_nav", posts_nav);
 
 }
 
@@ -1904,13 +2086,22 @@ function setRelated(post) {
   function displayRelated(){
     jQuery("#related").html('');
     rel_list = ''
+      var aspect = getAspect(jQuery("#related ul li").width(), jQuery("#related ul li").height())
+
+
     for(var tax in related){ // loop through Taxonomies
         rel_list += '<ul class="'+tax+'">'//
+
         for(var type in related[tax]){
             for(var p=0;p< related[tax][type].length;p++ ){
-                post_id = related[tax][type][p]
-                var bg_image = '';
-                var src = setFeatured(post_id,"thumbnail");
+                post_id = related[tax][type][p]  // post_id of related content
+                var bg_image = ''; // default empty
+                var src = '' // default empty
+                var media_id = getMediaID(post_id,'featured_media') // returns media id or zero if media object is undefined
+                
+                if(media_id != 0){
+                  src = getImageSRC(media_id,'#related ul li','thumbnail')
+                }
                 //console.log("set related",src,post_id);
                 if(src !=''){
                    
@@ -1967,25 +2158,31 @@ function setRelated(post) {
       items: "[data-rel]",// tootip for related data
     //  tooltipClass:'rel-tip',
       content: function() {
-        var id = $(this).data('rel') ;
+        var post_id = $(this).data('rel') ;
         var tip = ''
-        var bg_image = '';
-        var src = setFeatured(id,"thumbnail");
-        if(src !=''){
-            bg_image = ' style="background-image:url('+src+')"'
-        }
+        var bg_image = ''; // default empty
+        var src = '' // default empty
+        var media_id = getMediaID(post_id, 'featured_media') // returns media id or zero if media object is undefined
 
+        if (media_id != 0) {
+          src = getImageSRC(media_id, '.rel-tooltip', 'thumbnail');
+        }
+        console.log("set related",src,post_id,media_id);
+        if (src != '') {
+
+          bg_image = ' style="background-image:url(' + src + ')"'
+        }
         $(this).on("click",function(){
             selectRelatedPost(id);
 
         }).on("mouseover",function(){
-        //    console.log("related"+id,"mouseover");
+        //    console.log("related"+post_id,"mouseover");
         }).on("mouseout",function(){
-        //    console.log("related"+id,"mouseoout");
+        //    console.log("related"+post_id,"mouseoout");
         }).on("mousedown",function(){
-        //    console.log("related"+id,"mousedown");
+        //    console.log("related"+post_id,"mousedown");
         }).on("mouseup",function(){
-        //    console.log("related"+id,"mouseup");
+        //    console.log("related"+post_id,"mouseup");
         });
 
         tip += '<div class="rel-tooltip"'+bg_image+'>'
@@ -2602,7 +2799,7 @@ function popAWheelie(dest) { // this removes the inner rings when you click on n
 }
 function initLanguageMenu(container){
     
-        console.log("languages",languages)
+       // console.log("languages",languages)
         state.language = languages.default;
         var language_menu = "<ul>"
         for(var code in languages){
