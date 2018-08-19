@@ -18,7 +18,8 @@ function setMenus(data, dest) {
         menus[data[i].slug].name = data[i].name
         menus[data[i].slug].slug = data[i].slug
         menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
-        
+        console.log()
+        console.log("slug", data[i].slug)
     }
     buildMenuData();
     //console.log("raw menu data", menus)

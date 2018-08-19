@@ -1,12 +1,12 @@
 
 
-
-var increment = 'vw',
+var increment = 'vw';
   orientation = 'vertical', // this var is used by the slider
   _w = jQuery(window).width(),
   _h = jQuery(window).height(),
   aspect = _w / _h,
   current_notch = 0
+
 jQuery(document).ready(function () {
 
 
@@ -156,7 +156,7 @@ function reposition_screen() {
 
 
 
-  setSlider('wheel-menu')
+
   positionProjector()
   positionNavElements();
   logoSize();
@@ -234,7 +234,7 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-//console.log("setSlideContent", slide, id )
+console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)
@@ -275,7 +275,7 @@ function setText(){
 
 function setContent(dest, object_id, object) {
   state.slide = posts_nav[object_id] //
-  state.object_id = object_id
+  state.object_id = posts_nav[object_id]
 
   //console.log("setContent",object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {

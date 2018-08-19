@@ -1,12 +1,12 @@
 
 
-
-var increment = 'vw',
+var increment = 'vw';
   orientation = 'vertical', // this var is used by the slider
   _w = jQuery(window).width(),
   _h = jQuery(window).height(),
   aspect = _w / _h,
   current_notch = 0
+
 jQuery(document).ready(function () {
 
 
@@ -156,7 +156,7 @@ function reposition_screen() {
 
 
 
-  setSlider('wheel-menu')
+
   positionProjector()
   positionNavElements();
   logoSize();
@@ -234,7 +234,7 @@ jQuery(window).resize(function () {
 })
 
 function setSlideContent(slide, id) {
-//console.log("setSlideContent", slide, id )
+console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
     jQuery("#slide" + slide + " h2").html(posts[id].title)
     jQuery("#slide" + slide + " section div.content").html(posts[id].content)
@@ -275,7 +275,7 @@ function setText(){
 
 function setContent(dest, object_id, object) {
   state.slide = posts_nav[object_id] //
-  state.object_id = object_id
+  state.object_id = posts_nav[object_id]
 
   //console.log("setContent",object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
@@ -1057,7 +1057,7 @@ function getMediaID(post_id,attr){
 }
 function getImageSRC(id, dest, size) { // id = media id
 
-    //console.log("set image", id, dest, size, media[id])
+    console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
 
 
@@ -1070,15 +1070,18 @@ function getImageSRC(id, dest, size) { // id = media id
             return full_path + src;
         } else { //for real images
 
-            if (size == 'square') { // if for a square area
+            if (size == 'square'||size==1) { // if for a square area
                 src = getSquareVersion(media[id].meta.sizes, dest) // get the size version of the sq
-                //console.log('square',src)
-            } else if (size == 'square') {
-
+               console.log('square',src)
+            } else if (size == 'thumbnail') {
+                src = getSquareVersion(media[id].meta.sizes, dest)
+                 console.log('thumbnail', src)
             } else {
+                
                 src = media[id].meta.sizes[size] // returns specified size
+                console.log('default', size, media[id].meta.sizes,src)
             }
-
+   
         }
 
         if (dest == '') { //set path to '' to return the src only
@@ -1129,7 +1132,7 @@ function getAspect(w,h){
     if(w == h){
         return 'square'
     } else {
-        return w/h
+        return Math.round(w/h)
     }
 
 }
@@ -1155,11 +1158,11 @@ function transitionImage(dest, type, media_id) {
         state[dest].transition.type = type // if transition type has changed, set it
         loadTemplate(dest, type)
     }
-    var aspect = getAspect(jQuery("#" + dest).width(), jQuery("#" + dest).height()) // pass the sizes of the destination to get the aspect
+    var aspect = getAspect(parseInt(jQuery("#" + dest).width()), parseInt(jQuery("#" + dest).height())) // pass the sizes of the destination to get the aspect
     var src = getImageSRC(media_id, dest + ' .image', aspect) //returns appropriate image sice.
     if (type == 'flip'){
         var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
-        //console.log(dest, type, media_id)
+     console.log("flipimage",dest, type, media_id,src)
         if(media[media_id] != undefined){
             /*
             //console.log('next face', next_face)
@@ -1258,7 +1261,7 @@ function wrapTag(tag, str) {
     return "<" + tag + ">" + str + "</" + tag + ">"
 }
 
-function setMediaText(id, dest) {
+function setMediaText(id, dest) { // old
 
     if (media[id] != undefined) {
         // console.log("caption",media[id]);
@@ -1360,7 +1363,8 @@ function setMenus(data, dest) {
         menus[data[i].slug].name = data[i].name
         menus[data[i].slug].slug = data[i].slug
         menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
-        
+        console.log()
+        console.log("slug", data[i].slug)
     }
     buildMenuData();
     //console.log("raw menu data", menus)
@@ -2138,7 +2142,7 @@ function setRelated(post) {
         if(posts[id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
 
-            //console.log(id,"projects ",posts[id])
+            console.log(id,"projects ",posts[id])
         }
 
      
@@ -2173,10 +2177,10 @@ function setRelated(post) {
           bg_image = ' style="background-image:url(' + src + ')"'
         }
         $(this).on("click",function(){
-            selectRelatedPost(id);
+            selectRelatedPost(post_id);
 
         }).on("mouseover",function(){
-        //    console.log("related"+post_id,"mouseover");
+           console.log("related"+post_id,"mouseover");
         }).on("mouseout",function(){
         //    console.log("related"+post_id,"mouseoout");
         }).on("mousedown",function(){
@@ -2282,7 +2286,7 @@ jQuery('a[data-slide]').click(function(e) {
 
 });
 function setSlider(m) {
- 
+ console.log("slider", menus, menus[m], m)
 
   if(menus[m] !== 'undefined'){
     jQuery("#slider").slider({

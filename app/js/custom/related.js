@@ -115,7 +115,7 @@ function setRelated(post) {
         if(posts[id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
 
-            //console.log(id,"projects ",posts[id])
+            console.log(id,"projects ",posts[id])
         }
 
      
@@ -150,10 +150,10 @@ function setRelated(post) {
           bg_image = ' style="background-image:url(' + src + ')"'
         }
         $(this).on("click",function(){
-            selectRelatedPost(id);
+            selectRelatedPost(post_id);
 
         }).on("mouseover",function(){
-        //    console.log("related"+post_id,"mouseover");
+           console.log("related"+post_id,"mouseover");
         }).on("mouseout",function(){
         //    console.log("related"+post_id,"mouseoout");
         }).on("mousedown",function(){

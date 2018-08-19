@@ -1,5 +1,5 @@
 function setSlider(m) {
- 
+ console.log("slider", menus, menus[m], m)
 
   if(menus[m] !== 'undefined'){
     jQuery("#slider").slider({

@@ -33,7 +33,7 @@ function getMediaID(post_id,attr){
 }
 function getImageSRC(id, dest, size) { // id = media id
 
-    //console.log("set image", id, dest, size, media[id])
+    console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
 
 
@@ -46,15 +46,18 @@ function getImageSRC(id, dest, size) { // id = media id
             return full_path + src;
         } else { //for real images
 
-            if (size == 'square') { // if for a square area
+            if (size == 'square'||size==1) { // if for a square area
                 src = getSquareVersion(media[id].meta.sizes, dest) // get the size version of the sq
-                //console.log('square',src)
-            } else if (size == 'square') {
-
+               console.log('square',src)
+            } else if (size == 'thumbnail') {
+                src = getSquareVersion(media[id].meta.sizes, dest)
+                 console.log('thumbnail', src)
             } else {
+                
                 src = media[id].meta.sizes[size] // returns specified size
+                console.log('default', size, media[id].meta.sizes,src)
             }
-
+   
         }
 
         if (dest == '') { //set path to '' to return the src only
@@ -105,7 +108,7 @@ function getAspect(w,h){
     if(w == h){
         return 'square'
     } else {
-        return w/h
+        return Math.round(w/h)
     }
 
 }
@@ -131,11 +134,11 @@ function transitionImage(dest, type, media_id) {
         state[dest].transition.type = type // if transition type has changed, set it
         loadTemplate(dest, type)
     }
-    var aspect = getAspect(jQuery("#" + dest).width(), jQuery("#" + dest).height()) // pass the sizes of the destination to get the aspect
+    var aspect = getAspect(parseInt(jQuery("#" + dest).width()), parseInt(jQuery("#" + dest).height())) // pass the sizes of the destination to get the aspect
     var src = getImageSRC(media_id, dest + ' .image', aspect) //returns appropriate image sice.
     if (type == 'flip'){
         var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
-        //console.log(dest, type, media_id)
+     console.log("flipimage",dest, type, media_id,src)
         if(media[media_id] != undefined){
             /*
             //console.log('next face', next_face)
@@ -234,7 +237,7 @@ function wrapTag(tag, str) {
     return "<" + tag + ">" + str + "</" + tag + ">"
 }
 
-function setMediaText(id, dest) {
+function setMediaText(id, dest) { // old
 
     if (media[id] != undefined) {
         // console.log("caption",media[id]);
