@@ -110,11 +110,11 @@ function setRelated(post) {
     }
     return tipContent
   }
-  function selectRelatedPost(id){
+  function selectRelatedPost(post_id){
 
-        if(posts[id].type == 'project'){
+        if(posts[post_id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
-
+            setContent(1, post_id, posts[post_id].type)
             console.log(id,"projects ",posts[id])
         }
 

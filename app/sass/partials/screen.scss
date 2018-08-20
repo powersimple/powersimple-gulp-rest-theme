@@ -94,7 +94,7 @@
     }
 }
 #screen-image-wrap{
-    background:rgba(0,250,0,0.1);
+    //background:rgba(0,250,0,0.1);
     height: 100%;
     width: 100%;
     border-radius: 50%;
@@ -140,5 +140,32 @@
         overflow: hidden;
         width: 100%;
         height: 100%;
+    }
+}
+#circle-mask {
+    svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    svg mask rect {
+        fill: rgba(255, 255, 255, 1);
+    }
+    svg mask circle {
+        overflow: hidden;
+    }
+    svg>rect {
+        fill: black;
+        -webkit-mask: url(#mask);
+        mask: url(#mask);
+    }
+    video {
+        position: absolute;
+        top: 0;
+        left: 1px;
+        z-index: -1;
+        overflow: hidden;
+        height: 99%;
+        opacity: 0.8;
     }
 }

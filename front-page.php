@@ -89,7 +89,10 @@ get_header(); ?>
           
       </div>
 
-    <article id="article" class="slideshow">
+    <article id="wheel-menu-content" class="slideshow">
+        <!--the slideshow gets injected here -->
+    </article>
+    <article id="projects-content" class="slideshow">
         <!--the slideshow gets injected here -->
     </article>
     

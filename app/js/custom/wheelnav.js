@@ -1,11 +1,11 @@
-
 var wheel_nav_params = {
-    'maxPercent': 1,
-    'min': 0.91,
-    'max': 1,
-    'sel_min': 0.91,
-    'sel_max': 1,
-    },   inner_nav_params = {
+        'maxPercent': 1,
+        'min': 0.91,
+        'max': 1,
+        'sel_min': 0.91,
+        'sel_max': 1,
+    },
+    inner_nav_params = {
         'maxPercent': 1,
         'min': 0.91,
         'max': 1,
@@ -21,9 +21,6 @@ var wheel_nav_params = {
     },
     last_outer_notch = 0,
     last_inner_notch = 0
-    
-
-/**/
 var menu_raphael = {}
 var wheels = {}
 
@@ -36,7 +33,7 @@ function makeWheelNav(dest, data, _p) {
         child_params = inner_nav_params;
     } else if (dest == "inner-nav") {
         child_dest = 'inner-subnav'
-        child_params = wheel_nav_params;
+        child_params = inner_nav_params;
     }
 
 
@@ -118,7 +115,7 @@ function makeWheelNav(dest, data, _p) {
             /*Click event for wheel*/
 
             jQuery("#slider").slider("option", "value", this.data.notch) //positions the slider handle
-            setSliderNotch(slug_nav[this.data.slug]) // triggers the notch
+            setSliderNotch(menus['wheel-menu'].slug_nav[this.data.slug]) // triggers the notch
 
         }
 
@@ -130,7 +127,7 @@ function makeWheelNav(dest, data, _p) {
 }
 
 function triggerWheelNav(notch) {
-
+    var data_nav = menus['wheel-menu'].data_nav
     var this_notch = data_nav[notch]
     var this_dest = this_notch.dest;
 

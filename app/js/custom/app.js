@@ -23,10 +23,11 @@ function initSite(){ // called from the menus callback
     }
    
       var m = 'wheel-menu'
-      var slug = location.hash = '#about'
+
+      
       setSlider(m)
       setSlides(m)
-
+      setSlides('projects')
 
       //console.log("menu", menu_config[m].location, items)
       //  jQuery(menu_config[m].location).html(items)
@@ -35,19 +36,19 @@ function initSite(){ // called from the menus callback
      
       if (location.hash != '') {
         slug = location.hash.replace("#", "");
-        //console.log("set by slugHash", slug, slug_nav[slug])
+        console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
         
-        setSliderNotch(slug_nav[slug])
+        setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
       } else {
-
+       slug = location.hash = '#about'
         if (menu_config[m].menu_type == "wheel") {
           // THIS IS THE INITIAL LOADING OF THE WHEEL
 
 
         }
       }
-      setSliderNotch(slug_nav[slug])
+      setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
 
       initMatrix();
@@ -236,8 +237,8 @@ jQuery(window).resize(function () {
 function setSlideContent(slide, id) {
 console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
-    jQuery("#slide" + slide + " h2").html(posts[id].title)
-    jQuery("#slide" + slide + " section div.content").html(posts[id].content)
+    jQuery("#slide" + id + " h2").html(posts[id].title)
+    jQuery("#slide" + id + " section div.content").html(posts[id].content)
     $carousel.slick('slickGoTo', slide);
   } else {
     //console.log("post undefined", slide, id, posts)
@@ -277,7 +278,7 @@ function setContent(dest, object_id, object) {
   state.slide = posts_nav[object_id] //
   state.object_id = posts_nav[object_id]
 
-  //console.log("setContent",object_id,object,posts[object_id])
+  console.log("setContent",dest,object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
     //console.log("selected post", posts[object_id])
     state.post_id = object_id;

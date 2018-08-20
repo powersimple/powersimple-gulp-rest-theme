@@ -120,22 +120,22 @@ function setSlider(m) {
 
 
 function setSliderNotch(notch) {
-
+  var m = 'wheel-menu'
   if (state.circle_delay != undefined) {
       ///console.log("delay", state.circle_delay)
     clearInterval(state.circle_delay);
      //console.log("stop delay", state.circle_delay)
   }
   
-  //console.log("notch", data_nav[notch], notch)
-  location.hash = posts[data_nav[notch].object_id].slug
+  console.log("notch", menus[m].data_nav[notch], notch)
+  location.hash = getSlug(menus[m].data_nav[notch])
 
 
   //console.log("set slider notch", notch,location.hash)
   jQuery("#slider").slider('value', notch);
   if (menus['wheel-menu'].linear_nav[notch] != undefined) {
 
-    setContent(notch, data_nav[notch].object_id, data_nav[notch].object)
+    setContent(notch, menus[m].data_nav[notch].object_id, menus[m].data_nav[notch].object)
     triggerWheelNav(notch)
     //selectNavItem(notch);
   }

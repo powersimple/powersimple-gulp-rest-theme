@@ -325,7 +325,7 @@ div { text-align: center; width: 100%; line-height:120%;
 .circular-menu .menu-button { position: absolute; top: calc(50% - 30px); left: calc(50% - 30px); text-decoration: none; text-align: center; color: #444; border-radius: 50%; display: block; height: 40px; width: 40px; line-height: 40px; padding: 10px; background: #dde; }
 .circular-menu .menu-button:hover { opacity: 0.5; }
 
-#screen-image-wrap { background: rgba(0, 250, 0, 0.1); height: 100%; width: 100%; border-radius: 50%; position: absolute; }
+#screen-image-wrap { height: 100%; width: 100%; border-radius: 50%; position: absolute; }
 #screen-image-wrap img { width: 100%; height: auto; z-index: 1000; }
 #screen-image-wrap div { text-align: center; width: 100%; line-height: 120%; }
 #screen-image-wrap #screen-image-header { bottom: 100%; }
@@ -334,6 +334,12 @@ div { text-align: center; width: 100%; line-height:120%;
 #screen-image-wrap #screen-image-footer { top: 100%; }
 #screen-image-wrap #screen-image-footer #screen-image-description { font-size: 100%; position: absolute; margin-top: 1.2em; }
 #screen-image-wrap #screen-image-container { border-radius: 50%; border: 1px solid #ccc; overflow: hidden; width: 100%; height: 100%; }
+
+#circle-mask svg { position: absolute; top: 0; left: 0; }
+#circle-mask svg mask rect { fill: white; }
+#circle-mask svg mask circle { overflow: hidden; }
+#circle-mask svg > rect { fill: black; -webkit-mask: url(#mask); mask: url(#mask); }
+#circle-mask video { position: absolute; top: 0; left: 1px; z-index: -1; overflow: hidden; height: 99%; opacity: 0.8; }
 
 #slider-wrap { position: absolute; z-index: 1500; background-color: #fff; }
 #slider-wrap .arrow { position: absolute; width: 4vh; opacity: 0.5; height: 4vh; cursor: pointer; }
@@ -392,12 +398,12 @@ div { text-align: center; width: 100%; line-height:120%;
 .slideshow .slide-wrap section p { margin-bottom: 0.5em; line-height: 120%; }
 @media (max-width: 480px) { .slideshow .slide-wrap section p { font-size: 3vw; } }
 
-#article { width: 100%; height: 100%; position: absolute; font-size: 1em; z-index: 2;  /* THIS PART HANDLES THE FONT- 
+#wheel-menu-content, #projects-content { width: 100%; height: 100%; position: absolute; font-size: 1em; z-index: 2;  /* THIS PART HANDLES THE FONT- 
 for slides, positioning is in .slide-wrap in slick.scss */ }
-#article h2 { font-size: 200%; font-weight: bold; text-align: center; text-shadow: 1px 1px #fff; margin-bottom: .5em; }
-#article section { line-height: 120%; color: #fff; font-size: 120%; text-shadow: 1px 1px #333; }
-#article section a { color: #fff200; }
-#article section a:hover { color: #0f0; }
+#wheel-menu-content h2, #projects-content h2 { font-size: 200%; font-weight: bold; text-align: center; text-shadow: 1px 1px #fff; margin-bottom: .5em; }
+#wheel-menu-content section, #projects-content section { line-height: 120%; color: #fff; font-size: 120%; text-shadow: 1px 1px #333; }
+#wheel-menu-content section a, #projects-content section a { color: #fff200; }
+#wheel-menu-content section a:hover, #projects-content section a:hover { color: #0f0; }
 
 .slick-slider { position: relative; display: block; -webkit-box-sizing: border-box; box-sizing: border-box; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -ms-touch-action: pan-y; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
 
@@ -434,26 +440,6 @@ for slides, positioning is in .slide-wrap in slick.scss */ }
 
 .slick-next { right: -20px; }
 
-#laser, .laser-cube { position: absolute; top: 50%; left: 0; width: 50vh; height: 50vh; border-radius: 50%; margin-top: -25vh; z-index: 100; }
-
-body { background: black; -webkit-perspective: 600; }
-
-.laser-cube { -webkit-transform-style: preserve-3d; -webkit-animation: rotation 6s infinite linear; }
-
-.layer { position: absolute; width: 100%; height: 100%; background: -webkit-radial-gradient(red 5%, transparent 5%), transparent; background-position: center center; -webkit-background-size: 50px 50px; -webkit-animation: hue 2s infinite linear; }
-
-.div-1 { -webkit-animation-delay: 0.1s; -webkit-transform: translateZ(50px); }
-
-.div-2 { -webkit-animation-delay: 0.2s; -webkit-transform: translateZ(100px); }
-
-.div-3 { -webkit-animation-delay: 0.3s; -webkit-transform: translateZ(150px); }
-
-.div-4 { -webkit-animation-delay: 0.4s; -webkit-transform: translateZ(200px); }
-
-@-webkit-keyframes rotation { from { -webkit-transform: rotateY(0deg) rotateZ(0deg); }
-  to { -webkit-transform: rotateY(360deg) rotateZ(-360deg); } }
-@-webkit-keyframes hue { from { -webkit-filter: hue-rotate(0deg); }
-  to { -webkit-filter: hue-rotate(360deg); } }
 #language-menu { position: absolute; top: 10px; right: 10px; }
 #language-menu ul { background-color: #fff; }
 

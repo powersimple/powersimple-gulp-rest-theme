@@ -23,10 +23,11 @@ function initSite(){ // called from the menus callback
     }
    
       var m = 'wheel-menu'
-      var slug = location.hash = '#about'
+
+      
       setSlider(m)
       setSlides(m)
-
+      setSlides('projects')
 
       //console.log("menu", menu_config[m].location, items)
       //  jQuery(menu_config[m].location).html(items)
@@ -35,19 +36,19 @@ function initSite(){ // called from the menus callback
      
       if (location.hash != '') {
         slug = location.hash.replace("#", "");
-        //console.log("set by slugHash", slug, slug_nav[slug])
+        console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
         
-        setSliderNotch(slug_nav[slug])
+        setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
       } else {
-
+       slug = location.hash = '#about'
         if (menu_config[m].menu_type == "wheel") {
           // THIS IS THE INITIAL LOADING OF THE WHEEL
 
 
         }
       }
-      setSliderNotch(slug_nav[slug])
+      setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
 
       initMatrix();
@@ -236,8 +237,8 @@ jQuery(window).resize(function () {
 function setSlideContent(slide, id) {
 console.log("setSlideContent", slide, id )
   if (posts[id] != undefined) {
-    jQuery("#slide" + slide + " h2").html(posts[id].title)
-    jQuery("#slide" + slide + " section div.content").html(posts[id].content)
+    jQuery("#slide" + id + " h2").html(posts[id].title)
+    jQuery("#slide" + id + " section div.content").html(posts[id].content)
     $carousel.slick('slickGoTo', slide);
   } else {
     //console.log("post undefined", slide, id, posts)
@@ -277,7 +278,7 @@ function setContent(dest, object_id, object) {
   state.slide = posts_nav[object_id] //
   state.object_id = posts_nav[object_id]
 
-  //console.log("setContent",object_id,object,posts[object_id])
+  console.log("setContent",dest,object_id,object,posts[object_id])
   if (posts[object_id] != undefined) {
     //console.log("selected post", posts[object_id])
     state.post_id = object_id;
@@ -815,8 +816,6 @@ var posts = {},
   media = {},
   posts_nav = {},
   posts_slug_ids = {},
-  slug_nav = {},
-  data_nav = [],
   last_dest = 'outer-nav',
   menu_levels = [],
   menu_slides = [], // an array for all 
@@ -1429,7 +1428,7 @@ function setLinearNav(m) {
 
 
        // menu.items[i].post = posts[menu.items[i].object_id]
-        menus[m].items[i].slug = posts[menus[m].items[i].object_id].slug
+        menus[m].items[i].slug = i
 
 
         id = menus[m].items[i].object_id
@@ -1446,8 +1445,9 @@ function setLinearNav(m) {
 
 }
 
-function setLinearDataNav(data) { // sets local data into linear array for wheel
-
+function setLinearDataNav(m,data) { // sets local data into linear array for wheel
+    menus[m].data_nav = []
+    menus[m].slug_nav = []
     var counter = 0,
         outer_counter = 0,
         inner_counter = 0,
@@ -1457,16 +1457,15 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
         dest = 'outer-nav'
 
     // THESE 3 NESTED LOOPS POPULATE THE data_nav array WITH WHAT IT NEEDS TO BUILD THE WHEEL AND HAVE IT BE CONTROLLED BY THE ORDERED NOTCHES FROM THE NAV
-
+    console.log(m,data)
     for (var d = 0; d < data.length; d++) { //outer
         dest = 'outer-nav'
         data[d].dest = dest;
         data[d].slice = outer_counter;
         data[d].notch = counter;
         grandparent = counter;
-        data_nav.push(data[d]);
-        slug_nav[data[d].slug] = counter;
-
+        menus[m].data_nav.push(data[d])
+        menus[m].slug_nav[data[d].slug] = counter
         counter++;
         for (var c = 0; c < data[d].children.length; c++) { //children
             data[d].children[c].dest = "inner-nav"
@@ -1474,8 +1473,8 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
             data[d].children[c].notch = counter
             data[d].children[c].parent = grandparent
             next_parent = counter
-            data_nav.push(data[d].children[c])
-            slug_nav[data[d].children[c].slug] = counter;
+            menus[m].data_nav.push(data[d].children[c])
+            menus[m].slug_nav[data[d].children[c].slug] = counter;
             counter++
             for (var g = 0; g < data[d].children[c].children.length; g++) { //grandchildren
                 data[d].children[c].children[g].dest = "inner-subnav"
@@ -1484,8 +1483,8 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
                 data[d].children[c].children[g].grandparent = grandparent
                 data[d].children[c].children[g].parent = next_parent
 
-                data_nav.push(data[d].children[c].children[g])
-                slug_nav[data[d].children[c].children[g].slug] = counter;
+                menus[m].data_nav.push(data[d].children[c].children[g])
+                menus[m].slug_nav[data[d].children[c].children[g].slug] = counter;
                 counter++
             }
             // console.log("dataNav", data);
@@ -1494,9 +1493,17 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
         outer_counter++;
 
     }
-
-  //   console.log("dataNav", data_nav);
-  //   console.log("slug_nav", slug_nav);
+     console.log("dataNav",m, menus[m].data_nav);
+     console.log("slug_nav",m, menus[m].slug_nav);
+}
+function getSlug(item){
+    console.log(item)
+    if (posts[item.object_id] != undefined){
+        return posts[item.object_id].slug
+    } else {
+        return item.slug
+    }
+    
 }
 function buildMenuData() {
 
@@ -1534,20 +1541,21 @@ function buildMenuData() {
 
 
                 var children = [];
-
+                var this_menu = menus[m].menu_array
                 
-                for (var a = 0; a < menus[m].menu_array.length; a++) {
+                for (var a = 0; a < this_menu.length; a++) {
                     children = [];
 
-                    for (var c = 0; c < menus[m].menu_array[a].children.length; c++) {
+                    for (var c = 0; c < this_menu[a].children.length; c++) {
                         var grandchildren = [];
-                        var nested_children = menus[m].items[menus[m].menu_array[a].children[c]].children;
+                        var nested_children = menus[m].items[this_menu[a].children[c]].children;
                         for (var g = 0; g < nested_children.length; g++) {
+                             slug = getSlug(nested_children[g])
                             grandchildren.push( // data for childe menus
                                 {
                                     "title": menus[m].items[nested_children[g]].title,
 
-                                    "slug": menus[m].items[nested_children[g]].slug,
+                                    "slug": slug,
                                     "object": menus[m].items[nested_children[g]].object,
                                     "object_id": menus[m].items[nested_children[g]].object_id, // the post id
 
@@ -1556,35 +1564,36 @@ function buildMenuData() {
 
                         }
 
-
-                    //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
-                        children.push( // data for childe menus
+                        slug = getSlug(this_menu[a].children[c])
+                      //console.log('bad slug', menus[m].items[this_menu[a].children[c]])
+                        children.push( // data for child menus
                             {
-                                "title": menus[m].items[menus[m].menu_array[a].children[c]].title,
-                                "slug": menus[m].items[menus[m].menu_array[a].children[c]].slug,
-                                "object": menus[m].items[menus[m].menu_array[a].children[c]].object,
-                                "object_id": menus[m].items[menus[m].menu_array[a].children[c]].object_id, // the post id
+                                "title": menus[m].items[this_menu[a].children[c]].title,
+                                "slug": slug,
+                                "object": menus[m].items[this_menu[a].children[c]].object,
+                                "object_id": menus[m].items[this_menu[a].children[c]].object_id, // the post id
                                 "children": grandchildren
                             }
                         )
 
                     }
 
-
+                    console.log('outer', this_menu[a].object_id,  this_menu[a])
+                    slug = getSlug(this_menu[a])
                     data.push({ // data for top level
-                        "title": menus[m].menu_array[a].title,
-                        //"id": menus[m].menu_array[a].id,
-                        "slug": menus[m].menu_array[a].slug,
-                        "object": menus[m].menu_array[a].object,
-                        "object_id": menus[m].menu_array[a].object_id, //the post_id
+                        "title": this_menu[a].title,
+                        //"id": this_menu[a].id,
+                        "slug": slug,
+                        "object": this_menu[a].object,
+                        "object_id": this_menu[a].object_id, //the post_id
                         "children": children
                     })
 
                 }
                 menus[m].menu_levels = data
-                menu_levels = data;
-                setLinearDataNav(data);
-                setLinearNav('wheel-menu')
+                //menu_levels = data;
+                setLinearDataNav(m,data);
+                setLinearNav(m)
                 //console.log('makeouterwheel',menu_levels);
 
 
@@ -2144,11 +2153,11 @@ function setRelated(post) {
     }
     return tipContent
   }
-  function selectRelatedPost(id){
+  function selectRelatedPost(post_id){
 
-        if(posts[id].type == 'project'){
+        if(posts[post_id].type == 'project'){
             setSliderNotch(1)//Projects hardset to notch one.
-
+            setContent(1, post_id, posts[post_id].type)
             console.log(id,"projects ",posts[id])
         }
 
@@ -2239,7 +2248,7 @@ function setSlide(slide,id){
   because it was unreliable populating the content in a loop
   see setSlideContent in app.js
   */
-  slide = '\n<div><div id="slide'+slide+'" data-id="'+id+'" class="slide-wrap">'
+  slide = '\n<div><div id="slide'+id+'" data-id="'+id+'" class="slide-wrap">'
   slide += '\n\t<h2></h2>'
   slide += '\n\t<div class="img-wrap"></div>'
   slide += '\n\t<section><div class="content"></div></section>'
@@ -2252,7 +2261,7 @@ function setSlides(m){
   var content = ''
   var title = ''
   var slides = ''
- //console.log("Begin Render Slides",m,"|")
+ console.log("Begin Render Slides",m,"|")
  
   if(posts == undefined){
     //console.log("No Posts Data Yet",  posts)
@@ -2268,7 +2277,7 @@ function setSlides(m){
   }
  //console.log("slides rendered",slides)
 
-  jQuery('#article').html(slides);
+  jQuery('#'+m+'-content').html(slides);
  
   }
 }
@@ -2414,22 +2423,22 @@ function setSlider(m) {
 
 
 function setSliderNotch(notch) {
-
+  var m = 'wheel-menu'
   if (state.circle_delay != undefined) {
       ///console.log("delay", state.circle_delay)
     clearInterval(state.circle_delay);
      //console.log("stop delay", state.circle_delay)
   }
   
-  //console.log("notch", data_nav[notch], notch)
-  location.hash = posts[data_nav[notch].object_id].slug
+  console.log("notch", menus[m].data_nav[notch], notch)
+  location.hash = getSlug(menus[m].data_nav[notch])
 
 
   //console.log("set slider notch", notch,location.hash)
   jQuery("#slider").slider('value', notch);
   if (menus['wheel-menu'].linear_nav[notch] != undefined) {
 
-    setContent(notch, data_nav[notch].object_id, data_nav[notch].object)
+    setContent(notch, menus[m].data_nav[notch].object_id, menus[m].data_nav[notch].object)
     triggerWheelNav(notch)
     //selectNavItem(notch);
   }
@@ -2549,14 +2558,14 @@ function setTags(data) {
 
 
 
-
 var wheel_nav_params = {
-    'maxPercent': 1,
-    'min': 0.91,
-    'max': 1,
-    'sel_min': 0.91,
-    'sel_max': 1,
-    },   inner_nav_params = {
+        'maxPercent': 1,
+        'min': 0.91,
+        'max': 1,
+        'sel_min': 0.91,
+        'sel_max': 1,
+    },
+    inner_nav_params = {
         'maxPercent': 1,
         'min': 0.91,
         'max': 1,
@@ -2572,9 +2581,6 @@ var wheel_nav_params = {
     },
     last_outer_notch = 0,
     last_inner_notch = 0
-    
-
-/**/
 var menu_raphael = {}
 var wheels = {}
 
@@ -2587,7 +2593,7 @@ function makeWheelNav(dest, data, _p) {
         child_params = inner_nav_params;
     } else if (dest == "inner-nav") {
         child_dest = 'inner-subnav'
-        child_params = wheel_nav_params;
+        child_params = inner_nav_params;
     }
 
 
@@ -2669,7 +2675,7 @@ function makeWheelNav(dest, data, _p) {
             /*Click event for wheel*/
 
             jQuery("#slider").slider("option", "value", this.data.notch) //positions the slider handle
-            setSliderNotch(slug_nav[this.data.slug]) // triggers the notch
+            setSliderNotch(menus['wheel-menu'].slug_nav[this.data.slug]) // triggers the notch
 
         }
 
@@ -2681,7 +2687,7 @@ function makeWheelNav(dest, data, _p) {
 }
 
 function triggerWheelNav(notch) {
-
+    var data_nav = menus['wheel-menu'].data_nav
     var this_notch = data_nav[notch]
     var this_dest = this_notch.dest;
 

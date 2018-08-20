@@ -84,7 +84,7 @@ function setLinearNav(m) {
 
 
        // menu.items[i].post = posts[menu.items[i].object_id]
-        menus[m].items[i].slug = posts[menus[m].items[i].object_id].slug
+        menus[m].items[i].slug = i
 
 
         id = menus[m].items[i].object_id
@@ -101,8 +101,9 @@ function setLinearNav(m) {
 
 }
 
-function setLinearDataNav(data) { // sets local data into linear array for wheel
-
+function setLinearDataNav(m,data) { // sets local data into linear array for wheel
+    menus[m].data_nav = []
+    menus[m].slug_nav = []
     var counter = 0,
         outer_counter = 0,
         inner_counter = 0,
@@ -112,16 +113,15 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
         dest = 'outer-nav'
 
     // THESE 3 NESTED LOOPS POPULATE THE data_nav array WITH WHAT IT NEEDS TO BUILD THE WHEEL AND HAVE IT BE CONTROLLED BY THE ORDERED NOTCHES FROM THE NAV
-
+    console.log(m,data)
     for (var d = 0; d < data.length; d++) { //outer
         dest = 'outer-nav'
         data[d].dest = dest;
         data[d].slice = outer_counter;
         data[d].notch = counter;
         grandparent = counter;
-        data_nav.push(data[d]);
-        slug_nav[data[d].slug] = counter;
-
+        menus[m].data_nav.push(data[d])
+        menus[m].slug_nav[data[d].slug] = counter
         counter++;
         for (var c = 0; c < data[d].children.length; c++) { //children
             data[d].children[c].dest = "inner-nav"
@@ -129,8 +129,8 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
             data[d].children[c].notch = counter
             data[d].children[c].parent = grandparent
             next_parent = counter
-            data_nav.push(data[d].children[c])
-            slug_nav[data[d].children[c].slug] = counter;
+            menus[m].data_nav.push(data[d].children[c])
+            menus[m].slug_nav[data[d].children[c].slug] = counter;
             counter++
             for (var g = 0; g < data[d].children[c].children.length; g++) { //grandchildren
                 data[d].children[c].children[g].dest = "inner-subnav"
@@ -139,8 +139,8 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
                 data[d].children[c].children[g].grandparent = grandparent
                 data[d].children[c].children[g].parent = next_parent
 
-                data_nav.push(data[d].children[c].children[g])
-                slug_nav[data[d].children[c].children[g].slug] = counter;
+                menus[m].data_nav.push(data[d].children[c].children[g])
+                menus[m].slug_nav[data[d].children[c].children[g].slug] = counter;
                 counter++
             }
             // console.log("dataNav", data);
@@ -149,9 +149,17 @@ function setLinearDataNav(data) { // sets local data into linear array for wheel
         outer_counter++;
 
     }
-
-  //   console.log("dataNav", data_nav);
-  //   console.log("slug_nav", slug_nav);
+     console.log("dataNav",m, menus[m].data_nav);
+     console.log("slug_nav",m, menus[m].slug_nav);
+}
+function getSlug(item){
+    console.log(item)
+    if (posts[item.object_id] != undefined){
+        return posts[item.object_id].slug
+    } else {
+        return item.slug
+    }
+    
 }
 function buildMenuData() {
 
@@ -189,20 +197,21 @@ function buildMenuData() {
 
 
                 var children = [];
-
+                var this_menu = menus[m].menu_array
                 
-                for (var a = 0; a < menus[m].menu_array.length; a++) {
+                for (var a = 0; a < this_menu.length; a++) {
                     children = [];
 
-                    for (var c = 0; c < menus[m].menu_array[a].children.length; c++) {
+                    for (var c = 0; c < this_menu[a].children.length; c++) {
                         var grandchildren = [];
-                        var nested_children = menus[m].items[menus[m].menu_array[a].children[c]].children;
+                        var nested_children = menus[m].items[this_menu[a].children[c]].children;
                         for (var g = 0; g < nested_children.length; g++) {
+                             slug = getSlug(nested_children[g])
                             grandchildren.push( // data for childe menus
                                 {
                                     "title": menus[m].items[nested_children[g]].title,
 
-                                    "slug": menus[m].items[nested_children[g]].slug,
+                                    "slug": slug,
                                     "object": menus[m].items[nested_children[g]].object,
                                     "object_id": menus[m].items[nested_children[g]].object_id, // the post id
 
@@ -211,35 +220,36 @@ function buildMenuData() {
 
                         }
 
-
-                    //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
-                        children.push( // data for childe menus
+                        slug = getSlug(this_menu[a].children[c])
+                      //console.log('bad slug', menus[m].items[this_menu[a].children[c]])
+                        children.push( // data for child menus
                             {
-                                "title": menus[m].items[menus[m].menu_array[a].children[c]].title,
-                                "slug": menus[m].items[menus[m].menu_array[a].children[c]].slug,
-                                "object": menus[m].items[menus[m].menu_array[a].children[c]].object,
-                                "object_id": menus[m].items[menus[m].menu_array[a].children[c]].object_id, // the post id
+                                "title": menus[m].items[this_menu[a].children[c]].title,
+                                "slug": slug,
+                                "object": menus[m].items[this_menu[a].children[c]].object,
+                                "object_id": menus[m].items[this_menu[a].children[c]].object_id, // the post id
                                 "children": grandchildren
                             }
                         )
 
                     }
 
-
+                    console.log('outer', this_menu[a].object_id,  this_menu[a])
+                    slug = getSlug(this_menu[a])
                     data.push({ // data for top level
-                        "title": menus[m].menu_array[a].title,
-                        //"id": menus[m].menu_array[a].id,
-                        "slug": menus[m].menu_array[a].slug,
-                        "object": menus[m].menu_array[a].object,
-                        "object_id": menus[m].menu_array[a].object_id, //the post_id
+                        "title": this_menu[a].title,
+                        //"id": this_menu[a].id,
+                        "slug": slug,
+                        "object": this_menu[a].object,
+                        "object_id": this_menu[a].object_id, //the post_id
                         "children": children
                     })
 
                 }
                 menus[m].menu_levels = data
-                menu_levels = data;
-                setLinearDataNav(data);
-                setLinearNav('wheel-menu')
+                //menu_levels = data;
+                setLinearDataNav(m,data);
+                setLinearNav(m)
                 //console.log('makeouterwheel',menu_levels);
 
 
