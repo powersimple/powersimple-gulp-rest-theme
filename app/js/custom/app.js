@@ -31,7 +31,7 @@ function initSite(){ // called from the menus callback
       //console.log("menu", menu_config[m].location, items)
       //  jQuery(menu_config[m].location).html(items)
       setSlideShow('wheel-menu'); // creates slides for the slick carousel
-      makeWheelNav("outer-nav", menu_levels, wheel_nav_params)
+      makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels, wheel_nav_params)
      
       if (location.hash != '') {
         slug = location.hash.replace("#", "");

@@ -17,6 +17,15 @@ get_header(); ?>
   
   <div id="language-menu"></div>
  
+  <!--<canvas id="laser"></canvas>-->
+<div class="laser-cube">
+  <div class="div-1 layer"></div>
+  <div class="div-2 layer"></div>
+  <div class="div-3 layer"></div>
+  <div class="div-4 layer"></div>
+  <div class="div-5 layer"></div>
+</div>
+
     <div id="featured"></div>
     <script type="x-template" id="featured-template">
       <div class="image-header image-caption">

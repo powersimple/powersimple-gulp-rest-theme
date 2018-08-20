@@ -2,11 +2,15 @@ var menu_config = {
     'wheel-menu': {
         'menu_type': 'wheel',
         'location': '#outer-nav'
-    }/*,
+    },
     'projects':{
          'menu_type': 'project',
          'location': '#projects'
-    }*/
+    }, 
+    'social-links' : {
+    'menu_type': 'social',
+    'location': '#social'
+    }
 }
 
 function setMenus(data, dest) {
@@ -21,8 +25,8 @@ function setMenus(data, dest) {
         console.log()
         console.log("slug", data[i].slug)
     }
-    buildMenuData();
-    //console.log("raw menu data", menus)
+   buildMenuData();
+   console.log("raw menu data", menus)
     initSite()
 }
 
@@ -158,9 +162,10 @@ function buildMenuData() {
     } else {
 
         
-        var data = [];
+       
     
         for (var m in menus) { // 
+             var data = [];
             //console.log('menu loop',m)
             if (menu_config[m] != undefined) { 
                 var items = ''
@@ -169,35 +174,35 @@ function buildMenuData() {
 
 
 
-                menu_array = [];
+                menus[m].menu_array = [];
                 for (var i in menus[m].items) {
                     // console.log('menu item', menus[m].items[i], menu_config[m].location)
                     if (menus[m].items[i].parent == 0) {
                         // console.log("menu", menus[m].items[i].title)
 
-                        menu_array.push(menus[m].items[i]);
+                        menus[m].menu_array.push(menus[m].items[i]);
                     }
                     // items += '<a href="#" class="">' + menus[m].items[i].title + '</a>'
 
                 }
-                menu_array.sort(menu_order);
+                menus[m].menu_array.sort(menu_order);
 
 
                 var children = [];
 
-
-                for (var a = 0; a < menu_array.length; a++) {
+                
+                for (var a = 0; a < menus[m].menu_array.length; a++) {
                     children = [];
 
-                    for (var c = 0; c < menu_array[a].children.length; c++) {
+                    for (var c = 0; c < menus[m].menu_array[a].children.length; c++) {
                         var grandchildren = [];
-                        var nested_children = menus[m].items[menu_array[a].children[c]].children;
+                        var nested_children = menus[m].items[menus[m].menu_array[a].children[c]].children;
                         for (var g = 0; g < nested_children.length; g++) {
                             grandchildren.push( // data for childe menus
                                 {
                                     "title": menus[m].items[nested_children[g]].title,
 
-                                    "slug": posts[menus[m].items[nested_children[g]].object_id].slug,
+                                    "slug": menus[m].items[nested_children[g]].slug,
                                     "object": menus[m].items[nested_children[g]].object,
                                     "object_id": menus[m].items[nested_children[g]].object_id, // the post id
 
@@ -210,10 +215,10 @@ function buildMenuData() {
                     //  console.log('bad slug', menus[m].items[menu_array[a].children[c]].slug)
                         children.push( // data for childe menus
                             {
-                                "title": menus[m].items[menu_array[a].children[c]].title,
-                                "slug": posts[menus[m].items[menu_array[a].children[c]].object_id].slug,
-                                "object": menus[m].items[menu_array[a].children[c]].object,
-                                "object_id": menus[m].items[menu_array[a].children[c]].object_id, // the post id
+                                "title": menus[m].items[menus[m].menu_array[a].children[c]].title,
+                                "slug": menus[m].items[menus[m].menu_array[a].children[c]].slug,
+                                "object": menus[m].items[menus[m].menu_array[a].children[c]].object,
+                                "object_id": menus[m].items[menus[m].menu_array[a].children[c]].object_id, // the post id
                                 "children": grandchildren
                             }
                         )
@@ -222,15 +227,16 @@ function buildMenuData() {
 
 
                     data.push({ // data for top level
-                        "title": menu_array[a].title,
-                        //"id": menu_array[a].id,
-                        "slug": posts[menu_array[a].object_id].slug,
-                        "object": menu_array[a].object,
-                        "object_id": menu_array[a].object_id, //the post_id
+                        "title": menus[m].menu_array[a].title,
+                        //"id": menus[m].menu_array[a].id,
+                        "slug": menus[m].menu_array[a].slug,
+                        "object": menus[m].menu_array[a].object,
+                        "object_id": menus[m].menu_array[a].object_id, //the post_id
                         "children": children
                     })
 
                 }
+                menus[m].menu_levels = data
                 menu_levels = data;
                 setLinearDataNav(data);
                 setLinearNav('wheel-menu')
@@ -242,6 +248,7 @@ function buildMenuData() {
 
                 //circleMenu('.circle a')
             }
+            
         }
 
     }

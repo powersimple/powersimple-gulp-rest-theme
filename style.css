@@ -112,7 +112,7 @@ div { text-align: center; width: 100%; line-height:120%;
 
 .featured-caption { position: absolute; top: -10px; }
 
-#featured { position: absolute; width: 20vw; height: 20vw; padding: 0px; top: 50%; left: 5vw; margin-top: -10%; opacity: 1; color: #fff; border: 1px dashed #f00; -webkit-transition: -webkit-transform 1s; transition: -webkit-transform 1s; transition: transform 1s; transition: transform 1s, -webkit-transform 1s; -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
+#featured { position: absolute; width: 20vw; height: 20vw; padding: 0px; top: 50%; left: 5vw; margin-top: -10%; opacity: 1; color: #fff; -webkit-transition: -webkit-transform 1s; transition: -webkit-transform 1s; transition: transform 1s; transition: transform 1s, -webkit-transform 1s; -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
 #featured .card { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
 #featured .back { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
 #featured .image-caption { width: 100%; text-align: center; position: absolute; }
@@ -434,6 +434,26 @@ for slides, positioning is in .slide-wrap in slick.scss */ }
 
 .slick-next { right: -20px; }
 
+#laser, .laser-cube { position: absolute; top: 50%; left: 0; width: 50vh; height: 50vh; border-radius: 50%; margin-top: -25vh; z-index: 100; }
+
+body { background: black; -webkit-perspective: 600; }
+
+.laser-cube { -webkit-transform-style: preserve-3d; -webkit-animation: rotation 6s infinite linear; }
+
+.layer { position: absolute; width: 100%; height: 100%; background: -webkit-radial-gradient(red 5%, transparent 5%), transparent; background-position: center center; -webkit-background-size: 50px 50px; -webkit-animation: hue 2s infinite linear; }
+
+.div-1 { -webkit-animation-delay: 0.1s; -webkit-transform: translateZ(50px); }
+
+.div-2 { -webkit-animation-delay: 0.2s; -webkit-transform: translateZ(100px); }
+
+.div-3 { -webkit-animation-delay: 0.3s; -webkit-transform: translateZ(150px); }
+
+.div-4 { -webkit-animation-delay: 0.4s; -webkit-transform: translateZ(200px); }
+
+@-webkit-keyframes rotation { from { -webkit-transform: rotateY(0deg) rotateZ(0deg); }
+  to { -webkit-transform: rotateY(360deg) rotateZ(-360deg); } }
+@-webkit-keyframes hue { from { -webkit-filter: hue-rotate(0deg); }
+  to { -webkit-filter: hue-rotate(360deg); } }
 #language-menu { position: absolute; top: 10px; right: 10px; }
 #language-menu ul { background-color: #fff; }
 
