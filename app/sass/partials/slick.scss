@@ -4,29 +4,30 @@
 
     .slide-wrap{
       //  background-color: rgba(255,255,255,0.4);
-        height:61.8vh;
-        border-radius:50%;
+       
+       // border-radius:50%;
         position: relative;
         overflow:hidden;
+        font-size:1em;
         h2{
            position: absolute;
-           top:13%;
-           width:50%;
-           left:50%;
-           margin-left:-25%;
-           
+           top:5%;
+           width: 61.8%;
+           left: 50%;
+           margin-left: -30.9%;
+           font-size:110%;
         }
         section{
             
             position: absolute;
-            border-radius:10%;
-            padding:5%;
+            //border-radius:10%;
+            //padding:5%;
             overflow:hidden;
-            width: 60%;
+            width: 80%;
             height:0px;
             padding-bottom: 60%;
-            margin-top:20%;
-            left:15%;
+            margin-top:25%;
+            left:10%;
             div.content{
                 //overflow-y:scroll;
                 padding-right:50px;
@@ -36,6 +37,7 @@
             p{
                 margin-bottom:0.5em;
                 line-height: 120%;
+                font-size:75%;
                 @media(max-width: 480px){
                     font-size:3vw;
                 }
@@ -44,6 +46,7 @@
     }
 
 }
+
 
 #wheel-menu-content, #projects-content {
     //background-color:rgba(0, 0, 255, 0.1);
@@ -55,17 +58,18 @@
     /* THIS PART HANDLES THE FONT- 
    for slides, positioning is in .slide-wrap in slick.scss */
     h2 {
-        font-size: 200%;
+        //font-size: 200%;
         font-weight: bold;
         text-align: center;
-        text-shadow: 1px 1px #fff;
+        color:#fff;
+        //text-shadow: 1px 1px #fff;
         margin-bottom: .5em;
     }
     section {
         line-height: 120%;
         color: #fff;
      //   background-color: rgba(61, 61, 61, 0.8);
-        font-size: 120%;
+      // font-size: 120%;
         text-shadow: 1px 1px #333;
         a {
             color: #fff200;
@@ -75,6 +79,47 @@
         }
     }
 }
+
+#screen.horizontal {
+    .slideshow{
+        //
+       
+     
+         .slide-wrap{
+            height:50vh;
+
+         }
+        }
+    #wheel-menu-content, #projects-content {
+        width:50vh;
+        height:50vh;
+        left:50%;
+        top:50%;
+        margin-left:-25vh;
+        margin-top:-25vh;
+    }
+}
+#screen.vertical {
+    .slideshow{
+        //
+       
+     
+         .slide-wrap{
+            height:50vw;
+
+         }
+        }
+    #wheel-menu-content, #projects-content {
+        width:50vw;
+        height:50vw;
+        left:50%;
+        top:50%;
+        margin-left:-25vw;
+        margin-top:-25vw;
+        background-color: rgba(0,255,0,0.1);
+    }
+}
+
 .slick-slider {
     position: relative;
     display: block;

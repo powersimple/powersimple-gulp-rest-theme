@@ -3,7 +3,7 @@
     
     position: absolute;
     z-index: 1500;
-    background-color: #fff;
+//    background-color: #fff;
    //positioning handled dynamically in app.js
 
 
@@ -16,7 +16,22 @@
         cursor: pointer;
     }
     
+
+
 }
+#screen.horizontal.maxed{
+    #slider-wrap {
+        right:0;
+        height:61.8vh;
+        margin-top:-30.9vh;
+    }
+}
+#screen.vertical.maxed{
+
+}
+
+
+
  .ui-slider {
      position: relative;
      text-align: left;

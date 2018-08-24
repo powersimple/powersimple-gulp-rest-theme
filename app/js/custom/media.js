@@ -138,7 +138,7 @@ function transitionImage(dest, type, media_id) {
     var src = getImageSRC(media_id, dest + ' .image', aspect) //returns appropriate image sice.
     if (type == 'flip'){
         var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
-     console.log("flipimage",dest, type, media_id,src)
+        console.log("FLIP",next_face,dest, type, media_id,src)
         if(media[media_id] != undefined){
             /*
             //console.log('next face', next_face)

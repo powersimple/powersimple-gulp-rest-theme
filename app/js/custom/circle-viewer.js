@@ -14,7 +14,7 @@
         
         photoCount = state.screen_images.length
         pieceCount = state.screen_images.length
-        console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
+        //console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
         
         viewerDest = dest
         for (var i = 0; i < state.screen_images.length; i++) {

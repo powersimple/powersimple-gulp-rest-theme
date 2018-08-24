@@ -1,113 +1,169 @@
-
-
 var increment = 'vw';
-  orientation = 'vertical', // this var is used by the slider
+orientation = 'horizontal',
+orientation_last = 'horizontal',
+slider_orientation = 'vertical', // 
+dimension = 'wide',
+maxed = false,
+maxed_last = false,
   _w = jQuery(window).width(),
   _h = jQuery(window).height(),
   aspect = _w / _h,
-  current_notch = 0
 
+  current_notch = 0
+var wheel_nav_params = {}
 jQuery(document).ready(function () {
 
 
   jQuery(".wheelnav-outer-nav-title").css("display:none;");
   reposition_screen()
-  
+
 
 })
+jQuery(window).resize(function () {
+  _w = jQuery(window).width()
+  _h = jQuery(window).height()
 
-function initSite(){ // called from the menus callback
-    //console.log("load",data_loaded.length,data_score)
-    if(menu == undefined){
-        window.setTimeout(initSite(), 100);
-    }
-   
-      var m = 'wheel-menu'
+  if (_w > _h) {
+    increment = 'vh'
+  } else {
+    increment = 'vw'
+  }
+  aspect = _w / _h
+  reposition_screen()
 
-      
-      setSlider(m)
-      setSlides(m)
-      setSlides('projects')
+})
+function initSite() { // called from the menus callback
+  //console.log("load",data_loaded.length,data_score)
+  if (menu == undefined) {
+    window.setTimeout(initSite(), 100);
+  }
 
-      //console.log("menu", menu_config[m].location, items)
-      //  jQuery(menu_config[m].location).html(items)
-      setSlideShow('wheel-menu'); // creates slides for the slick carousel
-      makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels, wheel_nav_params)
-     
-      if (location.hash != '') {
-        slug = location.hash.replace("#", "");
-        console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
-        
-        setSliderNotch(menus['wheel-menu'].slug_nav[slug])
-
-      } else {
-       slug = location.hash = '#about'
-        if (menu_config[m].menu_type == "wheel") {
-          // THIS IS THE INITIAL LOADING OF THE WHEEL
+  var m = 'wheel-menu'
 
 
-        }
-      }
+  setSlider(m)
+  setSlides(m)
+  setSlides('projects')
+  
+  //console.log("menu", menu_config[m].location, items)
+  //  jQuery(menu_config[m].location).html(items)
+  setSlideShow('wheel-menu'); // creates slides for the slick carousel
+  makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
+
+  if (location.hash != '') {
+    slug = location.hash.replace("#", "");
+    console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
+
+    setSliderNotch(menus['wheel-menu'].slug_nav[slug])
+
+  } else {
+    slug = location.hash = '#about'
+    if (menu_config[m].menu_type == "wheel") {
+      // THIS IS THE INITIAL LOADING OF THE WHEEL
+
       setSliderNotch(menus['wheel-menu'].slug_nav[slug])
-
-
-      initMatrix();
-      //console.log(menus)
-}
-
-
-
-
-function calibrateCircle(id, size, increment) {
-  //console.log("calibrate",id,size,increment)
-  jQuery(id).css('width', size + increment)
-  jQuery(id).css('height', size + increment)
-  jQuery(id).css('margin-left', ((size / 2) * -1) + increment)
-  jQuery(id).css('margin-top', ((size / 2) * -1) + increment)
-
-}
-
-function positionNavElements() {
-
-  if (_w >= _h) {
-    orientation = 'vertical'
-    slider_left = (_w / 2) + ((_h * 0.8) / 2) + _w / 10 + "px"
-
-    //console.log(slider_left);
-    if(aspect >1 && aspect<1.25){
-      jQuery("#slider-wrap, #related").addClass("narrow")
-    } else {
-      jQuery("#slider-wrap, #related").removeClass("narrow")
     }
-   
+  }
+  
 
-    jQuery("#slider-wrap, #related").addClass("vertical")
-    jQuery("#slider-wrap, #related").removeClass("horizontal")
+
+  initMatrix();
+  //console.log(menus)
+}
+
+function setWheelNavParams(){
+  wheel_nav_params = {
+      'maxPercent': 1,
+      'min': 0.91,
+      'max': 1,
+      'sel_min': 0.91,
+      'sel_max': 1,
+  }
+
+  if(maxed == true){
+    wheel_nav_params = {
+        'maxPercent': 1,
+        'min': 0.85,
+        'max': 1,
+        'sel_min': 0.85,
+        'sel_max': 1,
+    }
+  }
+
+    
+
+
+    
+}
+
+
+
+function positionElements() { // manages classes for sizes, orientation and aspect
+
+  var elements = ["#main","header","footer","#related","#screen"]
+  orientation = 'horizontal'
+  slider_orientation: 'vertical'
+  dimension = 'wide'
+  
+
+
+  if (_w < _h) { // sets orientation
+    orientation = 'vertical'
+    slider_orientation = 'horizontal'
+    if(orientation_last != 'horizontal'){
+      console.log("orientation changed to "+orientation)
+     orientation_last = 'vertical';
+    }
 
 
   } else {
     orientation = 'horizontal'
-    slider_top = (_h / 2) + ((_w * 0.8) / 2) + 24 + "px"
-    if (aspect < 1 && aspect > 0.75) {
-      jQuery("#slider-wrap, #related").addClass("narrow")
-
-    } else {
-      jQuery("#slider-wrap, #related").removeClass("narrow")
-
+    slider_orientation = 'vertical'
+    if(orientation_last != 'vertical'){
+      console.log("orientation changed to "+orientation)
+      orientation_last = 'horizontal';
     }
-
-    jQuery("#slider-wrap, #related").addClass("horizontal")
-    jQuery("#slider-wrap, #related").removeClass("vertical")
-    
-  
-
   }
+
+
+
+  if(aspect<=0.5){
+    dimension = "super-narrow"
+  } else if(aspect>0.5 && aspect<= 0.75){
+    dimension = "narrow"
+  } else if(aspect>0.75 && aspect<=0.9){
+    dimension = "semi-narrow"
+  } else if(aspect>0.9 && aspect<=1.1){
+    dimension = "square"
+  } else if(aspect>1.1 && aspect<=1.25){
+    dimension = "semi-wide"
+  } else if(aspect>1.25 && aspect<=1.5){
+    dimension = "wide"
+  } else if(aspect>1.5 && aspect<=2){
+    dimension = "super-wide"
+  } else if(aspect>2){
+    dimension = "extra-super-wide"
+  } 
+
+  for(e=0;e<elements.length;e++){
+    console.log(elements[e],e,orientation)
+    jQuery(elements[e]).removeClass()
+    jQuery(elements[e]).addClass(orientation)
+    jQuery(elements[e]).addClass(dimension)
+    if(maxed == true){
+      jQuery(elements[e]).addClass('maxed')  
+    }
+  }
+  console.log("slider-wrap",orientation,slider_orientation)
+  jQuery('#slider-wrap').removeClass(orientation)
+  jQuery('#slider-wrap').addClass(slider_orientation)
+  
 }
 
 function positionProjector() {
   var top = 50,
-      width = "20vw",
-      height = "20vw";
+    width = "20vw",
+    height = "20vw";
 
   if (aspect > 1.15 && aspect < 1.5) {
     top = ((aspect - 1) * 100) + "%";
@@ -129,42 +185,82 @@ function positionProjector() {
   jQuery("#featured-image-wrap").css("width", width)
   jQuery("#featured-image-wrap").css("height", height)
 
-  jQuery("#featured-image-header").css("fontSize", fontSize+'em')
-  jQuery("#featured-image-footer").css("fontSize", fontSize*0.8+"em")
-   //console.log("aspect",aspect,top);
+  jQuery("#featured-image-header").css("fontSize", fontSize + 'em')
+  jQuery("#featured-image-footer").css("fontSize", fontSize * 0.8 + "em")
+
 
 
 }
 
 
-function logoSize() {
-
-  if (aspect > 1.75) {
-
-    //jQuery('#logo').css('width',(aspect*10)+"vh");
-
-
-  }
-}
 
 
 function reposition_screen() {
-  jQuery('#main').css('height', '100vw')
-  jQuery('#main').css('width', '100vh')
+
+
+  
+  var width = '100vw'
+  var height = '100vh'
+  var top = 0
+  var bottom = 0;
+  var left = 0;
+  var margin_top = 0
+  var margin_left = 0;
+  var inc = 'vh'
+
+  if (aspect <= 0.5) {
+    width = _w + "px"
+    height = _w * 2 + "px"
+    top = 50
+    left = 0
+    margin_top = _w * -1
+    margin_left = 0
+    bottom: _w
+    inc = 'px'
+  } else if (aspect >= 2) {
+    width = _h * 2 + 'px'
+    height = _h + 'px'
+    top = 0
+    left = 50
+    margin_top = 0
+    botttom: 0
+    margin_left = _h * -1
+    inc = 'px'
+  }
+  //jQuery('header').css('width',  width)
+  //jQuery('header').css('height', height)
+//  jQuery('header').css('top', top + "%")
+//  jQuery('header').css('left', left + '%')
+//  jQuery('header').css('marginTop', margin_top)
+  //jQuery('header').css('marginLeft', margin_left)
 
 
 
+  jQuery('#main').css('width', width)
+  jQuery('#main').css('height', height)
+  jQuery('#main').css('top', top + "%")
+  jQuery('#main').css('left', left + "%")
+  jQuery('#main').css('marginTop', margin_top + inc)
+  jQuery('#main').css('marginLeft', margin_left + inc)
 
+  //jQuery('footer').css('width',  width)
+  //jQuery('footer').css('height', height)
+  jQuery('footer').css('bottom', top + "%")
+  jQuery('footer').css('left', left + "%")
+  jQuery('footer').css('marginBottom', margin_top + inc)
+  jQuery('footer').css('marginLeft', margin_left + inc)
+
+
+  //console.log("aspect=" + aspect, "_w" + _w, "_h" + _h, "w=" + width, "h=" + height, "t=" + top, "l=" + left, "mt" + margin_top, "ml=" + margin_left);
 
 
 
   positionProjector()
-  positionNavElements();
-  logoSize();
+  positionElements();
+
   jQuery("#slider").css("visibility", "visible")
-
-
-  var calibrate_elements = [{
+  
+  var calibrate_elements = [{ // default
       id: ".phi-centered",
       size: 61.8, //use number, it needs to be divided
       increment: "vw"
@@ -186,152 +282,94 @@ function reposition_screen() {
     }
 
   ]
-
-
-  for (var e = 0; e < calibrate_elements.length; e++) {
-    var ob = calibrate_elements[e]
-
+  
+  if ((aspect < 0.75 && _w < 768) || (aspect > 1.5 && _h < 640)) { // MAX OUT the wheel size below 768 and wide or narrow 
+    maxed = true;
+    if(maxed_last == false){
+      console.log("maxed")
     
-
-    if (_w < 540) {
-     // ob.size += 14;
+    
+      maxed_last = true;
     }
+    
+  
 
-    if (_w > _h) {
-
-      if (ob.increment == 'vw') {
-        ob.increment = 'vh' //because if landscape orientation needs to be measured to viewer height;
+    calibrate_elements = [{ // for the maxed maxed vdersion
+        id: ".phi-centered",
+        size: 80, //use number, it needs to be divided
+        increment: "vw"
+      },
+      {
+        id: "#outer-ring",
+        size: 96, //use number, it needs to be divided
+        increment: "vw"
+      },
+      {
+        id: "#inner-ring",
+        size: 80, //use number, it needs to be divided
+        increment: "vw"
+      },
+      {
+        id: "#inner-subring",
+        size: 67, //use number, it needs to be divided
+        increment: "vw"
       }
 
-      calibrateCircle(ob.id, ob.size, ob.increment)
+    ]
+    
+  } else {
+   
+    maxed = false;
+    if(maxed_last == true){
+      
+      console.log("not maxed")
+      maxed_last = false;
+     
+     
+    }
+ 
 
-      jQuery(".slick-track").css('height', "61.8vh")
+  }
+
+
+
+  for (var e = 0; e < calibrate_elements.length; e++) { // loops through the rings
+    var ob = calibrate_elements[e]
+
+    if (_w > _h) {
+      ob.increment = 'vh'
+     
 
     } else {
-     // ob.size += 14
-      calibrateCircle(ob.id, ob.size, ob.increment)
-      jQuery(".slick-track").css('height', "61.8vw")
+      ob.increment = 'vh'
+      
+
     }
+    calibrateCircle(ob.id, ob.size, ob.increment)
+      
+    //console.log("calibrate",ob.id, ob.size, ob.increment)
   }
 
 
   jQuery('#stars').css('height', '100vh')
   jQuery('#stars').css('width', '100vw')
+  jQuery('#stars').css('top', 0)
+  jQuery('#stars').css('left', 0)
+  
+  
 }
-
-
-jQuery(window).resize(function () {
-  _w = jQuery(window).width()
-  _h = jQuery(window).height()
-
-  if (_w > _h) {
-    increment = 'vh'
-  } else {
-    increment = 'vw'
-  }
-  aspect = _w / _h
-  reposition_screen()
-
-})
-
-function setSlideContent(slide, id) {
-console.log("setSlideContent", slide, id )
-  if (posts[id] != undefined) {
-    jQuery("#slide" + id + " h2").html(posts[id].title)
-    jQuery("#slide" + id + " section div.content").html(posts[id].content)
-    $carousel.slick('slickGoTo', slide);
-  } else {
-    //console.log("post undefined", slide, id, posts)
-  }
-}
-
-
-
-
-
-function setText(){
-  if (typeof languages !== 'undefined') { // wpml present
-
-    if(state.language == languages.default){//use defaults
-      page_title = posts[state.post_id].title + " | " + site_title;
-    } else { // get data. 
-
-      page_title = retreiveML('posts',"title",state.post_id,state.language)
-      console.log("new page title " + page_title)
-
-    }
-
-  } else { // wpml not present, use default
-    
-
-    page_title = posts[state.post_id].title + " | " + site_title;
-    
-  }
-  //set variables
-  document.title = page_title;
-}
-
-
-
-
-function setContent(dest, object_id, object) {
-  state.slide = posts_nav[object_id] //
-  state.object_id = posts_nav[object_id]
-
-  console.log("setContent",dest,object_id,object,posts[object_id])
-  if (posts[object_id] != undefined) {
-    //console.log("selected post", posts[object_id])
-    state.post_id = object_id;
-    setText();
-    
-
-    setImage(object_id, //post id (ideally)
-      "featured", //destination = id of empty tag and template waiting for its goodness
-      'featured_media', //the attr of the objectg that we're passing, in this case, this is featured media
-      "flip" // the type of effect that awaits
-    );
-
-   
-    var video_path = uploads_path + "" + posts[object_id].featured_video.video_path;
-
-    
-    setVideo(posts[object_id].featured_video.video_id,"#bg-video")
-    setRelated(posts[object_id])
-    if (posts[object_id].screen_images.length >0){
-      
-      setScreenImages(posts[object_id].screen_images,"#screen-image","circleViewer");//array of images, destination, imagedisplaycallback
-    } else {
-      jQuery('#screen-image-container').html('')
-    }
-//   console.log("tags", posts[object_id].tags)
-
-  }
-
-  setSlideContent(dest, object_id)
-
+function calibrateCircle(id, size, increment) {
   /*
-        for category wheels
-        if(cat_children.length>0){
-          for(c=0;c<cat_children.length;c++){
-            
-            data.push({
-                  id : categories[cat_children[c]].id,
-                  title : categories[cat_children[c]].name,
-                  type: "category",
-                  children: categories[cat_children[c]].children
-              }
-            )
-            
-          }
-          
+  console.log("calibrate",id,size,increment)
+ 
+   jQuery(id).css('width', size + increment)
+   jQuery(id).css('height', size + increment)
+   jQuery(id).css('margin-left', ((size / 2) * -1) + increment)
+   jQuery(id).css('margin-top', ((size / 2) * -1) + increment)
+*/
+ 
+ }
+ 
 
-          makeWheelNav(dest, data, inner_subnav_params)
-          //
 
-        
 
-      } else {
-        
-      }*/
-
-}

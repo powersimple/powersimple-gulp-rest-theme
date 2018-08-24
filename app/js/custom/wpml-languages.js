@@ -28,7 +28,7 @@ function initLanguageMenu(container){
                 if (code != languages.default) { // not the default language
 
                     if (languages[code].data == undefined) { // tests to see if this language data is loaded or not
-                        console.log("fetch language for the first time ", code)
+                        //console.log("fetch language for the first time ", code)
                         getStaticJSON(code, setLanguage, code)//load language data. Passing language code as first param
                         
                     } else {

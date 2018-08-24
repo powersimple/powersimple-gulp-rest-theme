@@ -360,8 +360,8 @@ function get_post_tags($object){
 				"title"=>get_post_meta($post_id,"project_title",true),
 				"url"=>get_post_meta($post_id,"project_url",true),
 				"client"=>get_post_meta($post_id,"project_client",true),
-				"agency"=>get_post_meta($post_id,"agency",true)
-				
+				"agency"=>get_post_meta($post_id,"project_agency",true),
+				"era"=>get_post_meta($post_id,"project_era",true)
 			);
 
 

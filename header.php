@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> class="no-js no-svg">
+<html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link rel="profile" href="http://gmpg.org/xfn/11">
 
 <?php wp_head(); 
@@ -31,5 +31,17 @@
 
 
 <body>
+<header>
+
+<div id="laurel">
+ <?=get_bloginfo('description')?>
+</div>
+  <div id="logo">
+  <?php 
+  include "svg/powersimple.svg";
+?>
+</div>
+</header>
+<canvas id="matrix"></canvas>
 <div id="stars"></div>
 

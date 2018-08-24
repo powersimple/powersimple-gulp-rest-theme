@@ -76,10 +76,10 @@ function setRelated(post) {
                 var src = '' // default empty
                 var media_id = getMediaID(post_id,'featured_media') // returns media id or zero if media object is undefined
                 
-                if(media_id != 0){
+                if(media_id > 0){
                   src = getImageSRC(media_id,'#related ul li','thumbnail')
                 }
-                //console.log("set related",src,post_id);
+                console.log("set related","src="+src,post_id,media_id);
                 if(src !=''){
                    
                     bg_image = ' style="background-image:url('+src+')"'
@@ -113,9 +113,10 @@ function setRelated(post) {
   function selectRelatedPost(post_id){
 
         if(posts[post_id].type == 'project'){
-            setSliderNotch(1)//Projects hardset to notch one.
-            setContent(1, post_id, posts[post_id].type)
-            console.log(id,"projects ",posts[id])
+           setProject(post_id)
+           // setSliderNotch(1)//Projects hardset to notch one.
+           // setContent(1, post_id, posts[post_id].type)
+           
         }
 
      
@@ -149,16 +150,21 @@ function setRelated(post) {
 
           bg_image = ' style="background-image:url(' + src + ')"'
         }
-        $(this).on("click",function(){
+        $(this).on("click",function(e){
+          e.preventDefault();
             selectRelatedPost(post_id);
 
-        }).on("mouseover",function(){
+        }).on("mouseover",function(e){
+          e.preventDefault();
            console.log("related"+post_id,"mouseover");
-        }).on("mouseout",function(){
+        }).on("mouseout",function(e){
+          e.preventDefault();
         //    console.log("related"+post_id,"mouseoout");
-        }).on("mousedown",function(){
+        }).on("mousedown",function(e){
+          e.preventDefault();
         //    console.log("related"+post_id,"mousedown");
-        }).on("mouseup",function(){
+        }).on("mouseup",function(e){
+          e.preventDefault();
         //    console.log("related"+post_id,"mouseup");
         });
 

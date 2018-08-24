@@ -11,6 +11,7 @@
     border-radius: 50%;
      overflow:hidden;
 }
+
 #inner-ring{
     position: absolute;
     top: 50%;
@@ -24,6 +25,7 @@
     border-radius: 50%;
      overflow:hidden;
 }
+
 #inner-subring{
     position: absolute;
     top: 50%;
@@ -38,11 +40,91 @@
      overflow:hidden;
 }
 
-#outer-ring, #inner-ring,
-#inner-subring {
-  //  background-color: rgba(255, 190, 0, 0.2);
+#screen.horizontal {
+    #outer-ring{
+        width: 80vh !important;
+        height: 80vh !important;
+        margin-left: -40vh !important;
+        margin-top: -40vh  !important;
+    }
+    #inner-ring{
+        width: 72vh !important;
+        height: 72vh !important;
+        margin-left: -36vh !important;
+        margin-top: -36vh  !important;
+    }
+    #inner-subring{
+    
+        width: 65vh !important;
+        height: 65vh !important;
+        margin-left: -32.5vh !important;
+        margin-top: -32.5vh;
+    }
+}
+#screen.vertical {
+    #outer-ring{
+        width: 80vw !important;
+        height: 80vw !important;
+        margin-left: -40vw !important;
+        margin-top: -40vw  !important;
+    }
+    #inner-ring{
+        width: 72vw !important;
+        height: 72vw !important;
+        margin-left: -36vw !important;
+        margin-top: -36vw  !important;
+    }
+    #inner-subring{
+    
+        width: 65vw !important;
+        height: 65vw !important;
+        margin-left: -32.5vw !important;
+        margin-top: -32.5vw;
+    }
 }
 
+#screen.horizontal.maxed {
+    #outer-ring{
+        width: 90vh !important;
+        height: 90vh!important;
+        margin-left: -45vh !important;
+        margin-top: -45vh  !important;
+    }
+    #inner-ring{
+        width: 80vh !important;
+        height: 80vh !important;
+        margin-left: -40vh !important;
+        margin-top: -40vh  !important;
+    }
+    #inner-subring{
+    
+        width: 67vh !important;
+        height: 67vh !important;
+        margin-left: -33.5vh !important;
+        margin-top: -33.5vh;
+    }
+}
+#screen.vertical.maxed {
+    #outer-ring{
+        width: 96vw !important;
+        height: 96vw !important;
+        margin-left: -48vw !important;
+        margin-top: -48vw  !important;
+    }
+    #inner-ring{
+        width: 80vw !important;
+        height: 80vw !important;
+        margin-left: -40vw !important;
+        margin-top: -40vw  !important;
+    }
+    #inner-subring{
+    
+        width: 67vw !important;
+        height: 67vw !important;
+        margin-left: -33.5vw !important;
+        margin-top: -33.5vw;
+    }
+}
 
 .wheelNavGitHub {
     height: 210px;

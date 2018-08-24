@@ -1,39 +1,22 @@
-var wheel_nav_params = {
-        'maxPercent': 1,
-        'min': 0.91,
-        'max': 1,
-        'sel_min': 0.91,
-        'sel_max': 1,
-    },
-    inner_nav_params = {
-        'maxPercent': 1,
-        'min': 0.91,
-        'max': 1,
-        'sel_min': 0.91,
-        'sel_max': 1.0,
-    },
-    inner_subnav_params = {
-        'maxPercent': 1,
-        'min': 0.90,
-        'max': 1,
-        'sel_min': 0.90,
-        'sel_max': 1.0,
-    },
+
+        
     last_outer_notch = 0,
     last_inner_notch = 0
 var menu_raphael = {}
 var wheels = {}
 
+ 
 function makeWheelNav(dest, data, _p) {
-
+    setWheelNavParams()
+    _p = wheel_nav_params
 
     if (dest == "outer-nav") {
         child_dest = "inner-nav"
         //console.log("makeWheelNav", dest, data, _p);
-        child_params = inner_nav_params;
+        child_params = wheel_nav_params;
     } else if (dest == "inner-nav") {
         child_dest = 'inner-subnav'
-        child_params = inner_nav_params;
+        child_params = wheel_nav_params;
     }
 
 
@@ -57,7 +40,6 @@ function makeWheelNav(dest, data, _p) {
     wheels[dest].sliceSelectedPathCustom.minRadiusPercent = _p.sel_min;
     wheels[dest].sliceSelectedPathCustom.maxRadiusPercent = _p.sel_max;
     wheels[dest].titleSelectedAttr = {
-
     };
 
     for (i = 0; i < data.length; i++) {
@@ -110,7 +92,6 @@ function makeWheelNav(dest, data, _p) {
 
 
 
-
         wheels[dest].navItems[i].navigateFunction = function () {
             /*Click event for wheel*/
 
@@ -146,7 +127,7 @@ function triggerWheelNav(notch) {
         popAWheelie("inner-nav")
         if (this_notch.children.length > 0) {
 
-            makeWheelNav("inner-nav", this_notch.children, inner_nav_params)
+            makeWheelNav("inner-nav", this_notch.children, wheel_nav_params)
         }
 
 
@@ -209,13 +190,13 @@ function triggerWheelNav(notch) {
             //receate the inner ring for the parent
             wheels["inner-nav"].navigateWheel(data_nav[this_notch.parent].slice)
             //now we can dial the inner ring where it belongs
-            makeWheelNav("inner-subnav", data_nav[this_notch.parent].children, inner_nav_params) //receate the inner ring for the parent
+            makeWheelNav("inner-subnav", data_nav[this_notch.parent].children, wheel_nav_params) //receate the inner ring for the parent
             wheels["inner-subnav"].navigateWheel(this_notch.slice) //steer to right slice
 
             last_inner_notch = this_notch.parent //I am your father
         } else {
             if (wheels["inner-subnav"] == undefined) {
-                makeWheelNav("inner-subnav", this_notch.children, inner_nav_params)//birth of the inner ring
+                makeWheelNav("inner-subnav", this_notch.children, wheel_nav_params)//birth of the inner ring
 
             } else {
                 wheels[this_dest].navigateWheel(this_notch.slice) //steer inner ring

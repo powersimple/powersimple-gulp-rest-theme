@@ -101,7 +101,7 @@ function getLanguageData($id,$type,$code){
         $result = getPostTranslation($id);
     }
 
-    return $result;
+    return @$result;
 }
 
 

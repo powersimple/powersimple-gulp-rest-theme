@@ -31,68 +31,24 @@
     margin-left:-50vh;
     margin-top:-50vh;
 }
-
-
-.circular-menu {
-    
-    margin: 0 auto;
-    position: absolute;
-    top:50vh;
-    left:50vw;
-  
-    z-index: 500;
-    .circle {
-        opacity: 0;
-        transform: scale(0);
-        transition: all 0.4s ease-out;
-    }
-
-    .open.circle {
-        width:100%;
-        height:100%;
-        opacity: 1;
-
-        transform: scale(1);
-    }
-
-    .circle a {
-        text-decoration: none;
-        color: white;
-        display: block;
-        height: auto;
-        width:auto;
-        
-        line-height: 40px;
-        margin-left: -20px;
-        margin-top: -20px;
-        position: absolute;
-        text-align: center;
-    }
-
-    .circle a:hover {
-        color: #eef;
-    }
-
-    .menu-button {
-        position: absolute;
-        top: calc(50% - 30px);
-        left: calc(50% - 30px);
-        text-decoration: none;
-        text-align: center;
-        color: #444;
-        border-radius: 50%;
-        display: block;
-        height: 40px;
-        width: 40px;
-        line-height: 40px;
-        padding: 10px;
-        background: #dde;
-    }
-
-    .menu-button:hover {
-        opacity: 0.5;
-    }
+#screen{
+    transition: transform 1s;
 }
+
+#screen.horizontal.maxed{
+
+    transform: translate(-50vh,50vh);
+    transform-origin: center center;
+}
+#screen.horizontal.maxed .slick-track{
+    height:50vh;
+    top:50vh;
+}
+#screen.vertical.maxed .slick-track{
+    height:50vh;
+    top:50vh;
+}
+
 #screen-image-wrap{
     //background:rgba(0,250,0,0.1);
     height: 100%;
@@ -136,7 +92,7 @@
     }
     #screen-image-container {
         border-radius: 50%;
-        border: 1px solid #ccc;
+       // border: 1px solid #ccc;
         overflow: hidden;
         width: 100%;
         height: 100%;

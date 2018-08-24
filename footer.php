@@ -1,4 +1,4 @@
-</div>
+
 <footer>
 <div id="footer"> 
     
@@ -11,6 +11,6 @@
 		
 
 <?php wp_footer(); ?>
-
+<div id="preload"></div>
 </body>
 </html>

@@ -2,7 +2,7 @@
 var camera, scene, renderer, stars = []
 
 // assign three.js objects to each variable
-function init () {
+function initStars () {
 
   // camera
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
@@ -71,7 +71,7 @@ function render () {
   animateStars()
 }
 
-init()
+initStars()
 addSphere()
 render()
 jQuery(window).on('resize', function () {

@@ -22,11 +22,11 @@ function setMenus(data, dest) {
         menus[data[i].slug].name = data[i].name
         menus[data[i].slug].slug = data[i].slug
         menus[data[i].slug].items = setMenu(data[i].slug, data[i].items)
-        console.log()
-        console.log("slug", data[i].slug)
+        
+        //console.log("slug", data[i].slug)
     }
    buildMenuData();
-   console.log("raw menu data", menus)
+   //console.log("raw menu data", menus)
     initSite()
 }
 
@@ -113,7 +113,7 @@ function setLinearDataNav(m,data) { // sets local data into linear array for whe
         dest = 'outer-nav'
 
     // THESE 3 NESTED LOOPS POPULATE THE data_nav array WITH WHAT IT NEEDS TO BUILD THE WHEEL AND HAVE IT BE CONTROLLED BY THE ORDERED NOTCHES FROM THE NAV
-    console.log(m,data)
+    //console.log(m,data)
     for (var d = 0; d < data.length; d++) { //outer
         dest = 'outer-nav'
         data[d].dest = dest;
@@ -149,16 +149,16 @@ function setLinearDataNav(m,data) { // sets local data into linear array for whe
         outer_counter++;
 
     }
-     console.log("dataNav",m, menus[m].data_nav);
+     //console.log("dataNav",m, menus[m].data_nav);
      console.log("slug_nav",m, menus[m].slug_nav);
 }
-function getSlug(item){
-    console.log(item)
+function getSlug(item,_of,_array,_it){
+   var slug = item.slug
     if (posts[item.object_id] != undefined){
-        return posts[item.object_id].slug
-    } else {
-        return item.slug
+        slug = posts[item.object_id].slug
     }
+  //  console.log("get slug",slug,item.object_id,item,_of,_array,_it)
+    return slug
     
 }
 function buildMenuData() {
@@ -206,7 +206,7 @@ function buildMenuData() {
                         var grandchildren = [];
                         var nested_children = menus[m].items[this_menu[a].children[c]].children;
                         for (var g = 0; g < nested_children.length; g++) {
-                             slug = getSlug(nested_children[g])
+                            slug = getSlug(menus[m].items[nested_children[g]],g,"g",nested_children,g)
                             grandchildren.push( // data for childe menus
                                 {
                                     "title": menus[m].items[nested_children[g]].title,
@@ -220,7 +220,7 @@ function buildMenuData() {
 
                         }
 
-                        slug = getSlug(this_menu[a].children[c])
+                    slug = getSlug(menus[m].items[this_menu[a].children[c]],"c",this_menu[a].children[c],c)
                       //console.log('bad slug', menus[m].items[this_menu[a].children[c]])
                         children.push( // data for child menus
                             {
@@ -234,8 +234,8 @@ function buildMenuData() {
 
                     }
 
-                    console.log('outer', this_menu[a].object_id,  this_menu[a])
-                    slug = getSlug(this_menu[a])
+                    //console.log('outer', this_menu[a].object_id,  this_menu[a])
+                    slug = getSlug(this_menu[a],"o",this_menu,a)
                     data.push({ // data for top level
                         "title": this_menu[a].title,
                         //"id": this_menu[a].id,
