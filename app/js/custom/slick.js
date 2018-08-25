@@ -33,7 +33,7 @@ function setSlide(slide,id){
   */
   slide = '\n<div><div id="slide'+id+'" data-id="'+id+'" class="slide-wrap">'
   slide += '\n\t<h2></h2>'
-  //slide += '\n\t<div class="img-wrap"></div>'
+  slide += '\n\t<div class="img-wrap"></div>'
   slide += '\n\t<section><div class="content"></div></section>'
   slide +='\n</div></div>\n';
   return slide
@@ -44,7 +44,7 @@ function setSlides(m){
   var content = ''
   var title = ''
   var slides = ''
-console.log("Begin Render Slides",m,"|")
+//console.log("Begin Render Slides",m,"|")
  
   if(posts == undefined){
     //console.log("No Posts Data Yet",  posts)

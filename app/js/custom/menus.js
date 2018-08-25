@@ -26,7 +26,7 @@ function setMenus(data, dest) {
         //console.log("slug", data[i].slug)
     }
    buildMenuData();
-   //console.log("raw menu data", menus)
+   console.log("raw menu data", menus)
     initSite()
 }
 
@@ -153,12 +153,15 @@ function setLinearDataNav(m,data) { // sets local data into linear array for whe
      console.log("slug_nav",m, menus[m].slug_nav);
 }
 function getSlug(item,_of,_array,_it){
-   var slug = item.slug
-    if (posts[item.object_id] != undefined){
-        slug = posts[item.object_id].slug
-    }
-  //  console.log("get slug",slug,item.object_id,item,_of,_array,_it)
-    return slug
+    if(item!=undefined){
+        var slug = item.slug
+        if (posts[item.object_id] != undefined){
+            slug = posts[item.object_id].slug
+        }
+    } else {
+  //  console.log("get slug item undefined",slug,item.object_id,item,_of,_array,_it)
+}    
+  return slug
     
 }
 function buildMenuData() {

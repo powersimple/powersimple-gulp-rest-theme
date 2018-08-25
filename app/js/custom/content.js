@@ -1,9 +1,11 @@
 function setSlideContent(slide, id) {
     //console.log("setSlideContent", slide, id )
     if (posts[id] != undefined) {
-        console.log("title length",posts[id].title,posts[id].title.length)
+        var title_length = posts[id].title.length,
+        content_length = posts[id].content.length
+        
         jQuery("#slide" + id + " h2").html(posts[id].title)
-
+        console.log("title="+title_length,"content"+content_length)
 
       jQuery("#slide" + id + " section div.content").html(posts[id].content)
       $carousel.slick('slickGoTo', slide);
@@ -24,7 +26,7 @@ function setSlideContent(slide, id) {
       } else { // get data. 
   
         page_title = retreiveML('posts',"title",state.post_id,state.language)
-        console.log("new page title " + page_title)
+        //console.log("new page title " + page_title)
   
       }
   
@@ -44,6 +46,8 @@ function setSlideContent(slide, id) {
   function setContent(dest, object_id, object) {
     state.slide = posts_nav[object_id] //
     state.object_id = posts_nav[object_id]
+   
+
     jQuery('#projects-content').fadeOut();
     jQuery('#project-info').fadeOut();
   

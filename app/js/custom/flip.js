@@ -27,7 +27,7 @@
      * Model declaration
      */
     var Flip = function ($el, options, callback) {
-        console.log('flip',$el,options,callback)
+        //console.log('flip',$el,options,callback)
         // Define default setting
         this.setting = {
             axis: "y",

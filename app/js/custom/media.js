@@ -33,7 +33,7 @@ function getMediaID(post_id,attr){
 }
 function getImageSRC(id, dest, size) { // id = media id
 
-    console.log("set image", id, dest, size, media[id])
+   // console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
 
 
@@ -48,14 +48,14 @@ function getImageSRC(id, dest, size) { // id = media id
 
             if (size == 'square'||size==1) { // if for a square area
                 src = getSquareVersion(media[id].meta.sizes, dest) // get the size version of the sq
-               console.log('square',src)
+         //      console.log('square',src)
             } else if (size == 'thumbnail') {
                 src = getSquareVersion(media[id].meta.sizes, dest)
-                 console.log('thumbnail', src)
+          //       console.log('thumbnail', src)
             } else {
                 
                 src = media[id].meta.sizes[size] // returns specified size
-                console.log('default', size, media[id].meta.sizes,src)
+                //console.log('default', size, media[id].meta.sizes,src)
             }
    
         }
@@ -286,15 +286,16 @@ function setVideo(id, dest) {
         var src = media[id].file; // this defaults to the basic file
 
         var video = jQuery(dest + ' video source').attr("src", full_path + src);
-        jQuery(dest).css("display", "block");
+        ;
         //    console.log("unhide video player")
 
         jQuery(dest + ' video')[0].load();
 
         video = jQuery(dest + ' video source').attr("src", full_path + src);
+        jQuery(dest).fadeIn()
     } else {
         //    console.log("no video, hide player")
-        jQuery(dest).css("display", "none");
+        jQuery(dest).fadeOut();
     }
 }
 

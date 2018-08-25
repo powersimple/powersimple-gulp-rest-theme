@@ -22,7 +22,15 @@
 
 
 }
-
+#main-menu {
+   width:100vh;
+   height:100vh;
+   position: absolute;
+   left:50%;
+   top:50%;
+    margin-left:-50vh;
+    margin-top:-50vh;
+}
 #screen{
     transition: transform 1s;
 }
@@ -31,10 +39,6 @@
 
     transform: translate(-50vh,50vh);
     transform-origin: center center;
-}
-#screen.horizontal.maxed .slick-track{
-    height:50vh;
-    top:50vh;
 }
 #screen.vertical.maxed .slick-track{
     height:50vh;

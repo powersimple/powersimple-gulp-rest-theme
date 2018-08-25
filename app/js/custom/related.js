@@ -79,7 +79,7 @@ function setRelated(post) {
                 if(media_id > 0){
                   src = getImageSRC(media_id,'#related ul li','thumbnail')
                 }
-                console.log("set related","src="+src,post_id,media_id);
+               // console.log("set related","src="+src,post_id,media_id);
                 if(src !=''){
                    
                     bg_image = ' style="background-image:url('+src+')"'
@@ -145,7 +145,7 @@ function setRelated(post) {
         if (media_id != 0) {
           src = getImageSRC(media_id, '.rel-tooltip', 'thumbnail');
         }
-        console.log("set related",src,post_id,media_id);
+        //console.log("set related",src,post_id,media_id);
         if (src != '') {
 
           bg_image = ' style="background-image:url(' + src + ')"'
@@ -156,7 +156,7 @@ function setRelated(post) {
 
         }).on("mouseover",function(e){
           e.preventDefault();
-           console.log("related"+post_id,"mouseover");
+          // console.log("related"+post_id,"mouseover");
         }).on("mouseout",function(e){
           e.preventDefault();
         //    console.log("related"+post_id,"mouseoout");

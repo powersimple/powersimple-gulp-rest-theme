@@ -1,10 +1,12 @@
 var increment = 'vw';
-orientation = 'horizontal',
-orientation_last = 'horizontal',
+oriented = 'horizontal', // BECAUSE iOS doesn't like the variable orientation
+
+orientation_last = '',
 slider_orientation = 'vertical', // 
 dimension = 'wide',
 maxed = false,
 maxed_last = false,
+slider_menu = 'wheel-menu',
   _w = jQuery(window).width(),
   _h = jQuery(window).height(),
   aspect = _w / _h,
@@ -15,6 +17,7 @@ jQuery(document).ready(function () {
 
 
   jQuery(".wheelnav-outer-nav-title").css("display:none;");
+
   reposition_screen()
 
 
@@ -25,24 +28,29 @@ jQuery(window).resize(function () {
 
   if (_w > _h) {
     increment = 'vh'
+    oriented = 'horizontal'
+   // orientation_last = 'horizontal'
   } else {
     increment = 'vw'
+    oriented = 'vertical'
+    //orientation_last = 'vertical'
   }
   aspect = _w / _h
   reposition_screen()
 
 })
+
 function initSite() { // called from the menus callback
   //console.log("load",data_loaded.length,data_score)
   if (menu == undefined) {
     window.setTimeout(initSite(), 100);
   }
 
-  var m = 'wheel-menu'
+ 
 
 
-  setSlider(m)
-  setSlides(m)
+  setSlider()
+  setSlides('wheel-menu')
   setSlides('projects')
   
   //console.log("menu", menu_config[m].location, items)
@@ -52,7 +60,7 @@ function initSite() { // called from the menus callback
 
   if (location.hash != '') {
     slug = location.hash.replace("#", "");
-    console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
+    //console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
 
     setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
@@ -101,28 +109,29 @@ function setWheelNavParams(){
 function positionElements() { // manages classes for sizes, orientation and aspect
 
   var elements = ["#main","header","footer","#related","#screen"]
-  orientation = 'horizontal'
+  
   slider_orientation: 'vertical'
   dimension = 'wide'
   
 
 
   if (_w < _h) { // sets orientation
-    orientation = 'vertical'
+   
+    oriented = 'vertical'
+    
     slider_orientation = 'horizontal'
-    if(orientation_last != 'horizontal'){
-      console.log("orientation changed to "+orientation)
-     orientation_last = 'vertical';
-    }
-
-
+  
   } else {
-    orientation = 'horizontal'
+  
+    oriented = 'horizontal'
     slider_orientation = 'vertical'
-    if(orientation_last != 'vertical'){
-      console.log("orientation changed to "+orientation)
-      orientation_last = 'horizontal';
-    }
+    
+  }
+  
+  if(orientation_last != oriented){ // this triggers on orientation change
+    orientation_last = oriented;
+//    console.log("orientation changed to "+oriented,orientation_last)
+    setSlider()
   }
 
 
@@ -146,19 +155,25 @@ function positionElements() { // manages classes for sizes, orientation and aspe
   } 
 
   for(e=0;e<elements.length;e++){
-    console.log(elements[e],e,orientation)
+  //  console.log("set orientation",elements[e],oriented)
     jQuery(elements[e]).removeClass()
-    jQuery(elements[e]).addClass(orientation)
+    
     jQuery(elements[e]).addClass(dimension)
+    jQuery(elements[e]).addClass(oriented)
+    
+
     if(maxed == true){
       jQuery(elements[e]).addClass('maxed')  
     }
   }
-  console.log("slider-wrap",orientation,slider_orientation)
-  jQuery('#slider-wrap').removeClass(orientation)
+  //console.log("slider-wrap",orientation,slider_orientation)
+
+  jQuery('#slider-wrap').removeClass()
   jQuery('#slider-wrap').addClass(slider_orientation)
+  jQuery('#slider-wrap').addClass(dimension)
   
 }
+
 
 function positionProjector() {
   var top = 50,
@@ -286,7 +301,7 @@ function reposition_screen() {
   if ((aspect < 0.75 && _w < 768) || (aspect > 1.5 && _h < 640)) { // MAX OUT the wheel size below 768 and wide or narrow 
     maxed = true;
     if(maxed_last == false){
-      console.log("maxed")
+      //console.log("maxed")
     
     
       maxed_last = true;
@@ -322,7 +337,7 @@ function reposition_screen() {
     maxed = false;
     if(maxed_last == true){
       
-      console.log("not maxed")
+      //console.log("not maxed")
       maxed_last = false;
      
      
@@ -370,6 +385,5 @@ function calibrateCircle(id, size, increment) {
  
  }
  
-
 
 

@@ -1,10 +1,12 @@
 var increment = 'vw';
-orientation = 'horizontal',
-orientation_last = 'horizontal',
+oriented = 'horizontal', // BECAUSE iOS doesn't like the variable orientation
+
+orientation_last = '',
 slider_orientation = 'vertical', // 
 dimension = 'wide',
 maxed = false,
 maxed_last = false,
+slider_menu = 'wheel-menu',
   _w = jQuery(window).width(),
   _h = jQuery(window).height(),
   aspect = _w / _h,
@@ -15,6 +17,7 @@ jQuery(document).ready(function () {
 
 
   jQuery(".wheelnav-outer-nav-title").css("display:none;");
+
   reposition_screen()
 
 
@@ -25,24 +28,29 @@ jQuery(window).resize(function () {
 
   if (_w > _h) {
     increment = 'vh'
+    oriented = 'horizontal'
+   // orientation_last = 'horizontal'
   } else {
     increment = 'vw'
+    oriented = 'vertical'
+    //orientation_last = 'vertical'
   }
   aspect = _w / _h
   reposition_screen()
 
 })
+
 function initSite() { // called from the menus callback
   //console.log("load",data_loaded.length,data_score)
   if (menu == undefined) {
     window.setTimeout(initSite(), 100);
   }
 
-  var m = 'wheel-menu'
+ 
 
 
-  setSlider(m)
-  setSlides(m)
+  setSlider()
+  setSlides('wheel-menu')
   setSlides('projects')
   
   //console.log("menu", menu_config[m].location, items)
@@ -52,7 +60,7 @@ function initSite() { // called from the menus callback
 
   if (location.hash != '') {
     slug = location.hash.replace("#", "");
-    console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
+    //console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
 
     setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
@@ -101,28 +109,29 @@ function setWheelNavParams(){
 function positionElements() { // manages classes for sizes, orientation and aspect
 
   var elements = ["#main","header","footer","#related","#screen"]
-  orientation = 'horizontal'
+  
   slider_orientation: 'vertical'
   dimension = 'wide'
   
 
 
   if (_w < _h) { // sets orientation
-    orientation = 'vertical'
+   
+    oriented = 'vertical'
+    
     slider_orientation = 'horizontal'
-    if(orientation_last != 'horizontal'){
-      console.log("orientation changed to "+orientation)
-     orientation_last = 'vertical';
-    }
-
-
+  
   } else {
-    orientation = 'horizontal'
+  
+    oriented = 'horizontal'
     slider_orientation = 'vertical'
-    if(orientation_last != 'vertical'){
-      console.log("orientation changed to "+orientation)
-      orientation_last = 'horizontal';
-    }
+    
+  }
+  
+  if(orientation_last != oriented){ // this triggers on orientation change
+    orientation_last = oriented;
+//    console.log("orientation changed to "+oriented,orientation_last)
+    setSlider()
   }
 
 
@@ -146,19 +155,25 @@ function positionElements() { // manages classes for sizes, orientation and aspe
   } 
 
   for(e=0;e<elements.length;e++){
-    console.log(elements[e],e,orientation)
+  //  console.log("set orientation",elements[e],oriented)
     jQuery(elements[e]).removeClass()
-    jQuery(elements[e]).addClass(orientation)
+    
     jQuery(elements[e]).addClass(dimension)
+    jQuery(elements[e]).addClass(oriented)
+    
+
     if(maxed == true){
       jQuery(elements[e]).addClass('maxed')  
     }
   }
-  console.log("slider-wrap",orientation,slider_orientation)
-  jQuery('#slider-wrap').removeClass(orientation)
+  //console.log("slider-wrap",orientation,slider_orientation)
+
+  jQuery('#slider-wrap').removeClass()
   jQuery('#slider-wrap').addClass(slider_orientation)
+  jQuery('#slider-wrap').addClass(dimension)
   
 }
+
 
 function positionProjector() {
   var top = 50,
@@ -286,7 +301,7 @@ function reposition_screen() {
   if ((aspect < 0.75 && _w < 768) || (aspect > 1.5 && _h < 640)) { // MAX OUT the wheel size below 768 and wide or narrow 
     maxed = true;
     if(maxed_last == false){
-      console.log("maxed")
+      //console.log("maxed")
     
     
       maxed_last = true;
@@ -322,7 +337,7 @@ function reposition_screen() {
     maxed = false;
     if(maxed_last == true){
       
-      console.log("not maxed")
+      //console.log("not maxed")
       maxed_last = false;
      
      
@@ -370,7 +385,6 @@ function calibrateCircle(id, size, increment) {
  
  }
  
-
 
 
 
@@ -473,9 +487,11 @@ function calibrateCircle(id, size, increment) {
 function setSlideContent(slide, id) {
     //console.log("setSlideContent", slide, id )
     if (posts[id] != undefined) {
-        console.log("title length",posts[id].title,posts[id].title.length)
+        var title_length = posts[id].title.length,
+        content_length = posts[id].content.length
+        
         jQuery("#slide" + id + " h2").html(posts[id].title)
-
+        console.log("title="+title_length,"content"+content_length)
 
       jQuery("#slide" + id + " section div.content").html(posts[id].content)
       $carousel.slick('slickGoTo', slide);
@@ -496,7 +512,7 @@ function setSlideContent(slide, id) {
       } else { // get data. 
   
         page_title = retreiveML('posts',"title",state.post_id,state.language)
-        console.log("new page title " + page_title)
+        //console.log("new page title " + page_title)
   
       }
   
@@ -516,6 +532,8 @@ function setSlideContent(slide, id) {
   function setContent(dest, object_id, object) {
     state.slide = posts_nav[object_id] //
     state.object_id = posts_nav[object_id]
+   
+
     jQuery('#projects-content').fadeOut();
     jQuery('#project-info').fadeOut();
   
@@ -607,7 +625,7 @@ function setSlideContent(slide, id) {
      * Model declaration
      */
     var Flip = function ($el, options, callback) {
-        console.log('flip',$el,options,callback)
+        //console.log('flip',$el,options,callback)
         // Define default setting
         this.setting = {
             axis: "y",
@@ -1203,7 +1221,7 @@ function getMediaID(post_id,attr){
 }
 function getImageSRC(id, dest, size) { // id = media id
 
-    console.log("set image", id, dest, size, media[id])
+   // console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
 
 
@@ -1218,14 +1236,14 @@ function getImageSRC(id, dest, size) { // id = media id
 
             if (size == 'square'||size==1) { // if for a square area
                 src = getSquareVersion(media[id].meta.sizes, dest) // get the size version of the sq
-               console.log('square',src)
+         //      console.log('square',src)
             } else if (size == 'thumbnail') {
                 src = getSquareVersion(media[id].meta.sizes, dest)
-                 console.log('thumbnail', src)
+          //       console.log('thumbnail', src)
             } else {
                 
                 src = media[id].meta.sizes[size] // returns specified size
-                console.log('default', size, media[id].meta.sizes,src)
+                //console.log('default', size, media[id].meta.sizes,src)
             }
    
         }
@@ -1456,15 +1474,16 @@ function setVideo(id, dest) {
         var src = media[id].file; // this defaults to the basic file
 
         var video = jQuery(dest + ' video source').attr("src", full_path + src);
-        jQuery(dest).css("display", "block");
+        ;
         //    console.log("unhide video player")
 
         jQuery(dest + ' video')[0].load();
 
         video = jQuery(dest + ' video source').attr("src", full_path + src);
+        jQuery(dest).fadeIn()
     } else {
         //    console.log("no video, hide player")
-        jQuery(dest).css("display", "none");
+        jQuery(dest).fadeOut();
     }
 }
 
@@ -1517,7 +1536,7 @@ function setMenus(data, dest) {
         //console.log("slug", data[i].slug)
     }
    buildMenuData();
-   //console.log("raw menu data", menus)
+   console.log("raw menu data", menus)
     initSite()
 }
 
@@ -1644,12 +1663,15 @@ function setLinearDataNav(m,data) { // sets local data into linear array for whe
      console.log("slug_nav",m, menus[m].slug_nav);
 }
 function getSlug(item,_of,_array,_it){
-   var slug = item.slug
-    if (posts[item.object_id] != undefined){
-        slug = posts[item.object_id].slug
-    }
-  //  console.log("get slug",slug,item.object_id,item,_of,_array,_it)
-    return slug
+    if(item!=undefined){
+        var slug = item.slug
+        if (posts[item.object_id] != undefined){
+            slug = posts[item.object_id].slug
+        }
+    } else {
+  //  console.log("get slug item undefined",slug,item.object_id,item,_of,_array,_it)
+}    
+  return slug
     
 }
 function buildMenuData() {
@@ -2190,30 +2212,33 @@ function psConsole(){
 }
 function setProject(post_id){
     
-    var slug = posts[post_id].slug
-    var slide = menus['projects'].slug_nav[slug]
-    console.log("set project",post_id,posts[post_id].slug,posts[post_id],"slugnum="+menus['projects'].slug_nav[slug])
-    
-    jQuery('#wheel-menu-content').fadeOut();
-    jQuery('#projects-content').fadeIn();
-    setSlideContent(slide,post_id)
-    setImage(post_id, //post id (ideally)
-        "featured", // @string destination = id of empty tag and template waiting for its goodness
-        'featured_media', //@string the attr of the objectg that we're passing, in this case, this is featured media
-        "flip" // @string the type of effect that awaits
-    );
-    var video_path = uploads_path + "" + posts[post_id].featured_video.video_path;
+    if(state.object_id != post_id){
+        var slug = posts[post_id].slug
+        var slide = menus['projects'].slug_nav[slug]
+    //  console.log("set project",post_id,posts[post_id].slug,posts[post_id],"slugnum="+menus['projects'].slug_nav[slug])
+        
+        jQuery('#wheel-menu-content').fadeOut();
+        jQuery('#projects-content').fadeIn();
+        setSlideContent(slide,post_id)
+        setImage(post_id, //post id (ideally)
+            "featured", // @string destination = id of empty tag and template waiting for its goodness
+            'featured_media', //@string the attr of the objectg that we're passing, in this case, this is featured media
+            "flip" // @string the type of effect that awaits
+        );
+        var video_path = uploads_path + "" + posts[post_id].featured_video.video_path;
 
-    
-    setVideo(posts[post_id].featured_video.video_id,"#bg-video")
-    projectInfo(post_id)
+        
+        setVideo(posts[post_id].featured_video.video_id,"#bg-video")
+        projectInfo(post_id)
+        state.object_id = post_id
+    }
 }
 function projectInfo(post_id){
     var template = jQuery('#project-info-template').html()
     var project_info = posts[post_id].project_info
     var loc = '#project-info'
     jQuery(loc).html(template)
-    console.log(posts[post_id].project_info,template)
+   // console.log(posts[post_id].project_info,template)
     var link = '<a href="'+project_info.url+'" target="_blank">Go to </a>'
     jQuery(loc + " .client").html(project_info.client)
     jQuery(loc + " .agency").html(project_info.agency)
@@ -2225,7 +2250,7 @@ function projectInfo(post_id){
     for (var i = 0; i < s.length; i++) {
         client_wrap.push(s[i]);
     }
-    console.log("client",client_wrap)
+    //console.log("client",client_wrap)
 }
 function setRelated(post) {
 
@@ -2308,7 +2333,7 @@ function setRelated(post) {
                 if(media_id > 0){
                   src = getImageSRC(media_id,'#related ul li','thumbnail')
                 }
-                console.log("set related","src="+src,post_id,media_id);
+               // console.log("set related","src="+src,post_id,media_id);
                 if(src !=''){
                    
                     bg_image = ' style="background-image:url('+src+')"'
@@ -2374,7 +2399,7 @@ function setRelated(post) {
         if (media_id != 0) {
           src = getImageSRC(media_id, '.rel-tooltip', 'thumbnail');
         }
-        console.log("set related",src,post_id,media_id);
+        //console.log("set related",src,post_id,media_id);
         if (src != '') {
 
           bg_image = ' style="background-image:url(' + src + ')"'
@@ -2385,7 +2410,7 @@ function setRelated(post) {
 
         }).on("mouseover",function(e){
           e.preventDefault();
-           console.log("related"+post_id,"mouseover");
+          // console.log("related"+post_id,"mouseover");
         }).on("mouseout",function(e){
           e.preventDefault();
         //    console.log("related"+post_id,"mouseoout");
@@ -2442,7 +2467,7 @@ function setSlide(slide,id){
   */
   slide = '\n<div><div id="slide'+id+'" data-id="'+id+'" class="slide-wrap">'
   slide += '\n\t<h2></h2>'
-  //slide += '\n\t<div class="img-wrap"></div>'
+  slide += '\n\t<div class="img-wrap"></div>'
   slide += '\n\t<section><div class="content"></div></section>'
   slide +='\n</div></div>\n';
   return slide
@@ -2453,7 +2478,7 @@ function setSlides(m){
   var content = ''
   var title = ''
   var slides = ''
-console.log("Begin Render Slides",m,"|")
+//console.log("Begin Render Slides",m,"|")
  
   if(posts == undefined){
     //console.log("No Posts Data Yet",  posts)
@@ -2493,16 +2518,17 @@ jQuery('a[data-slide]').click(function(e) {
   //$carousel.slick('slickGoTo', slideno);
 
 });
-function setSlider(m) {
- console.log("slider", orientation, menus, menus[m], m)
+function setSlider() {
+// console.log("slider", oriented, menus, menus[m], m)
+
 
   console.log("slider_oritentation", slider_orientation)
-  if(menus[m] !== 'undefined'){
+  if(menus['wheel-menu'] !== 'undefined'){
     jQuery("#slider").slider({
       orientation: slider_orientation,
       range: "max",
       min: 0,
-      max: menus[m].linear_nav.length,
+      max: menus['wheel-menu'].linear_nav.length,
       value: 0,
       slide: function (event, ui) {
         setSliderNotch(ui.value)
@@ -2624,7 +2650,7 @@ function setSliderNotch(notch) {
   }
   
   //console.log("notch", menus[m].data_nav[notch], notch)
-  location.hash = getSlug(menus[m].data_nav[notch])
+  //location.hash = getSlug(menus[m].data_nav[notch])
 
 
   //console.log("set slider notch", notch,location.hash)

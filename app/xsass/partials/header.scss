@@ -8,7 +8,7 @@ header {
     #logo {
        
         z-index: 2;
-        margin: 0px auto;
+        margin: -1vw auto;
         position: relative;
     }
     
@@ -24,7 +24,7 @@ header {
     
 }
 header.horizontal{
-   // background-color:rgba(0,200,0,0.2);
+    background-color:rgba(0,200,0,0.2);
     transform: rotate(0deg);
     transform: scale(100vh);
     #laurel{
@@ -32,8 +32,7 @@ header.horizontal{
     }
     #logo {
         width:61.8033vh;
-       
-        transform:translateY(1vh)
+        top:1vh;
     }
 }
 header.horizontal.maxed #logo{
@@ -57,7 +56,7 @@ header.vertical{
     }
     #logo {
         width:61.8033vw;
-        
+        top:1vw;
     }
 }
 header.vertical.maxed #logo{

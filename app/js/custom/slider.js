@@ -1,13 +1,14 @@
-function setSlider(m) {
- console.log("slider", orientation, menus, menus[m], m)
+function setSlider() {
+// console.log("slider", oriented, menus, menus[m], m)
+
 
   console.log("slider_oritentation", slider_orientation)
-  if(menus[m] !== 'undefined'){
+  if(menus['wheel-menu'] !== 'undefined'){
     jQuery("#slider").slider({
       orientation: slider_orientation,
       range: "max",
       min: 0,
-      max: menus[m].linear_nav.length,
+      max: menus['wheel-menu'].linear_nav.length,
       value: 0,
       slide: function (event, ui) {
         setSliderNotch(ui.value)
@@ -129,7 +130,7 @@ function setSliderNotch(notch) {
   }
   
   //console.log("notch", menus[m].data_nav[notch], notch)
-  location.hash = getSlug(menus[m].data_nav[notch])
+  //location.hash = getSlug(menus[m].data_nav[notch])
 
 
   //console.log("set slider notch", notch,location.hash)
