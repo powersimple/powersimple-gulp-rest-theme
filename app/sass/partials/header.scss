@@ -6,9 +6,9 @@ header {
     height:100px;
     transition: transform 1s;
     #logo {
-       
+        width:61.8%;
         z-index: 2;
-        margin: 0px auto;
+        margin: -2% auto;
         position: relative;
     }
     
@@ -29,23 +29,27 @@ header.horizontal{
     transform: scale(100vh);
     #laurel{
         font-size:1.618033vh;
+        
     }
     #logo {
         width:61.8033vh;
-       
-        transform:translateY(1vh)
+        margin: -2vh auto;
+        
     }
 }
 header.horizontal.maxed #logo{
     background-color:rgba(0,0,200,0.3);
-    transform:  translatex(61.8%) ;
+    transform:  translatex(25vw) ;
+    width:38%;
 
    
     
 }
 header.horizontal.maxed #laurel {
-    transform:   translatex(38.2vh) ;
+    transform:   translatex(50vw) ;
     font-size:2.38vh;
+    width:50%;
+    
 }
 
 header.vertical{
@@ -57,7 +61,7 @@ header.vertical{
     }
     #logo {
         width:61.8033vw;
-        
+        margin: -2vw auto;
     }
 }
 header.vertical.maxed #logo{

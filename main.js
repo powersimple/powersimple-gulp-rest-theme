@@ -6,6 +6,7 @@ slider_orientation = 'vertical', //
 dimension = 'wide',
 maxed = false,
 maxed_last = false,
+maxed_changed = false,
 slider_menu = 'wheel-menu',
   _w = jQuery(window).width(),
   _h = jQuery(window).height(),
@@ -60,17 +61,16 @@ function initSite() { // called from the menus callback
 
   if (location.hash != '') {
     slug = location.hash.replace("#", "");
-    //console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
+    console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
 
     setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
   } else {
     slug = location.hash = '#about'
-    if (menu_config[m].menu_type == "wheel") {
+    
       // THIS IS THE INITIAL LOADING OF THE WHEEL
 
       setSliderNotch(menus['wheel-menu'].slug_nav[slug])
-    }
   }
   
 
@@ -88,17 +88,17 @@ function setWheelNavParams(){
       'sel_max': 1,
   }
 
-  if(maxed == true){
-    wheel_nav_params = {
-        'maxPercent': 1,
-        'min': 0.85,
-        'max': 1,
-        'sel_min': 0.85,
-        'sel_max': 1,
+    if(maxed == true){
+          wheel_nav_params = {
+            'maxPercent': 1,
+            'min': 0.85,
+            'max': 1,
+            'sel_min': 0.85,
+            'sel_max': 1,
+          }
     }
-  }
 
-    
+
 
 
     
@@ -163,7 +163,10 @@ function positionElements() { // manages classes for sizes, orientation and aspe
     
 
     if(maxed == true){
-      jQuery(elements[e]).addClass('maxed')  
+      jQuery(elements[e]).addClass('maxed')
+  
+    } else {
+
     }
   }
   //console.log("slider-wrap",orientation,slider_orientation)
@@ -184,24 +187,24 @@ function positionProjector() {
     top = ((aspect - 1) * 100) + "%";
     width = "10vw"
     height = "10vw"
-    fontSize = 1.2
+    //fontSize = 1.2
   } else if (aspect > 0.50 && aspect <= 1.15) {
     top = "20%"
     width = "15vw"
     height = "15vw"
-    fontSize = 1
+    //fontSize = 1
   } else if (aspect >= 1.5) {
     top = "50%";
     width = '20vw'
     height = '20vw'
-    fontSize = 1.5
+    //fontSize = 1.5
   }
   jQuery("#featured-image-wrap").css("top", top)
   jQuery("#featured-image-wrap").css("width", width)
   jQuery("#featured-image-wrap").css("height", height)
 
-  jQuery("#featured-image-header").css("fontSize", fontSize + 'em')
-  jQuery("#featured-image-footer").css("fontSize", fontSize * 0.8 + "em")
+  //jQuery("#featured-image-header").css("fontSize", fontSize + 'em')
+  //jQuery("#featured-image-footer").css("fontSize", fontSize * 0.8 + "em")
 
 
 
@@ -258,12 +261,7 @@ function reposition_screen() {
   jQuery('#main').css('marginTop', margin_top + inc)
   jQuery('#main').css('marginLeft', margin_left + inc)
 
-  //jQuery('footer').css('width',  width)
-  //jQuery('footer').css('height', height)
-  jQuery('footer').css('bottom', top + "%")
-  jQuery('footer').css('left', left + "%")
-  jQuery('footer').css('marginBottom', margin_top + inc)
-  jQuery('footer').css('marginLeft', margin_left + inc)
+
 
 
   //console.log("aspect=" + aspect, "_w" + _w, "_h" + _h, "w=" + width, "h=" + height, "t=" + top, "l=" + left, "mt" + margin_top, "ml=" + margin_left);
@@ -297,14 +295,16 @@ function reposition_screen() {
     }
 
   ]
-  
+  maxed_changed = false
   if ((aspect < 0.75 && _w < 768) || (aspect > 1.5 && _h < 640)) { // MAX OUT the wheel size below 768 and wide or narrow 
     maxed = true;
+    
     if(maxed_last == false){
-      //console.log("maxed")
+      console.log("maxed")
     
     
       maxed_last = true;
+      maxed_changed = true
     }
     
   
@@ -337,19 +337,29 @@ function reposition_screen() {
     maxed = false;
     if(maxed_last == true){
       
-      //console.log("not maxed")
+      console.log("not maxed")
       maxed_last = false;
-     
+      maxed_changed = true
+
      
     }
  
 
   }
-
+  if (maxed_changed == true) {
+    setWheelNavParams()
+    //wheels['outer-nav'].raphael.remove();
+    wheels['outer-nav'].createWheel();
+    //wheels['inner-nav'].createWheel();
+    //wheels['inner-subnav'].createWheel();
+    console.log("change", maxed_changed, wheel_nav_params)
+  }
 
 
   for (var e = 0; e < calibrate_elements.length; e++) { // loops through the rings
     var ob = calibrate_elements[e]
+
+    
 
     if (_w > _h) {
       ob.increment = 'vh'
@@ -1733,6 +1743,7 @@ function buildMenuData() {
 
                         }
 
+                        
                     slug = getSlug(menus[m].items[this_menu[a].children[c]],"c",this_menu[a].children[c],c)
                       //console.log('bad slug', menus[m].items[this_menu[a].children[c]])
                         children.push( // data for child menus
@@ -1746,7 +1757,6 @@ function buildMenuData() {
                         )
 
                     }
-
                     //console.log('outer', this_menu[a].object_id,  this_menu[a])
                     slug = getSlug(this_menu[a],"o",this_menu,a)
                     data.push({ // data for top level
@@ -2650,7 +2660,7 @@ function setSliderNotch(notch) {
   }
   
   //console.log("notch", menus[m].data_nav[notch], notch)
-  //location.hash = getSlug(menus[m].data_nav[notch])
+  location.hash = getSlug(menus[m].data_nav[notch])
 
 
   //console.log("set slider notch", notch,location.hash)
@@ -2802,7 +2812,7 @@ function makeWheelNav(dest, data, _p) {
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
-    //console.log(dest,data,_p);
+    console.log(dest,data,_p);
     wheels[dest].spreaderEnable = false;
     //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
@@ -2820,7 +2830,6 @@ function makeWheelNav(dest, data, _p) {
     wheels[dest].sliceSelectedPathCustom.maxRadiusPercent = _p.sel_max;
     wheels[dest].titleSelectedAttr = {
     };
-
     for (i = 0; i < data.length; i++) {
        //console.log(data[i]);
         titles.push(data[i].title);
@@ -2850,6 +2859,7 @@ function makeWheelNav(dest, data, _p) {
         }
     }
 
+    console.log("wheel"+dest,wheels[dest])
 
     wheels[dest].createWheel();
 
@@ -2880,7 +2890,8 @@ function makeWheelNav(dest, data, _p) {
         }
 
     }
-    menu_raphael[dest] = wheels[dest].raphael
+    menu_raphael[dest] = wheels[dest].raphael // raphael makes it all happen
+    
     reposition_screen()
 
     // console.log(dest,menu_raphael[dest]);

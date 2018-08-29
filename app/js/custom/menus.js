@@ -223,6 +223,7 @@ function buildMenuData() {
 
                         }
 
+                        
                     slug = getSlug(menus[m].items[this_menu[a].children[c]],"c",this_menu[a].children[c],c)
                       //console.log('bad slug', menus[m].items[this_menu[a].children[c]])
                         children.push( // data for child menus
@@ -236,7 +237,6 @@ function buildMenuData() {
                         )
 
                     }
-
                     //console.log('outer', this_menu[a].object_id,  this_menu[a])
                     slug = getSlug(this_menu[a],"o",this_menu,a)
                     data.push({ // data for top level

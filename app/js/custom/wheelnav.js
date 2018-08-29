@@ -23,7 +23,7 @@ function makeWheelNav(dest, data, _p) {
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
-    //console.log(dest,data,_p);
+    console.log(dest,data,_p);
     wheels[dest].spreaderEnable = false;
     //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
@@ -41,7 +41,6 @@ function makeWheelNav(dest, data, _p) {
     wheels[dest].sliceSelectedPathCustom.maxRadiusPercent = _p.sel_max;
     wheels[dest].titleSelectedAttr = {
     };
-
     for (i = 0; i < data.length; i++) {
        //console.log(data[i]);
         titles.push(data[i].title);
@@ -71,6 +70,7 @@ function makeWheelNav(dest, data, _p) {
         }
     }
 
+    console.log("wheel"+dest,wheels[dest])
 
     wheels[dest].createWheel();
 
@@ -101,7 +101,8 @@ function makeWheelNav(dest, data, _p) {
         }
 
     }
-    menu_raphael[dest] = wheels[dest].raphael
+    menu_raphael[dest] = wheels[dest].raphael // raphael makes it all happen
+    
     reposition_screen()
 
     // console.log(dest,menu_raphael[dest]);

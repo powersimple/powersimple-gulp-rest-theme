@@ -25,20 +25,24 @@
 
 #screen{
     transition: transform 1s;
+    border:0px solid #0f0;
+    position: absolute;
+    width:100vw;
+    height:100vh;
+    
 }
 
 #screen.horizontal.maxed{
 
-    transform: translate(-50vh,50vh);
+    
     transform-origin: center center;
+    background-color:rgba(0,200,0,0.2);
 }
-#screen.horizontal.maxed .slick-track{
-    height:50vh;
-    top:50vh;
+#screen.horizontal.maxed .slick-list{
+    transform:translateX(25vw);
 }
 #screen.vertical.maxed .slick-track{
-    height:50vh;
-    top:50vh;
+    
 }
 
 #screen-image-wrap{

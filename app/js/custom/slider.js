@@ -130,7 +130,7 @@ function setSliderNotch(notch) {
   }
   
   //console.log("notch", menus[m].data_nav[notch], notch)
-  //location.hash = getSlug(menus[m].data_nav[notch])
+  location.hash = getSlug(menus[m].data_nav[notch])
 
 
   //console.log("set slider notch", notch,location.hash)
