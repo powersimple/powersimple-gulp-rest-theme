@@ -5,7 +5,9 @@
 var menu_raphael = {}
 var wheels = {}
 
+
  
+
 function makeWheelNav(dest, data, _p) {
     setWheelNavParams()
     _p = wheel_nav_params
@@ -92,8 +94,8 @@ function makeWheelNav(dest, data, _p) {
 
 
 
-        wheels[dest].navItems[i].navigateFunction = function () {
-            /*Click event for wheel*/
+        wheels[dest].navItems[i].navigateFunction = function () { // Click event for wheel - JSHint doesn't like it when you set events in a loop, but whaddyagonnado? Fuhgetaboudit, the browser doesn't seem to care. and you can't click on the wheel without this.
+          
 
             jQuery("#slider").slider("option", "value", this.data.notch) //positions the slider handle
             setSliderNotch(menus['wheel-menu'].slug_nav[this.data.slug]) // triggers the notch
@@ -145,7 +147,7 @@ function triggerWheelNav(notch) {
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice) //dialback the outer ring to its slice
             makeWheelNav("inner-nav", data_nav[this_notch.parent].children, wheel_nav_params) //receate the inner ring for the parent
             wheels[this_dest].navigateWheel(this_notch.slice) //now we can dial the inner ring where it belongs
-            last_outer_notch = this_notch.parent
+            last_outer_notch = this_notch.parent //who's your daddy?
 
         } else {
 

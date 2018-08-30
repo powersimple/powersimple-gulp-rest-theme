@@ -203,14 +203,18 @@
     
 } // for just slices
 
-[class|=wheelnav-outer-nav-slice],
-[class|=wheelnav-inner-nav-slice],
-[class|=wheelnav-inner-subnav-slice],
+
 [class|=wheelnav-outer-nav-title],
 [class|=wheelnav-inner-nav-title],
-[class|=wheelnav-inner-subnav-title] {
+[class|=wheelnav-inner-subnav-title],
+
+
+
+ {
     cursor: pointer;
- font-size:6vw;
+    font-size: 12px;
+
+
 }// for both slices and titles
 
 [class|=wheelnav-outer-nav-title]>tspan,
@@ -219,29 +223,28 @@
 {
     fill:#fff;
     font-family: 'Cabin',sans-serif;
-     font-size:100%;
-
+    
     @media(max-width:539px){
-       
+       font-size:5vw;
     }
     @media(min-width:540px) and (max-width:767px) {
 
-        font-size:5vw;
+        font-size:4vw;
     }
     @media(min-width:768px) and (max-width:1024px) {
-        font-size:4vw;
+        font-size:3vw;
 
     }
      @media(min-width:1025px) and (max-width:1280px) {
-        font-size:3vw;
-
-     }
-     @media(min-width:1281px) and (max-width:1600px) {
         font-size:2vw;
 
      }
+     @media(min-width:1281px) and (max-width:1600px) {
+        font-size:1vw;
+
+     }
       @media(min-width:1600px)  {
-                  font-size:3em;
+                  font-size:2em;
 
       }
 }

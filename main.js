@@ -1,13 +1,13 @@
 var increment = 'vw';
 oriented = 'horizontal', // BECAUSE iOS doesn't like the variable orientation
 
-orientation_last = '',
-slider_orientation = 'vertical', // 
-dimension = 'wide',
-maxed = false,
-maxed_last = false,
-maxed_changed = false,
-slider_menu = 'wheel-menu',
+  orientation_last = '',
+  slider_orientation = 'vertical', // 
+  dimension = 'wide',
+  maxed = false,
+  maxed_last = false,
+  maxed_changed = false,
+  slider_menu = 'wheel-menu',
   _w = jQuery(window).width(),
   _h = jQuery(window).height(),
   aspect = _w / _h,
@@ -30,7 +30,7 @@ jQuery(window).resize(function () {
   if (_w > _h) {
     increment = 'vh'
     oriented = 'horizontal'
-   // orientation_last = 'horizontal'
+    // orientation_last = 'horizontal'
   } else {
     increment = 'vw'
     oriented = 'vertical'
@@ -47,13 +47,13 @@ function initSite() { // called from the menus callback
     window.setTimeout(initSite(), 100);
   }
 
- 
+
 
 
   setSlider()
   setSlides('wheel-menu')
   setSlides('projects')
-  
+
   //console.log("menu", menu_config[m].location, items)
   //  jQuery(menu_config[m].location).html(items)
   setSlideShow('wheel-menu'); // creates slides for the slick carousel
@@ -65,106 +65,108 @@ function initSite() { // called from the menus callback
 
     setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
-  } else {
-    slug = location.hash = '#about'
-    
-      // THIS IS THE INITIAL LOADING OF THE WHEEL
 
-      setSliderNotch(menus['wheel-menu'].slug_nav[slug])
+  } else {
+
+    // THIS IS THE INITIAL LOADING OF THE WHEEL
+
+//    setSliderNotch(menus['wheel-menu'].slug_nav[slug]) 
+    slug = location.hash = '#about' // this has to be AFTER setSliderNotch when undefined, not before, or it will set hash to '#undefined'
+
   }
-  
+
 
 
   initMatrix();
   //console.log(menus)
 }
 
-function setWheelNavParams(){
+function setWheelNavParams() {
   wheel_nav_params = {
-      'maxPercent': 1,
-      'min': 0.91,
-      'max': 1,
-      'sel_min': 0.91,
-      'sel_max': 1,
+    'maxPercent': 1,
+    'min': 0.91,
+    'max': 1,
+    'sel_min': 0.91,
+    'sel_max': 1,
   }
 
-    if(maxed == true){
-          wheel_nav_params = {
-            'maxPercent': 1,
-            'min': 0.85,
-            'max': 1,
-            'sel_min': 0.85,
-            'sel_max': 1,
-          }
+  if (maxed == true) {
+    wheel_nav_params = {
+      'maxPercent': 1,
+      'min': 0.85,
+      'max': 1,
+      'sel_min': 0.85,
+      'sel_max': 1,
     }
+  }
 
 
 
 
-    
+
 }
 
 
 
 function positionElements() { // manages classes for sizes, orientation and aspect
 
-  var elements = ["#main","header","footer","#related","#screen"]
-  
+  var elements = ["#main", "header", "footer", "#related", "#screen"]
+
   slider_orientation: 'vertical'
   dimension = 'wide'
-  
+
 
 
   if (_w < _h) { // sets orientation
-   
+
     oriented = 'vertical'
-    
+
     slider_orientation = 'horizontal'
-  
+
   } else {
-  
+
     oriented = 'horizontal'
     slider_orientation = 'vertical'
-    
+
   }
-  
-  if(orientation_last != oriented){ // this triggers on orientation change
+
+  if (orientation_last != oriented) { // this triggers on orientation change
     orientation_last = oriented;
-//    console.log("orientation changed to "+oriented,orientation_last)
+    //    console.log("orientation changed to "+oriented,orientation_last)
     setSlider()
   }
 
 
 
-  if(aspect<=0.5){
+  if (aspect <= 0.5) {
     dimension = "super-narrow"
-  } else if(aspect>0.5 && aspect<= 0.75){
+  } else if (aspect > 0.5 && aspect <= 0.75) {
     dimension = "narrow"
-  } else if(aspect>0.75 && aspect<=0.9){
+  } else if (aspect > 0.75 && aspect <= 0.9) {
     dimension = "semi-narrow"
-  } else if(aspect>0.9 && aspect<=1.1){
+  } else if (aspect > 0.9 && aspect <= 1.1) {
     dimension = "square"
-  } else if(aspect>1.1 && aspect<=1.25){
+  } else if (aspect > 1.1 && aspect <= 1.25) {
     dimension = "semi-wide"
-  } else if(aspect>1.25 && aspect<=1.5){
+  } else if (aspect > 1.25 && aspect <= 1.5) {
     dimension = "wide"
-  } else if(aspect>1.5 && aspect<=2){
+  } else if (aspect > 1.5 && aspect <= 2) {
     dimension = "super-wide"
-  } else if(aspect>2){
+  } else if (aspect > 2) {
     dimension = "extra-super-wide"
-  } 
+  }
 
-  for(e=0;e<elements.length;e++){
-  //  console.log("set orientation",elements[e],oriented)
+  for (e = 0; e < elements.length; e++) {
+    //  console.log("set orientation",elements[e],oriented)
     jQuery(elements[e]).removeClass()
-    
+
     jQuery(elements[e]).addClass(dimension)
     jQuery(elements[e]).addClass(oriented)
-    
 
-    if(maxed == true){
+
+    if (maxed == true) {
       jQuery(elements[e]).addClass('maxed')
-  
+
     } else {
 
     }
@@ -174,7 +176,7 @@ function positionElements() { // manages classes for sizes, orientation and aspe
   jQuery('#slider-wrap').removeClass()
   jQuery('#slider-wrap').addClass(slider_orientation)
   jQuery('#slider-wrap').addClass(dimension)
-  
+
 }
 
 
@@ -216,7 +218,7 @@ function positionProjector() {
 function reposition_screen() {
 
 
-  
+
   var width = '100vw'
   var height = '100vh'
   var top = 0
@@ -247,9 +249,9 @@ function reposition_screen() {
   }
   //jQuery('header').css('width',  width)
   //jQuery('header').css('height', height)
-//  jQuery('header').css('top', top + "%")
-//  jQuery('header').css('left', left + '%')
-//  jQuery('header').css('marginTop', margin_top)
+  //  jQuery('header').css('top', top + "%")
+  //  jQuery('header').css('left', left + '%')
+  //  jQuery('header').css('marginTop', margin_top)
   //jQuery('header').css('marginLeft', margin_left)
 
 
@@ -272,7 +274,7 @@ function reposition_screen() {
   positionElements();
 
   jQuery("#slider").css("visibility", "visible")
-  
+
   var calibrate_elements = [{ // default
       id: ".phi-centered",
       size: 61.8, //use number, it needs to be divided
@@ -295,94 +297,69 @@ function reposition_screen() {
     }
 
   ]
-  maxed_changed = false
-  if ((aspect < 0.75 && _w < 768) || (aspect > 1.5 && _h < 640)) { // MAX OUT the wheel size below 768 and wide or narrow 
-    maxed = true;
-    
-    if(maxed_last == false){
-      console.log("maxed")
-    
-    
-      maxed_last = true;
-      maxed_changed = true
-    }
-    
-  
 
-    calibrate_elements = [{ // for the maxed maxed vdersion
-        id: ".phi-centered",
-        size: 80, //use number, it needs to be divided
-        increment: "vw"
-      },
-      {
-        id: "#outer-ring",
-        size: 96, //use number, it needs to be divided
-        increment: "vw"
-      },
-      {
-        id: "#inner-ring",
-        size: 80, //use number, it needs to be divided
-        increment: "vw"
-      },
-      {
-        id: "#inner-subring",
-        size: 67, //use number, it needs to be divided
-        increment: "vw"
-      }
-
-    ]
-    
-  } else {
-   
-    maxed = false;
-    if(maxed_last == true){
-      
-      console.log("not maxed")
-      maxed_last = false;
-      maxed_changed = true
-
-     
-    }
  
-
-  }
-  if (maxed_changed == true) {
-    setWheelNavParams()
-    //wheels['outer-nav'].raphael.remove();
-    wheels['outer-nav'].createWheel();
-    //wheels['inner-nav'].createWheel();
-    //wheels['inner-subnav'].createWheel();
-    console.log("change", maxed_changed, wheel_nav_params)
-  }
-
-
-  for (var e = 0; e < calibrate_elements.length; e++) { // loops through the rings
-    var ob = calibrate_elements[e]
-
-    
-
-    if (_w > _h) {
-      ob.increment = 'vh'
-     
-
-    } else {
-      ob.increment = 'vh'
-      
-
-    }
-    calibrateCircle(ob.id, ob.size, ob.increment)
-      
-    //console.log("calibrate",ob.id, ob.size, ob.increment)
-  }
-
 
   jQuery('#stars').css('height', '100vh')
   jQuery('#stars').css('width', '100vw')
   jQuery('#stars').css('top', 0)
   jQuery('#stars').css('left', 0)
-  
-  
+
+
 }
+function maxed(){
+    maxed_changed = false
+    if ((aspect < 0.75 && _w < 768) || (aspect > 1.5 && _h < 640)) { // MAX OUT the wheel size below 768 and wide or narrow 
+      maxed = true;
+
+      if (maxed_last == false) {
+        console.log("maxed")
+
+
+        //resetWheel();
+        maxed_last = true;
+        maxed_changed = true
+      }
+
+
+
+    } else {
+
+      maxed = false;
+      if (maxed_last == true) {
+
+
+        //resetWheel();
+
+        maxed_last = false
+        maxed_changed = true
+
+      }
+
+
+    }
+    if (maxed_changed == true) {
+
+      console.log("change", maxed_changed, wheel_nav_params)
+    }
+
+}
+function resetWheel() {
+  setWheelNavParams();
+  console.log("resetWheel")
+
+  wheels["outer-nav"].removeWheel()
+  if (wheels["inner-nav"] != undefined) {
+    wheels["inner-nav"].removeWheel()
+  }
+  if (wheels["inner-subnav"] != undefined) {
+    wheels["inner-subnav"].removeWheel()
+  }
+
+
+}
+
+
 function calibrateCircle(id, size, increment) {
   /*
   console.log("calibrate",id,size,increment)
@@ -392,12 +369,8 @@ function calibrateCircle(id, size, increment) {
    jQuery(id).css('margin-left', ((size / 2) * -1) + increment)
    jQuery(id).css('margin-top', ((size / 2) * -1) + increment)
 */
- 
- }
- 
 
-
-
+}
 
     var photoCount = 0;
     var pieceCount = 0;
@@ -2659,11 +2632,11 @@ function setSliderNotch(notch) {
      //console.log("stop delay", state.circle_delay)
   }
   
-  //console.log("notch", menus[m].data_nav[notch], notch)
+  console.log("notch", menus[m].data_nav[notch], notch, getSlug(menus[m].data_nav[notch]))
+ 
+console.log("set slider notch", notch, location.hash)
   location.hash = getSlug(menus[m].data_nav[notch])
-
-
-  //console.log("set slider notch", notch,location.hash)
+  console.log("set slider notch", notch,location.hash)
   jQuery("#slider").slider('value', notch);
   if (menus['wheel-menu'].linear_nav[notch] != undefined) {
 
@@ -2794,7 +2767,9 @@ function setTags(data) {
 var menu_raphael = {}
 var wheels = {}
 
+
  
+
 function makeWheelNav(dest, data, _p) {
     setWheelNavParams()
     _p = wheel_nav_params
@@ -2881,8 +2856,8 @@ function makeWheelNav(dest, data, _p) {
 
 
 
-        wheels[dest].navItems[i].navigateFunction = function () {
-            /*Click event for wheel*/
+        wheels[dest].navItems[i].navigateFunction = function () { // Click event for wheel - JSHint doesn't like it when you set events in a loop, but whaddyagonnado? Fuhgetaboudit, the browser doesn't seem to care. and you can't click on the wheel without this.
+          
 
             jQuery("#slider").slider("option", "value", this.data.notch) //positions the slider handle
             setSliderNotch(menus['wheel-menu'].slug_nav[this.data.slug]) // triggers the notch
@@ -2934,7 +2909,7 @@ function triggerWheelNav(notch) {
             wheels["outer-nav"].navigateWheel(data_nav[this_notch.parent].slice) //dialback the outer ring to its slice
             makeWheelNav("inner-nav", data_nav[this_notch.parent].children, wheel_nav_params) //receate the inner ring for the parent
             wheels[this_dest].navigateWheel(this_notch.slice) //now we can dial the inner ring where it belongs
-            last_outer_notch = this_notch.parent
+            last_outer_notch = this_notch.parent //who's your daddy?
 
         } else {
 

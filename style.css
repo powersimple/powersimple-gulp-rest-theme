@@ -236,14 +236,15 @@ div { text-align: center; width: 100%; line-height:120%;
 @media (max-width: 480px) { .wheelNavGitHub { height: 180px; width: 180px; } }
 [class|=wheelnav-outer-nav-slice], [class|=wheelnav-inner-nav-slice], [class|=wheelnav-inner-subnav-slice] { cursor: pointer; opacity: 0.5; stroke: yellow; stroke-width: 2px; fill: #1572b6; stroke-linejoin: round; stroke-opacity: 0.6; }
 
-[class|=wheelnav-outer-nav-slice], [class|=wheelnav-inner-nav-slice], [class|=wheelnav-inner-subnav-slice], [class|=wheelnav-outer-nav-title], [class|=wheelnav-inner-nav-title], [class|=wheelnav-inner-subnav-title] { cursor: pointer; font-size: 6vw; }
+[class|=wheelnav-outer-nav-title], [class|=wheelnav-inner-nav-title], [class|=wheelnav-inner-subnav-title] { cursor: pointer; font-size: 12px; }
 
-[class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { fill: #fff; font-family: 'Cabin',sans-serif; font-size: 100%; }
-@media (min-width: 540px) and (max-width: 767px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 5vw; } }
-@media (min-width: 768px) and (max-width: 1024px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 4vw; } }
-@media (min-width: 1025px) and (max-width: 1280px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 3vw; } }
-@media (min-width: 1281px) and (max-width: 1600px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 2vw; } }
-@media (min-width: 1600px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 3em; } }
+[class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { fill: #fff; font-family: 'Cabin',sans-serif; }
+@media (max-width: 539px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 5vw; } }
+@media (min-width: 540px) and (max-width: 767px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 4vw; } }
+@media (min-width: 768px) and (max-width: 1024px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 3vw; } }
+@media (min-width: 1025px) and (max-width: 1280px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 2vw; } }
+@media (min-width: 1281px) and (max-width: 1600px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 1vw; } }
+@media (min-width: 1600px) { [class|=wheelnav-outer-nav-title] > tspan, [class|=wheelnav-inner-nav-title] > tspan, [class|=wheelnav-inner-subnav-title] > tspan { font-size: 2em; } }
 
 [class|=wheelnav-outer-nav-title] > tspan:hover, [class|=wheelnav-inner-nav-title] > tspan:hover, [class|=wheelnav-inner-subnav-title] > tspan:hover { fill: #ff0; }
 
