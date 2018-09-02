@@ -2,8 +2,8 @@ function setSlider() {
 // console.log("slider", oriented, menus, menus[m], m)
 
 
-  console.log("slider_oritentation", slider_orientation)
-  if(menus['wheel-menu'] !== 'undefined'){
+ // console.log("slider_oritentation", slider_orientation)
+  if(menus['wheel-menu'] != undefined){
     jQuery("#slider").slider({
       orientation: slider_orientation,
       range: "max",
@@ -27,62 +27,45 @@ function setSlider() {
   }
 
 }
-/*
-  jQuery('#slider').on('mousewheel', function(event) {
-    event.preventDefault();
+/**/
+  jQuery('#slider').on('mousewheel DOMMouseScroll', function(e) {
+    e.preventDefault();
+    
     value = jQuery( "#slider" ).slider( "value" );
+    if(value == undefined || value == NaN){
+      value=0
+    }
+    var event = e.originalEvent
+    console.log(jQuery("#slider").slider);
   
-    console.log(event.deltaX, event.deltaY, event.deltaFactor);
-  
-    //Mousewheel Scrolled up
-    if(event.deltaY == -1){
-        //alert("scrolled down");
-        value = value+1;
+   
+    if (event.deltaY == -150) { //Mousewheel Scrolled up
+        
+         if (value < menus['wheel-menu'].linear_nav.length) {
+           value = value+1
+         } else {
+           value = 0; // jump to bottom from top
+         }
         setSliderNotch(value)
     }
-    //Mousewheel Scrolled down
-    else if(event.deltaY == 1){
-      //alert("scrolled up");
-        value = value-1;
+    
+    else if (event.deltaY == 150) { //Mousewheel Scrolled down
+     
+        if (value == 0){
+          value = menus['wheel-menu'].linear_nav.length // jump to top from bottom
+        } else {
+          value = value - 1;
+        }
+
+
         setSliderNotch(value)
         
     }
     
   });
-*/
+
 (function ($) {
-  /*
-    $('#slider').bind('mousewheel DOMMouseScroll', function (e) {
-      var delta = 0,
-        element = $(this),
-        value, result, oe;
-      oe = e.originalEvent; // for jQuery >=1.7
-      value = element.slider('value');
-
-      if (oe.wheelDelta) {
-        delta = -oe.wheelDelta;
-      }
-      if (oe.detail) {
-        delta = oe.detail * 40;
-      }
-
-      value -= delta / 8;
-      if (value > 100) {
-        value = 100;
-      }
-      if (value < 0) {
-        value = 0;
-      }
-
-      result = element.slider('option', 'slide').call(element, e, {
-        value: value
-      });
-      if (result !== false) {
-        element.slider('value', value);
-      }
-      return false;
-    });
-    */
+ 
 
   $('div.arrow').on('click', function (e) {
     e.stopPropagation(); // use this
@@ -131,9 +114,9 @@ function setSliderNotch(notch) {
   
   console.log("notch", menus[m].data_nav[notch], notch, getSlug(menus[m].data_nav[notch]))
  
-console.log("set slider notch", notch, location.hash)
+  
   location.hash = getSlug(menus[m].data_nav[notch])
-  console.log("set slider notch", notch,location.hash)
+  //console.log("set slider notch", notch,location.hash)
   jQuery("#slider").slider('value', notch);
   if (menus['wheel-menu'].linear_nav[notch] != undefined) {
 

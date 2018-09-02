@@ -26,7 +26,7 @@ function setMenus(data, dest) {
         //console.log("slug", data[i].slug)
     }
    buildMenuData();
-   console.log("raw menu data", menus)
+   //console.log("raw menu data", menus)
     initSite()
 }
 
@@ -150,7 +150,7 @@ function setLinearDataNav(m,data) { // sets local data into linear array for whe
 
     }
      //console.log("dataNav",m, menus[m].data_nav);
-     console.log("slug_nav",m, menus[m].slug_nav);
+     //console.log("slug_nav",m, menus[m].slug_nav);
 }
 function getSlug(item,_of,_array,_it){
     if(item!=undefined){

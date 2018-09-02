@@ -1,3 +1,37 @@
+
+
+
+  var icon = '<svg class="sg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 185.31 251.89"><path d="M66.8,144.17c0-66.24,22.46-113.09,80.72-112.32,81.48,1.07,80.72,46.08,80.72,112.32,0,5.15,8.38,3.81,7.62,19-2.28,19.42-9.44,14.63-10.39,19.85-9.26,51.08-40.65,88.67-77.95,88.67-37.76,0-69.47-38.53-78.28-90.58-.82-4.85-5.86-.8-6.42-18.68C61.47,146.07,66.8,149.07,66.8,144.17Z" transform="translate(-56.6 -25.84)" style="fill:#ffdfbf;fill-rule:evenodd"/><path d="M147.52,31.85C99.49,31.22,75.79,63,69,111.24c8.78-23.84,27.86-26,64.33-26.54,70.62-1.13,88.39,8.27,79.64,96.55-1.84,18.6-6.1,24.62-28.36,39.74-12.07,8.2,18.54-26.37-49.78-27-49.5-.43-30.06,36.41-40.06,29.44a81.88,81.88,0,0,1-20.28-20.73c12.89,40.76,40.76,69,73.08,69,37.3,0,68.69-37.59,77.95-88.67l2.77-38.89C228.24,77.93,229,32.91,147.52,31.85Z" transform="translate(-56.6 -25.84)" style="fill:#d0b57b;fill-rule:evenodd"/><path d="M146.13,31.84h1.39c81.48,1.07,80.72,46.08,80.72,112.33,0,5.15,8.38,3.81,7.62,19-2.28,19.42-9.44,14.63-10.39,19.85-9.26,51.08-40.65,88.67-77.95,88.67-37.76,0-69.47-38.53-78.28-90.58-.82-4.85-5.86-.8-6.42-18.68-1.34-16.39,4-13.39,4-18.29,0-65.71,22.11-112.33,79.33-112.33m0-6h0c-29.39,0-51.65,11.54-66.18,34.3C67.3,80,60.86,108.06,60.8,143.68h0c-2.54,3.05-4.94,7-4,19.12.4,12.11,2.72,16.46,6.59,19.86,9.65,56,44.19,95.07,84.11,95.07,19.91,0,38.59-9.42,54-27.25,14.35-16.57,24.87-39.79,29.66-65.45l0,0c4.22-2.57,8.87-6.53,10.58-21.1l0-.2v-.2c.58-11.55-3.35-16.18-7.07-19.61l-.53-.5v-1c0-33,0-61.46-10.76-82.11-12-23-36.09-33.89-75.88-34.41Z" transform="translate(-56.6 -25.84)" style="fill:#303030"/><path d="M118.31,183.29s4.28,4.28,12.84,4S143.67,182,143.67,182s-3.62,8.23-11.53,8.89S118.31,183.29,118.31,183.29Z" transform="translate(-56.6 -25.84)" style="fill:#bfa78f;fill-rule:evenodd"/><ellipse cx="44.24" cy="115.64" rx="28.15" ry="35.97" style="fill:#fff"/><ellipse cx="104.54" cy="115.64" rx="28.15" ry="35.97" style="fill:#fff"/><circle class="eye" id="eye-left" cx="35.9" cy="121.66" r="10.5" style="fill:#303030"/><circle class="eye" cx="94.57" cy="121.66" r="10.5" style="fill:#303030"/><path d="M140.74,236.63h0c-16.92,0-29.43-4.38-29.43-18.42h0c0-4.22,4.12-7.64,9.21-7.64H160c3.6,0,6.53,2.42,6.53,5.42v7.23C166.55,234.48,154.32,236.63,140.74,236.63Z" transform="translate(-56.6 -25.84)" style="fill:#2d251d;fill-rule:evenodd"/><path d="M160,210.57h-39.5c-5.09,0-9.21,3.42-9.21,7.64,0,.07,0,.15,0,.22,7.57,2.29,17.6,3.2,29,3.2h0c9.87,0,19.24-.52,26.25-2.36V216C166.55,213,163.62,210.57,160,210.57Z" transform="translate(-56.6 -25.84)" style="fill:#fff"/></svg>';
+
+  document.head.insertAdjacentHTML('beforeend', '<style>.sg { width: 35px; height: 35px; position: fixed; bottom: 10px; right: 10px; } .sg .eye { -webkit-transform: translateX(0px);   transform: translateX(0px); } .sg:hover .eye { -webkit-transition: -webkit-transform 0.3s ease; transition: -webkit-transform 0.3s ease; transition: transform 0.3s ease; transition: transform 0.3s ease, -webkit-transform 0.3s ease; -webkit-transform: translateX(12px);   transform: translateX(12px); }</style>');
+
+  var a = document.createElement('a');
+  a.setAttribute('href', 'https://twitter.com/steeevg');
+  a.setAttribute('target', '_blank');
+  a.innerHTML = icon;
+
+//  document.body.appendChild(a);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var increment = 'vw';
 oriented = 'horizontal', // BECAUSE iOS doesn't like the variable orientation
 
@@ -58,13 +92,12 @@ function initSite() { // called from the menus callback
   //  jQuery(menu_config[m].location).html(items)
   setSlideShow('wheel-menu'); // creates slides for the slick carousel
   makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
-
+  
   if (location.hash != '') {
     slug = location.hash.replace("#", "");
     console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
 
-    setSliderNotch(menus['wheel-menu'].slug_nav[slug])
-
+    
 
   } else {
 
@@ -72,8 +105,9 @@ function initSite() { // called from the menus callback
 
 //    setSliderNotch(menus['wheel-menu'].slug_nav[slug]) 
     slug = location.hash = '#about' // this has to be AFTER setSliderNotch when undefined, not before, or it will set hash to '#undefined'
-
+  
   }
+  setSliderNotch(menus['wheel-menu'].slug_nav[slug])
 
 
 
@@ -307,13 +341,13 @@ function reposition_screen() {
 
 
 }
-function maxed(){
+function maxed(){ // FIX - this is still problematic and has been backed out for now
     maxed_changed = false
     if ((aspect < 0.75 && _w < 768) || (aspect > 1.5 && _h < 640)) { // MAX OUT the wheel size below 768 and wide or narrow 
       maxed = true;
 
       if (maxed_last == false) {
-        console.log("maxed")
+        //console.log("maxed")
 
 
         //resetWheel();
@@ -340,13 +374,13 @@ function maxed(){
     }
     if (maxed_changed == true) {
 
-      console.log("change", maxed_changed, wheel_nav_params)
+      //console.log("change", maxed_changed, wheel_nav_params)
     }
 
 }
 function resetWheel() {
   setWheelNavParams();
-  console.log("resetWheel")
+  //console.log("resetWheel")
 
   wheels["outer-nav"].removeWheel()
   if (wheels["inner-nav"] != undefined) {
@@ -379,7 +413,7 @@ function calibrateCircle(id, size, increment) {
  //this is the interval that needs to be stoped.
 
     var transitions = ['center', 'random']
-    var transitionType = 0;
+    var transitionType = 1;
     
     var viewerDest = null
     //console.log("circleviwer loaded")
@@ -387,7 +421,7 @@ function calibrateCircle(id, size, increment) {
         
         photoCount = state.screen_images.length
         pieceCount = state.screen_images.length
-        //console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
+        console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
         
         viewerDest = dest
         for (var i = 0; i < state.screen_images.length; i++) {
@@ -415,7 +449,7 @@ function calibrateCircle(id, size, increment) {
     }
 
     function nextSlide() {
-
+         console.log("onphonto", onPhoto)
         clearInterval(state.circle_delay);
         pieceCompleteCount = 0;
         ++onPhoto;
@@ -423,20 +457,23 @@ function calibrateCircle(id, size, increment) {
             onPhoto = 0;
         }
         
-    //console.log("next", state.screen_images)
+    console.log("next", state.screen_images)
         for (var i = 0; i < state.screen_images.length; i++) {
+            console.log("nextloop ", "i=" + i, state.screen_images[i])
             var spinDelay = 0;
             var spin = 360;
             var piece = jQuery('#piece' + i);
-            var image = state.screen_images[i]
+            var image = state.screen_images[onPhoto]
             switch (transitions[transitionType]) {
                 case 'random':
                     spinDelay = Math.random() / 2;
                     spin = Math.random() * 360;
+                    console.log("random")
                     break;
                 case 'center':
                     spinDelay = (pieceCount - i) / 10;
                     spin = 181;
+                     console.log("center")
                     break;
             }
 
@@ -463,7 +500,7 @@ function calibrateCircle(id, size, increment) {
     function finishPieceanimation() {
         ++pieceCompleteCount;
         if (pieceCompleteCount == pieceCount) {
-            state.circle_delay = setInterval(nextSlide, 1000);
+            state.circle_delay = setInterval(nextSlide, 5000);
         }
     }
 
@@ -474,7 +511,7 @@ function setSlideContent(slide, id) {
         content_length = posts[id].content.length
         
         jQuery("#slide" + id + " h2").html(posts[id].title)
-        console.log("title="+title_length,"content"+content_length)
+        //console.log("title="+title_length,"content"+content_length)
 
       jQuery("#slide" + id + " section div.content").html(posts[id].content)
       $carousel.slick('slickGoTo', slide);
@@ -522,7 +559,7 @@ function setSlideContent(slide, id) {
   
     jQuery('#wheel-menu-content').fadeIn();
     
-    console.log("setContent",dest,object_id,object,posts[object_id])
+    //console.log("setContent",dest,object_id,object,posts[object_id])
     if (posts[object_id] != undefined) {
       //console.log("selected post", posts[object_id])
       state.post_id = object_id;
@@ -1171,10 +1208,11 @@ function draw() {
 //setInterval(draw, 160);
 
 function setMedia(data) {
+    
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    //console.log("media", media);
+    console.log("media", media);
 }
 function getMediaID(post_id,attr){
     //console.log(post_id,attr)
@@ -1204,7 +1242,7 @@ function getMediaID(post_id,attr){
 }
 function getImageSRC(id, dest, size) { // id = media id
 
-   // console.log("set image", id, dest, size, media[id])
+    console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
 
 
@@ -1309,7 +1347,7 @@ function transitionImage(dest, type, media_id) {
     var src = getImageSRC(media_id, dest + ' .image', aspect) //returns appropriate image sice.
     if (type == 'flip'){
         var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
-        console.log("FLIP",next_face,dest, type, media_id,src)
+        //console.log("FLIP",next_face,dest, type, media_id,src)
         if(media[media_id] != undefined){
             /*
             //console.log('next face', next_face)
@@ -1457,7 +1495,7 @@ function setVideo(id, dest) {
         var src = media[id].file; // this defaults to the basic file
 
         var video = jQuery(dest + ' video source').attr("src", full_path + src);
-        ;
+        
         //    console.log("unhide video player")
 
         jQuery(dest + ' video')[0].load();
@@ -1468,24 +1506,26 @@ function setVideo(id, dest) {
         //    console.log("no video, hide player")
         jQuery(dest).fadeOut();
     }
+
 }
 
 function setScreenImages(screen_images, dest, callback) {
     var images = []
     for (var i = 0; i < screen_images.length; i++) {
-        //console.log(screen_images[i])
+        console.log("screen image",screen_images[i])
         images.push({
-            "src": setImage(screen_images[i], '#screen-image', "square"),
+            "src": getImageSRC(screen_images[i], '#screen-image', "square"),
             "data": media[screen_images[i]]
         })
 
     }
     state.screen_images = images
-    //console.log("set ScreenImages", screen_images, dest, images);
-
+    console.log("set ScreenImages", screen_images, dest, images, callback);
+    //callback(dest)
     //initParticleTranstion(dest)
-    //circleViewer(dest, state.screen_images) // buggy
-
+    if(images.length>0 && callback == 'circleViewer'){
+    circleViewer(dest, state.screen_images) // buggy
+        }
     //  callback(dest,images)
 
 
@@ -1519,7 +1559,7 @@ function setMenus(data, dest) {
         //console.log("slug", data[i].slug)
     }
    buildMenuData();
-   console.log("raw menu data", menus)
+   //console.log("raw menu data", menus)
     initSite()
 }
 
@@ -1643,7 +1683,7 @@ function setLinearDataNav(m,data) { // sets local data into linear array for whe
 
     }
      //console.log("dataNav",m, menus[m].data_nav);
-     console.log("slug_nav",m, menus[m].slug_nav);
+     //console.log("slug_nav",m, menus[m].slug_nav);
 }
 function getSlug(item,_of,_array,_it){
     if(item!=undefined){
@@ -2237,184 +2277,187 @@ function projectInfo(post_id){
 }
 function setRelated(post) {
 
-    /*
+  /*
   
       This is fun! 
       This sets the related variable as an object of taxonomies, 
       containing an array of related post ids
   
     */
-  
-    var this_post = null,
+
+  var this_post = null,
     this_cat = null //defaults
-  
-    related = {} // create empty object
-    related.cats = {}//vessel for related categories
-    related.tags = {}//vessel for related tags 
-    //if you put in another taxonomy, add it to the loop above.
-  
-    var local_data =  {
-        'cats':categories,
-        'tags':tags
-      }//put taxonomies into object using alias in post
-  
-  
-    /*
-      ready for a ridiculous triple summersault? Let's do this!
-      You see, the nested loop for related content will work the same for categories and tags, so why not put an outer loop of the local data to loop through them, so if this function changes, it does so once. 
-    */
-    for(var r in related){ //loop through related taxonomy aliases to get name dynamically
-      // r is the taxonomy alias =>string
-  
-      for (var t = 0; t < post[r].length; t++) { // loop through array of taxonomies of the post object that got passed in.
-        //t is the array key of the taxonomy =>int
-       // console.log(r,posts[r])
-        for (var p = 0; p < local_data[r][post[r][t]].posts.length; p++) {
-          //p is the post_id of the related post from the taxonomy
-          this_post = local_data[r][post[r][t]].posts[p] // id of post in question
-          if(post.id != this_post){ // exclude self
-            if(posts[this_post] != undefined){ //proceed if post exists
-              var type = posts[this_post].type // set the post type locally
-              if(related[r][type]==undefined){ // if this related post type doesn't have an object yet
-                related[r][type] = []//then create an array to stuff the posts ids in 
-  
-              }
-              related[r][type].push(this_post); // by using an object by id prevents duplicates, the post id can be used
-  
-  
+
+  related = {} // create empty object
+  related.cats = {} //vessel for related categories
+  related.tags = {} //vessel for related tags 
+  //if you put in another taxonomy, add it to the loop above.
+
+  var local_data = {
+    'cats': categories,
+    'tags': tags
+  } //put taxonomies into object using alias in post
+
+
+  /*
+    ready for a ridiculous triple summersault? Let's do this!
+    You see, the nested loop for related content will work the same for categories and tags, so why not put an outer loop of the local data to loop through them, so if this function changes, it does so once. 
+  */
+  for (var r in related) { //loop through related taxonomy aliases to get name dynamically
+    // r is the taxonomy alias =>string
+
+    for (var t = 0; t < post[r].length; t++) { // loop through array of taxonomies of the post object that got passed in.
+      //t is the array key of the taxonomy =>int
+      // console.log(r,posts[r])
+      for (var p = 0; p < local_data[r][post[r][t]].posts.length; p++) {
+        //p is the post_id of the related post from the taxonomy
+        this_post = local_data[r][post[r][t]].posts[p] // id of post in question
+        if (post.id != this_post) { // exclude self
+          if (posts[this_post] != undefined) { //proceed if post exists
+            var type = posts[this_post].type // set the post type locally
+            if (related[r][type] == undefined) { // if this related post type doesn't have an object yet
+              related[r][type] = [] //then create an array to stuff the posts ids in 
+
             }
-  
+            related[r][type].push(this_post); // by using an object by id prevents duplicates, the post id can be used
+
+
           }
+
         }
       }
     }
-  
-    delete local_data // no reason keeping the aliased taxonomies in memory
-    
-    displayRelated()
-     
-
-     //console.log("related",related)
-      
-  }
-  function displayRelated(){
-    jQuery("#related").html('');
-    rel_list = ''
-      var aspect = getAspect(jQuery("#related ul li").width(), jQuery("#related ul li").height())
-
-
-    for(var tax in related){ // loop through Taxonomies
-        rel_list += '<ul class="'+tax+'">'//
-
-        for(var type in related[tax]){
-            for(var p=0;p< related[tax][type].length;p++ ){
-                post_id = related[tax][type][p]  // post_id of related content
-                var bg_image = ''; // default empty
-                var src = '' // default empty
-                var media_id = getMediaID(post_id,'featured_media') // returns media id or zero if media object is undefined
-                
-                if(media_id > 0){
-                  src = getImageSRC(media_id,'#related ul li','thumbnail')
-                }
-               // console.log("set related","src="+src,post_id,media_id);
-                if(src !=''){
-                   
-                    bg_image = ' style="background-image:url('+src+')"'
-                }
-                rel_list += '<li '+bg_image+' class="ui-widget '+type+'" data-rel="'+post_id+'">'
-                   // console.log("related post",post_id)
-                    rel_list += post_id
-                rel_list += '</li>'
-
-            }
-        }
-        rel_list += '</ul>'
-    }
-    jQuery("#related").html(rel_list);
-
   }
 
+  delete local_data // no reason keeping the aliased taxonomies in memory
+
+  displayRelated()
 
 
-  function tipHoverContent(id){
-    //console.log("hover tip",id)
-    var tipContent = '';
-    if(posts[id].type == 'project'){
-        tipContent +='<span class="hover-title">'+posts[id].project_info.client+'</span>' 
-        if(posts[id].project_info.agency != ''){
-        tipContent +='<span class="hover-sub">'+posts[id].project_info.agency+'</span>' 
-        }
-    }
-    return tipContent
-  }
-  function selectRelatedPost(post_id){
+  //console.log("related",related)
 
-        if(posts[post_id].type == 'project'){
-           setProject(post_id)
-           // setSliderNotch(1)//Projects hardset to notch one.
-           // setContent(1, post_id, posts[post_id].type)
-           
-        }
+}
 
-     
-  
+function displayRelated() {
+  jQuery("#related").html('');
+  rel_list = ''
+  var aspect = getAspect(jQuery("#related ul li").width(), jQuery("#related ul li").height())
 
 
+  for (var tax in related) { // loop through Taxonomies
+    rel_list += '<ul class="' + tax + '">' //
 
-    }
-
-
-  ( function($) {
-   
-
-
-
-    $( document ).tooltip({
-      items: "[data-rel]",// tootip for related data
-    //  tooltipClass:'rel-tip',
-      content: function() {
-        var post_id = $(this).data('rel') ;
-        var tip = ''
+    for (var type in related[tax]) {
+      for (var p = 0; p < related[tax][type].length; p++) {
+        post_id = related[tax][type][p] // post_id of related content
         var bg_image = ''; // default empty
         var src = '' // default empty
         var media_id = getMediaID(post_id, 'featured_media') // returns media id or zero if media object is undefined
 
-        if (media_id != 0) {
-          src = getImageSRC(media_id, '.rel-tooltip', 'thumbnail');
+        if (media_id > 0) {
+          //  src = getImageSRC(media_id,'#related ul li','thumbnail')
         }
-        //console.log("set related",src,post_id,media_id);
+        // console.log("set related","src="+src,post_id,media_id);
         if (src != '') {
 
           bg_image = ' style="background-image:url(' + src + ')"'
         }
-        $(this).on("click",function(e){
-          e.preventDefault();
-            selectRelatedPost(post_id);
+        rel_list += '<li ' + bg_image + ' class="ui-widget ' + type + '" data-rel="' + post_id + '">'
+        // console.log("related post",post_id)
+        rel_list += post_id
+        rel_list += '</li>'
 
-        }).on("mouseover",function(e){
-          e.preventDefault();
-          // console.log("related"+post_id,"mouseover");
-        }).on("mouseout",function(e){
-          e.preventDefault();
-        //    console.log("related"+post_id,"mouseoout");
-        }).on("mousedown",function(e){
-          e.preventDefault();
-        //    console.log("related"+post_id,"mousedown");
-        }).on("mouseup",function(e){
-          e.preventDefault();
-        //    console.log("related"+post_id,"mouseup");
-        });
-
-        tip += '<div class="rel-tooltip"'+bg_image+'>'
-
-        tip += tipHoverContent(id)
-        
-        tip += '</div>'
-       
-         return tip
       }
-    });
-  } )(jQuery);
+    }
+    rel_list += '</ul>'
+  }
+  jQuery("#related").html(rel_list);
+
+}
+
+
+
+function tipHoverContent(id) {
+  //console.log("hover tip",id)
+  var tipContent = '';
+  if (posts[id].type == 'project') {
+    tipContent += '<span class="hover-title">' + posts[id].project_info.client + '</span>'
+    if (posts[id].project_info.agency != '') {
+      tipContent += '<span class="hover-sub">' + posts[id].project_info.agency + '</span>'
+    }
+  }
+  return tipContent
+}
+
+function selectRelatedPost(post_id) {
+
+  if (posts[post_id].type == 'project') {
+    setProject(post_id)
+    // setSliderNotch(1)//Projects hardset to notch one.
+    // setContent(1, post_id, posts[post_id].type)
+
+  }
+
+
+
+
+
+
+}
+
+
+(function ($) {
+
+
+
+
+  $(document).tooltip({
+    items: "[data-rel]", // tootip for related data
+    //  tooltipClass:'rel-tip',
+    content: function () {
+      var post_id = $(this).data('rel');
+      var tip = ''
+      var bg_image = ''; // default empty
+      var src = '' // default empty
+      var media_id = getMediaID(post_id, 'featured_media') // returns media id or zero if media object is undefined
+
+      if (media_id != 0) {
+        src = getImageSRC(media_id, '.rel-tooltip', 'thumbnail');
+      }
+      console.log("set related", src, post_id, media_id);
+      if (src != '') {
+
+        bg_image = ' style="background-image:url(' + src + ')"'
+      }
+      $(this).on("click", function (e) {
+        e.preventDefault();
+        selectRelatedPost(post_id);
+
+      }).on("mouseover", function (e) {
+        console.log("related1" + post_id, "mouseover");
+        e.preventDefault();
+        console.log("related" + post_id, "mouseover");
+      }).on("mouseout", function (e) {
+        e.preventDefault();
+        //    console.log("related"+post_id,"mouseoout");
+      }).on("mousedown", function (e) {
+        e.preventDefault();
+        //    console.log("related"+post_id,"mousedown");
+      }).on("mouseup", function (e) {
+        e.preventDefault();
+        //    console.log("related"+post_id,"mouseup");
+      });
+
+      tip += '<div class="rel-tooltip"' + bg_image + '>'
+
+      //tip += tipHoverContent(id)
+
+      tip += '</div>'
+      console.log(tip)
+      //return tip
+    }
+  });
+})(jQuery);
 var gotoslide = function(slide){
   //console.log("click on slick dot ", slide);
    setSlideContent(notch, menus['wheel-menu'].linear_nav[slide].object_id)
@@ -2505,8 +2548,8 @@ function setSlider() {
 // console.log("slider", oriented, menus, menus[m], m)
 
 
-  console.log("slider_oritentation", slider_orientation)
-  if(menus['wheel-menu'] !== 'undefined'){
+ // console.log("slider_oritentation", slider_orientation)
+  if(menus['wheel-menu'] != undefined){
     jQuery("#slider").slider({
       orientation: slider_orientation,
       range: "max",
@@ -2530,62 +2573,45 @@ function setSlider() {
   }
 
 }
-/*
-  jQuery('#slider').on('mousewheel', function(event) {
-    event.preventDefault();
+/**/
+  jQuery('#slider').on('mousewheel DOMMouseScroll', function(e) {
+    e.preventDefault();
+    
     value = jQuery( "#slider" ).slider( "value" );
+    if(value == undefined || value == NaN){
+      value=0
+    }
+    var event = e.originalEvent
+    console.log(jQuery("#slider").slider);
   
-    console.log(event.deltaX, event.deltaY, event.deltaFactor);
-  
-    //Mousewheel Scrolled up
-    if(event.deltaY == -1){
-        //alert("scrolled down");
-        value = value+1;
+   
+    if (event.deltaY == -150) { //Mousewheel Scrolled up
+        
+         if (value < menus['wheel-menu'].linear_nav.length) {
+           value = value+1
+         } else {
+           value = 0; // jump to bottom from top
+         }
         setSliderNotch(value)
     }
-    //Mousewheel Scrolled down
-    else if(event.deltaY == 1){
-      //alert("scrolled up");
-        value = value-1;
+    
+    else if (event.deltaY == 150) { //Mousewheel Scrolled down
+     
+        if (value == 0){
+          value = menus['wheel-menu'].linear_nav.length // jump to top from bottom
+        } else {
+          value = value - 1;
+        }
+
+
         setSliderNotch(value)
         
     }
     
   });
-*/
+
 (function ($) {
-  /*
-    $('#slider').bind('mousewheel DOMMouseScroll', function (e) {
-      var delta = 0,
-        element = $(this),
-        value, result, oe;
-      oe = e.originalEvent; // for jQuery >=1.7
-      value = element.slider('value');
-
-      if (oe.wheelDelta) {
-        delta = -oe.wheelDelta;
-      }
-      if (oe.detail) {
-        delta = oe.detail * 40;
-      }
-
-      value -= delta / 8;
-      if (value > 100) {
-        value = 100;
-      }
-      if (value < 0) {
-        value = 0;
-      }
-
-      result = element.slider('option', 'slide').call(element, e, {
-        value: value
-      });
-      if (result !== false) {
-        element.slider('value', value);
-      }
-      return false;
-    });
-    */
+ 
 
   $('div.arrow').on('click', function (e) {
     e.stopPropagation(); // use this
@@ -2634,9 +2660,9 @@ function setSliderNotch(notch) {
   
   console.log("notch", menus[m].data_nav[notch], notch, getSlug(menus[m].data_nav[notch]))
  
-console.log("set slider notch", notch, location.hash)
+  
   location.hash = getSlug(menus[m].data_nav[notch])
-  console.log("set slider notch", notch,location.hash)
+  //console.log("set slider notch", notch,location.hash)
   jQuery("#slider").slider('value', notch);
   if (menus['wheel-menu'].linear_nav[notch] != undefined) {
 
@@ -2787,7 +2813,7 @@ function makeWheelNav(dest, data, _p) {
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
-    console.log(dest,data,_p);
+   //console.log(dest,data,_p);
     wheels[dest].spreaderEnable = false;
     //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
@@ -2834,7 +2860,7 @@ function makeWheelNav(dest, data, _p) {
         }
     }
 
-    console.log("wheel"+dest,wheels[dest])
+   // console.log("wheel"+dest,wheels[dest])
 
     wheels[dest].createWheel();
 

@@ -65,23 +65,21 @@ get_header(); ?>
 
 
 <span class="ripple"></span>
-<div id="screen-image-wrap">
-      <div id="screen-image-header" class="screen-caption">
-        <div id="screen-image-title" ></div>
-        <div id="screen-image-caption" ></div>
-      </div>
-      <div id="screen-image-container"></div>
-
-
-        <div id="screen-image-footer" class="screen-caption">
-        <div id="screen-image-description"></div>
-      </div>
-</div>
-
 
   <div id="circle-mask">
  
-     
+      <div id="screen-image-wrap">
+        <div id="screen-image-header" class="screen-caption">
+          <div id="screen-image-title" ></div>
+          <div id="screen-image-caption" ></div>
+        </div>
+        <div id="screen-image-container"></div>
+          <div id="screen-image-footer" class="screen-caption">
+          <div id="screen-image-description"></div>
+        </div>
+  </div>
+
+
 
  
 
@@ -92,12 +90,8 @@ get_header(); ?>
           
       </div>
 
-    <article id="wheel-menu-content" class="slideshow">
-       
-    </article>
-    <article id="projects-content" class="slideshow">
-       
-    </article>
+    <article id="wheel-menu-content" class="slideshow"></article>
+    <article id="projects-content" class="slideshow"></article>
      <!-- -->
       <!--masks contents above this svg-->
      

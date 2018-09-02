@@ -1,9 +1,10 @@
 
 function setMedia(data) {
+    
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    //console.log("media", media);
+    console.log("media", media);
 }
 function getMediaID(post_id,attr){
     //console.log(post_id,attr)
@@ -33,7 +34,7 @@ function getMediaID(post_id,attr){
 }
 function getImageSRC(id, dest, size) { // id = media id
 
-   // console.log("set image", id, dest, size, media[id])
+    console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
 
 
@@ -138,7 +139,7 @@ function transitionImage(dest, type, media_id) {
     var src = getImageSRC(media_id, dest + ' .image', aspect) //returns appropriate image sice.
     if (type == 'flip'){
         var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
-        console.log("FLIP",next_face,dest, type, media_id,src)
+        //console.log("FLIP",next_face,dest, type, media_id,src)
         if(media[media_id] != undefined){
             /*
             //console.log('next face', next_face)
@@ -286,7 +287,7 @@ function setVideo(id, dest) {
         var src = media[id].file; // this defaults to the basic file
 
         var video = jQuery(dest + ' video source').attr("src", full_path + src);
-        ;
+        
         //    console.log("unhide video player")
 
         jQuery(dest + ' video')[0].load();
@@ -297,24 +298,26 @@ function setVideo(id, dest) {
         //    console.log("no video, hide player")
         jQuery(dest).fadeOut();
     }
+
 }
 
 function setScreenImages(screen_images, dest, callback) {
     var images = []
     for (var i = 0; i < screen_images.length; i++) {
-        //console.log(screen_images[i])
+        console.log("screen image",screen_images[i])
         images.push({
-            "src": setImage(screen_images[i], '#screen-image', "square"),
+            "src": getImageSRC(screen_images[i], '#screen-image', "square"),
             "data": media[screen_images[i]]
         })
 
     }
     state.screen_images = images
-    //console.log("set ScreenImages", screen_images, dest, images);
-
+    console.log("set ScreenImages", screen_images, dest, images, callback);
+    //callback(dest)
     //initParticleTranstion(dest)
-    //circleViewer(dest, state.screen_images) // buggy
-
+    if(images.length>0 && callback == 'circleViewer'){
+    circleViewer(dest, state.screen_images) // buggy
+        }
     //  callback(dest,images)
 
 

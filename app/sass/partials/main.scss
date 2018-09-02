@@ -90,6 +90,7 @@ footer.horizontal.maxed{
 
 #circle-mask {
     // display: none;//THIS HAD BORDERS, better to use border-radius on the video
+    
     svg {
         position: absolute;
         top: 0;
@@ -130,6 +131,14 @@ footer.horizontal.maxed{
         margin-top:-30.5vh;
         
     }
+      #screen-image-wrap {
+          width: 58vw;
+          height: 58vw;
+          left: 50%;
+          top: 50%;
+          margin-left: -29vw;
+          margin-top: -30vh;
+      }
 }
 #screen.vertical{
     #bg-video video{
@@ -140,6 +149,16 @@ footer.horizontal.maxed{
         margin-top:-30.5vw;
         
     }
+    #screen-image-wrap {
+        width: 58vh;
+        height: 58vh;
+        left: 50%;
+        top: 50%;
+        margin-left: -29vw;
+        margin-top: -30vh;
+    }
+
+    
 }
 
 .video-wrapper {

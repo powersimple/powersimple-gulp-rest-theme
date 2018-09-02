@@ -25,7 +25,7 @@ function makeWheelNav(dest, data, _p) {
     var titles = [];
     var ids = []
     wheels[dest] = new wheelnav(dest);
-    console.log(dest,data,_p);
+   //console.log(dest,data,_p);
     wheels[dest].spreaderEnable = false;
     //    WebSlice.titleRotateAngle -45;
     wheels[dest].cssMode = true;
@@ -72,7 +72,7 @@ function makeWheelNav(dest, data, _p) {
         }
     }
 
-    console.log("wheel"+dest,wheels[dest])
+   // console.log("wheel"+dest,wheels[dest])
 
     wheels[dest].createWheel();
 

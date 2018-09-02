@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {
 
     var canvas = jQuery("#laser")[0];
-    console.log(canvas)
+  //  console.log(canvas)
     var wCanvas = jQuery(window).width(),
         hCanvas = jQuery(window).height();
     init();

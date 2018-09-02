@@ -6,7 +6,7 @@
  //this is the interval that needs to be stoped.
 
     var transitions = ['center', 'random']
-    var transitionType = 0;
+    var transitionType = 1;
     
     var viewerDest = null
     //console.log("circleviwer loaded")
@@ -14,7 +14,7 @@
         
         photoCount = state.screen_images.length
         pieceCount = state.screen_images.length
-        //console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
+        console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
         
         viewerDest = dest
         for (var i = 0; i < state.screen_images.length; i++) {
@@ -42,7 +42,7 @@
     }
 
     function nextSlide() {
-
+         console.log("onphonto", onPhoto)
         clearInterval(state.circle_delay);
         pieceCompleteCount = 0;
         ++onPhoto;
@@ -50,20 +50,23 @@
             onPhoto = 0;
         }
         
-    //console.log("next", state.screen_images)
+    console.log("next", state.screen_images)
         for (var i = 0; i < state.screen_images.length; i++) {
+            console.log("nextloop ", "i=" + i, state.screen_images[i])
             var spinDelay = 0;
             var spin = 360;
             var piece = jQuery('#piece' + i);
-            var image = state.screen_images[i]
+            var image = state.screen_images[onPhoto]
             switch (transitions[transitionType]) {
                 case 'random':
                     spinDelay = Math.random() / 2;
                     spin = Math.random() * 360;
+                    console.log("random")
                     break;
                 case 'center':
                     spinDelay = (pieceCount - i) / 10;
                     spin = 181;
+                     console.log("center")
                     break;
             }
 
@@ -90,6 +93,6 @@
     function finishPieceanimation() {
         ++pieceCompleteCount;
         if (pieceCompleteCount == pieceCount) {
-            state.circle_delay = setInterval(nextSlide, 1000);
+            state.circle_delay = setInterval(nextSlide, 5000);
         }
     }
