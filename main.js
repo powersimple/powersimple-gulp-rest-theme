@@ -77,37 +77,36 @@ jQuery(window).resize(function () {
 
 function initSite() { // called from the menus callback
   //console.log("load",data_loaded.length,data_score)
-  if (menu == undefined) {
+  if (menus == undefined || media == undefined || posts == undefined) {
     window.setTimeout(initSite(), 100);
   }
 
 
 
 
-  setSlider()
-  setSlides('wheel-menu')
-  setSlides('projects')
-
-  //console.log("menu", menu_config[m].location, items)
-  //  jQuery(menu_config[m].location).html(items)
-  setSlideShow('wheel-menu'); // creates slides for the slick carousel
-  makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
-  
-  if (location.hash != '') {
-    slug = location.hash.replace("#", "");
-    console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
-
+  var default_slug = 'about'
+  console.log("init",menus,location.hash)
+  if(location.hash == '#undefined' || location.hash == ''){
+    console.log('hash empty or undefined',location.hash)
     
+    location.hash = '#about'
+    console.log('hash empty or undefined', location.hash)
+  } else  {
+    default_slug = location.hash.replace("#", "");
+    console.log("set by slugHash", default_slug, menus['wheel-menu'].slug_nav[default_slug])
 
-  } else {
-
-    // THIS IS THE INITIAL LOADING OF THE WHEEL
-
-//    setSliderNotch(menus['wheel-menu'].slug_nav[slug]) 
-    slug = location.hash = '#about' // this has to be AFTER setSliderNotch when undefined, not before, or it will set hash to '#undefined'
   
   }
-  setSliderNotch(menus['wheel-menu'].slug_nav[slug])
+  var notch = menus['wheel-menu'].slug_nav[default_slug]
+    setSlider()
+    setSlides('wheel-menu')
+    setSlides('projects')
+
+    //console.log("menu", menu_config[m].location, items)
+    //  jQuery(menu_config[m].location).html(items)
+    setSlideShow('wheel-menu'); // creates slides for the slick carousel
+    makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
+    setSliderNotch(notch)
 
 
 
@@ -235,9 +234,7 @@ function positionProjector() {
     height = '20vw'
     //fontSize = 1.5
   }
-  jQuery("#featured-image-wrap").css("top", top)
-  jQuery("#featured-image-wrap").css("width", width)
-  jQuery("#featured-image-wrap").css("height", height)
+
 
   //jQuery("#featured-image-header").css("fontSize", fontSize + 'em')
   //jQuery("#featured-image-footer").css("fontSize", fontSize * 0.8 + "em")
@@ -421,7 +418,7 @@ function calibrateCircle(id, size, increment) {
         
         photoCount = state.screen_images.length
         pieceCount = state.screen_images.length
-        console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
+        //console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
         
         viewerDest = dest
         for (var i = 0; i < state.screen_images.length; i++) {
@@ -449,7 +446,7 @@ function calibrateCircle(id, size, increment) {
     }
 
     function nextSlide() {
-         console.log("onphonto", onPhoto)
+        // console.log("onphonto", onPhoto)
         clearInterval(state.circle_delay);
         pieceCompleteCount = 0;
         ++onPhoto;
@@ -457,9 +454,9 @@ function calibrateCircle(id, size, increment) {
             onPhoto = 0;
         }
         
-    console.log("next", state.screen_images)
+    //console.log("next", state.screen_images)
         for (var i = 0; i < state.screen_images.length; i++) {
-            console.log("nextloop ", "i=" + i, state.screen_images[i])
+           // console.log("nextloop ", "i=" + i, state.screen_images[i])
             var spinDelay = 0;
             var spin = 360;
             var piece = jQuery('#piece' + i);
@@ -468,12 +465,10 @@ function calibrateCircle(id, size, increment) {
                 case 'random':
                     spinDelay = Math.random() / 2;
                     spin = Math.random() * 360;
-                    console.log("random")
                     break;
                 case 'center':
                     spinDelay = (pieceCount - i) / 10;
                     spin = 181;
-                     console.log("center")
                     break;
             }
 
@@ -1212,7 +1207,7 @@ function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    console.log("media", media);
+  //  console.log("media", media);
 }
 function getMediaID(post_id,attr){
     //console.log(post_id,attr)
@@ -1242,7 +1237,7 @@ function getMediaID(post_id,attr){
 }
 function getImageSRC(id, dest, size) { // id = media id
 
-    console.log("set image", id, dest, size, media[id])
+  //  console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
 
 
@@ -1512,7 +1507,7 @@ function setVideo(id, dest) {
 function setScreenImages(screen_images, dest, callback) {
     var images = []
     for (var i = 0; i < screen_images.length; i++) {
-        console.log("screen image",screen_images[i])
+      //  console.log("screen image",screen_images[i])
         images.push({
             "src": getImageSRC(screen_images[i], '#screen-image', "square"),
             "data": media[screen_images[i]]
@@ -1520,7 +1515,7 @@ function setScreenImages(screen_images, dest, callback) {
 
     }
     state.screen_images = images
-    console.log("set ScreenImages", screen_images, dest, images, callback);
+    //console.log("set ScreenImages", screen_images, dest, images, callback);
     //callback(dest)
     //initParticleTranstion(dest)
     if(images.length>0 && callback == 'circleViewer'){

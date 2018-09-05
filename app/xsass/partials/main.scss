@@ -116,26 +116,26 @@ footer.horizontal.maxed{
         z-index: -1;
         overflow: hidden;
         height: 99%;
-        opacity: 0.9;
+        opacity: 1;
     }
 }
 #screen.horizontal{
     #bg-video video{
-        height:61vh;
+        height:58vh;
         left:50%;
         top:50%;
-        margin-left:-30.5vh;
-        margin-top:-30.5vh;
+        margin-left:-29vh;
+        margin-top:-29vh;
         
     }
 }
 #screen.vertical{
     #bg-video video{
-        height:61vw;
+        height:58vw;
         left:50%;
         top:50%;
-        margin-left:-30.5vw;
-        margin-top:-30.5vw;
+        margin-left:-29vw;
+        margin-top:-29vw;
         
     }
 }

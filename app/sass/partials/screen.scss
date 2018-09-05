@@ -92,10 +92,11 @@
         overflow: hidden;
         width: 100%;
         height: 100%;
-        section{
+        .section{
               background-repeat: no-repeat;
               background-position: center center;
               background-size:cover;
+              border-radius:50%;
         }
     }
 }

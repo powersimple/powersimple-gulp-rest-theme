@@ -13,7 +13,13 @@ body {
     line-height: 120%;
     font-size: 1em;
 }
+ a {
+     color: #fff200;
+ }
 
+ a:hover {
+     color: #0f0;
+ }
 #stars {
     height: 100%;
     margin: 0px;
@@ -122,6 +128,7 @@ footer.horizontal.maxed{
         opacity: 0.9;
     }
 }
+
 #screen.horizontal{
     #bg-video video{
         height:61vh;
@@ -132,12 +139,12 @@ footer.horizontal.maxed{
         
     }
       #screen-image-wrap {
-          width: 58vw;
-          height: 58vw;
+          width: 58vh;
+          height: 58vh;
           left: 50%;
           top: 50%;
-          margin-left: -29vw;
-          margin-top: -30vh;
+          margin-left: -29vh;
+          margin-top: -29vh;
       }
 }
 #screen.vertical{
@@ -150,12 +157,12 @@ footer.horizontal.maxed{
         
     }
     #screen-image-wrap {
-        width: 58vh;
-        height: 58vh;
+        width: 58vw;
+        height: 58vw;
         left: 50%;
         top: 50%;
         margin-left: -29vw;
-        margin-top: -30vh;
+        margin-top: -29vw;
     }
 
     

@@ -4,7 +4,7 @@ function setMedia(data) {
     for (var m = 0; m < data.length; m++) {
         media[data[m].id] = data[m].data;
     }
-    console.log("media", media);
+  //  console.log("media", media);
 }
 function getMediaID(post_id,attr){
     //console.log(post_id,attr)
@@ -34,7 +34,7 @@ function getMediaID(post_id,attr){
 }
 function getImageSRC(id, dest, size) { // id = media id
 
-    console.log("set image", id, dest, size, media[id])
+  //  console.log("set image", id, dest, size, media[id])
     if (media[id] != undefined) {
 
 
@@ -304,7 +304,7 @@ function setVideo(id, dest) {
 function setScreenImages(screen_images, dest, callback) {
     var images = []
     for (var i = 0; i < screen_images.length; i++) {
-        console.log("screen image",screen_images[i])
+      //  console.log("screen image",screen_images[i])
         images.push({
             "src": getImageSRC(screen_images[i], '#screen-image', "square"),
             "data": media[screen_images[i]]
@@ -312,7 +312,7 @@ function setScreenImages(screen_images, dest, callback) {
 
     }
     state.screen_images = images
-    console.log("set ScreenImages", screen_images, dest, images, callback);
+    //console.log("set ScreenImages", screen_images, dest, images, callback);
     //callback(dest)
     //initParticleTranstion(dest)
     if(images.length>0 && callback == 'circleViewer'){

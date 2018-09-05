@@ -197,9 +197,9 @@
     opacity: 0.5;
   stroke: yellow;
   stroke-width:2px;
-  fill: #1572b6;
+  fill: #162d91;
   stroke-linejoin:round;
-  stroke-opacity:0.6;
+  stroke-opacity:0.8;
     
 } // for just slices
 
@@ -280,10 +280,11 @@
 [class|=wheelnav-inner-nav-slice-selected],
 [class|=wheelnav-inner-subnav-slice-selected] {
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0.8;
     stroke: yellow;
     stroke-width: 2px;
-    fill: #1572b6;
+    fill: #2b45a2;
+    
 }
 
 

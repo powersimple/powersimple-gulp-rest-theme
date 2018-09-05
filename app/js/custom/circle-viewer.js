@@ -14,7 +14,7 @@
         
         photoCount = state.screen_images.length
         pieceCount = state.screen_images.length
-        console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
+        //console.log("CIRCLE VIEWER PRELOAD", dest, state.screen_images, pieceCount)
         
         viewerDest = dest
         for (var i = 0; i < state.screen_images.length; i++) {
@@ -42,7 +42,7 @@
     }
 
     function nextSlide() {
-         console.log("onphonto", onPhoto)
+        // console.log("onphonto", onPhoto)
         clearInterval(state.circle_delay);
         pieceCompleteCount = 0;
         ++onPhoto;
@@ -50,9 +50,9 @@
             onPhoto = 0;
         }
         
-    console.log("next", state.screen_images)
+    //console.log("next", state.screen_images)
         for (var i = 0; i < state.screen_images.length; i++) {
-            console.log("nextloop ", "i=" + i, state.screen_images[i])
+           // console.log("nextloop ", "i=" + i, state.screen_images[i])
             var spinDelay = 0;
             var spin = 360;
             var piece = jQuery('#piece' + i);
@@ -61,12 +61,10 @@
                 case 'random':
                     spinDelay = Math.random() / 2;
                     spin = Math.random() * 360;
-                    console.log("random")
                     break;
                 case 'center':
                     spinDelay = (pieceCount - i) / 10;
                     spin = 181;
-                     console.log("center")
                     break;
             }
 

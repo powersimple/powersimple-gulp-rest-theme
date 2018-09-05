@@ -77,37 +77,36 @@ jQuery(window).resize(function () {
 
 function initSite() { // called from the menus callback
   //console.log("load",data_loaded.length,data_score)
-  if (menu == undefined) {
+  if (menus == undefined || media == undefined || posts == undefined) {
     window.setTimeout(initSite(), 100);
   }
 
 
 
 
-  setSlider()
-  setSlides('wheel-menu')
-  setSlides('projects')
-
-  //console.log("menu", menu_config[m].location, items)
-  //  jQuery(menu_config[m].location).html(items)
-  setSlideShow('wheel-menu'); // creates slides for the slick carousel
-  makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
-  
-  if (location.hash != '') {
-    slug = location.hash.replace("#", "");
-    console.log("set by slugHash", slug, menus['wheel-menu'].slug_nav[slug])
-
+  var default_slug = 'about'
+  console.log("init",menus,location.hash)
+  if(location.hash == '#undefined' || location.hash == ''){
+    console.log('hash empty or undefined',location.hash)
     
+    location.hash = '#about'
+    console.log('hash empty or undefined', location.hash)
+  } else  {
+    default_slug = location.hash.replace("#", "");
+    console.log("set by slugHash", default_slug, menus['wheel-menu'].slug_nav[default_slug])
 
-  } else {
-
-    // THIS IS THE INITIAL LOADING OF THE WHEEL
-
-//    setSliderNotch(menus['wheel-menu'].slug_nav[slug]) 
-    slug = location.hash = '#about' // this has to be AFTER setSliderNotch when undefined, not before, or it will set hash to '#undefined'
   
   }
-  setSliderNotch(menus['wheel-menu'].slug_nav[slug])
+  var notch = menus['wheel-menu'].slug_nav[default_slug]
+    setSlider()
+    setSlides('wheel-menu')
+    setSlides('projects')
+
+    //console.log("menu", menu_config[m].location, items)
+    //  jQuery(menu_config[m].location).html(items)
+    setSlideShow('wheel-menu'); // creates slides for the slick carousel
+    makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
+    setSliderNotch(notch)
 
 
 
@@ -235,9 +234,7 @@ function positionProjector() {
     height = '20vw'
     //fontSize = 1.5
   }
-  jQuery("#featured-image-wrap").css("top", top)
-  jQuery("#featured-image-wrap").css("width", width)
-  jQuery("#featured-image-wrap").css("height", height)
+
 
   //jQuery("#featured-image-header").css("fontSize", fontSize + 'em')
   //jQuery("#featured-image-footer").css("fontSize", fontSize * 0.8 + "em")
