@@ -85,13 +85,13 @@ function initSite() { // called from the menus callback
 
 
   var default_slug = 'about'
-  console.log("init",menus,location.hash)
+  //console.log("init",menus,location.hash)
   if(location.hash == '#undefined' || location.hash == ''){
-    console.log('hash undefined',location.hash)
+    //console.log('hash undefined',location.hash)
     
      default_slug = 'about'
      location.hash = '#about'
-    console.log('hash empty or undefined', location.hash)
+    //console.log('hash empty or undefined', location.hash)
   } else {
     default_slug = location.hash.replace("#", "");
 
@@ -99,8 +99,8 @@ function initSite() { // called from the menus callback
 
   
   }
-  console.log("slug=" + default_slug, menus['wheel-menu'].slug_nav)
-  isMaxed()
+ // console.log("slug=" + default_slug, menus['wheel-menu'].slug_nav)
+  
 
   var notch = menus['wheel-menu'].slug_nav[default_slug]
     setSlider()
@@ -108,7 +108,7 @@ function initSite() { // called from the menus callback
     setSlides('wheel-menu')
     setSlides('projects')
 
-    console.log("menu","notch="+notch)
+   // console.log("menu","notch="+notch)
     //  jQuery(menu_config[m].location).html(items)
     setSlideShow('wheel-menu'); // creates slides for the slick carousel
     makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
@@ -137,9 +137,9 @@ function setWheelNavParams() {
       'sel_min': 0.85,
       'sel_max': 1,
     }
-    console.log("maxed")
+    
   }
-
+  console.log("maxed="+maxed, wheel_nav_params)
 
 
 
@@ -273,7 +273,7 @@ function reposition_screen() {
     left = 0
     margin_top = _w * -1
     margin_left = 0
-    bottom: _w
+    bottom =  _w
     inc = 'px'
   } else if (aspect >= 2) {
     width = _h * 2 + 'px'
@@ -281,7 +281,7 @@ function reposition_screen() {
     top = 0
     left = 50
     margin_top = 0
-    botttom: 0
+    bottom = 0
     margin_left = _h * -1
     inc = 'px'
   }
@@ -292,7 +292,7 @@ function reposition_screen() {
   //  jQuery('header').css('marginTop', margin_top)
   //jQuery('header').css('marginLeft', margin_left)
 
-
+  isMaxed()
 
   jQuery('#main').css('width', width)
   jQuery('#main').css('height', height)
@@ -310,7 +310,7 @@ function reposition_screen() {
 
   positionProjector()
   positionElements();
-
+  
   jQuery("#slider").css("visibility", "visible")
 
   var calibrate_elements = [{ // default
@@ -351,7 +351,7 @@ function isMaxed(){ // FIX - this is still problematic and has been backed out f
       maxed = true;
 
       if (maxed_last == false) {
-        console.log("maxed")
+       
 
 
         //resetWheel();
@@ -378,9 +378,12 @@ function isMaxed(){ // FIX - this is still problematic and has been backed out f
     }
     if (maxed_changed == true) {
 
-     console.log("change", maxed_changed, wheel_nav_params)
-    }
+      console.log("maxed now =", maxed)
+      wheels["outer-nav"].raphael.remove();
+      popAWheelie('outer-nav')
+      makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
 
+    }
 }
 
 function resetWheel() {

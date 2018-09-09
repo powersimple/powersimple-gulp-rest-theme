@@ -21,6 +21,8 @@ function makeWheelNav(dest, data, _p) {
         child_params = wheel_nav_params;
     }
 
+    console.log("makeWheelNav", dest, data, _p);
+
 
     var titles = [];
     var ids = []
@@ -96,7 +98,7 @@ function makeWheelNav(dest, data, _p) {
 
         wheels[dest].navItems[i].navigateFunction = function () { // Click event for wheel - JSHint doesn't like it when you set events in a loop, but whaddyagonnado? Fuhgetaboudit, the browser doesn't seem to care. and you can't click on the wheel without this.
           
-
+            console.log()
             jQuery("#slider").slider("option", "value", this.data.notch) //positions the slider handle
             setSliderNotch(menus['wheel-menu'].slug_nav[this.data.slug]) // triggers the notch
 

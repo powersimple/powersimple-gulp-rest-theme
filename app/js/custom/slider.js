@@ -112,7 +112,7 @@ function setSliderNotch(notch) {
      //console.log("stop delay", state.circle_delay)
   }
   
-  console.log("notch", menus[m].data_nav[notch], notch, getSlug(menus[m].data_nav[notch]))
+  //console.log("notch", menus[m].data_nav[notch], notch, getSlug(menus[m].data_nav[notch]))
  
   
   location.hash = getSlug(menus[m].data_nav[notch])
