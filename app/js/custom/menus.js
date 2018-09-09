@@ -27,7 +27,7 @@ function setMenus(data, dest) {
     }
    buildMenuData();
    //console.log("raw menu data", menus)
-    initSite()
+    
 }
 
 function setMenu(slug, items) {

@@ -87,22 +87,28 @@ function initSite() { // called from the menus callback
   var default_slug = 'about'
   console.log("init",menus,location.hash)
   if(location.hash == '#undefined' || location.hash == ''){
-    console.log('hash empty or undefined',location.hash)
+    console.log('hash undefined',location.hash)
     
-    location.hash = '#about'
+     default_slug = 'about'
+     location.hash = '#about'
     console.log('hash empty or undefined', location.hash)
-  } else  {
+  } else {
     default_slug = location.hash.replace("#", "");
-    console.log("set by slugHash", default_slug, menus['wheel-menu'].slug_nav[default_slug])
+
+   // console.log("set by slugHash",location.hash, default_slug, menus['wheel-menu'].slug_nav[default_slug])
 
   
   }
+  console.log("slug=" + default_slug, menus['wheel-menu'].slug_nav)
+  isMaxed()
+
   var notch = menus['wheel-menu'].slug_nav[default_slug]
     setSlider()
+
     setSlides('wheel-menu')
     setSlides('projects')
 
-    //console.log("menu", menu_config[m].location, items)
+    console.log("menu","notch="+notch)
     //  jQuery(menu_config[m].location).html(items)
     setSlideShow('wheel-menu'); // creates slides for the slick carousel
     makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
@@ -131,6 +137,7 @@ function setWheelNavParams() {
       'sel_min': 0.85,
       'sel_max': 1,
     }
+    console.log("maxed")
   }
 
 
@@ -338,13 +345,13 @@ function reposition_screen() {
 
 
 }
-function maxed(){ // FIX - this is still problematic and has been backed out for now
+function isMaxed(){ // FIX - this is still problematic and has been backed out for now
     maxed_changed = false
     if ((aspect < 0.75 && _w < 768) || (aspect > 1.5 && _h < 640)) { // MAX OUT the wheel size below 768 and wide or narrow 
       maxed = true;
 
       if (maxed_last == false) {
-        //console.log("maxed")
+        console.log("maxed")
 
 
         //resetWheel();
@@ -371,10 +378,11 @@ function maxed(){ // FIX - this is still problematic and has been backed out for
     }
     if (maxed_changed == true) {
 
-      //console.log("change", maxed_changed, wheel_nav_params)
+     console.log("change", maxed_changed, wheel_nav_params)
     }
 
 }
+
 function resetWheel() {
   setWheelNavParams();
   //console.log("resetWheel")

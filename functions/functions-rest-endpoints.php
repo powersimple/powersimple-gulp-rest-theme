@@ -28,7 +28,7 @@ require_once("functions-wpml-languages.php");
         
     function getEndpoints(){ // BUILDS URLS FOR REST API ENDPOINTS
 
-       
+       $content = array();
 
         $url_path = "http://".$_SERVER['HTTP_HOST']."/wp-json/wp/v2/";//pendpoint path
         $server_path = get_template_directory()."/app/json/";//destination folder for writing
@@ -53,8 +53,13 @@ require_once("functions-wpml-languages.php");
            
            $server = $server_path.$key.".json";
            if(@$_GET['publish']){
-            writeJSON($url,$server);
+            
+
+            $content[$key] = json_decode(getJSON($url));
+
+           // writeJSON($server,)$content[$key];
            }
+
               if(@$_GET['endpoints']){//prints endpoing urls
                 print "<li><a href='$url'>$key</a><br></li>";
               }
@@ -65,13 +70,25 @@ require_once("functions-wpml-languages.php");
             print "</ul>";
             die();//kills the page load so you can see the endpoint urls
         }
+        if(@$_GET['publish']){
+            header('Content-Type: application/json');
+            $content = json_encode($content,true); // writes the whole shebang into a json packet
+            
+            writeJSON($server_path."content.json",$content);
+            print $content;
+            die();//kills the page load so you can see the endpoint urls
+        }
       //writeJSON($posts_path,$file_path);
 
         
 
     }
-    function writeJSON($posts_path,$file_path){
-        $data = file_get_contents($posts_path);
+    function getJSON($data_path){
+        return file_get_contents($data_path);
+    }
+
+    function writeJSON($file_path,$data){
+        //$data = file_get_contents($posts_path);
         $handle = fopen($file_path, 'w') or die('Cannot open file:  '.$file_path);
         fwrite($handle, $data);
         fclose($handle);

@@ -56,7 +56,8 @@ function getStaticJSON(route, callback,dest) {
     cache: false
   })
 }
-
+/*
+//THIS SECTION IS DEPRECATED, Data now consolidated into one content packet
 getStaticJSON('posts', setPosts) // get posts
 
 // retrieves all projects, with fields from REST API
@@ -75,8 +76,21 @@ getStaticJSON('tags', setTags) // returns the tags
 getStaticJSON('menus', setMenus) // returns the tags
 
 getStaticJSON('media', setMedia) // returns the tags
+*/
 
+getStaticJSON('content', setData) // returns all content
 
+function setData(data){ //sets all content arrays
+  console.log("data",data)
+  setPosts(data.posts)
+  setPosts(data.pages)
+  setCategories(data.categories)
+  setTags(data.tags)
+  setMenus(data.menus)
+  setMedia(data.media)
+  initSite()
+
+}
 
 function setPosts(data) { // special function for the any post type
 

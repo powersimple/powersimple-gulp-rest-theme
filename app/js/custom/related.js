@@ -76,9 +76,9 @@ function displayRelated() {
         var bg_image = ''; // default empty
         var src = '' // default empty
         var media_id = getMediaID(post_id, 'featured_media') // returns media id or zero if media object is undefined
-
+       // console.log(media_id)
         if (media_id > 0) {
-          //  src = getImageSRC(media_id,'#related ul li','thumbnail')
+            src = getImageSRC(media_id,'#related ul li','thumbnail')
         }
         // console.log("set related","src="+src,post_id,media_id);
         if (src != '') {
@@ -147,7 +147,7 @@ function selectRelatedPost(post_id) {
       if (media_id != 0) {
         src = getImageSRC(media_id, '.rel-tooltip', 'thumbnail');
       }
-      console.log("set related", src, post_id, media_id);
+     // console.log("set related", src, post_id, media_id);
       if (src != '') {
 
         bg_image = ' style="background-image:url(' + src + ')"'
