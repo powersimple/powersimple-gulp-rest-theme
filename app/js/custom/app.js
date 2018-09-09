@@ -379,10 +379,13 @@ function isMaxed(){ // FIX - this is still problematic and has been backed out f
     if (maxed_changed == true) {
 
       console.log("maxed now =", maxed)
-      wheels["outer-nav"].raphael.remove();
+      if (wheels["outer-nav"] != undefined){
+        wheels["outer-nav"].raphael.remove();
+      
       popAWheelie('outer-nav')
-      makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
 
+      makeWheelNav("outer-nav", menus['wheel-menu'].menu_levels)
+        }
     }
 }
 

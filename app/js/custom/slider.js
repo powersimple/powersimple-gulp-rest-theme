@@ -112,7 +112,7 @@ function setSliderNotch(notch) {
      //console.log("stop delay", state.circle_delay)
   }
   
-  //console.log("notch", menus[m].data_nav[notch], notch, getSlug(menus[m].data_nav[notch]))
+ // console.log("notch", menus[m].data_nav[notch], notch, getSlug(menus[m].data_nav[notch]))
  
   
   location.hash = getSlug(menus[m].data_nav[notch])
@@ -121,6 +121,7 @@ function setSliderNotch(notch) {
   if (menus['wheel-menu'].linear_nav[notch] != undefined) {
 
     setContent(notch, menus[m].data_nav[notch].object_id, menus[m].data_nav[notch].object)
+   // console.log("trigger notch=", notch, location.hash)
     triggerWheelNav(notch)
     //selectNavItem(notch);
   }
