@@ -292,7 +292,7 @@ function reposition_screen() {
   //  jQuery('header').css('marginTop', margin_top)
   //jQuery('header').css('marginLeft', margin_left)
 
-  isMaxed()
+//  isMaxed()
 
   jQuery('#main').css('width', width)
   jQuery('#main').css('height', height)
@@ -520,7 +520,7 @@ function setSlideContent(slide, id) {
         content_length = posts[id].content.length
         
         jQuery("#slide" + id + " h2").html(posts[id].title)
-        //console.log("title="+title_length,"content"+content_length)
+        console.log("title="+title_length,"content"+content_length)
 
       jQuery("#slide" + id + " section div.content").html(posts[id].content)
       $carousel.slick('slickGoTo', slide);
@@ -1370,7 +1370,7 @@ function transitionImage(dest, type, media_id) {
     var src = getImageSRC(media_id, dest + ' .image', aspect) //returns appropriate image sice.
     if (type == 'flip'){
         var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
-        //console.log("FLIP",next_face,dest, type, media_id,src)
+        console.log("FLIP",next_face,dest, type, media_id,src)
         if(media[media_id] != undefined){
             /*
             //console.log('next face', next_face)

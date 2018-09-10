@@ -274,6 +274,10 @@ div { text-align: center; width: 100%; line-height:120%;
 
 [class|=wheelnav-outer-nav-slice-selected], [class|=wheelnav-inner-nav-slice-selected], [class|=wheelnav-inner-subnav-slice-selected] { cursor: pointer; opacity: 0.8; stroke: yellow; stroke-width: 2px; fill: #2b45a2; }
 
+.key-fill, .arrow-fill { cursor: pointer; opacity: 0.8; stroke: yellow; stroke-width: 1px; fill: #2b45a2; }
+
+.key-fill:hover, .arrow-fill:hover { cursor: pointer; opacity: 0.8; stroke: #2b45a2; stroke-width: 1px; fill: #ff0; }
+
 /*
 
 //outer-nav
@@ -386,26 +390,30 @@ div { text-align: center; width: 100%; line-height:120%;
 #circle-mask svg > rect { fill: black; -webkit-mask: url(#mask); mask: url(#mask); }
 #circle-mask video { position: absolute; top: 0; left: 1px; z-index: -1; overflow: hidden; height: 99%; opacity: 0.8; }
 
-#slider-wrap { position: absolute; z-index: 1500; }
+#slider-wrap { -webkit-transition: -webkit-transform 1s; transition: -webkit-transform 1s; transition: transform 1s; transition: transform 1s, -webkit-transform 1s; position: absolute; z-index: 1500; -webkit-transform-origin: center; transform-origin: center; }
 #slider-wrap .arrow { position: absolute; width: 4vh; opacity: 0.5; height: 4vh; cursor: pointer; }
 
 #screen.horizontal.maxed #slider-wrap { right: 0; height: 61.8vh; }
 
-.ui-slider { position: relative; text-align: left; }
+.ui-slider { position: relative; text-align: left; background: #2b45a2; opacity: 0.5; border: 3px ridge #ff0; border-radius: 1vh; }
 
-.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; outline: none; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 2; cursor: pointer; outline: none; background-color: #3b45a2; border: 3px ridge #ff0; border-radius: 1em; }
 
-#slider-wrap.vertical { top: 19.9%; height: 67%; width: auto; left: 93%; }
-#slider-wrap.vertical #slider.ui-slider-vertical { height: 61.8vh; width: 3.4vh; background: #222; position: absolute; opacity: 0.5; border: 5px ridge #9f2100; border-radius: 1vh; }
-#slider-wrap.vertical #slider.ui-slider-vertical .ui-slider-handle { border-radius: 1em; width: 6vh; height: 3vh; margin-left: -1.618vh; background-color: #999; border: 5px ridge #9f2100; }
+.ui-slider .ui-state-active { background-color: #6A82D7; }
+
+key-fill, .arrow-fill { fill: #3b45a2; }
+
+#slider-wrap.vertical { -webkit-transform: translate(93vw, 19.9vh); transform: translate(93vw, 19.9vh); height: 67%; width: auto; }
+#slider-wrap.vertical #slider.ui-slider-vertical { height: 61.8vh; width: 3.4vh; }
+#slider-wrap.vertical #slider.ui-slider-vertical .ui-slider-handle { width: 6vh; height: 3vh; margin-left: -1.618vh; }
 #slider-wrap.vertical #up-arrow { top: 0; -webkit-transform: rotate(-90deg); transform: rotate(-90deg); margin-top: -5vh; }
 #slider-wrap.vertical #down-arrow { bottom: 0; -webkit-transform: rotate(90deg); transform: rotate(90deg); margin-top: 5vh; }
 
-#slider-wrap.horizontal { top: 90%; left: 19.9%; width: 68%; height: auto; }
-#slider-wrap.horizontal #slider.ui-slider-horizontal { height: 3.4vw; width: 61.8vw; background: #222; position: absolute; opacity: 0.5; border: 5px ridge #9f2100; border-radius: 1vh; }
-#slider-wrap.horizontal #slider.ui-slider-horizontal .ui-slider-handle { border-radius: 1em; width: 3vw; height: 6vw; margin-top: -1.618vw; background-color: #999; border: 5px ridge #9f2100; }
+#slider-wrap.horizontal { -webkit-transform: translate(19.9vw, 90vh); transform: translate(19.9vw, 90vh); width: 68%; height: auto; }
+#slider-wrap.horizontal #slider.ui-slider-horizontal { height: 3.4vw; width: 61.8vw; }
+#slider-wrap.horizontal #slider.ui-slider-horizontal .ui-slider-handle { width: 3vw; height: 6vw; margin-top: -1.618vw; }
 #slider-wrap.horizontal #up-arrow { right: 0; -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-#slider-wrap.horizontal #down-arrow { left: 0; -webkit-transform: rotate(180deg); transform: rotate(180deg); margin-left: -5vh; }
+#slider-wrap.horizontal #down-arrow { left: 0; -webkit-transform: rotate(180deg); transform: rotate(180deg); margin-left: -5vh; margin-top: -4vh; }
 
 #slider-wrap.vertical.narrow { left: auto; right: 60px; }
 #slider-wrap.vertical.narrow .arrow { width: 3vh; }

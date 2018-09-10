@@ -1,13 +1,10 @@
 
 #slider-wrap {
-    
+    transition: transform 1s;
     position: absolute;
     z-index: 1500;
-//    background-color: #fff;
-   //positioning handled dynamically in app.js
+    transform-origin: center;
 
-
-    
     .arrow {
         position: absolute;
         width: 4vh;
@@ -35,36 +32,49 @@
  .ui-slider {
      position: relative;
      text-align: left;
+     background: #2b45a2;
+    opacity: 0.5;
+    border: 3px ridge #ff0;
+    
+    border-radius: 1vh;
+    
+
  }
 
  .ui-slider .ui-slider-handle {
      position: absolute;
      z-index: 2;
-     width: 1.2em;
-     height: 1.2em;
-     cursor: default;
+     cursor: pointer;
      outline: none;
+     background-color: #3b45a2;
+     border: 3px ridge #ff0;
+     border-radius: 1em;
  }
+ .ui-slider .ui-state-active {
+   background-color: #6A82D7;
+ }
+
+key-fill,
+.arrow-fill {
+    fill: #3b45a2;
+}
+
 #slider-wrap.vertical {
-     top: 19.9%;
-     height:67%;
+    transform: translate(93vw,19.9vh);
+    height:67%;
+
      width:auto;
-     left:93%;
+     
     #slider.ui-slider-vertical {
         height: 61.8vh;
         width: 3.4vh;
-        background: #222;
-        position: absolute;
-        opacity: 0.5;
-        border: 5px ridge #9f2100;
-        border-radius: 1vh;
+  
         .ui-slider-handle {
-            border-radius: 1em;
+           
             width: 6vh;
             height: 3vh;
             margin-left: -1.618vh;
-            background-color: #999;
-            border: 5px ridge #9f2100;
+            
         }
     }
     #up-arrow {
@@ -80,26 +90,20 @@
 }
 
 #slider-wrap.horizontal {
-    top: 90%; 
-    left:19.9%;
+  
+    transform: translate(19.9vw, 90vh);
     width:68%;
     height:auto;
 
     #slider.ui-slider-horizontal {
         height: 3.4vw;
         width: 61.8vw;
-        background: #222;
-        position: absolute;
-        opacity: 0.5;
-        border: 5px ridge #9f2100;
-        border-radius: 1vh;
         .ui-slider-handle {
-            border-radius: 1em;
+           
             width: 3vw;
             height: 6vw;
             margin-top: -1.618vw;
-            background-color: #999;
-            border: 5px ridge #9f2100;
+            
         }
     }
     #up-arrow {
@@ -110,6 +114,8 @@
         left: 0;
         transform: rotate(180deg);
         margin-left: -5vh;
+        margin-top: -4vh;
+            
     }
 }
 #slider-wrap.vertical.narrow{

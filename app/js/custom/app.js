@@ -292,7 +292,7 @@ function reposition_screen() {
   //  jQuery('header').css('marginTop', margin_top)
   //jQuery('header').css('marginLeft', margin_left)
 
-  isMaxed()
+//  isMaxed()
 
   jQuery('#main').css('width', width)
   jQuery('#main').css('height', height)

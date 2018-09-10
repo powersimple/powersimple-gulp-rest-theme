@@ -283,7 +283,8 @@
 
 [class|=wheelnav-outer-nav-slice-selected],
 [class|=wheelnav-inner-nav-slice-selected],
-[class|=wheelnav-inner-subnav-slice-selected] {
+[class|=wheelnav-inner-subnav-slice-selected],
+ {
     cursor: pointer;
     opacity: 0.8;
     stroke: yellow;
@@ -291,9 +292,23 @@
     fill: #2b45a2;
     
 }
+.key-fill,
+.arrow-fill {
+    cursor: pointer;
+    opacity: 0.8;
+    stroke: yellow;
+    stroke-width: 1px;
+    fill: #2b45a2;
+}
 
-
-
+.key-fill:hover,
+.arrow-fill:hover {
+    cursor: pointer;
+    opacity: 0.8;
+    stroke: #2b45a2;
+    stroke-width: 1px;
+    fill: #ff0;
+}
 
 
 /*
