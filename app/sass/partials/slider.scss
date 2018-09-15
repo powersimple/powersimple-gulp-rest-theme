@@ -92,7 +92,7 @@ key-fill,
 #slider-wrap.horizontal {
   
     transform: translate(19.9vw, 90vh);
-    width:68%;
+    width:70%;
     height:auto;
 
     #slider.ui-slider-horizontal {
@@ -138,16 +138,7 @@ key-fill,
 }
 #slider-wrap.horizontal.narrow {
     
-    .arrow {
-        height: 3vw;
-    }
-    #slider.ui-slider-horizontal {
-        height: 2vw;
-        .ui-slider-handle {
-            height: 3vw;
-            margin-top: -1em;
-        }
-    }
+    
 }
 
 

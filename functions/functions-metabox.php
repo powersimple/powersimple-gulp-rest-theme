@@ -38,6 +38,35 @@
         return $meta_boxes;
     }
     add_filter( 'rwmb_meta_boxes', 'video_meta' );
+
+
+    function social_meta( $meta_boxes ) {
+        $prefix = '';
+
+        $meta_boxes[] = array(
+            'id' => 'social_url',
+            'title' => esc_html__( 'Social', 'ps-social' ),
+            'post_types' => array( 'social' ),
+            'context' => 'side',
+            'priority' => 'default',
+            'autosave' => false,
+            'fields' => array(
+               
+                array(
+                    'id' => $prefix . 'social_url',
+                    'type' => 'url',
+                    'name' => esc_html__( 'URL', 'ps-social' ),
+                ),
+                
+            ),
+        );
+
+        return $meta_boxes;
+    }
+    add_filter( 'rwmb_meta_boxes', 'social_meta' );
+
+
+
     function ps_metabox( $meta_boxes ) {
         $prefix = '';
 

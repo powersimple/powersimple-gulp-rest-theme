@@ -139,7 +139,7 @@ function setWheelNavParams() {
     }
     
   }
-  console.log("maxed="+maxed, wheel_nav_params)
+  //console.log("maxed="+maxed, wheel_nav_params)
 
 
 
@@ -378,7 +378,7 @@ function isMaxed(){ // FIX - this is still problematic and has been backed out f
     }
     if (maxed_changed == true) {
 
-      console.log("maxed now =", maxed)
+      //console.log("maxed now =", maxed)
       if (wheels["outer-nav"] != undefined){
         wheels["outer-nav"].raphael.remove();
       
@@ -1371,6 +1371,9 @@ function transitionImage(dest, type, media_id) {
     if (type == 'flip'){
         var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
         console.log("FLIP",next_face,dest, type, media_id,src)
+        if(next_face == 'back'){
+          //  jQuery('#featured').css("transform", "rotateY(180deg)")
+        }
         if(media[media_id] != undefined){
             /*
             //console.log('next face', next_face)
@@ -2833,7 +2836,7 @@ function makeWheelNav(dest, data, _p) {
         child_params = wheel_nav_params;
     }
 
-    console.log("makeWheelNav", dest, data, _p);
+    //console.log("makeWheelNav", dest, data, _p);
 
 
     var titles = [];

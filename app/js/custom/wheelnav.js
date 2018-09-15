@@ -21,7 +21,7 @@ function makeWheelNav(dest, data, _p) {
         child_params = wheel_nav_params;
     }
 
-    console.log("makeWheelNav", dest, data, _p);
+    //console.log("makeWheelNav", dest, data, _p);
 
 
     var titles = [];

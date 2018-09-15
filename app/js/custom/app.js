@@ -139,7 +139,7 @@ function setWheelNavParams() {
     }
     
   }
-  console.log("maxed="+maxed, wheel_nav_params)
+  //console.log("maxed="+maxed, wheel_nav_params)
 
 
 
@@ -378,7 +378,7 @@ function isMaxed(){ // FIX - this is still problematic and has been backed out f
     }
     if (maxed_changed == true) {
 
-      console.log("maxed now =", maxed)
+      //console.log("maxed now =", maxed)
       if (wheels["outer-nav"] != undefined){
         wheels["outer-nav"].raphael.remove();
       

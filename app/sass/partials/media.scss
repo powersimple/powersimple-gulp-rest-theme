@@ -1,3 +1,6 @@
+#featured-wrap {
+    position: absolute;
+}
 #featured{
     position: absolute;
     width: 20vw;
@@ -73,16 +76,17 @@
     transform: rotateY(180deg);
 }
 .horizontal.extra-super-wide {
-    #featured {
+    #featured-wrap {
         width: 20vw;
         height: 20vw;
         transform: translate(2vw, 50vh);
         margin-top: -10%;
         font-size: 1vw;
     }
+
 }
 .horizontal.super-wide {
-    #featured{
+    #featured-wrap {
         width: 20vw;
         height: 20vw;
         transform:translate(2vw,50vh);
@@ -92,7 +96,7 @@
     
 }
 .horizontal.wide {
-    #featured {
+    #featured-wrap {
         width: 15vw;
         height: 15vw;
         transform: translate(2vw, 50vh);
@@ -103,7 +107,7 @@
 }
 .horizontal.semi-wide,
 .horizontal.square {
-    #featured {
+    #featured-wrap {
         width: 12vw;
         height: 12vw;
         transform: translate(2vw, 12vh);
@@ -113,11 +117,11 @@
 }
 
 #featured.is-flipped {
-    transform: rotateY(180deg);
+    transform:  rotateY(180deg);
 }
 
 .vertical.super-narrow {
-    #featured {
+    #featured-wrap {
         width: 12vw;
         height: 12vw;
         transform: translate(3vw, 15vh);
@@ -127,7 +131,7 @@
 }
 
 .vertical.narrow {
-    #featured {
+    #featured-wrap {
         width: 15vh;
         height: 15vh;
         transform: translate(3vw, 15vh);
@@ -138,7 +142,7 @@
 }
 
 .vertical.semi-narrow{
-     #featured {
+     #featured-wrap {
          width: 15vw;
          height: 15vw;
          transform: translate(5vw, 18vw);
@@ -147,7 +151,7 @@
      }
 }
 .vertical.square {
-    #featured {
+    #featured-wrap {
         width: 12vw;
         height: 12vw;
         transform: translate(3vw, 15vw);

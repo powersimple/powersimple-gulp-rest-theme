@@ -6,9 +6,9 @@ get_header(); ?>
   
  
  
-  <!--<canvas id="laser"></canvas>-->
+  <!--<canvas id="laser"></canvas>
 
-  <div id="language-menu"></div>
+  <div id="language-menu"></div>-->
 <div class="laser-cube">
   <div class="div-1 layer"></div>
   <div class="div-2 layer"></div>
@@ -17,7 +17,9 @@ get_header(); ?>
   <div class="div-5 layer"></div>
 </div>
 
-    <div id="featured"></div>
+
+    <div id="featured-wrap"><div id="featured"></div></div>
+    
     <script type="x-template" id="featured-template">
       <div class="image-header image-caption">
           <div class="title"></div>

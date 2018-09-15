@@ -140,6 +140,9 @@ function transitionImage(dest, type, media_id) {
     if (type == 'flip'){
         var next_face = toggleFace(dest, type) // flip requires front and back, will return opposite based on state
         console.log("FLIP",next_face,dest, type, media_id,src)
+        if(next_face == 'back'){
+          //  jQuery('#featured').css("transform", "rotateY(180deg)")
+        }
         if(media[media_id] != undefined){
             /*
             //console.log('next face', next_face)
