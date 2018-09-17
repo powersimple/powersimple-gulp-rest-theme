@@ -17,7 +17,8 @@ var posts = {},
   related = {},
   data_score = 7,
   data_loaded = [],
-  state = {}
+  state = {},
+  social = {}
 
   state.featured = {
     'transition': {
@@ -81,9 +82,11 @@ getStaticJSON('media', setMedia) // returns the tags
 getStaticJSON('content', setData) // returns all content
 
 function setData(data){ //sets all content arrays
-  console.log("data",data)
+  
   setPosts(data.posts)
   setPosts(data.pages)
+  setPosts(data.project)
+  setPosts(data.social)  
   setCategories(data.categories)
   setTags(data.tags)
   setMenus(data.menus)
@@ -96,9 +99,9 @@ function setPosts(data) { // special function for the any post type
 
   var type = 'post'
 
-
+  //console.log(data)
   if (Array.isArray(data)) {
-
+   
     for (var i = 0; i < data.length; i++) { // loop through the list of data
       //console.log("home", data[i].id)
       /*
@@ -129,20 +132,8 @@ function setPosts(data) { // special function for the any post type
 
   }
 
-  if (type !== undefined) {
-    switch (type) {
-      case type = 'project':
 
-        break
-      case type = 'post':
-
-        break
-      case type = 'page':
-
-        break
-    }
-  }
-  //console.log("posts",posts)
+  console.log("posts",posts)
 
 
   return posts

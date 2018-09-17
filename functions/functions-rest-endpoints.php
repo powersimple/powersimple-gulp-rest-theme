@@ -16,6 +16,7 @@ $GLOBALS['REST_CONFIG'] =array(//An array of url arguments
             "posts"=>"fields=id,type,title,content,slug,excerpt,languages,featured_media,screen_images,video,type,cats,tags&".$GLOBALS['REST_post_filter'],
             "pages"=>"fields=id,type,title,content,slug,excerpt,languages,featured_media,screen_images,featured_video,cats,tags,type&".$GLOBALS['REST_post_filter'],
             "project"=>"fields=id,type,title,content,slug,excerpt,languages,project_info,featured_media,screen_images,featured_video,type,cats,tags&".$GLOBALS['REST_post_filter'],
+            "social"=>"fields=id,type,title,content,slug,excerpt,featured_media,social_url&".$GLOBALS['REST_post_filter'],
             "categories"=>"fields=id,name,count,slug,description,posts,children",
             "tags"=>"fields=id,name,slug,posts&".$GLOBALS['REST_post_filter'],
             "menus"=>"menus",
@@ -93,10 +94,17 @@ require_once("functions-wpml-languages.php");
         fwrite($handle, $data);
         fclose($handle);
     }
+    
+    $user = wp_get_current_user();
+    $allowed_roles = array('administrator');
+    if( array_intersect($allowed_roles, $user->roles ) ) {  
+       //stuff here for allowed roles
+     
+        
     if(@$_GET['publish'] || @$_GET['endpoints']){
         getEndpoints();
        
     }
-    
+} 
     //add_action( 'save_post', 'refreshJSON');// this will run if you save a post. Too much overhead for every save so better to trigger manually
 ?>

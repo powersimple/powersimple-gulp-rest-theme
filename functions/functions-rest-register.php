@@ -1,5 +1,13 @@
 <?php
-
+add_action( 'init', 'socials_to_cpt' );
+function socials_to_cpt() {
+    $args = array(
+      'public'       => true,
+      'show_in_rest' => true,
+      'label'        => 'social'
+    );
+    register_post_type( 'social', $args );
+}
 
 
 /*WP REST API CUSTOM ENDPOINTS. RETURNS SPECIFIC THUMBNAIL URL*/ 
@@ -10,6 +18,8 @@
 	TAGS
 
 */
+
+
 add_action( 'rest_api_init', 'register_posts_by_tag' );
  
 function register_posts_by_tag() {
@@ -205,7 +215,24 @@ function get_media_data( $object ) { //this function builds the data for a lean 
  return $data;//from functions.php,
 
 }
+/* 
+Social_url
+*/
+add_action( 'rest_api_init', 'register_social_url' );
+function register_social_url() {
+ 
 
+	register_rest_field( ['social'], 'social_url', array(
+		'get_callback' => 'get_social_url',
+		'schema' => null,
+		)
+	);
+}
+ 
+function get_social_url( $object ) {
+	
+ return get_post_meta($object['id'],"social_url",true);//from functions.php,
+}
 
 
 
@@ -338,6 +365,11 @@ function get_post_tags($object){
 	$post_id = $object['id'];
 	return wp_get_post_tags( $post_id,array( 'fields' => 'ids' ));
 }
+
+
+
+
+
 
 
 

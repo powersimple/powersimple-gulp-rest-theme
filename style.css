@@ -392,6 +392,11 @@ div { text-align: center; width: 100%; line-height:120%;
 #circle-mask svg > rect { fill: black; -webkit-mask: url(#mask); mask: url(#mask); }
 #circle-mask video { position: absolute; top: 0; left: 1px; z-index: -1; overflow: hidden; height: 99%; opacity: 0.8; }
 
+#social-links { position: absolute; top: 10px; right: 0px; display: table; width: 120px; z-index: 1000; }
+#social-links ul { display: table-row; }
+#social-links ul li { display: table-cell; }
+@media (max-width: 540px) { #social-links { top: auto; bottom: 0; } }
+
 #slider-wrap { -webkit-transition: -webkit-transform 1s; transition: -webkit-transform 1s; transition: transform 1s; transition: transform 1s, -webkit-transform 1s; position: absolute; z-index: 1500; -webkit-transform-origin: center; transform-origin: center; }
 #slider-wrap .arrow { position: absolute; width: 4vh; opacity: 0.5; height: 4vh; cursor: pointer; }
 

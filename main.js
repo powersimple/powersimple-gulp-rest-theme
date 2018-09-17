@@ -100,7 +100,7 @@ function initSite() { // called from the menus callback
   
   }
  // console.log("slug=" + default_slug, menus['wheel-menu'].slug_nav)
-  
+    setSocial()
 
   var notch = menus['wheel-menu'].slug_nav[default_slug]
     setSlider()
@@ -1016,7 +1016,8 @@ var posts = {},
   related = {},
   data_score = 7,
   data_loaded = [],
-  state = {}
+  state = {},
+  social = {}
 
   state.featured = {
     'transition': {
@@ -1080,9 +1081,11 @@ getStaticJSON('media', setMedia) // returns the tags
 getStaticJSON('content', setData) // returns all content
 
 function setData(data){ //sets all content arrays
-  console.log("data",data)
+  
   setPosts(data.posts)
   setPosts(data.pages)
+  setPosts(data.project)
+  setPosts(data.social)  
   setCategories(data.categories)
   setTags(data.tags)
   setMenus(data.menus)
@@ -1095,9 +1098,9 @@ function setPosts(data) { // special function for the any post type
 
   var type = 'post'
 
-
+  //console.log(data)
   if (Array.isArray(data)) {
-
+   
     for (var i = 0; i < data.length; i++) { // loop through the list of data
       //console.log("home", data[i].id)
       /*
@@ -1128,20 +1131,8 @@ function setPosts(data) { // special function for the any post type
 
   }
 
-  if (type !== undefined) {
-    switch (type) {
-      case type = 'project':
 
-        break
-      case type = 'post':
-
-        break
-      case type = 'page':
-
-        break
-    }
-  }
-  //console.log("posts",posts)
+  console.log("posts",posts)
 
 
   return posts
@@ -2699,6 +2690,19 @@ function setSliderNotch(notch) {
   }
   current_notch = notch;
   // document.title = linear_nav[notch].title+" | "+site_title
+}
+function setSocial(){
+    
+    var social_menu = menus['social-links'].items
+    var menu_items = ''
+    for(s in social_menu){
+        var item = posts[social_menu[s].object_id]
+        var src = getImageSRC(item.featured_media)
+       
+        menu_items += '<li><a href="'+item.social_url+'" target="_blank"><img src="'+src+'" alt="'+item.title+'"></a></li>'
+    }
+    console.log("s",menu_items)
+    jQuery('#social-links ul').html(menu_items)
 }
 // Declare three.js variables
 var camera, scene, renderer, stars = []

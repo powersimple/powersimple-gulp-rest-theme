@@ -17,9 +17,9 @@ get_header(); ?>
   <div class="div-5 layer"></div>
 </div>
 
-
+    <div id="social-links"><ul></ul></div>
     <div id="featured-wrap"><div id="featured"></div></div>
-    
+
     <script type="x-template" id="featured-template">
       <div class="image-header image-caption">
           <div class="title"></div>

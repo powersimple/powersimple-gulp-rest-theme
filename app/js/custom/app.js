@@ -100,7 +100,7 @@ function initSite() { // called from the menus callback
   
   }
  // console.log("slug=" + default_slug, menus['wheel-menu'].slug_nav)
-  
+    setSocial()
 
   var notch = menus['wheel-menu'].slug_nav[default_slug]
     setSlider()
