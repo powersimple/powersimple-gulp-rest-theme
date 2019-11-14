@@ -19,7 +19,7 @@
         wp_enqueue_script('scroll-magic-debug');
         */
 
-       
+       wp_enqueue_script( 'jquery' );
 
         wp_register_script('jqueryui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'); 
         wp_enqueue_script('jqueryui');

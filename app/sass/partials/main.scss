@@ -12,14 +12,28 @@ body {
     overflow: hidden;
     line-height: 120%;
     font-size: 1em;
+    @media(max-width: 539px) {
+        font-size: 0.7em;
+    }
+    @media(min-width:540px) and (max-width:767px) {
+        font-size: 0.8em;
+    }
+    @media(min-width:768px) and (max-width:1025px) {
+        font-size: 0.8em;
+    }
+    @media(min-width:1281px) {
+        font-size: 1.2em;
+    }
 }
- a {
-     color: #fff200;
- }
 
- a:hover {
-     color: #0f0;
- }
+a {
+    color: #fff200;
+}
+
+a:hover {
+    color: #0f0;
+}
+
 #stars {
     height: 100%;
     margin: 0px;
@@ -28,39 +42,33 @@ body {
     z-index: -1;
 }
 
-
-
-
-
 #masthead,
 #colophon {
     font-family: 'Rubik', sans-serif;
     background-color: #000;
 }
-#preload
-{
-	display: none;
+
+#preload {
+    display: none;
 }
-#main{
-    min-width:320px;
-    min-height:320px;
+
+#main {
+    min-width: 320px;
+    min-height: 320px;
     position: absolute;
     //background-color:rgba(200,200,200,0.2)
 }
 
-
-
 footer {
-    
     position: absolute;
     width: 100%;
-    height:100px;
+    height: 100px;
     bottom: 0;
-    #footer{
-        background-color:rgba(200,0,0,0.2);
-        color:#fff;
+    #footer {
+        background-color: rgba(200, 0, 0, 0.2);
+        color: #fff;
         text-align: center;
-        margin-bottom:0.5em;
+        margin-bottom: 0.5em;
     }
     #fork-this {
         position: absolute;
@@ -69,6 +77,7 @@ footer {
         height: 15vh;
         width: 15vh;
         opacity: 0.5;
+        cursor: pointer;
         #fork-this-svg {
             position: absolute;
             right: 0;
@@ -78,25 +87,24 @@ footer {
             opacity: 0.9;
         }
         @media (max-width: 1024px) {
-             height: 8vh;
-             width: 8vh;
+            height: 8vh;
+            width: 8vh;
         }
         @media (max-width: 539px) {
             display: none;
-           
         }
     }
 }
-footer.horizontal.maxed{
-    width:50%;
-    left:50%;
+
+footer.horizontal.maxed {
+    width: 50%;
+    left: 50%;
     position: absolute;
-    height:50px;
+    height: 50px;
 }
 
 #circle-mask {
     // display: none;//THIS HAD BORDERS, better to use border-radius on the video
-    
     svg {
         position: absolute;
         top: 0;
@@ -129,32 +137,31 @@ footer.horizontal.maxed{
     }
 }
 
-#screen.horizontal{
-    #bg-video video{
-        height:61vh;
-        left:50%;
-        top:50%;
-        margin-left:-30.5vh;
-        margin-top:-30.5vh;
-        
+#screen.horizontal {
+    #bg-video video {
+        height: 61vh;
+        left: 50%;
+        top: 50%;
+        margin-left: -30.5vh;
+        margin-top: -30.5vh;
     }
-      #screen-image-wrap {
-          width: 58vh;
-          height: 58vh;
-          left: 50%;
-          top: 50%;
-          margin-left: -29vh;
-          margin-top: -29vh;
-      }
+    #screen-image-wrap {
+        width: 58vh;
+        height: 58vh;
+        left: 50%;
+        top: 50%;
+        margin-left: -29vh;
+        margin-top: -29vh;
+    }
 }
-#screen.vertical{
-    #bg-video video{
-        height:61vw;
-        left:50%;
-        top:50%;
-        margin-left:-30.5vw;
-        margin-top:-30.5vw;
-        
+
+#screen.vertical {
+    #bg-video video {
+        height: 61vw;
+        left: 50%;
+        top: 50%;
+        margin-left: -30.5vw;
+        margin-top: -30.5vw;
     }
     #screen-image-wrap {
         width: 58vw;
@@ -164,8 +171,6 @@ footer.horizontal.maxed{
         margin-left: -29vw;
         margin-top: -29vw;
     }
-
-    
 }
 
 .video-wrapper {
@@ -188,22 +193,21 @@ footer.horizontal.maxed{
         left: 0;
     }
 }
-#project-info{
-    position: absolute;
-    top:50%;
-    left:50%;
-    border-radius:50%;
-   // border:1px solid #990000;
-    width: 60vh;
-    height:60vh;
-    margin-left:-30vh;
-    margin-top:-30vh;
-  
-    z-index:3000;
-    display:none;
-    div{
 
-        color:#fff;
+#project-info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    // border:1px solid #990000;
+    width: 60vh;
+    height: 60vh;
+    margin-left: -30vh;
+    margin-top: -30vh;
+    z-index: 3000;
+    display: none;
+    div {
+        color: #fff;
         text-align: center;
     }
 }

@@ -1,81 +1,80 @@
-#outer-ring{
+#outer-ring {
     position: absolute;
-    top:50%;
-    left:50%;
+    top: 50%;
+    left: 50%;
     z-index: 100;
- //background-color:rgba(256,0,0,0.1);
-    width:80em;
-    height:80em;
-    margin-left:-40em;
-    margin-top:-40em;
+    //background-color:rgba(256,0,0,0.1);
+    width: 80em;
+    height: 80em;
+    margin-left: -40em;
+    margin-top: -40em;
     border-radius: 50%;
-     overflow:hidden;
+    overflow: hidden;
 }
 
-#inner-ring{
+#inner-ring {
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 1100;
- //background-color: rgba(255, 255, 0, 0.2);
+    //background-color: rgba(255, 255, 0, 0.2);
     width: 75em;
     height: 75em;
     margin-left: -37.5em;
     margin-top: -37.5em;
     border-radius: 50%;
-     overflow:hidden;
+    overflow: hidden;
 }
 
-#inner-subring{
+#inner-subring {
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 1300;
- //background-color: rgba(255, 190, 0, 0.2);
+    //background-color: rgba(255, 190, 0, 0.2);
     width: 68em;
     height: 68em;
     margin-left: -34em;
     margin-top: -34em;
     border-radius: 50%;
-     overflow:hidden;
+    overflow: hidden;
 }
 
 #screen.horizontal {
-    #outer-ring{
+    #outer-ring {
         width: 80vh !important;
         height: 80vh !important;
         margin-left: -40vh !important;
-        margin-top: -40vh  !important;
+        margin-top: -40vh !important;
     }
-    #inner-ring{
+    #inner-ring {
         width: 72vh !important;
         height: 72vh !important;
         margin-left: -36vh !important;
-        margin-top: -36vh  !important;
+        margin-top: -36vh !important;
     }
-    #inner-subring{
-    
+    #inner-subring {
         width: 64.5vh !important;
         height: 64.5vh !important;
         margin-left: -32.25vh !important;
         margin-top: -32.25vh;
     }
 }
+
 #screen.vertical {
-    #outer-ring{
+    #outer-ring {
         width: 80vw !important;
         height: 80vw !important;
         margin-left: -40vw !important;
-        margin-top: -40vw  !important;
+        margin-top: -40vw !important;
     }
-    #inner-ring{
+    #inner-ring {
         width: 72vw !important;
         height: 72vw !important;
         margin-left: -36vw !important;
-        margin-top: -36vw  !important;
+        margin-top: -36vw !important;
     }
-    #inner-subring{
-    
+    #inner-subring {
         width: 65vw !important;
         height: 65vw !important;
         margin-left: -32.5vw !important;
@@ -84,41 +83,40 @@
 }
 
 #screen.horizontal.maxed {
-    #outer-ring{
+    #outer-ring {
         width: 90vh !important;
         height: 90vh!important;
         margin-left: -45vw !important;
-        margin-top: -45vh  !important;
+        margin-top: -45vh !important;
     }
-    #inner-ring{
+    #inner-ring {
         width: 80vh !important;
         height: 80vh !important;
         margin-left: -42.7vw !important;
-        margin-top: -40vh  !important;
+        margin-top: -40vh !important;
     }
-    #inner-subring{
-    
+    #inner-subring {
         width: 66vh !important;
         height: 66vh !important;
         margin-left: -39.5vw !important;
         margin-top: -33.2vh;
     }
 }
+
 #screen.vertical.maxed {
-    #outer-ring{
+    #outer-ring {
         width: 96vw !important;
         height: 96vw !important;
         margin-left: -48vw !important;
-        margin-top: -48vw  !important;
+        margin-top: -48vw !important;
     }
-    #inner-ring{
+    #inner-ring {
         width: 80vw !important;
         height: 80vw !important;
         margin-left: -40vw !important;
-        margin-top: -40vw  !important;
+        margin-top: -40vw !important;
     }
-    #inner-subring{
-    
+    #inner-subring {
         width: 67vw !important;
         height: 67vw !important;
         margin-left: -33.5vw !important;
@@ -137,20 +135,20 @@
 }
 
 .wheelNav {
-    width:100%;
-    height:100%;
-    margin-top:-50%;
-    border-radius:50%;
+    width: 100%;
+    height: 100%;
+    margin-top: -50%;
+    border-radius: 50%;
     margin: auto;
     -moz-transition: ease 1s;
     -o-transition: ease 1s;
     -webkit-transition: ease 1s;
     transition: ease 1s;
-    overflow:hidden;
+    overflow: hidden;
 }
 
-.wheelNavGitHub > svg,
-.wheelNav > svg {
+.wheelNavGitHub>svg,
+.wheelNav>svg {
     width: 100%;
     height: 100%;
 }
@@ -160,10 +158,7 @@
         height: 200px;
         width: 200px;
     }
-
-    .wheelNav {
-      
-    }
+    .wheelNav {}
 }
 
 @media (max-width: 680px) {
@@ -171,10 +166,7 @@
         height: 190px;
         width: 190px;
     }
-
-    .wheelNav {
-       
-    }
+    .wheelNav {}
 }
 
 @media (max-width: 480px) {
@@ -182,116 +174,92 @@
         height: 180px;
         width: 180px;
     }
-
-    .wheelNav {
-      
-    }
+    .wheelNav {}
 }
-
-
 
 [class|=wheelnav-outer-nav-slice],
 [class|=wheelnav-inner-nav-slice],
 [class|=wheelnav-inner-subnav-slice] {
     cursor: pointer;
     opacity: 0.5;
-  stroke: yellow;
-  stroke-width:2px;
-  fill: #162d91;
-  stroke-linejoin:round;
-  stroke-opacity:0.8;
-    
+    stroke: yellow;
+    stroke-width: 2px;
+    fill: #162d91;
+    stroke-linejoin: round;
+    stroke-opacity: 0.8;
 } // for just slices
-
-
 [class|=wheelnav-outer-nav-title],
 [class|=wheelnav-inner-nav-title],
-[class|=wheelnav-inner-subnav-title],
-
-
-
- {
+[class|=wheelnav-inner-subnav-title] {
     cursor: pointer;
-    font-size: 12px;
-
-
-}// for both slices and titles
-
-
+    //font-size: 12px;
+} // for both slices and titles
 [class|=wheelnav-outer-nav-title]>tspan,
 [class|=wheelnav-inner-nav-title]>tspan,
-[class|=wheelnav-inner-subnav-title]>tspan
-{
-    fill:#fff;
-    font-family: 'Cabin',sans-serif;
-    font-size: 1em;
-    
-    @media(max-width:539px) and (orientation: landscape) {
-       font-size:4vw;
+[class|=wheelnav-inner-subnav-title]>tspan {
+    fill: #fff;
+    font-family: 'Cabin', sans-serif;
+    // font-size: 1em;
+    @media(max-width: 539px) and (orientation: landscape) {
+        font-size: 4vw;
     }
-
     @media(max-width:539px) and (orientation: portrait) {
         font-size: 3.2vw;
     }
     @media(min-width:540px) and (max-width:767px) {
-
-        //font-size:3vw;
+        font-size: 3vw;
     }
     @media(min-width:768px) and (max-width:1024px) {
-        //font-size:2vw;
-
+        font-size: 2vw;
     }
-     @media(min-width:1025px) and (max-width:1280px) {
-        //font-size:1vw;
-
-     }
-     @media(min-width:1281px) and (max-width:1600px) {
-        //font-size:.75vw;
-
-     }
-      @media(min-width:1600px)  {
-        //font-size:2em;
-
-      }
+    @media(min-width:1025px) and (max-width:1280px) {
+        font-size: 1vw;
+    }
+    @media(min-width:1281px) and (max-width:1600px) {
+        font-size: .75vw;
+    }
+    @media(min-width:1600px) {
+        font-size: 2em;
+    }
 }
 
 [class|=wheelnav-outer-nav-title]>tspan:hover,
 [class|=wheelnav-inner-nav-title]>tspan:hover,
-[class|=wheelnav-inner-subnav-title]>tspan:hover{
-    fill:#ff0;
+[class|=wheelnav-inner-subnav-title]>tspan:hover {
+    fill: #ff0;
 }
 
 [class|=wheelnav-outer-nav-slice-hover],
-[class|=wheelnav-inner-nav-slice-hover], 
+[class|=wheelnav-inner-nav-slice-hover],
 [class|=wheelnav-inner-subnav-slice-hover] {
-    cursor:pointer;
+    cursor: pointer;
     opacity: 0.5;
-        stroke: red;
-        stroke-width: 2px;
-        fill: #3d12b4;
+    stroke: red;
+    stroke-width: 2px;
+    fill: #3d12b4;
 }
 
 [class|=wheelnav-outer-nav-slice-hover],
-[class|=wheelnav-inner-nav-slice-hover], 
+[class|=wheelnav-inner-nav-slice-hover],
 [class|=wheelnav-inner-subnav-slice-hover] {
-    cursor:pointer;
+    cursor: pointer;
     opacity: 0.5;
-        stroke: red;
-        stroke-width: 2px;
-        fill: #3d12b4;
+    stroke: red;
+    stroke-width: 2px;
+    fill: #3d12b4;
 }
 
 [class|=wheelnav-outer-nav-slice-selected],
 [class|=wheelnav-inner-nav-slice-selected],
 [class|=wheelnav-inner-subnav-slice-selected],
- {
+{
     cursor: pointer;
     opacity: 0.8;
     stroke: yellow;
     stroke-width: 2px;
     fill: #2b45a2;
-    
 }
+
 .key-fill,
 .arrow-fill {
     cursor: pointer;
